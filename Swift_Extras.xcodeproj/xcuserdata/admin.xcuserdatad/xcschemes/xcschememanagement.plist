@@ -14,6 +14,16 @@
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
+		<key>Swift_Extras-iOS.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+		<key>Swift_Extras-iOSTests.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
@@ -23,6 +33,16 @@
 			<true/>
 		</dict>
 		<key>84755CF319BCC652002F644D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>84D1AB5719BD4AA800AF78E1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>84D1AB6119BD4AA800AF78E1</key>
 		<dict>
 			<key>primary</key>
 			<true/>

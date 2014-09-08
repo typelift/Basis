@@ -29,6 +29,28 @@
 		84D1AB4919BD024E00AF78E1 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB4819BD024E00AF78E1 /* Search.swift */; };
 		84D1AB4B19BD051100AF78E1 /* Zip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB4A19BD051100AF78E1 /* Zip.swift */; };
 		84D1AB5119BD0F2300AF78E1 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB5019BD0F2300AF78E1 /* List.swift */; };
+		84D1AB5D19BD4AA800AF78E1 /* Swift_Extras-iOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 84D1AB5C19BD4AA800AF78E1 /* Swift_Extras-iOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		84D1AB6E19BD4AE000AF78E1 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84755D0A19BCCBA4002F644D /* Category.swift */; };
+		84D1AB6F19BD4AE000AF78E1 /* Functor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84755D0619BCC97D002F644D /* Functor.swift */; };
+		84D1AB7019BD4AE000AF78E1 /* Applicative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB2B19BCD3BA00AF78E1 /* Applicative.swift */; };
+		84D1AB7119BD4AE000AF78E1 /* Monad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB2919BCD3A900AF78E1 /* Monad.swift */; };
+		84D1AB7219BD4AE000AF78E1 /* Kinds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84755D0219BCC674002F644D /* Kinds.swift */; };
+		84D1AB7319BD4AE000AF78E1 /* Bounded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB2F19BCD7F100AF78E1 /* Bounded.swift */; };
+		84D1AB7419BD4AE000AF78E1 /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB2519BCCF1C00AF78E1 /* Function.swift */; };
+		84D1AB7519BD4AE000AF78E1 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84755D0819BCCB0B002F644D /* Operators.swift */; };
+		84D1AB7619BD4AE000AF78E1 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB2719BCD01300AF78E1 /* Functions.swift */; };
+		84D1AB7719BD4AE000AF78E1 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB5019BD0F2300AF78E1 /* List.swift */; };
+		84D1AB7819BD4AE000AF78E1 /* Folds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB2D19BCD5FD00AF78E1 /* Folds.swift */; };
+		84D1AB7919BD4AE000AF78E1 /* Scans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB3119BCDB1400AF78E1 /* Scans.swift */; };
+		84D1AB7A19BD4AE000AF78E1 /* Infinity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB3419BCDE8B00AF78E1 /* Infinity.swift */; };
+		84D1AB7B19BD4AE000AF78E1 /* Lazy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB4419BCEF6200AF78E1 /* Lazy.swift */; };
+		84D1AB7C19BD4AE000AF78E1 /* Sublists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB4619BCFF3600AF78E1 /* Sublists.swift */; };
+		84D1AB7D19BD4AE000AF78E1 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB4819BD024E00AF78E1 /* Search.swift */; };
+		84D1AB7E19BD4AE000AF78E1 /* Zip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB4A19BD051100AF78E1 /* Zip.swift */; };
+		84D1AB7F19BD4AE000AF78E1 /* FunctionSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB3619BCE21800AF78E1 /* FunctionSpec.swift */; };
+		84D1AB8019BD4AE000AF78E1 /* OperatorsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB3919BCE5A900AF78E1 /* OperatorsSpec.swift */; };
+		84D1AB8119BD4AE000AF78E1 /* FunctionsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB3C19BCE6E600AF78E1 /* FunctionsSpec.swift */; };
+		84D1AB8219BD4AE000AF78E1 /* InfinitySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB3E19BCE7B200AF78E1 /* InfinitySpec.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +80,9 @@
 		84D1AB4819BD024E00AF78E1 /* Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
 		84D1AB4A19BD051100AF78E1 /* Zip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Zip.swift; sourceTree = "<group>"; };
 		84D1AB5019BD0F2300AF78E1 /* List.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
+		84D1AB5819BD4AA800AF78E1 /* Swift_Extras-iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = "Swift_Extras-iOS.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		84D1AB5B19BD4AA800AF78E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		84D1AB5C19BD4AA800AF78E1 /* Swift_Extras-iOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Swift_Extras-iOS.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +100,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		84D1AB5419BD4AA800AF78E1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -83,6 +115,7 @@
 			children = (
 				84755CEB19BCC652002F644D /* Swift-Extras */,
 				84755CF519BCC652002F644D /* Swift-ExtrasTests */,
+				84D1AB5919BD4AA800AF78E1 /* Swift_Extras-iOS */,
 				84755CEA19BCC652002F644D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -92,6 +125,7 @@
 			children = (
 				84755CE919BCC652002F644D /* Swift_Extras.framework */,
 				84755CF419BCC652002F644D /* Swift_ExtrasTests.xctest */,
+				84D1AB5819BD4AA800AF78E1 /* Swift_Extras-iOS.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -166,6 +200,23 @@
 			name = Data.List;
 			sourceTree = "<group>";
 		};
+		84D1AB5919BD4AA800AF78E1 /* Swift_Extras-iOS */ = {
+			isa = PBXGroup;
+			children = (
+				84D1AB5C19BD4AA800AF78E1 /* Swift_Extras-iOS.h */,
+				84D1AB5A19BD4AA800AF78E1 /* Supporting Files */,
+			);
+			path = "Swift_Extras-iOS";
+			sourceTree = "<group>";
+		};
+		84D1AB5A19BD4AA800AF78E1 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				84D1AB5B19BD4AA800AF78E1 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -174,6 +225,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				84755CEF19BCC652002F644D /* Swift-Extras.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		84D1AB5519BD4AA800AF78E1 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				84D1AB5D19BD4AA800AF78E1 /* Swift_Extras-iOS.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,6 +274,24 @@
 			productReference = 84755CF419BCC652002F644D /* Swift_ExtrasTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		84D1AB5719BD4AA800AF78E1 /* Swift_Extras-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 84D1AB6C19BD4AA800AF78E1 /* Build configuration list for PBXNativeTarget "Swift_Extras-iOS" */;
+			buildPhases = (
+				84D1AB5319BD4AA800AF78E1 /* Sources */,
+				84D1AB5419BD4AA800AF78E1 /* Frameworks */,
+				84D1AB5519BD4AA800AF78E1 /* Headers */,
+				84D1AB5619BD4AA800AF78E1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Swift_Extras-iOS";
+			productName = "Swift_Extras-iOS";
+			productReference = 84D1AB5819BD4AA800AF78E1 /* Swift_Extras-iOS.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -228,6 +305,9 @@
 						CreatedOnToolsVersion = 6.0;
 					};
 					84755CF319BCC652002F644D = {
+						CreatedOnToolsVersion = 6.0;
+					};
+					84D1AB5719BD4AA800AF78E1 = {
 						CreatedOnToolsVersion = 6.0;
 					};
 				};
@@ -246,6 +326,7 @@
 			targets = (
 				84755CE819BCC652002F644D /* Swift_Extras */,
 				84755CF319BCC652002F644D /* Swift_ExtrasTests */,
+				84D1AB5719BD4AA800AF78E1 /* Swift_Extras-iOS */,
 			);
 		};
 /* End PBXProject section */
@@ -259,6 +340,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		84755CF219BCC652002F644D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		84D1AB5619BD4AA800AF78E1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -300,6 +388,34 @@
 				84D1AB3819BCE22900AF78E1 /* FunctionSpec.swift in Sources */,
 				84D1AB3F19BCE7B200AF78E1 /* InfinitySpec.swift in Sources */,
 				84D1AB3D19BCE6E600AF78E1 /* FunctionsSpec.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		84D1AB5319BD4AA800AF78E1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				84D1AB6E19BD4AE000AF78E1 /* Category.swift in Sources */,
+				84D1AB6F19BD4AE000AF78E1 /* Functor.swift in Sources */,
+				84D1AB7019BD4AE000AF78E1 /* Applicative.swift in Sources */,
+				84D1AB7119BD4AE000AF78E1 /* Monad.swift in Sources */,
+				84D1AB7219BD4AE000AF78E1 /* Kinds.swift in Sources */,
+				84D1AB7319BD4AE000AF78E1 /* Bounded.swift in Sources */,
+				84D1AB7419BD4AE000AF78E1 /* Function.swift in Sources */,
+				84D1AB7519BD4AE000AF78E1 /* Operators.swift in Sources */,
+				84D1AB7619BD4AE000AF78E1 /* Functions.swift in Sources */,
+				84D1AB7719BD4AE000AF78E1 /* List.swift in Sources */,
+				84D1AB7819BD4AE000AF78E1 /* Folds.swift in Sources */,
+				84D1AB7919BD4AE000AF78E1 /* Scans.swift in Sources */,
+				84D1AB7A19BD4AE000AF78E1 /* Infinity.swift in Sources */,
+				84D1AB7B19BD4AE000AF78E1 /* Lazy.swift in Sources */,
+				84D1AB7C19BD4AE000AF78E1 /* Sublists.swift in Sources */,
+				84D1AB7D19BD4AE000AF78E1 /* Search.swift in Sources */,
+				84D1AB7E19BD4AE000AF78E1 /* Zip.swift in Sources */,
+				84D1AB7F19BD4AE000AF78E1 /* FunctionSpec.swift in Sources */,
+				84D1AB8019BD4AE000AF78E1 /* OperatorsSpec.swift in Sources */,
+				84D1AB8119BD4AE000AF78E1 /* FunctionsSpec.swift in Sources */,
+				84D1AB8219BD4AE000AF78E1 /* InfinitySpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -456,6 +572,49 @@
 			};
 			name = Release;
 		};
+		84D1AB6819BD4AA800AF78E1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Swift_Extras-iOS/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		84D1AB6919BD4AA800AF78E1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Swift_Extras-iOS/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -485,6 +644,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		84D1AB6C19BD4AA800AF78E1 /* Build configuration list for PBXNativeTarget "Swift_Extras-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				84D1AB6819BD4AA800AF78E1 /* Debug */,
+				84D1AB6919BD4AA800AF78E1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
