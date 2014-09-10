@@ -18,23 +18,23 @@ import Foundation
 /// Arrows can be modelled with circuit-esque diagrams, and indeed that can often be a better way to
 /// envision the various arrow operators.
 ///
-/// - <<<		b -> [ f ] -> c -> [ g ] -> d
-/// - >>>		b -> [ f ] -> c -> [ g ] -> d
+/// - <<<       b -> [ f ] -> c -> [ g ] -> d
+/// - >>>       b -> [ f ] -> c -> [ g ] -> d
 ///
-/// - arr		b -> [ f ] -> c
-/// - first		b -> [ f ] -> c
-///				d ----------> d
+/// - arr       b -> [ f ] -> c
+/// - first     b -> [ f ] -> c
+///             d ----------> d
 ///
-/// - second	d ----------> d
-///				b -> [ f ] -> c
+/// - second    d ----------> d
+///             b -> [ f ] -> c
 ///
-/// - ***		b -> [ f ] -> c \
-///								  >---> (c, e)
-///				d -> [ g ] -> e /
+/// - ***       b -> [ f ] -> c \
+///                               >---> (c, e)
+///             d -> [ g ] -> e /
 ///
-///					/- [ f ] -> c \
-/// - &&&		b <					>---> (c, d)
-///					\- [ g ] -> d /
+///                 /- [ f ] -> c \
+/// - &&&       b <                 >---> (c, d)
+///                 \- [ g ] -> d /
 ///
 /// Arrows inherit from Category so we can get Composition For Free™.  Unfortunately, we cannot 
 /// reuse the typealiases from Category, so you must redefine AB and AC as the source and target 
