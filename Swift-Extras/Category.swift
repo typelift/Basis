@@ -8,17 +8,19 @@
 
 import Foundation
 
-//infix operator • {}
-//infix operator <<< {}
-//infix operator >>> {}
-//
-//public protocol Category {
-//	typealias A
-//	typealias B
-//	
-//	typealias CAA : K2<A, A>
-//	typealias CAB : K2<A, B>
-//
-//	func id() -> CAA
-//	func •<B, C, CAT : Category, CATA : Category where CAT : K2<B, C>, CATA : Category, CATA : K2<A, C>>(c : CAT, c2 : CAB) -> CATA
-//}
+public protocol Category {
+	typealias A
+	typealias B
+	typealias C
+
+	typealias CAA = K2<A, A>
+	typealias CAB = K2<A, B>
+	typealias CBC = K2<B, C>
+	typealias CAC = K2<A, C>
+
+	func id() -> CAA
+	func •(c : CBC, c2 : CAB) -> CAC
+	
+	func <<< (CBC, CAB) -> CAC
+	func >>> (CAB, CBC) -> CAC
+}

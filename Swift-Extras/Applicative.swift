@@ -12,11 +12,11 @@ infix operator <*> {}
 infix operator *> {}
 infix operator <* {}
 
-public protocol Applicative : Functor {
-	typealias FAB : K1<A -> B>
-	func pure(A) -> Self
-	
-	func <*>(FAB , Self) -> FB
-	func *>(Self, FB) -> FB
-	func <*(Self, FB) -> Self
-}
+//public protocol Applicative : Functor {
+//	typealias FAB : K1<A -> B>
+//	class func pure(A) -> Self
+//	
+//	func <*>(FAB , Self) -> FB
+//	func *>(Self, FB) -> FB
+//	func <*(Self, FB) -> Self
+//}

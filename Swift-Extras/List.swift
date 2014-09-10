@@ -22,13 +22,13 @@ public func <^<A, B>(x : A, l : Array<B>) -> Array<A> {
 	return l.fmap(const(x))(l)
 }
 
-extension Array : Applicative {
-	typealias FAB = Array<A -> B>
-
-	public func pure(x : A) -> Array<A> {
-		return [x]
-	}
-}
+//extension Array : Applicative {
+//	typealias FAB = Array<A -> B>
+//
+//	public func pure(x : A) -> Array<A> {
+//		return [x]
+//	}
+//}
 
 //public func <*><A, B>(a : Array<A -> B> , l : Array<A>) -> Array<B> {
 //	return

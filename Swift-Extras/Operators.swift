@@ -13,11 +13,18 @@ infix operator <| {
 }
 
 infix operator |> {
-associativity right
+	associativity right
 }
 
 infix operator • {
 	associativity left
+}
+
+infix operator <<< {
+	associativity right
+}
+infix operator >>> {
+	associativity right
 }
 
 

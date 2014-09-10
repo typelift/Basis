@@ -93,4 +93,44 @@ public func undefined<A>() -> A {
 	return error("Undefined")
 }
 
+public func putChar(c : Character) -> IO<()> {
+	return IO.pure(print(c))
+}
+
+public func putStr(s : String) -> IO<()> {
+	return IO.pure(print(s))
+}
+
+public func putStrLn(s : String) -> IO<()> {
+	return IO.pure(println(s))
+}
+
+
+public func print<A : Printable>(x : A) -> IO<()> {
+	return putStrLn(x.description)
+}
+
+//getChar         :: IO Char
+//getChar         =  hGetChar stdin
+//
+//-- | Read a line from the standard input device
+//-- (same as 'hGetLine' 'stdin').
+//
+//getLine         :: IO String
+//getLine         =  hGetLine stdin
+//
+
+public func getContents() -> IO<String> {
+	return IO.pure(NSString(data: NSFileHandle.fileHandleWithStandardInput().availableData, encoding: NSUTF8StringEncoding))
+}
+
+public func interact(f : String -> String) -> IO<()> {
+	return do_ {
+		var s : String = ""
+		s <- getContents()
+		return putStr(f(s))
+	}
+}
+
+
 
