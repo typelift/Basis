@@ -8,6 +8,6 @@
 
 import Foundation
 
-//public protocol Monad : Applicative {
-//	func bind<B, MB : Monad where MB : K1<B>>(f : A -> MB) -> MB
-//}
+public protocol Monad : Applicative {
+	func bind<B, MB : Monad where MB : K1<B>>(f : A -> MB) -> MB
+}

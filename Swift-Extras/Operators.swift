@@ -16,6 +16,7 @@ infix operator |> {
 	associativity right
 }
 
+
 infix operator • {
 	associativity left
 }
@@ -25,6 +26,26 @@ infix operator <<< {
 }
 infix operator >>> {
 	associativity right
+}
+
+
+infix operator <^ {
+	associativity left
+}
+
+infix operator <%> {
+	associativity left
+}
+
+
+infix operator <*> {
+	associativity left
+}
+infix operator *> {
+	associativity left
+}
+infix operator <* {
+	associativity left
 }
 
 

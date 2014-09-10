@@ -8,14 +8,15 @@
 
 import Foundation
 
-infix operator <^ {}
 
 public protocol Functor {
 	typealias A
 	typealias B
 	typealias FB = K1<B>
 	
-	func fmap(A -> B) -> Self -> FB
+	class func fmap(A -> B) -> Self -> FB
+	func <%>(A -> B, Self) -> FB
+
 	func <^(A, FB) -> Self
 }
 

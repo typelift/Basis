@@ -48,30 +48,42 @@ public struct IO<A> {
 
 extension IO : Functor {
 	typealias B = Any
-	public func fmap<B>(f: A -> B) -> IO<A> -> IO<B> {
+	public static func fmap<B>(f: A -> B) -> IO<A> -> IO<B> {
 		return { $0.map(f) }
 	}
 }
 
 public func <^ <A, B>(x : A, io : IO<B>) -> IO<A> {
-	return io.fmap(const(x))(io)
+	return IO.fmap(const(x))(io)
 }
 
 
-//extension IO : Applicative {
-//
-//	public func ap<B>(fn: IO<A -> B>) -> IO<B> {
-//		return IO<B>({ (let rw) in
-//			let f = fn.unsafePerformIO()
-//			let (nw, x) = self.apply(rw: rw)
-//			return (nw, f(x))
-//		})
-//	}
-//}
+extension IO : Applicative {
 
-//public func <*><A, B>(mf: IO<A -> B>, m: IO<A>) -> IO<B> {
-//	return m.ap(mf)
-//}
+	public func ap<B>(fn: IO<A -> B>) -> IO<B> {
+		return IO<B>({ (let rw) in
+			let f = fn.unsafePerformIO()
+			let (nw, x) = self.apply(rw: rw)
+			return (nw, f(x))
+		})
+	}
+}
+
+public func <%><A, B>(f: A -> B, io : IO<A>) -> IO<B> {
+	return IO.fmap(f)(io)
+}
+
+public func <*><A, B>(mf: IO<A -> B>, m: IO<A>) -> IO<B> {
+	return m.ap(mf)
+}
+
+public func *> <A, B>(a : IO<A>, b : IO<B>) -> IO<B> {
+	return const(id) <%> a <*> b
+}
+
+public func <* <A, B>(a : IO<A>, b : IO<B>) -> IO<A> {
+	return const <%> a <*> b
+}
 
 public func >>=<A, B>(x: IO<A>, f: A -> IO<B>) -> IO<B> {
 	return x.bind(f)
