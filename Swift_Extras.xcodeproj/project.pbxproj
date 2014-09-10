@@ -145,8 +145,8 @@
 			isa = PBXGroup;
 			children = (
 				84755CEE19BCC652002F644D /* Swift-Extras.h */,
-				84D1AB3319BCDB8800AF78E1 /* Control */,
 				84755D0219BCC674002F644D /* Kinds.swift */,
+				84D1AB3319BCDB8800AF78E1 /* Control */,
 				84D1AB2F19BCD7F100AF78E1 /* Bounded.swift */,
 				84D1AB2519BCCF1C00AF78E1 /* Function.swift */,
 				84755D0819BCCB0B002F644D /* Operators.swift */,

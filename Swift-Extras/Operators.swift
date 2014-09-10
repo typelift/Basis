@@ -48,6 +48,9 @@ infix operator <* {
 	associativity left
 }
 
+infix operator *** {}
+infix operator &&& {}
+
 
 public func <|<A, B>(f : A -> B, x : A) -> B {
 	return f(x)

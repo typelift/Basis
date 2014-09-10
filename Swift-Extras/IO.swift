@@ -12,9 +12,13 @@ infix operator <- {}
 
 // The IO Monad is a means of representing a computation which, when performed, interacts with
 // the outside world (i.e. performs effects) to arrive at some result of type a.
-public struct IO<A> {
+public class IO<A> : K1<A> {	
 	let apply: (rw: World<RealWorld>) -> (World<RealWorld>, A)
 
+	init(apply: (rw: World<RealWorld>) -> (World<RealWorld>, A)) {
+		self.apply = apply
+	}
+	
 	// The infamous "back door" to the IO Monad.  Forces strict evaluation
 	// of the IO action and returns a result.
 	public func unsafePerformIO() -> A  {
@@ -36,19 +40,14 @@ public struct IO<A> {
 			return (nw, f(a))
 		})
 	}
-	
-	public static func pure(a: A) -> IO<A> {
-		return IO<A>({ (let rw) in
-			return (rw, a)
-		})
-	}
-
 }
 
 
 extension IO : Functor {
+	typealias FA = IO<A>
 	typealias B = Any
-	public static func fmap<B>(f: A -> B) -> IO<A> -> IO<B> {
+	
+	public class func fmap<B>(f: A -> B) -> IO<A> -> IO<B> {
 		return { $0.map(f) }
 	}
 }
@@ -59,7 +58,12 @@ public func <^ <A, B>(x : A, io : IO<B>) -> IO<A> {
 
 
 extension IO : Applicative {
-
+	public class func pure(a: A) -> IO<A> {
+		return IO<A>({ (let rw) in
+			return (rw, a)
+		})
+	}
+	
 	public func ap<B>(fn: IO<A -> B>) -> IO<B> {
 		return IO<B>({ (let rw) in
 			let f = fn.unsafePerformIO()
