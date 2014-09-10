@@ -29,7 +29,7 @@ public func lookup<A : Equatable, B>(e : A)(d : [A:B]) -> Optional<B> {
 }
 
 public func lookup<A : Equatable, B>(e : A)(d : [(A, B)]) -> Optional<B> {
-	switch destructure(d) {
+	switch d.destruct() {
 		case .Empty():
 			return .None
 		case .Destructure(let (x, y), let xys):

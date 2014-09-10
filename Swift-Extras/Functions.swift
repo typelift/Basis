@@ -33,8 +33,14 @@ public func maybe<A, B>(def : B)(f : A -> B)(m : Optional<A>) -> B {
 	}
 }
 
-//public func either<A, B, C>(left : A -> C)(right : B -> C)(e : Either<A, B>) -> C {
-//}
+public func either<A, B, C>(left : A -> C)(right : B -> C)(e : Either<A, B>) -> C {
+	switch e.destruct() {
+		case .Left(let x):
+			return left(x.unBox())
+		case .Right(let y):
+			return right(y.unBox())
+	}
+}
 
 public func flip<A, B, C>(f : A -> B -> C) -> B -> A -> C {
 	return { (let b) in

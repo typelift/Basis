@@ -8,6 +8,40 @@
 
 import Foundation
 
+infix operator ++ { associativity left }
+
+func ++<T>(var lhs : [T], rhs : [T]) -> [T] {
+	lhs += rhs
+	return lhs
+}
+
+infix operator +> { associativity left }
+
+func +><T>(lhs : T, rhs : [T]) -> [T] {
+	var arr = rhs
+	arr.insert(lhs, atIndex: 0)
+	return arr
+}
+
+
+public enum ArrayD<A> {
+	case Empty()
+	case Destructure(A, [A])
+}
+
+extension Array {
+	public func destruct() -> ArrayD<T> {
+		if self.count == 0 {
+			return .Empty()
+		} else if self.count == 1 {
+			return .Destructure(self[0], [])
+		}
+		let hd = self[0]
+		let tl = Array<A>(self[1..<self.count])
+		return .Destructure(hd, tl)
+	}
+}
+
 extension Array : Functor {
 	typealias A = T
 	typealias B = Any
@@ -41,3 +75,25 @@ public func <^<A, B>(x : A, l : Array<B>) -> Array<A> {
 //public func <*<A, B>(Array<A>, Array<B>) -> Array<A> {
 //	return const <$> a <*> b
 //}
+
+
+internal enum DDestructure<A, B> {
+	case Empty()
+	case Destructure((A, B), [(A, B)])
+}
+
+internal func destructure<A, B>(x : [A:B]) -> DDestructure<A, B> {
+	if x.count == 0 {
+		return .Empty()
+	} else if x.count == 1 {
+		var g = x.generate()
+		return .Destructure(g.next()!, [])
+	}
+	var g = x.generate()
+	let hd = g.next()!
+	var arr : [(A, B)] = []
+	while let v = g.next() {
+		arr = v +> arr
+	}
+	return .Destructure(hd, arr)
+}

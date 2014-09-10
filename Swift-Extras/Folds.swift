@@ -53,7 +53,7 @@ public func foldr<A, B>(k: (A, B) -> B)(z: B)(lst: [A]) -> B {
 }
 
 public func foldr1<A>(f: A -> A -> A)(lst: [A]) -> A {
-	switch destructure(lst) {
+	switch lst.destruct() {
 		case .Destructure(let x, let xs) where xs.count == 0:
 			return x
 		case .Destructure(let x, let xs):
@@ -64,7 +64,7 @@ public func foldr1<A>(f: A -> A -> A)(lst: [A]) -> A {
 }
 
 public func foldr1<A>(f: (A, A) -> A)(lst: [A]) -> A {
-	switch destructure(lst) {
+	switch lst.destruct() {
 		case .Destructure(let x, let xs) where xs.count == 0:
 			return x
 		case .Destructure(let x, let xs):
@@ -110,56 +110,4 @@ public func minimum<A : Comparable>(lst : [A]) -> A {
 	return foldl1(min)(xs0: lst)
 }
 
-infix operator ++ { associativity left }
-
-func ++<T>(var lhs : [T], rhs : [T]) -> [T] {
-	lhs += rhs
-	return lhs
-}
-
-infix operator +> { associativity left }
-
-func +><T>(lhs : T, rhs : [T]) -> [T] {
-	var arr = rhs
-	arr.insert(lhs, atIndex: 0)
-	return arr
-}
-
-
-internal enum Destructure<A> {
-	case Empty()
-	case Destructure(A, [A])
-}
-
-internal enum DDestructure<A, B> {
-	case Empty()
-	case Destructure((A, B), [(A, B)])
-}
-
-internal func destructure<A>(x : [A]) -> Destructure<A> {
-	if x.count == 0 {
-		return .Empty()
-	} else if x.count == 1 {
-		return .Destructure(x[0], [])
-	}
-	let hd = x[0]
-	let tl = Array<A>(x[1..<x.count])
-	return .Destructure(hd, tl)
-}
-
-internal func destructure<A, B>(x : [A:B]) -> DDestructure<A, B> {
-	if x.count == 0 {
-		return .Empty()
-	} else if x.count == 1 {
-		var g = x.generate()
-		return .Destructure(g.next()!, [])
-	}
-	var g = x.generate()
-	let hd = g.next()!
-	var arr : [(A, B)] = []
-	while let v = g.next() {
-		arr = v +> arr
-	}
-	return .Destructure(hd, arr)
-}
 
