@@ -11,7 +11,7 @@ import Foundation
 public final class Box<A> : K1<A> {
 	public let unBox : () -> A
 	
-	init(_ x : A) {
+	public init(_ x : A) {
 		unBox = { x }
 	}
 }
