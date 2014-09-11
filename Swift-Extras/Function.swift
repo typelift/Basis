@@ -93,5 +93,5 @@ public func *** <B, C, D, E>(f : Function1<B, C>, g : Function1<D, E>) -> Functi
 public func &&& <B, C, D>(f : Function1<B, C>, g : Function1<B, D>) -> Function1<B, (C, D)> {
 	return Function1.arr({ (let b) in
 		return (b, b)
-	}) >>> (f *** g)
+	}) >>> f *** g
 }

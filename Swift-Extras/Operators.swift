@@ -79,21 +79,45 @@ infix operator <%> {
 
 /// MARK: Control.Applicative
 
+/// Ap | Promotes function application.
 infix operator <*> {
 	precedence 4
 	associativity left
 }
 
+
+/// Sequence Right | Disregards the Functor on the Left.
+///
+/// Default definition: 
+///		`const(id) <%> a <*> b`
 infix operator *> {
 	precedence 4
 	associativity left
 }
 
+/// Sequence Left | Disregards the Functor on the Right.
+///
+/// Default definition: 
+///		`const <%> a <*> b`
 infix operator <* {
 	precedence 4
 	associativity left
 }
 
-infix operator *** {}
-infix operator &&& {}
+/// MARK: Control.Arrow
+
+/// Split | Splits two computations and combines the result into one Arrow yielding a tuple of
+/// the result of each side.
+infix operator *** {
+	precedence 3
+	associativity right
+}
+
+/// Fanout | Given two functions with the same source but different targets, this function
+/// splits the computation and combines the result of each Arrow into a tuple of the result of
+/// each side.
+infix operator &&& {
+	precedence 3
+	associativity right
+}
 
