@@ -80,6 +80,23 @@ public func <*<A, B>(a : Array<A>, b : Array<B>) -> Array<A> {
 	return const <%> a <*> b
 }
 
+extension Array : Monad {
+	typealias MB = Array<B>
+	
+	public func bind<B>(f : A -> Array<B>) -> Array<B> {
+		return concatMap(f)(l: self)
+	}
+}
+
+public func >>=<A, B>(xs : [A], f : A -> [B]) -> [B] {
+	return concatMap(f)(l: xs)
+}
+
+public func >><A, B>(x : [A], y : [B]) -> [B] {
+	return x >>= { (_) in
+		return y
+	}
+}
 
 internal enum DDestructure<A, B> {
 	case Empty()
