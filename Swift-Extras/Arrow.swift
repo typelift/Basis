@@ -65,6 +65,7 @@ public protocol Arrow : Category {
 	
 	/// Some arrow from our target to some other arbitrary target.  Used in fanout().
 	typealias ABD = K2<AB, D>
+	
 	/// Type of the result of &&&.
 	typealias FANOUT = K2<B, (AC, D)>
 	
@@ -95,4 +96,35 @@ public protocol Arrow : Category {
 
 public protocol ArrowZero : Arrow {
 	class func zeroArrow() -> ABC
+}
+
+public protocol ArrowPlus : Arrow {
+	func <+>(ABC, ABC) -> ABC
+}
+
+public protocol ArrowChoice : Arrow {
+	typealias LEFT = K2<Either<AB, D>, Either<AC, D>>
+	typealias RIGHT = K2<Either<D, AB>, Either<D, AC>>
+
+	typealias SPLAT = K2<Either<AB, D>, Either<AC, E>>
+
+	typealias ACD = K2<AC, D>
+	typealias FANIN = K2<Either<AB, AC>, D>
+
+	func left(ABC) -> LEFT
+	func right(ABC) -> RIGHT
+
+	func +++(ABC, ADE) -> SPLAT
+	func |||(ABD, ACD) -> FANIN
+}
+
+public protocol ArrowApply : Arrow {
+	typealias APP = K2<(ABC, AB), AC>
+	func app() -> APP
+}
+
+public protocol ArrowLoop : Arrow {
+	typealias LOOP = K2<(AB, D), (AC, D)>
+	
+	func loop(LOOP) -> ABC
 }

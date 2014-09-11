@@ -43,6 +43,10 @@ extension IO : Functor {
 	}
 }
 
+public func <%><A, B>(f: A -> B, io : IO<A>) -> IO<B> {
+	return IO.fmap(f)(io)
+}
+
 public func <^ <A, B>(x : A, io : IO<B>) -> IO<A> {
 	return IO.fmap(const(x))(io)
 }
@@ -73,10 +77,6 @@ extension IO : Monad {
 			return f(a).apply(rw: nw)
 		})
 	}
-}
-
-public func <%><A, B>(f: A -> B, io : IO<A>) -> IO<B> {
-	return IO.fmap(f)(io)
 }
 
 public func <*><A, B>(mf: IO<A -> B>, m: IO<A>) -> IO<B> {

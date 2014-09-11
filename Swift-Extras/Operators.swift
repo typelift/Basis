@@ -42,6 +42,11 @@ infix operator <| {
 	associativity right
 }
 
+infix operator |*| {
+	precedence 0
+	associativity left
+}
+
 /// MARK: Control.Category
 
 /// Right-to-Left Composition | Composes two categories to form a new category with the source of
@@ -121,3 +126,17 @@ infix operator &&& {
 	associativity right
 }
 
+infix operator +++ {
+	precedence 2
+	associativity right
+}
+
+infix operator ||| {
+	precedence 2
+	associativity right
+}
+
+infix operator <+> {
+	precedence 5
+	associativity right
+}

@@ -98,6 +98,16 @@ public func >><A, B>(x : [A], y : [B]) -> [B] {
 	}
 }
 
+extension Array : MonadPlus {
+	public func mzero() -> Array<T> {
+		return []
+	}
+	
+	public func mplus(l : Array<T>) -> Array<T> -> Array<T> {
+		return { l ++ $0 }
+	}
+}
+
 internal enum DDestructure<A, B> {
 	case Empty()
 	case Destructure((A, B), [(A, B)])

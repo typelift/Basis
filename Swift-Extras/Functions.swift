@@ -12,11 +12,6 @@ public func id<A>(x : A) -> A {
 	return x
 }
 
-public func not(x : Bool) -> Bool {
-	return !x
-}
-
-
 public func <|<A, B>(f : A -> B, x : A) -> B {
 	return f(x)
 }
@@ -30,21 +25,28 @@ public func •<A, B, C>(f : B -> C, g : A -> B) -> A -> C {
 }
 
 
+public func fix<A>(f : A -> A) -> A {
+	return f(fix(f))
+}
+
+public func |*|<A, B, C>(o : B -> B -> C, f : A -> B) -> A -> A -> C {
+	return on(o)(f)
+}
+
+public func on<A, B, C>(o : B -> B -> C)(f : A -> B) -> A -> A -> C {
+	return { (let x) in
+		return {(let y) in 
+			return o(f(x))(f(y))
+		}
+	}
+}
+
 public func maybe<A, B>(def : B)(f : A -> B)(m : Optional<A>) -> B {
 	switch m {
 		case .None:
 			return def
 		case .Some(let x):
 			return f(x)
-	}
-}
-
-public func either<A, B, C>(left : A -> C)(right : B -> C)(e : Either<A, B>) -> C {
-	switch e.destruct() {
-		case .Left(let x):
-			return left(x.unBox())
-		case .Right(let y):
-			return right(y.unBox())
 	}
 }
 
@@ -68,9 +70,6 @@ public func const<A, B>(x : A) -> B -> A {
 	}
 }
 
-public func error<A>(x : StaticString) -> A {
-	assert(false, x)
-}
 
 public func until<A>(p : A -> Bool)(f : A -> A)(x : A) -> A {
 	if p(x) {
@@ -83,9 +82,6 @@ public func asTypeOf<A>(x : A) -> A -> A {
 	return const(x)
 }
 
-public func undefined<A>() -> A {
-	return error("Undefined")
-}
 
 public func putChar(c : Character) -> IO<()> {
 	return IO.pure(print(c))

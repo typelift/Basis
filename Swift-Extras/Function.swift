@@ -105,3 +105,50 @@ public final class Function2<T, U, C> : K3<T, U, C> {
 		return self.ap(x, y)
 	}
 }
+
+extension Function1 : ArrowChoice {
+	typealias LEFT = Function1<Either<AB, D>, Either<AC, D>>
+	typealias RIGHT = Function1<Either<D, AB>, Either<D, AC>>
+	
+	typealias SPLAT = Function1<Either<AB, D>, Either<AC, E>>
+	
+	typealias ACD = Function1<AC, D>
+	typealias FANIN = Function1<Either<AB, AC>, D>
+	
+	public func left(f : Function1<AB, AC>) -> Function1<Either<AB, D>, Either<AC, D>> {
+		return f +++ id()
+	}
+	
+	public func right(f : Function1<AB, AC>) -> Function1<Either<D, AB>, Either<D, AC>> {
+		return id() +++ f
+	}
+	
+}
+
+public func +++<B, C, D, E>(f : Function1<B, C>, g : Function1<D, E>) -> Function1<Either<B, D>, Either<C, E>> {
+	return Function1({ Either.left(f.apply($0)) }) ||| Function1({ Either.right(g.apply($0)) })
+}
+
+public func |||<B, C, D>(f : Function1<B, D>, g : Function1<C, D>) -> Function1<Either<B, C>, D> {
+	return Function1.arr(either(f.apply)(g.apply))
+}
+
+extension Function1 : ArrowApply {
+	typealias APP = Function1<(ABC, AB), AC>
+	
+	public func app() -> Function1<(Function1<T, U>, AB), AC> {
+		return Function1<(Function1<T, U>, AB), AC>({ (let t : (Function1<T, U>, AB)) -> AC in
+			return t.0.apply(t.1)
+		})
+	}
+}
+
+//extension Function1 : ArrowLoop {
+//	typealias LOOP = Function1<(AB, D), (AC, D)>
+//	
+//	public func loop(f : Function1<(AB, D), (AC, D)>) -> Function1<T, U> {
+//		
+//	}
+//}
+
+

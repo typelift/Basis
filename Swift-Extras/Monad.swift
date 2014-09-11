@@ -44,3 +44,8 @@ public protocol Monad : Applicative {
 	/// at all.  You may have seen it notated >>=
 	func bind(f : A -> MB) -> MB
 }
+
+public protocol MonadPlus : Monad {
+	func mzero() -> FA
+	func mplus(FA) -> FA -> FA
+}

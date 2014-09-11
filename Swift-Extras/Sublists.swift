@@ -81,5 +81,5 @@ public func span<A>(p : A -> Bool)(l : [A]) -> ([A], [A]) {
 }
 
 public func extreme<A>(p : A -> Bool)(l : [A]) -> ([A], [A]) {
-	return span({ (not • p)($0) })(l: l)
+	return span({ ((!) • p)($0) })(l: l)
 }
