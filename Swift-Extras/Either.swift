@@ -8,20 +8,17 @@
 
 import Foundation
 
-public enum EitherD<A, B> {
-	case Left(Box<A>)
-	case Right(Box<B>)
-}
-
-public class Either<A, B> : K2<A, B> {
+/// Either represents a computation that either produces a result (left) or fails with an error
+/// (right).
+public final class Either<A, B> : K2<A, B> {
 	let lVal : A?
 	let rVal : B?
 	
-	public init(left : A) {
+	init(left : A) {
 		self.lVal = left
 	}
 	
-	public init(right : B) {
+	init(right : B) {
 		self.rVal = right
 	}
 
@@ -40,3 +37,9 @@ public class Either<A, B> : K2<A, B> {
 		return .Right(Box(rVal!))
 	}
 }
+
+public enum EitherD<A, B> {
+	case Left(Box<A>)
+	case Right(Box<B>)
+}
+

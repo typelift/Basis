@@ -11,7 +11,7 @@ import Foundation
 // The strict state-transformer monad.  ST<S, A> represents
 // a computation returning a value of type A using some internal
 // context of type S.
-public class ST<S, A> : K2<S, A> {
+public final class ST<S, A> : K2<S, A> {
 	typealias B = Any
 	
 	internal var apply:(s: World<RealWorld>) -> (World<RealWorld>, A)
@@ -26,20 +26,11 @@ public class ST<S, A> : K2<S, A> {
 		return x
 	}
 	
-	// Leave this here.  Swiftc doesn't like producing an Applicative
-	// or Monad extension for this quite yet.
-	public class func pure<S, A>(a: A) -> ST<S, A> {
-		return ST<S, A>(apply: { (let s) in
-			return (s, a)
+	public func ap<B>(stfn: ST<S, A -> B>) -> ST<S, B> {
+		return ST<S, B>(apply: { (let s) in
+			let (nw, f) = stfn.apply(s: s)
+			return (nw, f(self.runST()))
 		})
-	}
-	
-	public func ap<B>(fn: ST<S, A -> B>) -> ST<S, B> {
-		return self <*> fn
-	}
-	
-	public func bind<B>(f: A -> ST<S, B>) -> ST<S, B> {
-		return f(runST())
 	}
 }
 
@@ -54,13 +45,6 @@ extension ST : Functor {
 	}
 }
 
-public func <*><S, A, B>(st: ST<S, A>, stfn: ST<S, A -> B>) -> ST<S, B> {
-	return ST<S, B>(apply: { (let s) in
-		let (nw, f) = stfn.apply(s: s)
-		return (nw, f(st.runST()))
-	})
-}
-
 public func <%><S, A, B>(f: A -> B, st: ST<S, A>) -> ST<S, B> {
 	return ST.fmap(f)(st)
 }
@@ -68,6 +52,37 @@ public func <%><S, A, B>(f: A -> B, st: ST<S, A>) -> ST<S, B> {
 public func <^<S, A, B>(x : A, l : ST<S, B>) -> ST<S, A> {
 	return ST.fmap(const(x))(l)
 }
+
+extension ST : Applicative {
+	typealias FAB = ST<S, A -> B>
+
+	public class func pure<S, A>(a: A) -> ST<S, A> {
+		return ST<S, A>(apply: { (let s) in
+			return (s, a)
+		})
+	}
+}
+
+public func <*><S, A, B>(stfn: ST<S, A -> B>, st: ST<S, A>) -> ST<S, B> {
+	return st.ap(stfn)
+}
+
+public func *><S, A, B>(a : ST<S, A>, b : ST<S, B>) -> ST<S, B> {
+	return const(id) <%> a <*> b
+}
+
+public func <*<S, A, B>(a : ST<S, A>, b : ST<S, B>) -> ST<S, A> {
+	return const <%> a <*> b
+}
+
+extension ST : Monad {
+	typealias MB = ST<S, B>
+	
+	public func bind<B>(f: A -> ST<S, B>) -> ST<S, B> {
+		return f(runST())
+	}
+}
+
 
 public func >>=<S, A, B>(x : ST<S, A>, f : A -> ST<S, B>) -> ST<S, B> {
 	return x.bind(f)

@@ -36,7 +36,7 @@ import Foundation
 public protocol Monad : Applicative {
 	typealias MB = K1<B>
 	
-	/// Bind is a function obtained by embedding an object in a Kleisli Category.  It allows one to
+	/// Bind is a function obtained by embedding a monad in a Kleisli Category.  It allows one to
 	/// define a function that "shifts" the contents of the monad by some function, but still stay
 	/// inside the monad.
 	///

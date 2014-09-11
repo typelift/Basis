@@ -12,7 +12,7 @@ infix operator <- {}
 
 // The IO Monad is a means of representing a computation which, when performed, interacts with
 // the outside world (i.e. performs effects) to arrive at some result of type a.
-public class IO<A> : K1<A> {	
+public final class IO<A> : K1<A> {	
 	let apply: (rw: World<RealWorld>) -> (World<RealWorld>, A)
 
 	init(apply: (rw: World<RealWorld>) -> (World<RealWorld>, A)) {
@@ -23,15 +23,6 @@ public class IO<A> : K1<A> {
 	// of the IO action and returns a result.
 	public func unsafePerformIO() -> A  {
 		return self.apply(rw: realWorld).1
-	}
-
-	// Leave this here for now.  Swiftc does not like emitting a Monad
-	// extension for this.
-	public func bind<B>(f: A -> IO<B>) -> IO<B> {
-		return IO<B>({ (let rw) in
-			let (nw, a) = self.apply(rw: rw)
-			return f(a).apply(rw: nw)
-		})
 	}
 
 	public func map<B>(f: A -> B) -> IO<B> {
@@ -69,6 +60,17 @@ extension IO : Applicative {
 			let f = fn.unsafePerformIO()
 			let (nw, x) = self.apply(rw: rw)
 			return (nw, f(x))
+		})
+	}
+}
+
+extension IO : Monad {
+	typealias MB = IO<B>
+
+	public func bind<B>(f: A -> IO<B>) -> IO<B> {
+		return IO<B>({ (let rw) in
+			let (nw, a) = self.apply(rw: rw)
+			return f(a).apply(rw: nw)
 		})
 	}
 }

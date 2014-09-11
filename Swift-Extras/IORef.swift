@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class IORef<A> : K1<A> {
+public final class IORef<A> : K1<A> {
 	var value : STRef<RealWorld, A>
 	
 	init(_ v : STRef<RealWorld, A>) {

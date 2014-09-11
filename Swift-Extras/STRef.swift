@@ -9,7 +9,7 @@
 import Foundation
 
 // Strict mutable references.
-public class STRef<S, A> : K2<S, A> {
+public final class STRef<S, A> : K2<S, A> {
 	private var value: A
 	
 	init(_ val: A) {
