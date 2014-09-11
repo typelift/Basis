@@ -8,58 +8,92 @@
 
 import Foundation
 
-infix operator <| {
-	associativity right
-}
+/// MARK: Data.Functions
 
-infix operator |> {
-	associativity right
-}
-
-
+/// Function Composition | Composes the target of the left function with the source of the second
+/// function to pipe the results through one larger function from left source to right target.
+///
+/// g . f x = g(f(x))
 infix operator • {
-	associativity left
+	precedence 9
+	associativity right
 }
 
+/// Pipe Forward | Applies the function to its left to an argument on its right.
+///
+/// Chains of regular function applications are often made unnecessarily verbose and tedius by
+/// large amounts of parenthesis.  Because this operator has a low precedence and is right-
+/// associative, it can often be used to elide parenthesis such that the following holds:
+///
+///		f |> g |> h x  =  f (g (h x))
+///
+/// Haskellers will know this as the ($) combinator.
+infix operator |> {
+	precedence 0
+	associativity right
+}
+
+/// Pipe Backward | Applies the argument on its left to a function on its right.
+///
+/// Sometimes, a computation looks more natural when data is computer first on the right side of
+/// an expression and applied to a function on the left.
+infix operator <| {
+	precedence 0
+	associativity right
+}
+
+/// MARK: Control.Category
+
+/// Right-to-Left Composition | Composes two categories to form a new category with the source of
+/// the second category and the target of the first category.
+///
+/// This function is literally `•`, but for Categories.
 infix operator <<< {
+	precedence 1
 	associativity right
 }
+
+/// Left-to-Right Composition | Composes two categories to form a new category with the source of
+/// the first category and the target of the second category.
+///
+/// Function composition with the arguments flipped.
 infix operator >>> {
+	precedence 1
 	associativity right
 }
 
+/// MARK: Data.Functor
 
+/// "Replace" | Maps all the values "inside" one functor to a user-specified constant.
 infix operator <^ {
+	precedence 4
 	associativity left
 }
 
+/// Fmap | Like fmap, but infix for your convenience.
 infix operator <%> {
+	precedence 4
 	associativity left
 }
 
+
+/// MARK: Control.Applicative
 
 infix operator <*> {
+	precedence 4
 	associativity left
 }
+
 infix operator *> {
+	precedence 4
 	associativity left
 }
+
 infix operator <* {
+	precedence 4
 	associativity left
 }
 
 infix operator *** {}
 infix operator &&& {}
 
-
-public func <|<A, B>(f : A -> B, x : A) -> B {
-	return f(x)
-}
-
-public func |><A, B>(x : A, f : A -> B) -> B {
-	return f(x)
-}
-
-public func •<A, B, C>(f : B -> C, g : A -> B) -> A -> C {
-	return { f(g($0)) }
-}

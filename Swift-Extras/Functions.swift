@@ -16,13 +16,19 @@ public func not(x : Bool) -> Bool {
 	return !x
 }
 
-public func fst<A, B>(t : (A, B)) -> A {
-	return t.0
+
+public func <|<A, B>(f : A -> B, x : A) -> B {
+	return f(x)
 }
 
-public func snd<A, B>(t : (A, B)) -> B {
-	return t.1
+public func |><A, B>(x : A, f : A -> B) -> B {
+	return f(x)
 }
+
+public func •<A, B, C>(f : B -> C, g : A -> B) -> A -> C {
+	return { f(g($0)) }
+}
+
 
 public func maybe<A, B>(def : B)(f : A -> B)(m : Optional<A>) -> B {
 	switch m {
@@ -64,24 +70,6 @@ public func const<A, B>(x : A) -> B -> A {
 
 public func error<A>(x : StaticString) -> A {
 	assert(false, x)
-}
-
-public func uncurry<A, B, C>(f : A -> B -> C) -> (A, B) -> C {
-	return { (let t) in
-		return f(t.0)(t.1)
-	}
-}
-
-public func curry<A, B, C>(f : (A, B) -> C) ->  A -> B -> C {
-	return { (let a) in
-		return { (let b) in
-			return f((a, b))
-		}
-	}
-}
-
-public func swap<A, B>(t : (A, B)) -> (B, A) {
-	return (t.1, t.0)
 }
 
 public func until<A>(p : A -> Bool)(f : A -> A)(x : A) -> A {

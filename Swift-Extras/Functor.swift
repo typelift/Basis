@@ -40,8 +40,8 @@ public protocol Functor {
 	class func fmap(A -> B) -> FA -> FB
 	func <%>(A -> B, FA) -> FB
 
-	/// Constant Replace | Replaces all values in the Target Category with a singular constant value
-	/// from the source Category.
+	/// Constant Replace | Replaces all values in the target Functor with a singular constant value
+	/// from the source Functor.
 	func <^(A, FB) -> FA
 }
 
@@ -49,4 +49,3 @@ public protocol Functor {
 public func defaultReplace<A, B, FA : Functor, FB : Functor>(fmap : (A -> B) -> FA -> FB)(x : B)(f : FA) -> FB {
 	return (fmap • const)(x)(f)
 }
-
