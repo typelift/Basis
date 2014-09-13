@@ -10,11 +10,11 @@ import Foundation
 
 public func zip<A, B>(l : [A])(l2 : [B]) -> [(A, B)] {
 	switch l.destruct() {
-		case .Empty():
+		case .Empty:
 			return []
 		case .Destructure(let a, let as_):
 			switch l2.destruct() {
-				case .Empty():
+				case .Empty:
 					return []
 				case .Destructure(let b, let bs):
 					return (a, b) +> zip(as_)(l2: bs)
@@ -24,15 +24,15 @@ public func zip<A, B>(l : [A])(l2 : [B]) -> [(A, B)] {
 
 public func zip3<A, B, C>(l : [A])(l2 : [B])(l3 : [C]) -> [(A, B, C)] {
 	switch l.destruct() {
-		case .Empty():
+		case .Empty:
 			return []
 		case .Destructure(let a, let as_):
 			switch l2.destruct() {
-				case .Empty():
+				case .Empty:
 					return []
 				case .Destructure(let b, let bs):
 					switch l3.destruct() {
-					case .Empty():
+					case .Empty:
 						return []
 					case .Destructure(let c, let cs):
 						return (a, b, c) +> zip3(as_)(l2: bs)(l3: cs)
@@ -43,11 +43,11 @@ public func zip3<A, B, C>(l : [A])(l2 : [B])(l3 : [C]) -> [(A, B, C)] {
 
 public func zipWith<A, B, C>(f : A -> B -> C)(l : [A])(l2 : [B]) -> [C] {
 	switch l.destruct() {
-	case .Empty():
+	case .Empty:
 		return []
 	case .Destructure(let a, let as_):
 		switch l2.destruct() {
-			case .Empty():
+			case .Empty:
 				return []
 			case .Destructure(let b, let bs):
 				return f(a)(b) +> zipWith(f)(l: as_)(l2: bs)
@@ -57,11 +57,11 @@ public func zipWith<A, B, C>(f : A -> B -> C)(l : [A])(l2 : [B]) -> [C] {
 
 public func zipWith<A, B, C>(f : (A, B) -> C)(l : [A])(l2 : [B]) -> [C] {
 	switch l.destruct() {
-		case .Empty():
+		case .Empty:
 			return []
 		case .Destructure(let a, let as_):
 			switch l2.destruct() {
-				case .Empty():
+				case .Empty:
 					return []
 				case .Destructure(let b, let bs):
 					return f(a, b) +> zipWith(f)(l: as_)(l2: bs)

@@ -69,8 +69,6 @@ extension IO : Applicative {
 }
 
 extension IO : Monad {
-	typealias MB = IO<B>
-
 	public func bind<B>(f: A -> IO<B>) -> IO<B> {
 		return IO<B>({ (let rw) in
 			let (nw, a) = self.apply(rw: rw)
@@ -105,8 +103,12 @@ public func <-<A>(inout lhs: A, rhs: IO<A>) {
 	lhs = rhs.unsafePerformIO()
 }
 
-public func join<A>(rs: IO<IO<A>>) -> IO<A> {
-	return rs.unsafePerformIO()
+public func <-<A>(inout lhs: A!, rhs: IO<A>) {
+	lhs = rhs.unsafePerformIO()
+}
+
+public func do_<A>(fn: () -> A) -> IO<A> {
+	return IO.pure(fn())
 }
 
 public func do_<A>(fn: () -> IO<A>) -> IO<A> {

@@ -14,7 +14,7 @@ public func take<A>(n : Int)(l : [A]) -> [A] {
 	}
 	
 	switch l.destruct() {
-		case .Empty():
+		case .Empty:
 			return []
 		case .Destructure(let x, let xs):
 			return x +> take(n - 1)(l: xs)
@@ -24,7 +24,7 @@ public func take<A>(n : Int)(l : [A]) -> [A] {
 public func drop<A>(n : Int)(l : [A]) -> [A] {
 	if n <= 0 {
 		switch l.destruct() {
-			case .Empty():
+			case .Empty:
 				return []
 			case .Destructure(let x, let xs):
 				return xs
@@ -32,7 +32,7 @@ public func drop<A>(n : Int)(l : [A]) -> [A] {
 	}
 	
 	switch l.destruct() {
-		case .Empty():
+		case .Empty:
 			return []
 		case .Destructure(let x, let xs):
 			return drop(n - 1)(l: xs)
@@ -45,7 +45,7 @@ public func splitAt<A>(n : Int)(l : [A]) -> ([A], [A]) {
 
 public func takeWhile<A>(p : A -> Bool)(l : [A]) -> [A] {
 	switch l.destruct() {
-		case .Empty():
+		case .Empty:
 			return []
 		case .Destructure(let x, let xs):
 			if p(x) {
@@ -57,7 +57,7 @@ public func takeWhile<A>(p : A -> Bool)(l : [A]) -> [A] {
 
 public func dropWhile<A>(p : A -> Bool)(l : [A]) -> [A] {
 	switch l.destruct() {
-		case .Empty():
+		case .Empty:
 			return []
 		case .Destructure(let x, let xs):
 			if p(x) {
@@ -69,7 +69,7 @@ public func dropWhile<A>(p : A -> Bool)(l : [A]) -> [A] {
 
 public func span<A>(p : A -> Bool)(l : [A]) -> ([A], [A]) {
 	switch l.destruct() {
-		case .Empty():
+		case .Empty:
 			return ([], [])
 		case .Destructure(let x, let xs):
 			if p(x) {

@@ -58,7 +58,7 @@ public func foldr1<A>(f: A -> A -> A)(lst: [A]) -> A {
 			return x
 		case .Destructure(let x, let xs):
 			return f(x)(foldr1(f)(lst: xs))
-		case .Empty():
+		case .Empty:
 			assert(false, "Cannot invoke foldr1 with an empty list.")
 	}
 }
@@ -69,7 +69,7 @@ public func foldr1<A>(f: (A, A) -> A)(lst: [A]) -> A {
 			return x
 		case .Destructure(let x, let xs):
 			return f(x, foldr1(f)(lst: xs))
-		case .Empty():
+		case .Empty:
 			assert(false, "Cannot invoke foldr1 with an empty list.")
 	}
 }

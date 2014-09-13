@@ -33,19 +33,20 @@ import Foundation
 ///
 /// When a chain of monads is built up (M<M<M<...A...>>>), computation is performed by removing an
 /// outer M<...>.
-public protocol Monad : Applicative {
-	typealias MB = K1<B>
-	
+public protocol Monad : Applicative {	
 	/// Bind is a function obtained by embedding a monad in a Kleisli Category.  It allows one to
 	/// define a function that "shifts" the contents of the monad by some function, but still stay
 	/// inside the monad.
 	///
 	/// Bind is famous because it allows one to build arbitrary pipes of computations with no effort
 	/// at all.  You may have seen it notated >>=
-	func bind(f : A -> MB) -> MB
+	func bind(f : A -> FB) -> FB
+	
+	func >>=(x : FA, f : A -> FB) -> FB
 }
 
 public protocol MonadPlus : Monad {
 	func mzero() -> FA
 	func mplus(FA) -> FA -> FA
 }
+

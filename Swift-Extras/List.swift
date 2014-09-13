@@ -25,14 +25,14 @@ func +><T>(lhs : T, rhs : [T]) -> [T] {
 
 
 public enum ArrayD<A> {
-	case Empty()
+	case Empty
 	case Destructure(A, [A])
 }
 
 extension Array {
 	public func destruct() -> ArrayD<T> {
 		if self.count == 0 {
-			return .Empty()
+			return .Empty
 		} else if self.count == 1 {
 			return .Destructure(self[0], [])
 		}
@@ -80,9 +80,7 @@ public func <*<A, B>(a : Array<A>, b : Array<B>) -> Array<A> {
 	return const <%> a <*> b
 }
 
-extension Array : Monad {
-	typealias MB = Array<B>
-	
+extension Array : Monad {	
 	public func bind<B>(f : A -> Array<B>) -> Array<B> {
 		return concatMap(f)(l: self)
 	}
@@ -108,14 +106,34 @@ extension Array : MonadPlus {
 	}
 }
 
+extension Array : MonadZip {
+	typealias C = Any
+	typealias FC = Array<C>
+	
+	typealias FTAB = Array<(A, B)>
+	
+	public func mzip<B>(ma : Array<A>) -> Array<B> -> Array<(A, B)> {
+		return zip(ma)
+	}
+	
+	public func mzipWith<B, C>(f : A -> B -> C) -> Array<A> -> Array<B> -> Array<C> {
+		return zipWith(f)
+	}
+	
+	public func munzip<B>(ftab : Array<(A, B)>) -> (Array<A>, Array<B>) {
+		return unzip(ftab)
+	}
+}
+
+
 internal enum DDestructure<A, B> {
-	case Empty()
+	case Empty
 	case Destructure((A, B), [(A, B)])
 }
 
 internal func destructure<A, B>(x : [A:B]) -> DDestructure<A, B> {
 	if x.count == 0 {
-		return .Empty()
+		return .Empty
 	} else if x.count == 1 {
 		var g = x.generate()
 		return .Destructure(g.next()!, [])

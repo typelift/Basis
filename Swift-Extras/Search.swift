@@ -18,7 +18,7 @@ public func notElem<A : Equatable>(e : A)(l : [A]) -> Bool {
 
 public func lookup<A : Equatable, B>(e : A)(d : [A:B]) -> Optional<B> {
 	switch destructure(d) {
-		case .Empty():
+		case .Empty:
 			return .None
 		case .Destructure(let (x, y), let xys):
 			if e == x {
@@ -30,7 +30,7 @@ public func lookup<A : Equatable, B>(e : A)(d : [A:B]) -> Optional<B> {
 
 public func lookup<A : Equatable, B>(e : A)(d : [(A, B)]) -> Optional<B> {
 	switch d.destruct() {
-		case .Empty():
+		case .Empty:
 			return .None
 		case .Destructure(let (x, y), let xys):
 			if e == x {

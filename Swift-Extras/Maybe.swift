@@ -63,9 +63,7 @@ public func <*<A, B>(a : Optional<A>, b : Optional<B>) -> Optional<A> {
 	return const <%> a <*> b
 }
 
-extension Optional : Monad {
-	typealias MB = Optional<B>
-	
+extension Optional : Monad {	
 	public func bind<B>(f : A -> Optional<B>) -> Optional<B> {
 		switch self {
 			case .None:
@@ -75,6 +73,11 @@ extension Optional : Monad {
 		}
 	}
 }
+
+public func >>=<A, B>(x : Optional<A>, f : A -> Optional<B>) -> Optional<B> {
+	return x.bind(f)
+}
+
 
 extension Optional : MonadPlus {
 	public func mzero() -> Optional<A> {

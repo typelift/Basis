@@ -49,3 +49,4 @@ public protocol Functor {
 public func defaultReplace<A, B, FA : Functor, FB : Functor>(fmap : (A -> B) -> FA -> FB)(x : B)(f : FA) -> FB {
 	return (fmap • const)(x)(f)
 }
+

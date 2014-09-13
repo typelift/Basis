@@ -75,9 +75,7 @@ public func <*<S, A, B>(a : ST<S, A>, b : ST<S, B>) -> ST<S, A> {
 	return const <%> a <*> b
 }
 
-extension ST : Monad {
-	typealias MB = ST<S, B>
-	
+extension ST : Monad {	
 	public func bind<B>(f: A -> ST<S, B>) -> ST<S, B> {
 		return f(runST())
 	}
