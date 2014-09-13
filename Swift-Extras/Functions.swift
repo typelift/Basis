@@ -33,10 +33,22 @@ public func |*|<A, B, C>(o : B -> B -> C, f : A -> B) -> A -> A -> C {
 	return on(o)(f)
 }
 
+public func |*|<A, B, C>(o : (B, B) -> C, f : A -> B) -> A -> A -> C {
+	return on(o)(f)
+}
+
 public func on<A, B, C>(o : B -> B -> C)(f : A -> B) -> A -> A -> C {
 	return { (let x) in
 		return {(let y) in 
 			return o(f(x))(f(y))
+		}
+	}
+}
+
+public func on<A, B, C>(o : (B, B) -> C)(f : A -> B) -> A -> A -> C {
+	return { (let x) in
+		return {(let y) in 
+			return o(f(x), f(y))
 		}
 	}
 }

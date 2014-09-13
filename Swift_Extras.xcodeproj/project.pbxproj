@@ -48,6 +48,8 @@
 		84CD2A0619C4B4C800E7E93F /* Unique.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD2A0419C4B4C800E7E93F /* Unique.swift */; };
 		84CD2A0919C4B9E800E7E93F /* Exit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD2A0819C4B9E800E7E93F /* Exit.swift */; };
 		84CD2A0A19C4B9E800E7E93F /* Exit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD2A0819C4B9E800E7E93F /* Exit.swift */; };
+		84CD2A0F19C4CAA200E7E93F /* Compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD2A0E19C4CAA200E7E93F /* Compare.swift */; };
+		84CD2A1019C4CAA200E7E93F /* Compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD2A0E19C4CAA200E7E93F /* Compare.swift */; };
 		84D1AB2619BCCF1C00AF78E1 /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB2519BCCF1C00AF78E1 /* Function.swift */; };
 		84D1AB2819BCD01300AF78E1 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB2719BCD01300AF78E1 /* Functions.swift */; };
 		84D1AB2A19BCD3A900AF78E1 /* Monad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB2919BCD3A900AF78E1 /* Monad.swift */; };
@@ -120,6 +122,7 @@
 		84CD2A0119C4B1BC00E7E93F /* MonadZip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonadZip.swift; sourceTree = "<group>"; };
 		84CD2A0419C4B4C800E7E93F /* Unique.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Unique.swift; sourceTree = "<group>"; };
 		84CD2A0819C4B9E800E7E93F /* Exit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Exit.swift; sourceTree = "<group>"; };
+		84CD2A0E19C4CAA200E7E93F /* Compare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Compare.swift; sourceTree = "<group>"; };
 		84D1AB2519BCCF1C00AF78E1 /* Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Function.swift; sourceTree = "<group>"; };
 		84D1AB2719BCD01300AF78E1 /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		84D1AB2919BCD3A900AF78E1 /* Monad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Monad.swift; sourceTree = "<group>"; };
@@ -171,7 +174,7 @@
 			isa = PBXGroup;
 			children = (
 				84755CEB19BCC652002F644D /* Swift-Extras */,
-				84755CF519BCC652002F644D /* Swift-ExtrasTests */,
+				84755CF519BCC652002F644D /* Tests */,
 				84755CEA19BCC652002F644D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -191,15 +194,10 @@
 			children = (
 				84755CEE19BCC652002F644D /* Swift-Extras.h */,
 				84755D0219BCC674002F644D /* Kinds.swift */,
-				84D1AB3319BCDB8800AF78E1 /* Control */,
-				84D1AB2F19BCD7F100AF78E1 /* Bounded.swift */,
-				848D631D19C25CE5004B3C4E /* Error.swift */,
-				84D1AB2719BCD01300AF78E1 /* Functions.swift */,
 				84755D0819BCCB0B002F644D /* Operators.swift */,
-				84BC2B4119BFEFD600EFC8D3 /* Box.swift */,
-				84E859D119BFBBA600E2AE4C /* IO.swift */,
-				84CD2A0719C4B9D500E7E93F /* System */,
+				84D1AB3319BCDB8800AF78E1 /* Control */,
 				84BC2B4419C11E8200EFC8D3 /* Data */,
+				84CD2A0719C4B9D500E7E93F /* System */,
 				84E859D419BFBBE000E2AE4C /* Unsafe */,
 				84755CEC19BCC652002F644D /* Supporting Files */,
 			);
@@ -214,7 +212,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		84755CF519BCC652002F644D /* Swift-ExtrasTests */ = {
+		84755CF519BCC652002F644D /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				84D1AB3619BCE21800AF78E1 /* FunctionSpec.swift */,
@@ -223,6 +221,7 @@
 				84D1AB3E19BCE7B200AF78E1 /* InfinitySpec.swift */,
 				84755CF619BCC652002F644D /* Supporting Files */,
 			);
+			name = Tests;
 			path = "Swift-ExtrasTests";
 			sourceTree = "<group>";
 		};
@@ -237,14 +236,16 @@
 		84BC2B4419C11E8200EFC8D3 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				84D1AB5219BD0F2A00AF78E1 /* List */,
+				84D1AB2F19BCD7F100AF78E1 /* Bounded.swift */,
 				84BC2B3E19BFEDB800EFC8D3 /* Either.swift */,
-				84755D0619BCC97D002F644D /* Functor.swift */,
-				84D1AB2519BCCF1C00AF78E1 /* Function.swift */,
-				84BC2B7219C1366F00EFC8D3 /* IORef.swift */,
-				84BC2B4819C11FDE00EFC8D3 /* Monoid.swift */,
-				848D632019C267A3004B3C4E /* Maybe.swift */,
 				84BC2B4B19C1220400EFC8D3 /* Foldable.swift */,
+				84D1AB2519BCCF1C00AF78E1 /* Function.swift */,
+				84D1AB2719BCD01300AF78E1 /* Functions.swift */,
+				84755D0619BCC97D002F644D /* Functor.swift */,
+				84BC2B7219C1366F00EFC8D3 /* IORef.swift */,
+				84D1AB5219BD0F2A00AF78E1 /* List */,
+				848D632019C267A3004B3C4E /* Maybe.swift */,
+				84BC2B4819C11FDE00EFC8D3 /* Monoid.swift */,
 				84BC2B6F19C1363700EFC8D3 /* STRef.swift */,
 				84BC2B4E19C128DB00EFC8D3 /* Tuple.swift */,
 				84CD2A0419C4B4C800E7E93F /* Unique.swift */,
@@ -276,7 +277,10 @@
 		84CD2A0719C4B9D500E7E93F /* System */ = {
 			isa = PBXGroup;
 			children = (
+				848D631D19C25CE5004B3C4E /* Error.swift */,
 				84CD2A0819C4B9E800E7E93F /* Exit.swift */,
+				84E859D119BFBBA600E2AE4C /* IO.swift */,
+				84BC2B4119BFEFD600EFC8D3 /* Box.swift */,
 			);
 			name = System;
 			sourceTree = "<group>";
@@ -297,6 +301,7 @@
 			isa = PBXGroup;
 			children = (
 				84D1AB5019BD0F2300AF78E1 /* List.swift */,
+				84CD2A0E19C4CAA200E7E93F /* Compare.swift */,
 				84D1AB2D19BCD5FD00AF78E1 /* Folds.swift */,
 				84D1AB3119BCDB1400AF78E1 /* Scans.swift */,
 				84D1AB3419BCDE8B00AF78E1 /* Infinity.swift */,
@@ -481,6 +486,7 @@
 				84BC2B4C19C1220400EFC8D3 /* Foldable.swift in Sources */,
 				84E859D219BFBBA600E2AE4C /* IO.swift in Sources */,
 				84CD29FA19C4AA7C00E7E93F /* QSem.swift in Sources */,
+				84CD2A0F19C4CAA200E7E93F /* Compare.swift in Sources */,
 				84D1AB3519BCDE8B00AF78E1 /* Infinity.swift in Sources */,
 				84BC2B7319C1366F00EFC8D3 /* IORef.swift in Sources */,
 				84D1AB2819BCD01300AF78E1 /* Functions.swift in Sources */,
@@ -534,6 +540,7 @@
 				84CD2A0019C4B06700E7E93F /* MonadFix.swift in Sources */,
 				84E859D719BFBBE600E2AE4C /* Coerce.swift in Sources */,
 				84D1AB7619BD4AE000AF78E1 /* Functions.swift in Sources */,
+				84CD2A1019C4CAA200E7E93F /* Compare.swift in Sources */,
 				84D1AB7719BD4AE000AF78E1 /* List.swift in Sources */,
 				84CD2A0619C4B4C800E7E93F /* Unique.swift in Sources */,
 				84D1AB7819BD4AE000AF78E1 /* Folds.swift in Sources */,
@@ -654,7 +661,9 @@
 				INFOPLIST_FILE = "Swift-Extras/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = Swift_Extras;
+				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -673,7 +682,9 @@
 				INFOPLIST_FILE = "Swift-Extras/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = Swift_Extras;
+				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;

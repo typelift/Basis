@@ -30,4 +30,14 @@ class FunctionsSpec : XCTestCase {
 		XCTAssertTrue(x == 6, "")
 		XCTAssertTrue(y == def, "")
 	}
+	
+	func testOn() {
+		var arr : [(Int, String)] = [(2, "Second"), (1, "First"), (5, "Fifth"), (3, "Third"), (4, "Fourth")]
+		var sarr : [(Int, String)] = [(1, "First"), (2, "Second"), (3, "Third"), (4, "Fourth"), (5, "Fifth")]
+
+		var srt = sortBy((>) |*| fst)(lst: arr)
+		
+		XCTAssertTrue(all({ $0 == true })(l: zip(srt.map(fst))(l2: sarr.map(fst)).map(==)), "")
+		XCTAssertTrue(all({ $0 == true })(l: zip(srt.map(snd))(l2: sarr.map(snd)).map(==)), "")
+	}
 }

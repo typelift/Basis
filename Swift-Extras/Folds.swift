@@ -8,48 +8,52 @@
 
 import Foundation
 
-public func foldl<A, B>(f: B -> A -> B) (z0: B)(xs0: [A]) -> B {
-	var xs = z0
-	for x in xs0.reverse() {
-		xs = f(xs)(x)
+public func foldl<A, B>(f: B -> A -> B) (z: B)(lst: [A]) -> B {
+	switch lst.destruct() {
+		case .Empty:
+			return z
+		case .Destructure(let x, let xs):
+			return foldl(f)(z: f(z)(x))(lst: xs)
 	}
-	return xs
 }
 
-public func foldl<A, B>(f: (B, A) -> B) (z0: B)(xs0: [A]) -> B {
-	var xs = z0
-	for x in xs0.reverse() {
-		xs = f(xs, x)
+public func foldl<A, B>(f: (B, A) -> B) (z: B)(lst: [A]) -> B {
+	switch lst.destruct() {
+		case .Empty:
+			return z
+		case .Destructure(let x, let xs):
+			return foldl(f)(z: f(z, x))(lst: xs)
 	}
-	return xs
 }
 
 public func foldl1<A>(f: A -> A -> A)(xs0: [A]) -> A {
 	let hd = xs0[0]
 	let tl = Array<A>(xs0[1..<xs0.count])
-	return foldl(f)(z0: hd)(xs0: tl)
+	return foldl(f)(z: hd)(lst: tl)
 }
 
 public func foldl1<A>(f: (A, A) -> A)(xs0: [A]) -> A {
 	let hd = xs0[0]
 	let tl = Array<A>(xs0[1..<xs0.count])
-	return foldl(f)(z0: hd)(xs0: tl)
+	return foldl(f)(z: hd)(lst: tl)
 }
 
 public func foldr<A, B>(k: A -> B -> B)(z: B)(lst: [A]) -> B {
-	var xs = z
-	for x in lst {
-		xs = k(x)(z)
+	switch lst.destruct() {
+		case .Empty:
+			return z
+		case .Destructure(let x, let xs):
+			return k(x)(foldr(k)(z: z)(lst: xs))
 	}
-	return xs
 }
 
 public func foldr<A, B>(k: (A, B) -> B)(z: B)(lst: [A]) -> B {
-	var xs = z
-	for x in lst {
-		xs = k(x, z)
+	switch lst.destruct() {
+		case .Empty:
+			return z
+		case .Destructure(let x, let xs):
+			return k(x, foldr(k)(z: z)(lst: xs))
 	}
-	return xs
 }
 
 public func foldr1<A>(f: A -> A -> A)(lst: [A]) -> A {

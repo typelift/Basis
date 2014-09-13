@@ -42,6 +42,13 @@ infix operator <| {
 	associativity right
 }
 
+/// On | Given a "combining" function and a function that converts arguments to the target of the
+/// combiner, returns a function that applies the right hand side to two arguments, then runs both
+/// results through the combiner such that the following laws hold:
+///
+///		(*) `on` id = (*) (if (*) ∉ {⊥, const ⊥})
+///		((*) `on` f) `on` g = (*) `on` (f . g)
+///		flip on f . flip on g = flip on (g . f)
 infix operator |*| {
 	precedence 0
 	associativity left
@@ -131,17 +138,24 @@ infix operator &&& {
 	associativity right
 }
 
-///
+/// MARK: Control.Arrow.Choice
+
+/// Splat | Splits two computations and combines the results into Eithers on the left and right.
 infix operator +++ {
 	precedence 2
 	associativity right
 }
 
+/// Fanin | Given two functions with the same target but different sources, this function splits
+/// the input between the two and merges the output.
 infix operator ||| {
 	precedence 2
 	associativity right
 }
 
+/// MARK: Control.Arrow.Plus
+
+/// Op | Combines two ArrowZero monoids.
 infix operator <+> {
 	precedence 5
 	associativity right

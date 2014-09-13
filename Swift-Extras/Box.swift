@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// The infamous Box Hack.  Let's hope we get ADTs soon...
+/// The infamous Box Hack.  Oh, how I'd love to say this was a Sort.  Let's hope we get ADTs soon...
 public final class Box<A> : K1<A> {
 	public let unBox : () -> A
 	
