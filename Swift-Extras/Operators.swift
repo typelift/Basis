@@ -109,6 +109,11 @@ infix operator <* {
 	associativity left
 }
 
+infix operator <|> {
+	precedence 3
+	associativity left
+}
+
 /// MARK: Control.Arrow
 
 /// Split | Splits two computations and combines the result into one Arrow yielding a tuple of

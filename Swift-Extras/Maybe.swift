@@ -44,7 +44,6 @@ extension Optional : Applicative {
 	}
 }
 
-
 public func <*><A, B>(f : Optional<A -> B> , o : Optional<A>) -> Optional<B> {
 	switch f {
 		case .None:
@@ -61,6 +60,31 @@ public func *><A, B>(a : Optional<A>, b : Optional<B>) -> Optional<B> {
 
 public func <*<A, B>(a : Optional<A>, b : Optional<B>) -> Optional<A> {
 	return const <%> a <*> b
+}
+
+extension Optional : Applicative {
+	typealias FLA = Optional<[A]>
+	
+	public func empty() -> Optional<A> {
+		return .None
+	}
+	
+	public func some(v : Optional<A>) -> Optional<[A]> {
+		return curry((+>)) <%> v <*> many(v)
+	}
+	
+	public func many(v : Optional<A>) -> Optional<[A]> {
+		return some(v) <|> Optional<[A]>.pure([])
+	}
+}
+
+public func <|><A>(l : Optional<A>, r : Optional<A>) -> Optional<A> {
+	switch l {
+		case .None:
+			return r
+		case .Some(_):
+			return l
+	}
 }
 
 extension Optional : Monad {	

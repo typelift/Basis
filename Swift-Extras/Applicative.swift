@@ -33,3 +33,13 @@ public protocol Applicative : Functor {
 	///		`const <%> a <*> b`
 	func <*(Self, FB) -> FA
 }
+
+public protocol Alternative : Applicative {
+	typealias FLA = K1<[A]>
+	
+	func empty() -> FA
+	func <|>(FA, FA) -> FA
+
+	func some(FA) -> FLA
+	func many(FA) -> FLA
+}

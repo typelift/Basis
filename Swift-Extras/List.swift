@@ -80,6 +80,26 @@ public func <*<A, B>(a : Array<A>, b : Array<B>) -> Array<A> {
 	return const <%> a <*> b
 }
 
+extension Array : Applicative {
+	typealias FLA = Array<[A]>
+	
+	public func empty() -> Array<A> {
+		return []
+	}
+	
+	public func some(v : Array<A>) -> Array<[A]> {
+		return curry((+>)) <%> v <*> many(v)
+	}
+	
+	public func many(v : Array<A>) -> Array<[A]> {
+		return some(v) <|> Array<[A]>.pure([])
+	}
+}
+
+public func <|><A>(l : Array<A>, r : Array<A>) -> Array<A> {
+	return l ++ r
+}
+
 extension Array : Monad {	
 	public func bind<B>(f : A -> Array<B>) -> Array<B> {
 		return concatMap(f)(l: self)
