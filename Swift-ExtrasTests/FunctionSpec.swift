@@ -35,6 +35,5 @@ class FunctionSpec : XCTestCase {
 		XCTAssertTrue(plus.apply(2, y: 2) == 4, "")
 		XCTAssertTrue(plus.apply(2, y: 3) == 5, "")
 		XCTAssertTrue(plus.apply(4000, y: 6000) == 10000, "")
-
 	}
 }
