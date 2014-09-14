@@ -121,7 +121,7 @@ infix operator <* {
 	associativity left
 }
 
-
+/// Choose | Makes Applicative a monoid.
 infix operator <|> {
 	precedence 3
 	associativity left

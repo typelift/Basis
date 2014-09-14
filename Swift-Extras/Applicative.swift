@@ -34,12 +34,30 @@ public protocol Applicative : Functor {
 	func <*(Self, FB) -> FA
 }
 
+/// Alternatives are Applicative Monoids.
 public protocol Alternative : Applicative {
+	/// The type of the result of Alternative's mappend-esque functions.
 	typealias FLA = K1<[A]>
 	
+	/// Returns the identity element.
 	func empty() -> FA
+	
+	/// Choose | Chooses the greater of two Alternatives.
+	///
+	/// This function will attempt to choose an Alternative that is not the empty() Alternative.
 	func <|>(FA, FA) -> FA
 
+	/// One or more
+	///
+	/// The least solution to the equation:
+	///
+	///		curry((+>)) <%> v <*> many(v)
 	func some(FA) -> FLA
+
+	/// Zero or more
+	///
+	/// The least solution to the equation:
+	///
+	///		some(v) <|> FLA.pure([])
 	func many(FA) -> FLA
 }

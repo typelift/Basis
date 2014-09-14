@@ -8,7 +8,9 @@
 
 import Foundation
 
+/// Monads that admit left-tightening recursion.
 public protocol MonadFix : Monad {
+	/// Calculates the fixed point of a monadic computation.
 	func mfix(f : A -> FA) -> FA
 }
 

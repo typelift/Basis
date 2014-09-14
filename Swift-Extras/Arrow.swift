@@ -94,35 +94,54 @@ public protocol Arrow : Category {
 	func &&&(ABC, ABD) -> FANOUT
 }
 
+/// Arrows that can produce an identity arrow.
 public protocol ArrowZero : Arrow {
+	/// The identity arrow.
 	class func zeroArrow() -> ABC
 }
 
-public protocol ArrowPlus : Arrow {
+/// A monoid for Arrows.
+public protocol ArrowPlus : ArrowZero {
+	/// A binary function that combines two arrows.
 	func <+>(ABC, ABC) -> ABC
 }
 
 public protocol ArrowChoice : Arrow {
+	/// The result of left
 	typealias LEFT = K2<Either<AB, D>, Either<AC, D>>
+	/// The result of right
 	typealias RIGHT = K2<Either<D, AB>, Either<D, AC>>
 
+	/// The result of +++
 	typealias SPLAT = K2<Either<AB, D>, Either<AC, E>>
 
+	/// Some arrow from a different source and target for fanin.
 	typealias ACD = K2<AC, D>
+	/// The result of |||
 	typealias FANIN = K2<Either<AB, AC>, D>
 
+	/// Feed marked inputs through the argument arrow, passing the rest through unchanged to the 
+	/// output.
 	func left(ABC) -> LEFT
+	
+	/// The mirror image of left.
 	func right(ABC) -> RIGHT
 
+	/// Splat | Split the input between both argument arrows, then retag and merge their outputs 
+	/// into Eithers.
 	func +++(ABC, ADE) -> SPLAT
+	
+	/// Fanin | Split the input between two argument arrows and merge their ouputs.
 	func |||(ABD, ACD) -> FANIN
 }
 
+/// Arrows that allow application of arrow inputs to other inputs.
 public protocol ArrowApply : Arrow {
 	typealias APP = K2<(ABC, AB), AC>
 	func app() -> APP
 }
 
+/// Arrows that admit right-tightening recursion.
 public protocol ArrowLoop : Arrow {
 	typealias LOOP = K2<(AB, D), (AC, D)>
 	

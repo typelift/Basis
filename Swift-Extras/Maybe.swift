@@ -8,6 +8,8 @@
 
 import Foundation
 
+/// Takes a default value, a function, and an optional.  If the optional is None, the default value
+/// is returned.  If the optional is Some, the function is applied to the value inside.
 public func maybe<A, B>(def : B)(f : A -> B)(m : Optional<A>) -> B {
 	switch m {
 		case .None:
@@ -17,6 +19,7 @@ public func maybe<A, B>(def : B)(f : A -> B)(m : Optional<A>) -> B {
 	}
 }
 
+/// Returns whether a given optional contains a value.
 public func isSome<A>(o : Optional<A>) -> Bool {
 	switch o {
 		case .None:
@@ -26,6 +29,7 @@ public func isSome<A>(o : Optional<A>) -> Bool {
 	}
 }
 
+/// Returns whether a given optional is empty.
 public func isNone<A>(o : Optional<A>) -> Bool {
 	switch o {
 		case .None:
@@ -35,6 +39,10 @@ public func isNone<A>(o : Optional<A>) -> Bool {
 	}
 }
 
+/// Takes a default value and an optional.  If the optional is empty, the default value is returned.
+/// If the optional contains a value, that value is returned.
+///
+/// This function is a safer form of !-unwrapping for optionals.
 public func fromOptional<A>(def : A)(m : Optional<A>) -> A {
 	switch m {
 		case .None:
@@ -44,6 +52,8 @@ public func fromOptional<A>(def : A)(m : Optional<A>) -> A {
 	}
 }
 
+/// Given an optional, returns an empty list if it is None, or a singleton list containing the
+/// contents of a Some.
 public func optionalToList<A>(o : Optional<A>) -> [A] {
 	switch o {
 		case .None:
@@ -53,6 +63,7 @@ public func optionalToList<A>(o : Optional<A>) -> [A] {
 	}
 }
 
+/// Given a list, returns None if the list is empty, or Some containing the head of the list.
 public func listToOptional<A>(l : [A]) -> Optional<A> {
 	switch l.destruct() {
 		case .Empty:
@@ -62,10 +73,13 @@ public func listToOptional<A>(l : [A]) -> Optional<A> {
 	}
 }
 
+/// Takes a list of optionals and returns a list of all the values of the Some's in the list.
 public func catOptionals<A>(l : [Optional<A>]) -> [A] {
 	return concatMap(optionalToList)(l: l)
 }
 
+/// Maps a function over a list.  If the result of the function is None, the value is not included
+/// in the resulting list.
 public func mapOptional<A, B>(f : A -> Optional<B>)(l : [A]) -> [B] {
 	switch l.destruct() {
 		case .Empty:
