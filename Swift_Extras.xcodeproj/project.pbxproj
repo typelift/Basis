@@ -50,6 +50,11 @@
 		84CD2A0A19C4B9E800E7E93F /* Exit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD2A0819C4B9E800E7E93F /* Exit.swift */; };
 		84CD2A0F19C4CAA200E7E93F /* Compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD2A0E19C4CAA200E7E93F /* Compare.swift */; };
 		84CD2A1019C4CAA200E7E93F /* Compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD2A0E19C4CAA200E7E93F /* Compare.swift */; };
+		84CD2A1419C4D9ED00E7E93F /* TupleSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD2A1119C4D9E400E7E93F /* TupleSpec.swift */; };
+		84CD2A1719C4EC7A00E7E93F /* Lift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD2A1619C4EC7A00E7E93F /* Lift.swift */; };
+		84CD2A1819C4EC7A00E7E93F /* Lift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD2A1619C4EC7A00E7E93F /* Lift.swift */; };
+		84CD2A1A19C4F29900E7E93F /* Lower.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD2A1919C4F29900E7E93F /* Lower.swift */; };
+		84CD2A1B19C4F29900E7E93F /* Lower.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD2A1919C4F29900E7E93F /* Lower.swift */; };
 		84D1AB2619BCCF1C00AF78E1 /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB2519BCCF1C00AF78E1 /* Function.swift */; };
 		84D1AB2819BCD01300AF78E1 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB2719BCD01300AF78E1 /* Functions.swift */; };
 		84D1AB2A19BCD3A900AF78E1 /* Monad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB2919BCD3A900AF78E1 /* Monad.swift */; };
@@ -123,6 +128,9 @@
 		84CD2A0419C4B4C800E7E93F /* Unique.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Unique.swift; sourceTree = "<group>"; };
 		84CD2A0819C4B9E800E7E93F /* Exit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Exit.swift; sourceTree = "<group>"; };
 		84CD2A0E19C4CAA200E7E93F /* Compare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Compare.swift; sourceTree = "<group>"; };
+		84CD2A1119C4D9E400E7E93F /* TupleSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TupleSpec.swift; sourceTree = "<group>"; };
+		84CD2A1619C4EC7A00E7E93F /* Lift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lift.swift; sourceTree = "<group>"; };
+		84CD2A1919C4F29900E7E93F /* Lower.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lower.swift; sourceTree = "<group>"; };
 		84D1AB2519BCCF1C00AF78E1 /* Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Function.swift; sourceTree = "<group>"; };
 		84D1AB2719BCD01300AF78E1 /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		84D1AB2919BCD3A900AF78E1 /* Monad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Monad.swift; sourceTree = "<group>"; };
@@ -218,6 +226,7 @@
 				84D1AB3619BCE21800AF78E1 /* FunctionSpec.swift */,
 				84D1AB3919BCE5A900AF78E1 /* OperatorsSpec.swift */,
 				84D1AB3C19BCE6E600AF78E1 /* FunctionsSpec.swift */,
+				84CD2A1119C4D9E400E7E93F /* TupleSpec.swift */,
 				84D1AB3E19BCE7B200AF78E1 /* InfinitySpec.swift */,
 				84755CF619BCC652002F644D /* Supporting Files */,
 			);
@@ -239,7 +248,7 @@
 				84D1AB2F19BCD7F100AF78E1 /* Bounded.swift */,
 				84BC2B3E19BFEDB800EFC8D3 /* Either.swift */,
 				84BC2B4B19C1220400EFC8D3 /* Foldable.swift */,
-				84D1AB2519BCCF1C00AF78E1 /* Function.swift */,
+				84CD2A1519C4EC7200E7E93F /* Function */,
 				84D1AB2719BCD01300AF78E1 /* Functions.swift */,
 				84755D0619BCC97D002F644D /* Functor.swift */,
 				84BC2B7219C1366F00EFC8D3 /* IORef.swift */,
@@ -283,6 +292,16 @@
 				84BC2B4119BFEFD600EFC8D3 /* Box.swift */,
 			);
 			name = System;
+			sourceTree = "<group>";
+		};
+		84CD2A1519C4EC7200E7E93F /* Function */ = {
+			isa = PBXGroup;
+			children = (
+				84D1AB2519BCCF1C00AF78E1 /* Function.swift */,
+				84CD2A1619C4EC7A00E7E93F /* Lift.swift */,
+				84CD2A1919C4F29900E7E93F /* Lower.swift */,
+			);
+			name = Function;
 			sourceTree = "<group>";
 		};
 		84D1AB3319BCDB8800AF78E1 /* Control */ = {
@@ -470,6 +489,7 @@
 				84755D0919BCCB0B002F644D /* Operators.swift in Sources */,
 				84BC2B4F19C128DB00EFC8D3 /* Tuple.swift in Sources */,
 				84D1AB5119BD0F2300AF78E1 /* List.swift in Sources */,
+				84CD2A1A19C4F29900E7E93F /* Lower.swift in Sources */,
 				84BC2B4219BFEFD600EFC8D3 /* Box.swift in Sources */,
 				84BC2B7019C1363700EFC8D3 /* STRef.swift in Sources */,
 				84CD2A0219C4B1BC00E7E93F /* MonadZip.swift in Sources */,
@@ -496,6 +516,7 @@
 				84D1AB2C19BCD3BA00AF78E1 /* Applicative.swift in Sources */,
 				84BC2B6D19C134CD00EFC8D3 /* ST.swift in Sources */,
 				84D1AB4919BD024E00AF78E1 /* Search.swift in Sources */,
+				84CD2A1719C4EC7A00E7E93F /* Lift.swift in Sources */,
 				84D1AB2A19BCD3A900AF78E1 /* Monad.swift in Sources */,
 				84BC2B4919C11FDE00EFC8D3 /* Monoid.swift in Sources */,
 				84D1AB2E19BCD5FD00AF78E1 /* Folds.swift in Sources */,
@@ -512,6 +533,7 @@
 				84D1AB3819BCE22900AF78E1 /* FunctionSpec.swift in Sources */,
 				84D1AB3F19BCE7B200AF78E1 /* InfinitySpec.swift in Sources */,
 				84D1AB3D19BCE6E600AF78E1 /* FunctionsSpec.swift in Sources */,
+				84CD2A1419C4D9ED00E7E93F /* TupleSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -520,6 +542,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				84CD29FB19C4AA7C00E7E93F /* QSem.swift in Sources */,
+				84CD2A1819C4EC7A00E7E93F /* Lift.swift in Sources */,
 				848D632219C267A3004B3C4E /* Maybe.swift in Sources */,
 				84BC2B3D19BFDE1100EFC8D3 /* Arrow.swift in Sources */,
 				84D1AB6E19BD4AE000AF78E1 /* Category.swift in Sources */,
@@ -553,6 +576,7 @@
 				84D1AB7C19BD4AE000AF78E1 /* Sublists.swift in Sources */,
 				84BC2B4319BFEFD600EFC8D3 /* Box.swift in Sources */,
 				84D1AB7D19BD4AE000AF78E1 /* Search.swift in Sources */,
+				84CD2A1B19C4F29900E7E93F /* Lower.swift in Sources */,
 				848D631F19C25CE5004B3C4E /* Error.swift in Sources */,
 				84D1AB7E19BD4AE000AF78E1 /* Zip.swift in Sources */,
 				84D1AB7F19BD4AE000AF78E1 /* FunctionSpec.swift in Sources */,

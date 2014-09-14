@@ -15,11 +15,52 @@ class FunctionsSpec : XCTestCase {
 		XCTAssertTrue(id(10) == 10, "")
 	}
 	
-	func testTuples() {
-		let t = (10, "String")
+	func testConst() {
+		XCTAssertTrue(const(10)(20) == 10, "")
+	}
+	
+	func testComposition() {
+		let f = { (x : Int) -> Int in
+			return x + 10
+		}
 		
-		XCTAssertTrue(fst(t) == 10, "")
-		XCTAssertTrue(snd(t) == "String", "")
+		let g = { (x : Int) -> Int in
+			return x - 20
+		}
+		
+		XCTAssertTrue((f • g)(20) == 10, "")
+	}
+	
+	func testBackwardAp() {
+		let f = { (x : Int) -> Int in
+			return x + 10
+		}
+		
+		let g = { (x : Int) -> Int in
+			return x - 20
+		}
+		
+		let h = { (x : Int) -> Int in
+			return x + 100
+		}
+		
+		XCTAssertTrue((f <| g <| h(20)) == 110, "")
+	}
+	
+	func testForwardAp() {
+		let f = { (x : Int) -> Int in
+			return x + 10
+		}
+		
+		let g = { (x : Int) -> Int in
+			return x - 20
+		}
+		
+		let h = { (x : Int) -> Int in
+			return x + 100
+		}
+		
+		XCTAssertTrue((h(20) |> g |> f) == 110, "")
 	}
 	
 	func testMaybe() {
@@ -29,6 +70,18 @@ class FunctionsSpec : XCTestCase {
 		
 		XCTAssertTrue(x == 6, "")
 		XCTAssertTrue(y == def, "")
+	}
+	
+	func testFlip() {
+		let arr = [0, 1, 2, 3, 4, 5]
+		
+		XCTAssertTrue(flip(const)(10)(20) == 20, "")
+	}
+	
+	func testUntil() {
+		let x = 1
+		
+		XCTAssertTrue(until({ $0 == 5 })({ $0 + 1 })(x: x) == 5, "")
 	}
 	
 	func testOn() {

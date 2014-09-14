@@ -8,6 +8,79 @@
 
 import Foundation
 
+public func maybe<A, B>(def : B)(f : A -> B)(m : Optional<A>) -> B {
+	switch m {
+		case .None:
+			return def
+		case .Some(let x):
+			return f(x)
+	}
+}
+
+public func isSome<A>(o : Optional<A>) -> Bool {
+	switch o {
+		case .None:
+			return false
+		default:
+			return true
+	}
+}
+
+public func isNone<A>(o : Optional<A>) -> Bool {
+	switch o {
+		case .None:
+			return true
+		default:
+			return false
+	}
+}
+
+public func fromOptional<A>(def : A)(m : Optional<A>) -> A {
+	switch m {
+		case .None:
+			return def
+		case .Some(let x):
+			return x
+	}
+}
+
+public func optionalToList<A>(o : Optional<A>) -> [A] {
+	switch o {
+		case .None:
+			return []
+		case .Some(let x):
+			return [x]
+	}
+}
+
+public func listToOptional<A>(l : [A]) -> Optional<A> {
+	switch l.destruct() {
+		case .Empty:
+			return .None
+		case .Destructure(let x, _):
+			return .Some(x)
+	}
+}
+
+public func catOptionals<A>(l : [Optional<A>]) -> [A] {
+	return concatMap(optionalToList)(l: l)
+}
+
+public func mapOptional<A, B>(f : A -> Optional<B>)(l : [A]) -> [B] {
+	switch l.destruct() {
+		case .Empty:
+			return []
+		case .Destructure(let x, let xs):
+			let rs = mapOptional(f)(l: xs)
+			switch f(x) {
+				case .None:
+					return rs
+				case .Some(let r):
+					return r +> rs
+		}
+	}
+}
+
 extension Optional : Functor {
 	typealias A = T
 	typealias B = Any

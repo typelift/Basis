@@ -33,6 +33,47 @@ public final class IO<A> : K1<A> {
 	}
 }
 
+public func putChar(c : Character) -> IO<()> {
+	return IO.pure(print(c))
+}
+
+public func putStr(s : String) -> IO<()> {
+	return IO.pure(print(s))
+}
+
+public func putStrLn(s : String) -> IO<()> {
+	return IO.pure(println(s))
+}
+
+
+public func print<A : Printable>(x : A) -> IO<()> {
+	return putStrLn(x.description)
+}
+
+public func getChar() -> IO<Character> {
+	return IO.pure(Character(UnicodeScalar(UInt32(getchar()))))
+}
+
+public func getLine() -> IO<String> {
+	var str : UnsafeMutablePointer<Int8> = nil
+	var numBytes : UInt = 0;
+	if getline(&str, &numBytes, stdin) == -1 {
+		return IO.pure("")
+	}
+	return IO.pure(String.fromCString(str)!)
+}
+
+public func getContents() -> IO<String> {
+	return IO.pure(NSString(data: NSFileHandle.fileHandleWithStandardInput().availableData, encoding: NSUTF8StringEncoding))
+}
+
+public func interact(f : String -> String) -> IO<()> {
+	return do_ {
+		var s : String = ""
+		s <- getContents()
+		return putStr(f(s))
+	}
+}
 
 extension IO : Functor {
 	typealias FA = IO<A>

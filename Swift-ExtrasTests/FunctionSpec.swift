@@ -19,8 +19,8 @@ class FunctionSpec : XCTestCase {
 		return x + y
 	}
 	
-	func testFunction1() {
-		let suc = Function1(function1)
+	func testFunction() {
+		let suc = ^(function1)
 		
 		XCTAssertTrue(suc.apply(0) == 1, "")
 		XCTAssertTrue(suc.apply(suc.apply(0)) == 2, "")
@@ -29,11 +29,11 @@ class FunctionSpec : XCTestCase {
 	}
 	
 	func testFunction2() {
-		let plus = Function2(function2)
-		
-		XCTAssertTrue(plus.apply(0, y: 0) == 0, "")
-		XCTAssertTrue(plus.apply(2, y: 2) == 4, "")
-		XCTAssertTrue(plus.apply(2, y: 3) == 5, "")
-		XCTAssertTrue(plus.apply(4000, y: 6000) == 10000, "")
+		let plus = ^(function2)
+
+		XCTAssertTrue(plus.apply((0, 0)) == 0, "")
+		XCTAssertTrue(plus.apply((2, 2)) == 4, "")
+		XCTAssertTrue(plus.apply((2, 3)) == 5, "")
+		XCTAssertTrue(plus.apply((4000, 6000)) == 10000, "")
 	}
 }

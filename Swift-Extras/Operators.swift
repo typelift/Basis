@@ -19,36 +19,32 @@ infix operator • {
 	associativity right
 }
 
-/// Pipe Forward | Applies the function to its left to an argument on its right.
+/// Pipe Backward | Applies the function to its left to an argument on its right.
 ///
 /// Chains of regular function applications are often made unnecessarily verbose and tedius by
 /// large amounts of parenthesis.  Because this operator has a low precedence and is right-
 /// associative, it can often be used to elide parenthesis such that the following holds:
 ///
-///		f |> g |> h x  =  f (g (h x))
+///		f <| g <| h x  =  f (g (h x))
 ///
 /// Haskellers will know this as the ($) combinator.
-infix operator |> {
-	precedence 0
-	associativity right
-}
-
-/// Pipe Backward | Applies the argument on its left to a function on its right.
-///
-/// Sometimes, a computation looks more natural when data is computer first on the right side of
-/// an expression and applied to a function on the left.
 infix operator <| {
 	precedence 0
 	associativity right
 }
 
+/// Pipe Forward | Applies the argument on its left to a function on its right.
+///
+/// Sometimes, a computation looks more natural when data is computer first on the right side of
+/// an expression and applied to a function on the left.
+infix operator |> {
+	precedence 0
+	associativity left
+}
+
 /// On | Given a "combining" function and a function that converts arguments to the target of the
 /// combiner, returns a function that applies the right hand side to two arguments, then runs both
-/// results through the combiner such that the following laws hold:
-///
-///		(*) `on` id = (*) (if (*) ∉ {⊥, const ⊥})
-///		((*) `on` f) `on` g = (*) `on` (f . g)
-///		flip on f . flip on g = flip on (g . f)
+/// results through the combiner.
 infix operator |*| {
 	precedence 0
 	associativity left
@@ -116,6 +112,7 @@ infix operator <* {
 	associativity left
 }
 
+
 infix operator <|> {
 	precedence 3
 	associativity left
@@ -160,3 +157,6 @@ infix operator <+> {
 	precedence 5
 	associativity right
 }
+
+prefix operator ^ {}
+postfix operator ^ {}
