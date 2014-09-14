@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Mutable references in the IO monad.
 public final class IORef<A> : K1<A> {
 	var value : STRef<RealWorld, A>
 	
@@ -32,7 +33,7 @@ public func writeIORef<A>(ref : IORef<A>)(v: A) -> IO<()> {
 	})(writeSTRef(ref.value)(a: v)))
 }
 
-public func modifyIORef<A, B>(ref : IORef<A>)(vfn : (A -> A)) -> IO<A> {
+public func modifyIORef<A>(ref : IORef<A>)(vfn : (A -> A)) -> IO<A> {
 	return stToIO(modifySTRef(ref.value)(vfn)) >> readIORef(ref)
 }
 
