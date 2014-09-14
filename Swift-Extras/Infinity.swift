@@ -29,8 +29,8 @@ public func cycle<A>(x : [A]) -> LazySequenceOf<Cycle<A>, A> {
 public final class Iterate<A> : SequenceType {
 	typealias GeneratorType = IterateGenerator<A>
 	
-	let initial : A
-	let iter : A -> A
+	private let initial : A
+	private let iter : A -> A
 	
 	init(ini : A, iter : A -> A) {
 		self.initial = ini
@@ -43,9 +43,9 @@ public final class Iterate<A> : SequenceType {
 }
 
 public final class IterateGenerator<A> : GeneratorType {
-	var current : A
-	var nextValue : A
-	var iter : A -> A
+	private var current : A
+	private var nextValue : A
+	private var iter : A -> A
 	
 	init(ini : A, iter : A -> A) {
 		self.current = ini
@@ -64,7 +64,7 @@ public final class IterateGenerator<A> : GeneratorType {
 public final class Cycle<A> : SequenceType {
 	typealias GeneratorType = CycleGenerator<A>
 	
-	let arr : [A]
+	private let arr : [A]
 	
 	init(ini : [A]) {
 		self.arr = ini
@@ -76,8 +76,8 @@ public final class Cycle<A> : SequenceType {
 }
 
 public final class CycleGenerator<A> : GeneratorType {
-	var arr : [A]
-	var index : Int
+	private var arr : [A]
+	private var index : Int
 	
 	init(arr : [A]) {
 		self.arr = arr

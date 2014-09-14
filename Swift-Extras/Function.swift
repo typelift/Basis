@@ -70,15 +70,15 @@ extension Function : Arrow {
 	typealias ABD = Function<AB, D>
 	typealias FANOUT = Function<AB, (AC, D)>
 	
-	public class func arr(f : AB -> AC) -> Function<AB, AC> {
+	public class func arr(f : T -> U) -> Function<AB, AC> {
 		return Function<AB, AC>({ f($0) })
 	}
 	
-	public func first() -> Function<(AB, D), (AC, D)> {
+	public func first() -> Function<(T, T), (U, T)> {
 		return self *** Function.id()
 	}
 	
-	public func second() -> Function<(D, AB), (D, AC)> {
+	public func second() -> Function<(T, T), (T, U)> {
 		return Function.id() *** self
 	}
 }

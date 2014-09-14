@@ -11,9 +11,9 @@ import Foundation
 infix operator <- {}
 
 // The IO Monad is a means of representing a computation which, when performed, interacts with
-// the outside world (i.e. performs effects) to arrive at some result of type a.
+// the outside world (i.e. performs effects) to arrive at some result of type A.
 public final class IO<A> : K1<A> {	
-	let apply: (rw: World<RealWorld>) -> (World<RealWorld>, A)
+	private let apply: (rw: World<RealWorld>) -> (World<RealWorld>, A)
 
 	init(apply: (rw: World<RealWorld>) -> (World<RealWorld>, A)) {
 		self.apply = apply
@@ -24,49 +24,52 @@ public final class IO<A> : K1<A> {
 	public func unsafePerformIO() -> A  {
 		return self.apply(rw: realWorld).1
 	}
-
-	public func map<B>(f: A -> B) -> IO<B> {
-		return IO<B>({ (let rw) in
-			let (nw, a) = self.apply(rw: rw)
-			return (nw, f(a))
-		})
-	}
 }
 
+/// Writes a character to standard output.
 public func putChar(c : Character) -> IO<()> {
 	return IO.pure(print(c))
 }
 
+/// Writes a string to standard output.
 public func putStr(s : String) -> IO<()> {
 	return IO.pure(print(s))
 }
 
+/// Writes a string and a newline to standard output.
 public func putStrLn(s : String) -> IO<()> {
 	return IO.pure(println(s))
 }
 
-
+/// Writes the description of an object to standard output.
 public func print<A : Printable>(x : A) -> IO<()> {
 	return putStrLn(x.description)
 }
 
+/// Gets a single character from standard input.
 public func getChar() -> IO<Character> {
 	return IO.pure(Character(UnicodeScalar(UInt32(getchar()))))
 }
 
+/// Gets a line of text from standard input.
 public func getLine() -> IO<String> {
-	var str : UnsafeMutablePointer<Int8> = nil
-	var numBytes : UInt = 0;
-	if getline(&str, &numBytes, stdin) == -1 {
-		return IO.pure("")
+	return do_ { () -> String in
+		var str : UnsafeMutablePointer<Int8> = nil
+		var numBytes : UInt = 0;
+		if getline(&str, &numBytes, stdin) == -1 {
+			return ""
+		}
+		return String.fromCString(str)!
 	}
-	return IO.pure(String.fromCString(str)!)
 }
 
+/// Gets the entire contents of standard input.
 public func getContents() -> IO<String> {
 	return IO.pure(NSString(data: NSFileHandle.fileHandleWithStandardInput().availableData, encoding: NSUTF8StringEncoding))
 }
 
+/// Takes a function that is given the contents of standard input.  The result of that function is
+/// then output to standard out.
 public func interact(f : String -> String) -> IO<()> {
 	return do_ {
 		var s : String = ""
@@ -80,7 +83,12 @@ extension IO : Functor {
 	typealias B = Any
 	
 	public class func fmap<B>(f: A -> B) -> IO<A> -> IO<B> {
-		return { $0.map(f) }
+		return { (let io) in
+			return IO<B>({ (let rw) in
+				let (nw, a) = io.apply(rw: rw)
+				return (nw, f(a))
+			})
+		}
 	}
 }
 

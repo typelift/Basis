@@ -8,7 +8,12 @@
 
 import Foundation
 
-public class MVar<A> : K1<A> {
+/// MVars (literally "Mutable Variables") are mutable references that are either empty or contain a
+/// value of type A.  An MVar is often compared to a box, or to a diner in that if there is no value
+/// in the box (no food in the restaurant), you have to wait, possibly in line, before you can get
+/// what you want.  In this way, they are "Synchronization Primitives" that can be used to make
+/// multiple threads wait on the appropriate value before proceeding with a computation.
+public final class MVar<A> : K1<A> {
 	private var val : (World<RealWorld>, A?)
 	private let lock: UnsafeMutablePointer<pthread_mutex_t>
 	private let takeCond: UnsafeMutablePointer<pthread_cond_t>
@@ -32,18 +37,24 @@ public class MVar<A> : K1<A> {
 	}
 }
 
+/// Creates a new empty MVar.
 public func newEmptyMVar<A>() -> IO<MVar<A>> {
 	return IO({ (let rw) in
 		return (rw, MVar(rw))
 	})
 }
 
+/// Creates a new MVar containing the supplied value.
 public func newMVar<A>(x : A) -> IO<MVar<A>> {
 	return newEmptyMVar() >>= {
 		putMVar($0)(x: x) >> IO.pure($0)
 	}
 }
 
+/// Returns the contents of the MVar.
+///
+/// If the MVar is empty, this will block until a value is put into the MVar.  If the MVar is full,
+/// the value is wrapped up in an IO computation and the MVar is emptied.
 public func takeMVar<A>(m : MVar<A>) -> IO<A> {
 	return IO({ (let rw) in
 		pthread_mutex_lock(m.lock)
@@ -58,6 +69,10 @@ public func takeMVar<A>(m : MVar<A>) -> IO<A> {
 	})
 }
 
+/// Atomically reads the contents of an MVar.
+///
+/// If the MVar is currently empty, this will block until a value is put into it.  If the MVar is
+/// ful, the value is wrapped up in an IO computation, but the MVar remains full.
 public func readMVar<A>(m : MVar<A>) -> IO<A> {
 	return IO({ (let rw) in
 		pthread_mutex_lock(m.lock)
@@ -71,6 +86,9 @@ public func readMVar<A>(m : MVar<A>) -> IO<A> {
 	})
 }
 
+/// Puts a value into an MVar.
+///
+/// If the MVar is currently full, the function will block until it becomes empty again.
 public func putMVar<A>(m : MVar<A>)(x: A) -> IO<()> {
 	return IO({ (let rw) in
 		pthread_mutex_lock(m.lock)
@@ -84,6 +102,10 @@ public func putMVar<A>(m : MVar<A>)(x: A) -> IO<()> {
 	})
 }
 
+/// Attempts to return the contents of the MVar without blocking.
+///
+/// If the MVar is empty, this will immediately returns a None wrapped in an IO computation.  If the
+/// MVar is full, the value is wrapped up in an IO computation and the MVar is emptied.
 public func tryTakeMVar<A>(m : MVar<A>) -> IO<Optional<A>> {
 	return IO({ (let rw) in
 		pthread_mutex_lock(m.lock)
@@ -98,6 +120,10 @@ public func tryTakeMVar<A>(m : MVar<A>) -> IO<Optional<A>> {
 	})
 }
 
+/// Attempts to put a value into an MVar without blocking.
+///
+/// If the MVar is empty, this will immediately returns a true wrapped in an IO computation.  If the
+/// MVar is full, nothing occurs and a false is returned in an IO computation.
 public func tryPutMVar<A>(m : MVar<A>)(x: A) -> IO<Bool> {
 	return IO({ (let rw) in
 		pthread_mutex_lock(m.lock)
@@ -111,6 +137,10 @@ public func tryPutMVar<A>(m : MVar<A>)(x: A) -> IO<Bool> {
 	})
 }
 
+/// Attempts to read the contents of an MVar without blocking.
+///
+/// If the MVar is empty, this function returns a None in an IO computation.  If the MVar is full,
+/// this function wraps the value in a Some and an IO computation and returns immediately.
 public func tryReadMVar<A>(m : MVar<A>) -> IO<Optional<A>> {
 	return IO({ (let rw) in
 		pthread_mutex_lock(m.lock)
@@ -124,12 +154,19 @@ public func tryReadMVar<A>(m : MVar<A>) -> IO<Optional<A>> {
 	})
 }
 
+/// Checks whether a given MVar is empty.
+///
+/// This function is just a snapshot of the state of the MVar at that point in time.  In heavily 
+/// concurrent computations, this may change out from under you without warning, or even by the time
+/// it can be acted on.  It is better to use one of the direct actions above.
 public func isEmptyMVar<A>(m : MVar<A>) -> IO<Bool> {
 	return IO({ (let rw) in
 		return (rw, m.val.1 == nil)
 	})
 }
 
+/// Atomically, take a value from the MVar, put a new value in the MVar, then return the old value 
+/// in an IO computation.
 public func swapMVar<A>(m : MVar<A>)(x : A) -> IO<A> {
 	return do_ { () -> A in
 		var old : A! = nil

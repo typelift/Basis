@@ -13,6 +13,8 @@ public struct ChItem<A> {
 	let stream : MVar<ChItem<A>>
 }
 
+/// Channels are unbounded FIFO streams of values with a read and write terminals comprised of
+/// MVars.
 public class Chan<A> : K1<A> {
 	let readEnd : MVar<MVar<ChItem<A>>>
 	let writeEnd : MVar<MVar<ChItem<A>>>
@@ -23,6 +25,7 @@ public class Chan<A> : K1<A> {
 	}
 }
 
+/// Creates and returns a new empty channel.
 public func newChan<A>() -> IO<Chan<A>> {
 	return do_({ () -> Chan<A> in
 		var hole : MVar<ChItem<A>>! = nil
@@ -36,6 +39,7 @@ public func newChan<A>() -> IO<Chan<A>> {
 	})
 }
 
+/// Writes a value to a channel.
 public func writeChan<A>(c : Chan<A>)(x : A) -> IO<()> {
 	return do_({ () -> () in
 		var newHole : MVar<ChItem<A>>!
@@ -48,6 +52,7 @@ public func writeChan<A>(c : Chan<A>)(x : A) -> IO<()> {
 	})
 }
 
+/// Reads a value from the channel.
 public func readChan<A>(c : Chan<A>) -> IO<A> {
 	return do_({ () -> IO<A> in
 		return modifyMVar(c.readEnd)({ (let readEnd) in
@@ -61,6 +66,11 @@ public func readChan<A>(c : Chan<A>) -> IO<A> {
 	})
 }
 
+/// Duplicates a channel.
+///
+/// The duplicate channel begins empty, but data written to either channel from then on will be 
+/// available from both. Because both channels share the same write end, data inserted into one
+/// channel may be read by both channels.
 public func dupChan<A>(c : Chan<A>) -> IO<Chan<A>> {
 	return do_({ () -> Chan<A> in
 		var hole : MVar<ChItem<A>>!

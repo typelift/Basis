@@ -93,4 +93,17 @@ class FunctionsSpec : XCTestCase {
 		XCTAssertTrue(all({ $0 == true })(l: zip(srt.map(fst))(l2: sarr.map(fst)).map(==)), "")
 		XCTAssertTrue(all({ $0 == true })(l: zip(srt.map(snd))(l2: sarr.map(snd)).map(==)), "")
 	}
+	
+	func testFixpoint() {
+		let f : (Int -> Int) -> Int -> Int = { (let fact) in
+			return { (let x) in
+				if x == 0 {
+					return 1
+				}
+				return x * fact(x - 1)
+			}
+		}
+		
+		XCTAssertTrue(fix(f)(x: 5) == 120, "")
+	}
 }

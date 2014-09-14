@@ -50,6 +50,15 @@ infix operator |*| {
 	associativity left
 }
 
+/// "As Type Of" | A type-restricted version of const.  In cases of typing ambiguity, using this 
+/// function forces its first argument to resolve to the type of the second argument.  
+///
+/// Composed because it is the face one makes when having to tell the typechecker how to do its job.
+infix operator >=< {
+	precedence 0
+	associativity left
+}
+
 /// MARK: Control.Category
 
 /// Right-to-Left Composition | Composes two categories to form a new category with the source of

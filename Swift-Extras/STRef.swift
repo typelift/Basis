@@ -15,33 +15,34 @@ public final class STRef<S, A> : K2<S, A> {
 	init(_ val: A) {
 		self.value = val
 	}
-	
-	// Reads the value of the reference and bundles it in an ST
-	public func readSTRef() -> ST<S, A> {
-		return .pure(self.value)
-	}
-	
-	// Writes a new value into the reference.
-	public func writeSTRef(a: A) -> ST<S, STRef<S, A>> {
-		return ST(apply: { (let s) in
-			self.value = a
-			return (s, self)
-		})
-	}
-	
-	// Modifies the reference and returns the updated result.
-	public func modifySTRef(f: A -> A) -> ST<S, STRef<S, A>> {
-		return ST(apply: { (let s) in
-			self.value = f(self.value)
-			return (s, self)
-		})
-	}
 }
+
 
 // Creates a new STRef
 public func newSTRef<S, A>(x : A) -> ST<S, STRef<S, A>> {
 	return ST(apply: { (let s) in
 		let ref = STRef<S, A>(x)
+		return (s, ref)
+	})
+}
+
+// Reads the value of the reference and bundles it in an ST
+public func readSTRef<S, A>(ref : STRef<S, A>) -> ST<S, A> {
+	return .pure(ref.value)
+}
+
+// Writes a new value into the reference.
+public func writeSTRef<S, A>(ref : STRef<S, A>)(a : A) -> ST<S, STRef<S, A>> {
+	return ST(apply: { (let s) in
+		ref.value = a
+		return (s, ref)
+	})
+}
+
+// Modifies the reference and returns the updated result.
+public func modifySTRef<S, A>(ref : STRef<S, A>)(f: A -> A) -> ST<S, STRef<S, A>> {
+	return ST(apply: { (let s) in
+		ref.value = f(ref.value)
 		return (s, ref)
 	})
 }

@@ -8,6 +8,10 @@
 
 import Foundation
 
+/// QSem is a simple quanitity semaphore (read: counting semaphore) that aquires and releases
+/// resources in increments of 1.  The semaphore keeps track of blocked threads with MVar<()>'s.
+/// When a thread becomes unblocked, the semaphore simply fills the MVar with a ().  Threads can
+/// also unblock themselves by putting () into their MVar.
 public class QSem : K0 {
 	var contents : MVar<(UInt, [MVar<()>], [MVar<()>])>
 	
@@ -16,6 +20,7 @@ public class QSem : K0 {
 	}
 }
 
+/// Creates a new quantity semaphore.
 public func newQSem(initial : UInt) -> IO<QSem> {
 	return do_({ () -> QSem in
 		var sem : MVar<(UInt, [MVar<()>], [MVar<()>])>!
@@ -25,6 +30,7 @@ public func newQSem(initial : UInt) -> IO<QSem> {
 	})
 }
 
+/// Decrements the value of the semaphore by 1 and waits for a unit to become available.
 public func waitQSem(q : QSem) -> IO<()> {
 	return do_({ () -> () in
 		var t : (UInt, [MVar<()>], [MVar<()>])!
@@ -42,6 +48,7 @@ public func waitQSem(q : QSem) -> IO<()> {
 	})
 }
 
+/// Increments the value of the semaphore by 1 and signals that a unit has become available.
 public func signalQSem(q : QSem) -> IO<()> {
 	return do_({ () -> () in
 		var t : (UInt, [MVar<()>], [MVar<()>])!
@@ -73,17 +80,17 @@ private func loop(b : [MVar<()>], b2 : [MVar<()>]) -> IO<(UInt, [MVar<()>], [MVa
 	}
 	return do_({ () -> IO<(UInt, [MVar<()>], [MVar<()>])> in
 		switch b.destruct() {
-		case .Destructure(let b, let bs):
-			var r : Bool!
-			
-			r <- tryPutMVar(b)(x : ())
-			if r! {
-				let t : (UInt, [MVar<()>], [MVar<()>]) = (0, bs, b2)
-				return IO.pure(t)
-			}
-			return loop(bs, b2)
-		case .Empty:
-			assert(false, "")
+			case .Destructure(let b, let bs):
+				var r : Bool!
+				
+				r <- tryPutMVar(b)(x : ())
+				if r! {
+					let t : (UInt, [MVar<()>], [MVar<()>]) = (0, bs, b2)
+					return IO.pure(t)
+				}
+				return loop(bs, b2)
+			case .Empty:
+				assert(false, "")
 		}
 	})
 }
