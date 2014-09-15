@@ -112,6 +112,15 @@ public func group<A : Equatable>(xs : [A]) -> [[A]] {
 	return groupBy({ $0 == $1 })(l: xs)
 }
 
+/// Removes duplicates from a list.
+public func nub<A : Equatable>(xs : [A]) -> [A] {
+	return nubBy({ (let x) in
+		return { (let y) in
+			return x == y
+		}
+	})(xs)
+}
+
 /// Returns all initial segments of a list.
 public func inits<A>(l : [A]) -> [[A]] {
 	switch l.destruct() {
