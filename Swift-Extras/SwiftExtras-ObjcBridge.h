@@ -9,6 +9,6 @@
 #ifndef Swift_Extras_SwiftExtras_ObjcBridge_h
 #define Swift_Extras_SwiftExtras_ObjcBridge_h
 
-#import "CFIExceptionImpl.h"
+#import "CFIRealWorld.h"
 
 #endif

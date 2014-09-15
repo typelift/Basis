@@ -11,7 +11,7 @@ import Foundation
 // The IO Monad is a means of representing a computation which, when performed, interacts with
 // the outside world (i.e. performs effects) to arrive at some result of type A.
 public final class IO<A> : K1<A> {	
-	private let apply: (rw: World<RealWorld>) -> (World<RealWorld>, A)
+	internal let apply: (rw: World<RealWorld>) -> (World<RealWorld>, A)
 
 	init(apply: (rw: World<RealWorld>) -> (World<RealWorld>, A)) {
 		self.apply = apply
