@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// 
 public func error<A>(x : StaticString) -> A {
 	assert(false, x)
 }

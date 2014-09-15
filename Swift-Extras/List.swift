@@ -8,6 +8,24 @@
 
 import Foundation
 
+public func head<A>(l : [A]) -> A {
+	switch l.destruct() {
+		case .Empty:
+			assert(false, "Cannot take the head of an empty list.")
+		case .Destructure(let x, _):
+			return x
+	}
+}
+
+public func tail<A>(l : [A]) -> [A] {
+	switch l.destruct() {
+		case .Empty:
+			assert(false, "Cannot take the tail of an empty list.")
+		case .Destructure(_, let xs):
+			return xs
+	}
+}
+
 infix operator ++ { associativity left }
 
 func ++<T>(var lhs : [T], rhs : [T]) -> [T] {
@@ -15,7 +33,7 @@ func ++<T>(var lhs : [T], rhs : [T]) -> [T] {
 	return lhs
 }
 
-infix operator +> { associativity left }
+infix operator +> { associativity right }
 
 func +><T>(lhs : T, rhs : [T]) -> [T] {
 	var arr = rhs

@@ -18,9 +18,7 @@ public final class IORef<A> : K1<A> {
 }
 
 public func newIORef<A>(v: A) -> IO<IORef<A>> {
-	return stRefToIO(STRef<RealWorld, A>(v)).bind({ (let vari) in
-		return IO<IORef<A>>.pure(IORef(vari))
-	})
+	return stRefToIO(STRef<RealWorld, A>(v)) >>= { IO<IORef<A>>.pure(IORef($0)) }
 }
 
 public func readIORef<A>(ref : IORef<A>) -> IO<A> {

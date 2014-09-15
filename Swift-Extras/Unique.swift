@@ -9,7 +9,7 @@
 import Foundation
 
 /// Abstract Unique objects.  Objects of type Unique may be compared for equality and ordering and 
-/// hashed into Int.
+/// hashed.
 public class Unique : K0, Equatable, Hashable, Comparable {
 	private let val : Int
 	

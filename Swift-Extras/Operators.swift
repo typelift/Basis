@@ -127,6 +127,11 @@ infix operator <|> {
 	associativity left
 }
 
+/// MARK: System.IO
+
+/// Extract | Extracts a value from a monadic computation.
+infix operator <- {}
+
 /// MARK: Control.Arrow
 
 /// Split | Splits two computations and combines the result into one Arrow yielding a tuple of

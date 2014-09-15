@@ -8,8 +8,6 @@
 
 import Foundation
 
-infix operator <- {}
-
 // The IO Monad is a means of representing a computation which, when performed, interacts with
 // the outside world (i.e. performs effects) to arrive at some result of type A.
 public final class IO<A> : K1<A> {	
