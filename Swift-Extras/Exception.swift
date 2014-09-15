@@ -20,13 +20,13 @@ public struct SomeException : Exception {
 
 public func throw<A, E : Exception>(e : E) -> A {
 	CFIExceptionImpl.raise(e.description)
-	assert(false, "")
+	return undefined()
 }
 
 
-public func throwIO<A, E : Exception>(e : E) -> IO<A> {
+public func throwIO<A>(e : Exception) -> IO<A> {
 	CFIExceptionImpl.raise(e.description)
-	assert(false, "")
+	return undefined()
 }
 
 public func catchException<A>(io : IO<A>)(handler: Exception -> IO<A>) -> IO<A> {
@@ -37,35 +37,32 @@ public func catchException<A>(io : IO<A>)(handler: Exception -> IO<A>) -> IO<A> 
 
 
 public func mask<A, B>(io : (IO<A> -> IO<A>) -> IO<B>) -> IO<B> {
-	return io(id)
+	return undefined()
 }
 
-// Crashing the compiler again... Sigh
-//public func onException<A, B>(io : IO<A>)(what : IO<B>) -> IO<A> {
-//	return catchException(io)({ (let e) in
-//		return do_({
-//			var b : B!
-//			
-//			b <- what
-//			return throwIO(e)
-//		})
-//	})
-//}
-//
-//public func bracket<A, B, C>(before : IO<A>)(after : A -> IO<B>)(thing : A -> IO<C>) -> IO<C> {
-//	return mask({ (let restore) in
-//		return do_ { () -> C in
-//			var a : A!
-//			var r : C!
-//			var b : B!
-//			
-//			a <- before
-//			r <- onException(restore(thing(a)))(after(a))
-//			b <- after(a)
-//			return r
-//		}	
-//	})
-//}
+public func onException<A, B>(io : IO<A>)(what : IO<B>) -> IO<A> {
+	return catchException(io)({ (let e) in
+		return do_({
+			var b : B!
+			
+			b <- what
+			return throwIO(e)
+		})
+	})
+}
+
+public func bracket<A, B, C>(before : IO<A>)(after : A -> IO<B>)(thing : A -> IO<C>) -> IO<C> {
+	return do_ { () -> IO<C> in
+		var a : A!
+		var r : C!
+		var b : B!
+		
+		a <- before
+		r <- onException(thing(a!))(what: after(a!))
+		b <- after(a)
+		return IO.pure(r)
+	}	
+}
 
 private func catch<A>(io : IO<A>)(h : (NSException! -> IO<A>)) -> IO<A> {
 	var val : A! 

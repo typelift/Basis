@@ -68,6 +68,8 @@
 		84CD2A2F19C658AA00E7E93F /* Transformations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD2A2E19C658AA00E7E93F /* Transformations.swift */; };
 		84CD2A3019C658AA00E7E93F /* Transformations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD2A2E19C658AA00E7E93F /* Transformations.swift */; };
 		84CD2A3419C66A3000E7E93F /* StringSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD2A3119C66A2300E7E93F /* StringSpec.swift */; };
+		84CD2A3619C68EE300E7E93F /* IVar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD2A3519C68EE300E7E93F /* IVar.swift */; };
+		84CD2A3719C68EE300E7E93F /* IVar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD2A3519C68EE300E7E93F /* IVar.swift */; };
 		84D1AB2619BCCF1C00AF78E1 /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB2519BCCF1C00AF78E1 /* Function.swift */; };
 		84D1AB2819BCD01300AF78E1 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB2719BCD01300AF78E1 /* Functions.swift */; };
 		84D1AB2A19BCD3A900AF78E1 /* Monad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB2919BCD3A900AF78E1 /* Monad.swift */; };
@@ -151,6 +153,7 @@
 		84CD2A2B19C6589A00E7E93F /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		84CD2A2E19C658AA00E7E93F /* Transformations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transformations.swift; sourceTree = "<group>"; };
 		84CD2A3119C66A2300E7E93F /* StringSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringSpec.swift; sourceTree = "<group>"; };
+		84CD2A3519C68EE300E7E93F /* IVar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IVar.swift; sourceTree = "<group>"; };
 		84D1AB2519BCCF1C00AF78E1 /* Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Function.swift; sourceTree = "<group>"; };
 		84D1AB2719BCD01300AF78E1 /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		84D1AB2919BCD3A900AF78E1 /* Monad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Monad.swift; sourceTree = "<group>"; };
@@ -291,6 +294,7 @@
 			isa = PBXGroup;
 			children = (
 				84CD29F319C3BC5B00E7E93F /* MVar.swift */,
+				84CD2A3519C68EE300E7E93F /* IVar.swift */,
 				84CD29F919C4AA7C00E7E93F /* QSem.swift */,
 				84CD29F619C4A17D00E7E93F /* Chan.swift */,
 			);
@@ -549,6 +553,7 @@
 				848D632119C267A3004B3C4E /* Maybe.swift in Sources */,
 				84D1AB2C19BCD3BA00AF78E1 /* Applicative.swift in Sources */,
 				84BC2B6D19C134CD00EFC8D3 /* ST.swift in Sources */,
+				84CD2A3619C68EE300E7E93F /* IVar.swift in Sources */,
 				84D1AB4919BD024E00AF78E1 /* Search.swift in Sources */,
 				84CD2A1719C4EC7A00E7E93F /* Lift.swift in Sources */,
 				84D1AB2A19BCD3A900AF78E1 /* Monad.swift in Sources */,
@@ -603,6 +608,7 @@
 				84D1AB7619BD4AE000AF78E1 /* Functions.swift in Sources */,
 				84CD2A1019C4CAA200E7E93F /* Compare.swift in Sources */,
 				84D1AB7719BD4AE000AF78E1 /* List.swift in Sources */,
+				84CD2A3719C68EE300E7E93F /* IVar.swift in Sources */,
 				84CD2A0619C4B4C800E7E93F /* Unique.swift in Sources */,
 				84D1AB7819BD4AE000AF78E1 /* Folds.swift in Sources */,
 				84BC2B4019BFEDBC00EFC8D3 /* Either.swift in Sources */,
