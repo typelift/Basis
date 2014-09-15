@@ -127,6 +127,13 @@ infix operator <|> {
 	associativity left
 }
 
+/// MARK: Control.Monad
+
+infix operator >>- {
+	precedence 1
+	associativity left
+}
+
 /// MARK: System.IO
 
 /// Extract | Extracts a value from a monadic computation.

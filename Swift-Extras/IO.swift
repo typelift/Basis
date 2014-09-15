@@ -136,7 +136,7 @@ public func <* <A, B>(a : IO<A>, b : IO<B>) -> IO<A> {
 	return const <%> a <*> b
 }
 
-public func >>=<A, B>(x: IO<A>, f: A -> IO<B>) -> IO<B> {
+public func >>-<A, B>(x: IO<A>, f: A -> IO<B>) -> IO<B> {
 	return x.bind(f)
 }
 

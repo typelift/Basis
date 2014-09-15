@@ -46,7 +46,7 @@ public func newEmptyMVar<A>() -> IO<MVar<A>> {
 
 /// Creates a new MVar containing the supplied value.
 public func newMVar<A>(x : A) -> IO<MVar<A>> {
-	return newEmptyMVar() >>= {
+	return newEmptyMVar() >>- {
 		putMVar($0)(x: x) >> IO.pure($0)
 	}
 }

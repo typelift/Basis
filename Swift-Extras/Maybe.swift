@@ -185,7 +185,7 @@ extension Optional : Monad {
 	}
 }
 
-public func >>=<A, B>(x : Optional<A>, f : A -> Optional<B>) -> Optional<B> {
+public func >>-<A, B>(x : Optional<A>, f : A -> Optional<B>) -> Optional<B> {
 	return x.bind(f)
 }
 

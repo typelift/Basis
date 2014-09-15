@@ -39,10 +39,10 @@ public protocol Monad : Applicative {
 	/// inside the monad.
 	///
 	/// Bind is famous because it allows one to build arbitrary pipes of computations with no effort
-	/// at all.  You may have seen it notated >>=
+	/// at all.  You may have seen it notated >>-
 	func bind(f : A -> FB) -> FB
 	
-	func >>=(x : FA, f : A -> FB) -> FB
+	func >>-(x : FA, f : A -> FB) -> FB
 }
 
 public protocol MonadPlus : Monad {

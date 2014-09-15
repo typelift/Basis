@@ -124,12 +124,12 @@ extension Array : Monad {
 	}
 }
 
-public func >>=<A, B>(xs : [A], f : A -> [B]) -> [B] {
+public func >>-<A, B>(xs : [A], f : A -> [B]) -> [B] {
 	return concatMap(f)(l: xs)
 }
 
 public func >><A, B>(x : [A], y : [B]) -> [B] {
-	return x >>= { (_) in
+	return x >>- { (_) in
 		return y
 	}
 }
