@@ -8,35 +8,55 @@
 
 import Foundation
 
-public func sortBy<A>(cmp : A -> A -> Bool)(lst : [A]) -> [A] {
-	return foldr(insertBy(cmp))(z: [])(lst: lst)
+public func groupBy<A>(cmp : A -> A -> Bool)(l : [A]) -> [[A]] {
+	switch l.destruct() {
+		case .Empty:
+			return []
+		case .Destructure(let x, let xs):
+			let (ys, zs) = span(cmp(x))(l: xs)
+			return (x +> ys) +> groupBy(cmp)(l: zs)
+	}
 }
 
-public func sortBy<A>(cmp : (A, A) -> Bool)(lst : [A]) -> [A] {
-	return foldr(insertBy(cmp))(z: [])(lst: lst)
+public func groupBy<A>(cmp : (A, A) -> Bool)(l : [A]) -> [[A]] {
+	switch l.destruct() {
+	case .Empty:
+		return []
+	case .Destructure(let x, let xs):
+		let (ys, zs) = span({ cmp(x, $0) })(l: xs)
+		return (x +> ys) +> groupBy(cmp)(l: zs)
+	}
 }
 
-public func insertBy<A>(cmp: A -> A -> Bool)(x : A)(lst : [A]) -> [A] {
-	switch lst.destruct() {
+public func sortBy<A>(cmp : A -> A -> Bool)(l : [A]) -> [A] {
+	return foldr(insertBy(cmp))(z: [])(l: l)
+}
+
+public func sortBy<A>(cmp : (A, A) -> Bool)(l : [A]) -> [A] {
+	return foldr(insertBy(cmp))(z: [])(l: l)
+}
+
+public func insertBy<A>(cmp: A -> A -> Bool)(x : A)(l : [A]) -> [A] {
+	switch l.destruct() {
 		case .Empty:
 			return [x]
 		case .Destructure(let y, let ys):
 			if cmp(x)(y) {
-				return y +> insertBy(cmp)(x: x)(lst: ys)
+				return y +> insertBy(cmp)(x: x)(l: ys)
 			}
-			return x +> lst
+			return x +> l
 	}
 }
 
-public func insertBy<A>(cmp: (A, A) -> Bool)(x : A)(lst : [A]) -> [A]  {
-	switch lst.destruct() {
+public func insertBy<A>(cmp: (A, A) -> Bool)(x : A)(l : [A]) -> [A]  {
+	switch l.destruct() {
 		case .Empty:
 			return [x]
 		case .Destructure(let y, let ys):
 			if cmp(x, y) {
-				return y +> insertBy(cmp)(x: x)(lst: ys)
+				return y +> insertBy(cmp)(x: x)(l: ys)
 			}
-			return x +> lst
+			return x +> l
 	}
 }
 
@@ -52,7 +72,7 @@ public func maximumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 						return t.0
 					}
 					return t.1
-				})(lst: $0)
+				})(l: $0)
 		}
 	}
 }
@@ -68,7 +88,7 @@ public func maximumBy<A>(cmp : (A, A) -> Bool) -> [A] -> A {
 						return t.0
 					}
 					return t.1
-				})(lst: $0)
+				})(l: $0)
 		}
 	}
 }
@@ -84,7 +104,7 @@ public func minimumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 						return t.1
 					}
 					return t.0
-				})(lst: $0)
+				})(l: $0)
 		}
 	}
 }
@@ -100,7 +120,7 @@ public func minimumBy<A>(cmp : (A, A) -> Bool) -> [A] -> A {
 						return t.1
 					}
 					return t.0
-				})(lst: $0)
+				})(l: $0)
 		}
 	}
 }

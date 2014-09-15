@@ -105,3 +105,47 @@ public func span<A>(p : A -> Bool)(l : [A]) -> ([A], [A]) {
 public func extreme<A>(p : A -> Bool)(l : [A]) -> ([A], [A]) {
 	return span({ ((!) • p)($0) })(l: l)
 }
+
+/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
+/// other.
+public func group<A : Equatable>(xs : [A]) -> [[A]] {
+	return groupBy({ $0 == $1 })(l: xs)
+}
+
+/// Returns all initial segments of a list.
+public func inits<A>(l : [A]) -> [[A]] {
+	switch l.destruct() {
+		case .Empty:
+			return []
+		case .Destructure(let x, let xs):
+			return [] +> subInits(l)
+	}
+}
+
+public func subInits<A>(l : [A]) -> [[A]] {
+	switch l.destruct() {
+		case .Empty:
+			return []
+		case .Destructure(let x, let xs):
+			return map({ x +> $0 })(l: inits(xs))
+	}
+}
+
+/// Returns all final segments of a list.
+public func tails<A>(l : [A]) -> [[A]] {
+	switch l.destruct() {
+		case .Empty:
+			return []
+		case .Destructure(let x, let xs):
+			return xs +> subTails(l)
+	}
+}
+
+func subTails<A>(l : [A]) -> [[A]] {
+	switch l.destruct() {
+		case .Empty:
+			return []
+		case .Destructure(let x, let xs):
+			return map({ x +> $0 })(l: inits(xs))
+	}
+}

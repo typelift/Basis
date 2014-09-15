@@ -21,7 +21,7 @@ public func error<A>(x : StaticString) -> A {
 ///
 /// For example:
 ///
-///     public func sortBy<A>(cmp : (A, A) -> Bool)(lst : [A]) -> [A] {
+///     public func sortBy<A>(cmp : (A, A) -> Bool)(l : [A]) -> [A] {
 ///         return undefined()
 ///     }
 public func undefined<A>() -> A {

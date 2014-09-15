@@ -14,7 +14,7 @@ public protocol Monoid {
 }
 
 //public func mconcat<M : Monoid>(l : [M]) -> M {
-//	return foldr(M.mappend)(z: M.mempty())(lst: l)
+//	return foldr(M.mappend)(z: M.mempty())(l: l)
 //}
 
 extension Array : Monoid {

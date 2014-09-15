@@ -55,7 +55,7 @@ public func transpose<A>(xss : [[A]]) -> [[A]] {
 ///
 /// partition({ $0 < 3 })([1, 2, 3, 4, 5]) == ([1, 2],[3, 4, 5])
 public func partition<A>(p : A -> Bool)(l : [A]) -> ([A], [A]) {
-	return foldr(select(p))(z: ([], []))(lst: l)
+	return foldr(select(p))(z: ([], []))(l: l)
 }
 
 private func select<A>(p : A -> Bool)(x : A) -> ([A], [A]) -> ([A], [A]) {
@@ -83,7 +83,7 @@ public func nonEmptySubsequences<A>(xs : [A]) -> [[A]] {
 				return { (let r) in
 					return ys +> (x +> ys) +> r
 				}
-			})(z: [])(lst: nonEmptySubsequences(xs))
+			})(z: [])(l: nonEmptySubsequences(xs))
 	}
 }
 

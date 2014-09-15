@@ -19,13 +19,13 @@ public struct SomeException : Exception {
 }
 
 public func throw<A, E : Exception>(e : E) -> A {
-	CFIExceptionImpl.raise(e.description)
+	CFIRealWorld.raise(e.description)
 	return undefined()
 }
 
 
 public func throwIO<A>(e : Exception) -> IO<A> {
-	CFIExceptionImpl.raise(e.description)
+	CFIRealWorld.raise(e.description)
 	return undefined()
 }
 
@@ -66,7 +66,7 @@ public func bracket<A, B, C>(before : IO<A>)(after : A -> IO<B>)(thing : A -> IO
 
 private func catch<A>(io : IO<A>)(h : (NSException! -> IO<A>)) -> IO<A> {
 	var val : A! 
-	CFIExceptionImpl.catch({ val = io.unsafePerformIO() }, to: { val = h($0).unsafePerformIO() })
+	CFIRealWorld.catch({ val = io.unsafePerformIO() }, to: { val = h($0).unsafePerformIO() })
 	return IO.pure(val!)
 }
 

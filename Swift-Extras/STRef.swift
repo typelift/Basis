@@ -46,7 +46,3 @@ public func modifySTRef<S, A>(ref : STRef<S, A>)(f: A -> A) -> ST<S, STRef<S, A>
 		return (s, ref)
 	})
 }
-
-public func ==<S, A : Equatable>(lhs : STRef<S, A>, rhs : STRef<S, A>) -> Bool {
-	return (lhs.value == rhs.value)
-}
