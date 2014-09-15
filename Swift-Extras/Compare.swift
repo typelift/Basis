@@ -52,7 +52,7 @@ public func maximumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 						return t.0
 					}
 					return t.1
-				})(xs0: $0)
+				})(lst: $0)
 		}
 	}
 }
@@ -68,7 +68,7 @@ public func maximumBy<A>(cmp : (A, A) -> Bool) -> [A] -> A {
 						return t.0
 					}
 					return t.1
-				})(xs0: $0)
+				})(lst: $0)
 		}
 	}
 }
@@ -84,7 +84,7 @@ public func minimumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 						return t.1
 					}
 					return t.0
-				})(xs0: $0)
+				})(lst: $0)
 		}
 	}
 }
@@ -100,7 +100,7 @@ public func minimumBy<A>(cmp : (A, A) -> Bool) -> [A] -> A {
 						return t.1
 					}
 					return t.0
-				})(xs0: $0)
+				})(lst: $0)
 		}
 	}
 }

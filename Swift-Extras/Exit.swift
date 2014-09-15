@@ -13,6 +13,7 @@ public enum ExitCode {
 	case ExitFailure(Int32)
 }
 
+/// Exits with a given error code.
 public func exitWith<A>(code : ExitCode) -> IO<A> {
 	switch code {
 		case .ExitSuccess:
@@ -22,10 +23,12 @@ public func exitWith<A>(code : ExitCode) -> IO<A> {
 	}
 }
 
+/// Exits with failure code 1.
 public func exitFailure<A>() -> IO<A> {
 	return exitWith(.ExitFailure(1))
 }
 
+/// Exits with error code 0 (success).
 public func exitSuccess<A>() -> IO<A> {
 	return exitWith(.ExitSuccess)
 }

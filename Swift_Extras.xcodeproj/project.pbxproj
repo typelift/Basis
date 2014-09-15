@@ -67,6 +67,7 @@
 		84CD2A2D19C6589A00E7E93F /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD2A2B19C6589A00E7E93F /* String.swift */; };
 		84CD2A2F19C658AA00E7E93F /* Transformations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD2A2E19C658AA00E7E93F /* Transformations.swift */; };
 		84CD2A3019C658AA00E7E93F /* Transformations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD2A2E19C658AA00E7E93F /* Transformations.swift */; };
+		84CD2A3419C66A3000E7E93F /* StringSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD2A3119C66A2300E7E93F /* StringSpec.swift */; };
 		84D1AB2619BCCF1C00AF78E1 /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB2519BCCF1C00AF78E1 /* Function.swift */; };
 		84D1AB2819BCD01300AF78E1 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB2719BCD01300AF78E1 /* Functions.swift */; };
 		84D1AB2A19BCD3A900AF78E1 /* Monad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB2919BCD3A900AF78E1 /* Monad.swift */; };
@@ -149,6 +150,7 @@
 		84CD2A2519C5193600E7E93F /* SwiftExtras-ObjcBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SwiftExtras-ObjcBridge.h"; sourceTree = "<group>"; };
 		84CD2A2B19C6589A00E7E93F /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		84CD2A2E19C658AA00E7E93F /* Transformations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transformations.swift; sourceTree = "<group>"; };
+		84CD2A3119C66A2300E7E93F /* StringSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringSpec.swift; sourceTree = "<group>"; };
 		84D1AB2519BCCF1C00AF78E1 /* Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Function.swift; sourceTree = "<group>"; };
 		84D1AB2719BCD01300AF78E1 /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		84D1AB2919BCD3A900AF78E1 /* Monad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Monad.swift; sourceTree = "<group>"; };
@@ -249,6 +251,7 @@
 				84D1AB3C19BCE6E600AF78E1 /* FunctionsSpec.swift */,
 				84CD2A1119C4D9E400E7E93F /* TupleSpec.swift */,
 				84D1AB3E19BCE7B200AF78E1 /* InfinitySpec.swift */,
+				84CD2A3119C66A2300E7E93F /* StringSpec.swift */,
 				84755CF619BCC652002F644D /* Supporting Files */,
 			);
 			name = Tests;
@@ -562,6 +565,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				84D1AB3B19BCE5B700AF78E1 /* OperatorsSpec.swift in Sources */,
+				84CD2A3419C66A3000E7E93F /* StringSpec.swift in Sources */,
 				84D1AB3819BCE22900AF78E1 /* FunctionSpec.swift in Sources */,
 				84D1AB3F19BCE7B200AF78E1 /* InfinitySpec.swift in Sources */,
 				84D1AB3D19BCE6E600AF78E1 /* FunctionsSpec.swift in Sources */,

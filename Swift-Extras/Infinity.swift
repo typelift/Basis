@@ -9,18 +9,24 @@
 import Foundation
 import Swift
 
+/// Returns an infinite list of repeated applications of a function to a value x.
+///
+///     iterate(f)(x) == [x, f(x), f(f(x)), ...]
 public func iterate<A>(f : A -> A)(x : A) -> LazySequenceOf<Iterate<A>, A> {
 	return LazySequenceOf(Iterate(ini: x, iter: f))
 }
 
+/// Generates an infinite list with x as every value.
 public func repeat<A>(x : A) -> LazySequenceOf<Iterate<A>, A> {
 	return LazySequenceOf(Iterate(ini: x, iter: id))
 }
 
+/// Returns a list with n values of x in it.
 public func replicate<A>(n : Int)(x : A) -> [A] {
 	return Array(count: n, repeatedValue: x)
 }
 
+/// Cycles a finite list into an infinite list.
 public func cycle<A>(x : [A]) -> LazySequenceOf<Cycle<A>, A> {
 	return LazySequenceOf(Cycle(ini: x))
 }

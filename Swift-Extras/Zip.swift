@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Zips two lists into an array of pairs.
 public func zip<A, B>(l : [A])(l2 : [B]) -> [(A, B)] {
 	switch l.destruct() {
 		case .Empty:
@@ -22,6 +23,7 @@ public func zip<A, B>(l : [A])(l2 : [B]) -> [(A, B)] {
 	}
 }
 
+/// Zips three lists into an array of triples.
 public func zip3<A, B, C>(l : [A])(l2 : [B])(l3 : [C]) -> [(A, B, C)] {
 	switch l.destruct() {
 		case .Empty:
@@ -41,6 +43,7 @@ public func zip3<A, B, C>(l : [A])(l2 : [B])(l3 : [C]) -> [(A, B, C)] {
 	}
 }
 
+/// Zips together the elements of two lists according to a combining function.
 public func zipWith<A, B, C>(f : A -> B -> C)(l : [A])(l2 : [B]) -> [C] {
 	switch l.destruct() {
 	case .Empty:
@@ -55,6 +58,7 @@ public func zipWith<A, B, C>(f : A -> B -> C)(l : [A])(l2 : [B]) -> [C] {
 	}
 }
 
+/// Zips together the elements of two lists according to a combining operator.
 public func zipWith<A, B, C>(f : (A, B) -> C)(l : [A])(l2 : [B]) -> [C] {
 	switch l.destruct() {
 		case .Empty:
@@ -69,6 +73,7 @@ public func zipWith<A, B, C>(f : (A, B) -> C)(l : [A])(l2 : [B]) -> [C] {
 	}
 }
 
+/// Unzips an array of tuples into a tuple of arrays.
 public func unzip<A, B>(l : [(A, B)]) -> ([A], [B]) {
 	var arra : [A] = []
 	var arrb : [B] = []
@@ -79,6 +84,7 @@ public func unzip<A, B>(l : [(A, B)]) -> ([A], [B]) {
 	return (arra, arrb)
 }
 
+/// Unzips an array of triples into a triple of arrays.
 public func unzip3<A, B, C>(l : [(A, B, C)]) -> ([A], [B], [C]) {
 	var arra : [A] = []
 	var arrb : [B] = []

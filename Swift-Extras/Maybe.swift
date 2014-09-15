@@ -189,7 +189,6 @@ public func >>=<A, B>(x : Optional<A>, f : A -> Optional<B>) -> Optional<B> {
 	return x.bind(f)
 }
 
-
 extension Optional : MonadPlus {
 	public func mzero() -> Optional<A> {
 		return .None
