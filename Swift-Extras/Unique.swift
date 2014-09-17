@@ -11,6 +11,12 @@ import Foundation
 /// Abstract Unique objects.  Objects of type Unique may be compared for equality and ordering and 
 /// hashed.
 public class Unique : K0, Equatable, Hashable, Comparable {
+	private class var source : IORef<Int> {
+		var ref : IORef<Int>!
+		ref <- newIORef(0)
+		return ref
+	}
+	
 	private let val : Int
 	
 	public var hashValue: Int { 
@@ -31,7 +37,7 @@ public func newUnique() -> IO<Unique> {
 	return do_({ () -> Unique in		
 		var r : Int!
 		
-		r <- modifyIORef(uniqSource())({ $0 + 1 })
+		r <- modifyIORef(Unique.source)({ $0 + 1 })
 		return Unique(r)
 	})
 }
@@ -54,8 +60,4 @@ public func <(lhs: Unique, rhs: Unique) -> Bool {
 
 public func ==(lhs: Unique, rhs: Unique) -> Bool {
 	return lhs.val == rhs.val
-}
-
-private func uniqSource() -> IORef<Int> {
-	return newIORef(0).unsafePerformIO()
 }

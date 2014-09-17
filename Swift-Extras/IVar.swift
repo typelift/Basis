@@ -20,7 +20,6 @@ public final class IVar<A> : K1<A> {
 		self.trans = trans
 		self.val = val
 	}
-	
 }
 
 public func newEmptyIVar<A>() -> IO<IVar<A>> {
