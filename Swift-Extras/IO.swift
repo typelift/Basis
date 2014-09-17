@@ -98,7 +98,6 @@ public func <^ <A, B>(x : A, io : IO<B>) -> IO<A> {
 	return IO.fmap(const(x))(io)
 }
 
-
 extension IO : Applicative {
 	public class func pure(a: A) -> IO<A> {
 		return IO<A>({ (let rw) in
@@ -106,13 +105,22 @@ extension IO : Applicative {
 		})
 	}
 	
-	public func ap<B>(fn: IO<A -> B>) -> IO<B> {
-		return IO<B>({ (let rw) in
-			let f = fn.unsafePerformIO()
-			let (nw, x) = self.apply(rw: rw)
-			return (nw, f(x))
-		})
-	}
+}
+
+public func <*><A, B>(fn: IO<A -> B>, m: IO<A>) -> IO<B> {
+	return IO<B>({ (let rw) in
+		let f = fn.unsafePerformIO()
+		let (nw, x) = m.apply(rw: rw)
+		return (nw, f(x))
+	})
+}
+
+public func *> <A, B>(a : IO<A>, b : IO<B>) -> IO<B> {
+	return const(id) <%> a <*> b
+}
+
+public func <* <A, B>(a : IO<A>, b : IO<B>) -> IO<A> {
+	return const <%> a <*> b
 }
 
 extension IO : Monad {
@@ -122,18 +130,6 @@ extension IO : Monad {
 			return f(a).apply(rw: nw)
 		})
 	}
-}
-
-public func <*><A, B>(mf: IO<A -> B>, m: IO<A>) -> IO<B> {
-	return m.ap(mf)
-}
-
-public func *> <A, B>(a : IO<A>, b : IO<B>) -> IO<B> {
-	return const(id) <%> a <*> b
-}
-
-public func <* <A, B>(a : IO<A>, b : IO<B>) -> IO<A> {
-	return const <%> a <*> b
 }
 
 public func >>-<A, B>(x: IO<A>, f: A -> IO<B>) -> IO<B> {

@@ -45,6 +45,7 @@ public protocol Monad : Applicative {
 	func >>-(x : FA, f : A -> FB) -> FB
 }
 
+/// A monoid for monads.
 public protocol MonadPlus : Monad {
 	func mzero() -> FA
 	func mplus(FA) -> FA -> FA
