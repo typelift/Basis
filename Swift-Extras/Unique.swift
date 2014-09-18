@@ -37,7 +37,7 @@ public func newUnique() -> IO<Unique> {
 	return do_({ () -> Unique in		
 		var r : Int!
 		
-		r <- modifyIORef(Unique.source)({ $0 + 1 })
+		r <- modifyIORef(Unique.source)({ $0 + 1 }) >> readIORef(Unique.source)
 		return Unique(r)
 	})
 }

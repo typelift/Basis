@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		845F01AB19CA802700F872B8 /* Equality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845F01AA19CA802700F872B8 /* Equality.swift */; };
+		845F01AC19CA802700F872B8 /* Equality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845F01AA19CA802700F872B8 /* Equality.swift */; };
+		845F01AF19CA81C300F872B8 /* Trace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845F01AE19CA81C300F872B8 /* Trace.swift */; };
+		845F01B019CA81C300F872B8 /* Trace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845F01AE19CA81C300F872B8 /* Trace.swift */; };
 		84755CEF19BCC652002F644D /* Swift-Extras.h in Headers */ = {isa = PBXBuildFile; fileRef = 84755CEE19BCC652002F644D /* Swift-Extras.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84755D0319BCC674002F644D /* Kinds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84755D0219BCC674002F644D /* Kinds.swift */; };
 		84755D0719BCC97D002F644D /* Functor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84755D0619BCC97D002F644D /* Functor.swift */; };
@@ -126,6 +130,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		845F01AA19CA802700F872B8 /* Equality.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Equality.swift; sourceTree = "<group>"; };
+		845F01AE19CA81C300F872B8 /* Trace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trace.swift; sourceTree = "<group>"; };
 		84755CE919BCC652002F644D /* Swift_Extras.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Swift_Extras.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		84755CED19BCC652002F644D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84755CEE19BCC652002F644D /* Swift-Extras.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Swift-Extras.h"; sourceTree = "<group>"; };
@@ -218,6 +224,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		845F01AD19CA81BD00F872B8 /* Debug */ = {
+			isa = PBXGroup;
+			children = (
+				845F01AE19CA81C300F872B8 /* Trace.swift */,
+			);
+			name = Debug;
+			sourceTree = "<group>";
+		};
 		84755CDF19BCC652002F644D = {
 			isa = PBXGroup;
 			children = (
@@ -248,6 +262,7 @@
 				84755D0819BCCB0B002F644D /* Operators.swift */,
 				84D1AB3319BCDB8800AF78E1 /* Control */,
 				84BC2B4419C11E8200EFC8D3 /* Data */,
+				845F01AD19CA81BD00F872B8 /* Debug */,
 				84CD2A0719C4B9D500E7E93F /* System */,
 				84E859D419BFBBE000E2AE4C /* Unsafe */,
 				84755CEC19BCC652002F644D /* Supporting Files */,
@@ -291,6 +306,7 @@
 			children = (
 				84D1AB2F19BCD7F100AF78E1 /* Bounded.swift */,
 				84BC2B3E19BFEDB800EFC8D3 /* Either.swift */,
+				845F01AA19CA802700F872B8 /* Equality.swift */,
 				84BC2B4B19C1220400EFC8D3 /* Foldable.swift */,
 				84CD2A1519C4EC7200E7E93F /* Function */,
 				84D1AB2719BCD01300AF78E1 /* Functions.swift */,
@@ -583,6 +599,7 @@
 				84CD29F719C4A17D00E7E93F /* Chan.swift in Sources */,
 				84D1AB4519BCEF6200AF78E1 /* Lazy.swift in Sources */,
 				84BC2B3C19BFCE4100EFC8D3 /* Arrow.swift in Sources */,
+				845F01AB19CA802700F872B8 /* Equality.swift in Sources */,
 				84D1AB3219BCDB1400AF78E1 /* Scans.swift in Sources */,
 				84BC2B4C19C1220400EFC8D3 /* Foldable.swift in Sources */,
 				84E859D219BFBBA600E2AE4C /* IO.swift in Sources */,
@@ -606,6 +623,7 @@
 				84D1AB2E19BCD5FD00AF78E1 /* Folds.swift in Sources */,
 				84CD2A0519C4B4C800E7E93F /* Unique.swift in Sources */,
 				84CD2A2319C5186D00E7E93F /* CFIRealWorld.m in Sources */,
+				845F01AF19CA81C300F872B8 /* Trace.swift in Sources */,
 				84E859D619BFBBE600E2AE4C /* Coerce.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -645,6 +663,7 @@
 				84BC2B6E19C134CD00EFC8D3 /* ST.swift in Sources */,
 				84CD29F519C3BC5B00E7E93F /* MVar.swift in Sources */,
 				84CD2A3B19C7234800E7E93F /* STM.swift in Sources */,
+				845F01AC19CA802700F872B8 /* Equality.swift in Sources */,
 				84D1AB7419BD4AE000AF78E1 /* Function.swift in Sources */,
 				84BC2B4D19C1220400EFC8D3 /* Foldable.swift in Sources */,
 				84CD2A4819C8FF2D00E7E93F /* Query.swift in Sources */,
@@ -679,6 +698,7 @@
 				84CD2A3E19C723AA00E7E93F /* Concurrent.swift in Sources */,
 				84D1AB8119BD4AE000AF78E1 /* FunctionsSpec.swift in Sources */,
 				84BC2B7119C1363700EFC8D3 /* STRef.swift in Sources */,
+				845F01B019CA81C300F872B8 /* Trace.swift in Sources */,
 				84D1AB8219BD4AE000AF78E1 /* InfinitySpec.swift in Sources */,
 				84CD2A2D19C6589A00E7E93F /* String.swift in Sources */,
 			);
