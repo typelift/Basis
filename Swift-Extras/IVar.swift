@@ -13,56 +13,58 @@ import Foundation
 public final class IVar<A> : K1<A> {
 	private let lock : MVar<()>
 	private let trans : MVar<A>
-	private let val : A
+	private let val : IO<A>
 	
-	init(_ lock : MVar<()>, _ trans : MVar<A>, _ val : A) {
+	init(_ lock : MVar<()>, _ trans : MVar<A>, _ val : IO<A>) {
 		self.lock = lock
 		self.trans = trans
 		self.val = val
 	}
 }
 
+/// Creates a new empty IVar
 public func newEmptyIVar<A>() -> IO<IVar<A>> {
 	return do_ { () -> IVar<A> in
 		var lock : MVar<()>!
 		var trans : MVar<A>!
-		var val : A!
 		
 		lock <- newMVar(())
 		trans <- newEmptyMVar()
-		val <- takeMVar(trans)
-		return IVar(lock, trans, val)
+		return IVar(lock, trans, do_ { () -> A in
+			var val : A!
+			val <- takeMVar(trans)
+			return val
+		})
 	}
 }
 
+/// Creates a new IVar containing the supplied value.
 public func newIVar<A>(x : A) -> IO<IVar<A>> {
 	return do_ { () -> IVar<A> in
 		var lock : MVar<()>!
-		return IVar(lock, error("unused MVar"), x)
+		return IVar(lock, error("unused MVar"), IO.pure(x))
 	}
 }
 
+/// Returns the contents of the IVar.
+///
+/// If the IVar is empty, this will block until a value is put into the IVar.  If the IVar is full,
+/// the function returns the value immediately.
 public func readIVar<A>(v : IVar<A>) -> A {
-	return v.val
+	var val : A!
+	val <- v.val
+	return val
 }
 
-public func tryReadIVar<A>(v : IVar<A>) -> IO<Optional<A>> {
-	return do_ { () -> Optional<A> in
-		var empty : Bool!
-		
-		empty <- isEmptyMVar(v.lock)
-		if empty! {
-			return .Some(v.val)
-		}
-		return .None
-	}
-}
-
-public func writeIVar<A>(v : IVar<A>)(x : A) -> IO<()> {
+/// Writes a value into an IVar.
+///
+/// If the IVar is currently full, the calling thread will seize up, and this function will throw an
+/// exception.
+public func putIVar<A>(v : IVar<A>)(x : A) -> IO<()> {
 	return do_ { () -> IO<()> in
 		var a : Bool!
 		
-		a <- tryWriteIVar(v)(x: x)
+		a <- tryPutIVar(v)(x: x)
 		if a! == false {
 			return throwIO(BlockedIndefinitelyOnIVar())
 		}
@@ -70,7 +72,29 @@ public func writeIVar<A>(v : IVar<A>)(x : A) -> IO<()> {
 	}
 }
 
-public func tryWriteIVar<A>(v : IVar<A>)(x : A) -> IO<Bool> {
+/// Attempts to read the contents of an IVar
+///
+/// If the MVar is empty, this function returns a None in an IO computation.  If the MVar is full,
+/// this function wraps the value in a Some and an IO computation and returns immediately.
+public func tryReadIVar<A>(v : IVar<A>) -> IO<Optional<A>> {
+	return do_ { () -> Optional<A> in
+		var empty : Bool!
+		
+		empty <- isEmptyMVar(v.lock)
+		if empty! {
+			var val : A!
+			val <- v.val
+			return .Some(val)
+		}
+		return .None
+	}
+}
+
+/// Attempts to write a vlaue into an IVar.
+///
+/// If the IVar is empty, this will immediately return true wrapped in an IO computation.  If the
+/// IVar is full, nothing happens and it will return false wrapped in an IO computation.
+public func tryPutIVar<A>(v : IVar<A>)(x : A) -> IO<Bool> {
 	return do_ { () -> IO<Bool> in
 		var a : Optional<()>!
 		
@@ -79,7 +103,9 @@ public func tryWriteIVar<A>(v : IVar<A>)(x : A) -> IO<Bool> {
 			case .None:
 				return IO.pure(false)
 			case .Some(_):
-				return putMVar(v.trans)(x: v.val) >> IO.pure(true)
+				var val : A!
+				val <- v.val
+				return putMVar(v.trans)(x: val) >> IO.pure(true)
 		}
 	}
 }

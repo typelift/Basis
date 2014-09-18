@@ -176,18 +176,26 @@ public func swapMVar<A>(m : MVar<A>)(x : A) -> IO<A> {
 	}
 }
 
+///
 public func withMVar<A, B>(m : MVar<A>)(f : A -> IO<B>) -> IO<B> {
-	return do_ { () -> B in
-		var a : A!
-		var b : B!
-		
-		a <- takeMVar(m)
-		b <- f(a)
-		putMVar(m)(x: a)
-		return b!
-	}	
+	return mask({ (let restore : (IO<B> -> IO<B>)) -> IO<B> in
+		return do_ { () -> B in
+			var a : A!
+			var b : B!
+			
+			a <- takeMVar(m)
+			b <- catchException(restore(f(a)))({ (let e) in
+				return do_ { () -> IO<B> in
+					return putMVar(m)(x: a) >> throw(e)
+				}
+			})
+			putMVar(m)(x: a)
+			return b!
+		}	
+	})
 }
 
+/// 
 public func modifyMVar_<A>(m : MVar<A>)(f : A -> IO<A>) -> IO<()> {
 	return do_({ () -> () in
 		var a : A! = nil

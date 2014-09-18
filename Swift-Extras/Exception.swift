@@ -37,7 +37,9 @@ public func catchException<A>(io : IO<A>)(handler: Exception -> IO<A>) -> IO<A> 
 
 
 public func mask<A, B>(io : (IO<A> -> IO<A>) -> IO<B>) -> IO<B> {
-	return undefined()
+	return do_ {
+		return io(id)
+	}
 }
 
 public func onException<A, B>(io : IO<A>)(what : IO<B>) -> IO<A> {
@@ -52,16 +54,31 @@ public func onException<A, B>(io : IO<A>)(what : IO<B>) -> IO<A> {
 }
 
 public func bracket<A, B, C>(before : IO<A>)(after : A -> IO<B>)(thing : A -> IO<C>) -> IO<C> {
-	return do_ { () -> IO<C> in
-		var a : A!
-		var r : C!
-		var b : B!
-		
-		a <- before
-		r <- onException(thing(a!))(what: after(a!))
-		b <- after(a)
-		return IO.pure(r)
-	}	
+	return mask({ (let restore : IO<C> -> IO<C>) -> IO<C> in
+		return do_ { () -> IO<C> in
+			var a : A!
+			var r : C!
+			var b : B!
+			
+			a <- before
+			r <- onException(restore(thing(a!)))(what: after(a!))
+			b <- after(a)
+			return IO.pure(r)
+		}	
+	})
+}
+
+public func finally<A, B>(a : IO<A>)(then : IO<B>) -> IO<A> {
+	return mask({ (let restore : IO<A> -> IO<A>) -> IO<A> in
+		return do_ { () -> A in
+			var r : A!
+			var b : B!
+			
+			r <- onException(restore(a))(what: then)
+			b <- then
+			return r
+		}
+	})
 }
 
 private func catch<A>(io : IO<A>)(h : (NSException! -> IO<A>)) -> IO<A> {

@@ -6,10 +6,8 @@
 //  Copyright (c) 2014 Robert Widmann. All rights reserved.
 //
 
-import Foundation
-
 public final class STM<A> : K1<A> {
-	internal let apply: (rw: World<RealWorld>) -> (World<RealWorld>, A)
+	internal let apply: World<RealWorld> -> (World<RealWorld>, A)
 
 	private let lock: UnsafeMutablePointer<pthread_mutex_t>
 	private let readCond: UnsafeMutablePointer<pthread_cond_t>
@@ -19,7 +17,7 @@ public final class STM<A> : K1<A> {
 	private var readers : UInt = 0
 	private var writers : UInt = 0
 	
-	init(apply: (rw: World<RealWorld>) -> (World<RealWorld>, A)) {
+	init(apply: World<RealWorld> -> (World<RealWorld>, A)) {
 		self.apply = apply
 		self.lock = UnsafeMutablePointer.alloc(sizeof(pthread_mutex_t))
 		self.readCond = UnsafeMutablePointer.alloc(sizeof(pthread_cond_t))
@@ -168,6 +166,6 @@ private func unSTM<A>(stm : STM<A>) -> World<RealWorld> -> (World<RealWorld>, A)
 	return stm.apply
 }
 
-public func unsafeIOToSTM<A>(io : IO<A>) -> STM<A> {
-	return STM(io.apply)
-}
+//public func unsafeIOToSTM<A>(io : IO<A>) -> STM<A> {
+//	return STM(io.apply)
+//}

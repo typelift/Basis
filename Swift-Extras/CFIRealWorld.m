@@ -10,8 +10,9 @@
 #include <unistd.h>
 #include <sys/errno.h>
 
-#define _GNU_SOURCE
 #include <sched.h>
+#include <mach/thread_act.h>
+#include <mach/mach_host.h>
 
 NSString *const CFIExceptionDomain = @"CFIExceptionDomain";
 
@@ -59,6 +60,7 @@ NSString *const CFIExceptionDomain = @"CFIExceptionDomain";
 + (void)labelThreadWithName:(const char *)name {
 	pthread_setname_np(name);
 }
+
 + (void)yieldThread {
 	pthread_yield_np();
 }
