@@ -186,7 +186,7 @@ public func withMVar<A, B>(m : MVar<A>)(f : A -> IO<B>) -> IO<B> {
 			a <- takeMVar(m)
 			b <- catchException(restore(f(a)))({ (let e) in
 				return do_ { () -> IO<B> in
-					return putMVar(m)(x: a) >> throw(e)
+					return putMVar(m)(x: a) >> throwIO(e)
 				}
 			})
 			putMVar(m)(x: a)

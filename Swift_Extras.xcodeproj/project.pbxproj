@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		845F01AB19CA802700F872B8 /* Equality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845F01AA19CA802700F872B8 /* Equality.swift */; };
-		845F01AC19CA802700F872B8 /* Equality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845F01AA19CA802700F872B8 /* Equality.swift */; };
 		845F01AF19CA81C300F872B8 /* Trace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845F01AE19CA81C300F872B8 /* Trace.swift */; };
 		845F01B019CA81C300F872B8 /* Trace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845F01AE19CA81C300F872B8 /* Trace.swift */; };
 		84755CEF19BCC652002F644D /* Swift-Extras.h in Headers */ = {isa = PBXBuildFile; fileRef = 84755CEE19BCC652002F644D /* Swift-Extras.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -120,9 +118,6 @@
 		84D1AB7C19BD4AE000AF78E1 /* Sublists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB4619BCFF3600AF78E1 /* Sublists.swift */; };
 		84D1AB7D19BD4AE000AF78E1 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB4819BD024E00AF78E1 /* Search.swift */; };
 		84D1AB7E19BD4AE000AF78E1 /* Zip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB4A19BD051100AF78E1 /* Zip.swift */; };
-		84D1AB7F19BD4AE000AF78E1 /* FunctionSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB3619BCE21800AF78E1 /* FunctionSpec.swift */; };
-		84D1AB8119BD4AE000AF78E1 /* FunctionsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB3C19BCE6E600AF78E1 /* FunctionsSpec.swift */; };
-		84D1AB8219BD4AE000AF78E1 /* InfinitySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D1AB3E19BCE7B200AF78E1 /* InfinitySpec.swift */; };
 		84E859D219BFBBA600E2AE4C /* IO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E859D119BFBBA600E2AE4C /* IO.swift */; };
 		84E859D319BFBBA600E2AE4C /* IO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E859D119BFBBA600E2AE4C /* IO.swift */; };
 		84E859D619BFBBE600E2AE4C /* Coerce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E859D519BFBBE600E2AE4C /* Coerce.swift */; };
@@ -130,7 +125,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		845F01AA19CA802700F872B8 /* Equality.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Equality.swift; sourceTree = "<group>"; };
 		845F01AE19CA81C300F872B8 /* Trace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trace.swift; sourceTree = "<group>"; };
 		84755CE919BCC652002F644D /* Swift_Extras.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Swift_Extras.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		84755CED19BCC652002F644D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -306,7 +300,6 @@
 			children = (
 				84D1AB2F19BCD7F100AF78E1 /* Bounded.swift */,
 				84BC2B3E19BFEDB800EFC8D3 /* Either.swift */,
-				845F01AA19CA802700F872B8 /* Equality.swift */,
 				84BC2B4B19C1220400EFC8D3 /* Foldable.swift */,
 				84CD2A1519C4EC7200E7E93F /* Function */,
 				84D1AB2719BCD01300AF78E1 /* Functions.swift */,
@@ -599,7 +592,6 @@
 				84CD29F719C4A17D00E7E93F /* Chan.swift in Sources */,
 				84D1AB4519BCEF6200AF78E1 /* Lazy.swift in Sources */,
 				84BC2B3C19BFCE4100EFC8D3 /* Arrow.swift in Sources */,
-				845F01AB19CA802700F872B8 /* Equality.swift in Sources */,
 				84D1AB3219BCDB1400AF78E1 /* Scans.swift in Sources */,
 				84BC2B4C19C1220400EFC8D3 /* Foldable.swift in Sources */,
 				84E859D219BFBBA600E2AE4C /* IO.swift in Sources */,
@@ -663,7 +655,6 @@
 				84BC2B6E19C134CD00EFC8D3 /* ST.swift in Sources */,
 				84CD29F519C3BC5B00E7E93F /* MVar.swift in Sources */,
 				84CD2A3B19C7234800E7E93F /* STM.swift in Sources */,
-				845F01AC19CA802700F872B8 /* Equality.swift in Sources */,
 				84D1AB7419BD4AE000AF78E1 /* Function.swift in Sources */,
 				84BC2B4D19C1220400EFC8D3 /* Foldable.swift in Sources */,
 				84CD2A4819C8FF2D00E7E93F /* Query.swift in Sources */,
@@ -692,14 +683,11 @@
 				84CD2A1B19C4F29900E7E93F /* Lower.swift in Sources */,
 				848D631F19C25CE5004B3C4E /* Error.swift in Sources */,
 				84D1AB7E19BD4AE000AF78E1 /* Zip.swift in Sources */,
-				84D1AB7F19BD4AE000AF78E1 /* FunctionSpec.swift in Sources */,
 				84BC2B7419C1366F00EFC8D3 /* IORef.swift in Sources */,
 				84CD2A3019C658AA00E7E93F /* Transformations.swift in Sources */,
 				84CD2A3E19C723AA00E7E93F /* Concurrent.swift in Sources */,
-				84D1AB8119BD4AE000AF78E1 /* FunctionsSpec.swift in Sources */,
 				84BC2B7119C1363700EFC8D3 /* STRef.swift in Sources */,
 				845F01B019CA81C300F872B8 /* Trace.swift in Sources */,
-				84D1AB8219BD4AE000AF78E1 /* InfinitySpec.swift in Sources */,
 				84CD2A2D19C6589A00E7E93F /* String.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -801,10 +789,15 @@
 				INFOPLIST_FILE = "Swift-Extras/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/system",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = Swift_Extras;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Swift-Extras/SwiftExtras-ObjcBridge.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -823,10 +816,15 @@
 				INFOPLIST_FILE = "Swift-Extras/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/system",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = Swift_Extras;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Swift-Extras/SwiftExtras-ObjcBridge.h";
 			};
 			name = Release;
@@ -845,6 +843,7 @@
 				);
 				INFOPLIST_FILE = "Swift-ExtrasTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = Swift_ExtrasTests;
 			};
 			name = Debug;
@@ -859,6 +858,7 @@
 				);
 				INFOPLIST_FILE = "Swift-ExtrasTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = Swift_ExtrasTests;
 			};
 			name = Release;
@@ -880,9 +880,14 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/system",
+				);
 				PRODUCT_NAME = Swift_Extras;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_INCLUDE_PATHS = CommonCrypto;
 				SWIFT_OBJC_BRIDGING_HEADER = "Swift-Extras/SwiftExtras-ObjcBridge.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -902,9 +907,14 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/system",
+				);
 				PRODUCT_NAME = Swift_Extras;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_INCLUDE_PATHS = CommonCrypto;
 				SWIFT_OBJC_BRIDGING_HEADER = "Swift-Extras/SwiftExtras-ObjcBridge.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;

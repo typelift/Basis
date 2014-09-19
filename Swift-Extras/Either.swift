@@ -46,6 +46,8 @@ public final class Either<A, B> : K2<A, B> {
 	}
 }
 
+/// Case analysis.  If the Either is Left, applies the left function to that value.  Else, if the 
+/// either is right, applies the right function to that value.
 public func either<A, B, C>(left : A -> C)(right : B -> C)(e : Either<A, B>) -> C {
 	switch e.destruct() {
 		case .Left(let x):
@@ -55,6 +57,7 @@ public func either<A, B, C>(left : A -> C)(right : B -> C)(e : Either<A, B>) -> 
 	}
 }
 
+/// Extracts all eithers that have left values in order.
 public func lefts<A, B>(l : [Either<A, B>]) -> [A] {
 	return concatMap({
 		switch $0.destruct() {
@@ -66,6 +69,7 @@ public func lefts<A, B>(l : [Either<A, B>]) -> [A] {
 	})(l: l)
 }
 
+/// Extracts all eithers that have right values in order.
 public func rights<A, B>(l : [Either<A, B>]) -> [B] {
 	return concatMap({
 		switch $0.destruct() {
@@ -77,6 +81,7 @@ public func rights<A, B>(l : [Either<A, B>]) -> [B] {
 	})(l: l)
 }
 
+/// Returns whether an either holds a right value.
 public func isRight<A, B>(e : Either<A, B>) -> Bool {
 	switch e.destruct() {
 		case .Right(_):
@@ -86,6 +91,7 @@ public func isRight<A, B>(e : Either<A, B>) -> Bool {
 	}
 }
 
+/// Returns whether an either holds a left value.
 public func isLeft<A, B>(e : Either<A, B>) -> Bool {
 	switch e.destruct() {
 		case .Left(_):

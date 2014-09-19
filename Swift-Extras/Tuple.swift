@@ -45,3 +45,10 @@ public func swap<A, B>(t : (A, B)) -> (B, A) {
 	return (t.1, t.0)
 }
 
+/// Pair Formation | Forms a pair from two arguments.  (⌥ + ⇧ + P)
+///
+/// (,), the pair formation operator, is a reserved symbol in Swift with a meaning beyond just 
+/// tuple formation.  This means it is also not a proper function.  
+public func ∏<A, B>(l : A, r : B) -> (A, B) {
+	return (l, r)
+}

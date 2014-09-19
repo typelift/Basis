@@ -18,10 +18,12 @@ extension String {
 	}
 }
 
+/// Packs an array of characters into a String.
 public func pack(x : [Character]) -> String {
 	return String(seq: x)
 }
 
+/// Unpacks a string into an array of characters.
 public func unpack(s : String) -> [Character] {
 	return Array(s)
 }

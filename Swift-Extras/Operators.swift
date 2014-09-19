@@ -13,7 +13,7 @@ import Foundation
 /// Function Composition | Composes the target of the left function with the source of the second
 /// function to pipe the results through one larger function from left source to right target.
 ///
-/// g . f x = g(f(x))
+/// g • f x = g(f(x))
 infix operator • {
 	precedence 9
 	associativity right
@@ -32,6 +32,9 @@ infix operator <| {
 	precedence 0
 	associativity right
 }
+
+/// Pair Formation | Forms a pair from two arguments.  (⌥ + ⇧ + P)
+infix operator ∏ {}
 
 /// Pipe Forward | Applies the argument on its left to a function on its right.
 ///

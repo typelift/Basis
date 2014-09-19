@@ -22,19 +22,26 @@ import Foundation
 /// - >>>       b -> [ f ] -> c -> [ g ] -> d
 ///
 /// - arr       b -> [ f ] -> c
-/// - first     b -> [ f ] -> c
-///             d ----------> d
 ///
-/// - second    d ----------> d
+/// - first     b -> [ f ] -> c
+///             d - - - - -> d
+///
+/// - second    d - - - - -> d
 ///             b -> [ f ] -> c
 ///
-/// - ***       b -> [ f ] -> c \
-///                               >---> (c, e)
-///             d -> [ g ] -> e /
 ///
-///                 /- [ f ] -> c \
-/// - &&&       b <                 >---> (c, d)
-///                 \- [ g ] -> d /
+/// - ***       b - [ f ] -> c - •
+///                               \
+///                                o - -> (c, e)
+///                               /
+///             d - [ g ] -> e - •
+///
+///
+///                 • - [ f ] -> c - •
+///                 |                 \
+/// - &&&       b - o                  o - -> (c, d)
+///                 |                 /
+///                 • - [ g ] -> d - •
 ///
 /// Arrows inherit from Category so we can get Composition For Free™.  Unfortunately, we cannot 
 /// reuse the typealiases from Category, so you must redefine AB and AC as the source and target 

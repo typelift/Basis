@@ -21,9 +21,10 @@ public protocol Monoid {
 	class func mappend(Self) -> Self -> Self
 }
 
-public func mconcat<M : Monoid>(l : [M]) -> M {
-	return foldr(M.mappend)(z: M.mempty())(l: l)
-}
+// Uncomment to crash Swiftc
+//public func mconcat<M : Monoid>(l : [M]) -> M {
+//	return foldr(M.mappend)(z: M.mempty())(l: l)
+//}
 
 extension Array : Monoid {
 	public static func mempty() -> Array<T> {
