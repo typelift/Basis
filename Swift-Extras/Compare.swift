@@ -81,10 +81,10 @@ public func maximumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 				assert(false, "")
 			case .Destructure(_, _):
 				return foldl1({ (let t) -> A in
-					if cmp(t.0)(t.1) {
-						return t.0
+					if cmp(fst(t))(snd(t)) {
+						return fst(t)
 					}
-					return t.1
+					return snd(t)
 				})(l: $0)
 		}
 	}
@@ -97,10 +97,10 @@ public func maximumBy<A>(cmp : (A, A) -> Bool) -> [A] -> A {
 				assert(false, "")
 			case .Destructure(_, _):
 				return foldl1({ (let t) -> A in
-					if cmp(t.0, t.1) {
-						return t.0
+					if cmp(fst(t), snd(t)) {
+						return fst(t)
 					}
-					return t.1
+					return snd(t)
 				})(l: $0)
 		}
 	}
@@ -113,10 +113,10 @@ public func minimumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 				assert(false, "")
 			case .Destructure(_, _):
 				return foldl1({ (let t) -> A in
-					if cmp(t.0)(t.1) {
-						return t.1
+					if cmp(fst(t))(snd(t)) {
+						return snd(t)
 					}
-					return t.0
+					return fst(t)
 				})(l: $0)
 		}
 	}
@@ -129,10 +129,10 @@ public func minimumBy<A>(cmp : (A, A) -> Bool) -> [A] -> A {
 				assert(false, "")
 			case .Destructure(_, _):
 				return foldl1({ (let t) -> A in
-					if cmp(t.0, t.1) {
-						return t.1
+					if cmp(fst(t), snd(t)) {
+						return snd(t)
 					}
-					return t.0
+					return fst(t)
 				})(l: $0)
 		}
 	}

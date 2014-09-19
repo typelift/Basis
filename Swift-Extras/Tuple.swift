@@ -36,13 +36,13 @@ public func curry<A, B, C>(f : (A, B) -> C) ->  A -> B -> C {
 /// value and return a single value or function.
 public func uncurry<A, B, C>(f : A -> B -> C) -> (A, B) -> C {
 	return { (let t) in
-		return f(t.0)(t.1)
+		return f(fst(t))(snd(t))
 	}
 }
 
 /// Swap the components of a pair.
 public func swap<A, B>(t : (A, B)) -> (B, A) {
-	return (t.1, t.0)
+	return snd(t) ∏ fst(t)
 }
 
 /// Pair Formation | Forms a pair from two arguments.  (⌥ + ⇧ + P)

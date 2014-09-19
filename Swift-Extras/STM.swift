@@ -63,7 +63,7 @@ extension STM : Applicative {
 
 public func <*><A, B>(fn: STM<A -> B>, m: STM<A>) -> STM<B> {
 	return STM<B>({ (let rw) in
-		let f = unSTM(fn)(rw).1
+		let f = (snd • unSTM(fn))(rw)
 		let (nw, x) = unSTM(m)(rw)
 		return (nw, f(x))
 	})
@@ -110,8 +110,8 @@ private func write<A>(stm : STM<A>) {
 	let thrID = pthread_self()
 	pthread_mutex_lock(stm.lock)
 	switch stm.currentWriter {
-		case .Some(let t) where thrID == t.0:
-			stm.currentWriter = .Some((thrID, t.1 + 1) as (ThreadID, UInt))
+		case .Some(let t) where thrID == fst(t):
+			stm.currentWriter = .Some((thrID, snd(t) + 1) as (ThreadID, UInt))
 		case .None where stm.readers == 0 && stm.writers == 0:
 			stm.currentWriter = .Some((thrID, 1) as (ThreadID, UInt))
 		default:
@@ -129,7 +129,7 @@ private func endWrite<A>(stm : STM<A>) {
 	case .None:
 		assert(false, "")
 	case .Some(let t):
-		if t.1 == 1 {
+		if snd(t) == 1 {
 			stm.currentWriter = .None
 			if stm.writers > 0 {
 				pthread_cond_signal(stm.writeCond)
@@ -137,7 +137,7 @@ private func endWrite<A>(stm : STM<A>) {
 				pthread_cond_broadcast(stm.readCond)
 			}
 		} else {
-			stm.currentWriter = .Some(t.0, t.1 - 1)
+			stm.currentWriter = .Some(fst(t), snd(t) - 1)
 		}
 	}
 	pthread_mutex_unlock(stm.lock)

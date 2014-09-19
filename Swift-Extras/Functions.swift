@@ -111,7 +111,7 @@ public func flip<A, B, C>(f : A -> B -> C) -> B -> A -> C {
 /// Returns an uncurried function with the position of the arguments in the tuple switched.
 public func flip<A, B, C>(f : (A, B) -> C) -> (B, A) -> C {
 	return { (let t) in
-		return f(t.1, t.0)
+		return f(snd(t), fst(t))
 	}
 }
 

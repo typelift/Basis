@@ -61,9 +61,9 @@ public func partition<A>(p : A -> Bool)(l : [A]) -> ([A], [A]) {
 private func select<A>(p : A -> Bool)(x : A) -> ([A], [A]) -> ([A], [A]) {
 	return { (let t) in
 		if p(x) {
-			return (x +> t.0, t.1)
+			return (x +> fst(t), snd(t))
 		}
-		return (t.0, x +> t.1)
+		return (fst(t), x +> snd(t))
 	}
 }
 

@@ -85,7 +85,7 @@ extension Function : Arrow {
 
 public func *** <B, C, D, E>(f : Function<B, C>, g : Function<D, E>) -> Function<(B, D), (C, E)> {
 	return ^{ (let t : (B, D)) in
-		return (f.apply(t.0), g.apply(t.1))
+		return (f.apply(fst(t)), g.apply(snd(t)))
 	}
 }
 
@@ -127,7 +127,7 @@ extension Function : ArrowApply {
 	
 	public func app() -> Function<(Function<T, U>, AB), AC> {
 		return Function<(Function<T, U>, AB), AC>({ (let t : (Function<T, U>, AB)) -> AC in
-			return t.0.apply(t.1)
+			return fst(t).apply(snd(t))
 		})
 	}
 }
