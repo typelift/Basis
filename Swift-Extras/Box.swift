@@ -12,8 +12,8 @@ import Foundation
 ///
 /// But as long as I have the space, Sorts are the type of Kinds which are the type of types.  As
 /// with Kinds, that's not necessarily the best way to think about them.  In fact, it's better to 
-/// not think of Sorts at all because there really is only one, called BOX, in Haskell, and it is
-/// fairly useless.
+/// not think of Sorts at all! There really is only one, called BOX, in Haskell, and it is fairly 
+/// useless.
 public final class Box<A> : K1<A> {
 	public let unBox : () -> A
 	

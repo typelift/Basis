@@ -13,10 +13,7 @@ import Foundation
 ///
 /// - Closure    Composing two monads produces another monad.  Actually, the same monad, but with a
 ///              different value inside.  Basically, you cannot ever just compose a monad and
-///              randomly come up with something that isn't a monad. The same is true of addition
-///              and the integers.  All the numbers in the equation 1 + 1 = 2 are integers.  You
-///              would never, in a million years, expect it to produce a real or complex or any
-///              other type of number.
+///              randomly come up with something that isn't a monad.
 ///
 /// - Associativity    Composing a monad twice is the same whether you bunch your parenthesis up on
 ///                    the right side, or the left side. (1 + 1) + 1 = 1 + (1 + 1)
@@ -41,7 +38,6 @@ public protocol Monad : Applicative {
 	/// Bind is famous because it allows one to build arbitrary pipes of computations with no effort
 	/// at all.  You may have seen it notated >>-
 	func bind(f : A -> FB) -> FB
-	
 	func >>-(x : FA, f : A -> FB) -> FB
 }
 

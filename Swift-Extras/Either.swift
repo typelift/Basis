@@ -135,7 +135,6 @@ extension Either : Applicative {
 	}
 }
 
-
 public func <*><A, B, C>(f : Either<A, B -> C> , r : Either<A, B>) ->  Either<A, C> {
 	switch f.destruct() {
 		case .Left(let e):
@@ -145,13 +144,33 @@ public func <*><A, B, C>(f : Either<A, B -> C> , r : Either<A, B>) ->  Either<A,
 	}
 }
 
-
 public func *><A, B, C>(a : Either<A, B>, b : Either<A, C>) -> Either<A, C> {
 	return const(id) <%> a <*> b
 }
 
 public func <*<A, B, C>(a : Either<A, B>, b : Either<A, C>) -> Either<A, B> {
 	return const <%> a <*> b
+}
+
+extension Either : Monad {
+	public func bind<C>(f : Either<A, B>.A -> Either<A, C>) -> Either<A, C> {
+		switch self.destruct() {
+			case .Left(let l):
+				return Either<A, C>.left(l)
+			case .Right(let r):
+				return f(r.unBox())
+		}
+	}
+}
+
+public func >>-<A, B, C>(xs : Either<A, B>, f : Either<A, B>.A -> Either<A, C>) -> Either<A, C> {
+	return xs.bind(f)
+}
+
+public func >><A, B, C>(x : Either<A, B>, y : Either<A, C>) -> Either<A, C> {
+	return x >>- { (_) in
+		return y
+	}
 }
 
 public enum EitherD<A, B> {

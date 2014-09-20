@@ -112,13 +112,22 @@ public func group<A : Equatable>(xs : [A]) -> [[A]] {
 	return groupBy({ $0 == $1 })(l: xs)
 }
 
+/// Sorts a list in ascending order.
+public func sort<A : Comparable>(xs : [A]) -> [A] {
+	return sortBy({ $0 < $1 })(l: xs)
+}
+
+/// Takes an element and inserts it into the first position where it is less than or equal to the
+/// next element.
+///
+/// If a value is inserted into a sorted list, the resulting list is also sorted.
+public func insert<A : Comparable>(x : A)(l : [A]) -> [A] {
+	return insertBy({ $0 <= $1 })(x: x)(l: l)
+}
+
 /// Removes duplicates from a list.
 public func nub<A : Equatable>(xs : [A]) -> [A] {
-	return nubBy({ (let x) in
-		return { (let y) in
-			return x == y
-		}
-	})(xs)
+	return nubBy({ $0 == $1 })(xs)
 }
 
 /// Returns all initial segments of a list.
@@ -131,7 +140,7 @@ public func inits<A>(l : [A]) -> [[A]] {
 	}
 }
 
-public func subInits<A>(l : [A]) -> [[A]] {
+private func subInits<A>(l : [A]) -> [[A]] {
 	switch l.destruct() {
 		case .Empty:
 			return []
@@ -150,7 +159,7 @@ public func tails<A>(l : [A]) -> [[A]] {
 	}
 }
 
-func subTails<A>(l : [A]) -> [[A]] {
+private func subTails<A>(l : [A]) -> [[A]] {
 	switch l.destruct() {
 		case .Empty:
 			return []

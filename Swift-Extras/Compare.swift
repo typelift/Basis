@@ -8,6 +8,8 @@
 
 import Foundation
 
+/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
+/// other according to an equality predicate.
 public func groupBy<A>(cmp : A -> A -> Bool)(l : [A]) -> [[A]] {
 	switch l.destruct() {
 		case .Empty:
@@ -18,6 +20,8 @@ public func groupBy<A>(cmp : A -> A -> Bool)(l : [A]) -> [[A]] {
 	}
 }
 
+/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
+/// other according to an equality operator.
 public func groupBy<A>(cmp : (A, A) -> Bool)(l : [A]) -> [[A]] {
 	switch l.destruct() {
 	case .Empty:
@@ -28,6 +32,7 @@ public func groupBy<A>(cmp : (A, A) -> Bool)(l : [A]) -> [[A]] {
 	}
 }
 
+/// Removes duplicates from a list according to an equality predicate.
 public func nubBy<A>(eq : A -> A -> Bool) -> [A] -> [A] {
 	return { (let lst) in
 		switch lst.destruct() {
@@ -41,14 +46,31 @@ public func nubBy<A>(eq : A -> A -> Bool) -> [A] -> [A] {
 	}
 }
 
+/// Removes duplicates from a list according to an equality operator.
+public func nubBy<A>(eq : (A, A) -> Bool) -> [A] -> [A] {
+	return { (let lst) in
+		switch lst.destruct() {
+		case .Empty():
+			return []
+		case .Destructure(let x, let xs):
+			return [x] + nubBy(eq)(xs.filter({ (let y) in
+				return !(eq(x, y))
+			}))
+		}
+	}
+}
+
+/// Sorts a list according to a ordering predicate.
 public func sortBy<A>(cmp : A -> A -> Bool)(l : [A]) -> [A] {
 	return foldr(insertBy(cmp))(z: [])(l: l)
 }
 
+/// Sorts a list according to an ordering operator.
 public func sortBy<A>(cmp : (A, A) -> Bool)(l : [A]) -> [A] {
 	return foldr(insertBy(cmp))(z: [])(l: l)
 }
 
+/// Inserts an element into a list according to an ordering predicate.
 public func insertBy<A>(cmp: A -> A -> Bool)(x : A)(l : [A]) -> [A] {
 	switch l.destruct() {
 		case .Empty:
@@ -61,6 +83,7 @@ public func insertBy<A>(cmp: A -> A -> Bool)(x : A)(l : [A]) -> [A] {
 	}
 }
 
+/// Inserts an element into a list according to an ordering operator.
 public func insertBy<A>(cmp: (A, A) -> Bool)(x : A)(l : [A]) -> [A]  {
 	switch l.destruct() {
 		case .Empty:
@@ -73,7 +96,7 @@ public func insertBy<A>(cmp: (A, A) -> Bool)(x : A)(l : [A]) -> [A]  {
 	}
 }
 
-
+/// Returns the maximum element of a list according to an ordering predicate.
 public func maximumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 	return {
 		switch $0.destruct() {
@@ -90,6 +113,7 @@ public func maximumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 	}
 }
 
+/// Returns the maximum element of a list according to an ordering operator.
 public func maximumBy<A>(cmp : (A, A) -> Bool) -> [A] -> A {
 	return {
 		switch $0.destruct() {
@@ -106,6 +130,7 @@ public func maximumBy<A>(cmp : (A, A) -> Bool) -> [A] -> A {
 	}
 }
 
+/// Returns the minimum element of a list according to an ordering predicate.
 public func minimumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 	return {
 		switch $0.destruct() {
@@ -122,6 +147,7 @@ public func minimumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 	}
 }
 
+/// Returns the minimum element of a list according to an ordering operator.
 public func minimumBy<A>(cmp : (A, A) -> Bool) -> [A] -> A {
 	return {
 		switch $0.destruct() {

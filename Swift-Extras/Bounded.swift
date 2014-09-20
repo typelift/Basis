@@ -161,12 +161,14 @@ extension Double : Bounded {
 	}
 }
 
-//extension Float80 : Bounded {
-//	public static func minBound() -> Float80 {
+/// float.h does not export Float80's limits, nor does the Swift STL.
+// rdar://18404510
+//extension Swift.Float80 : Bounded {
+//	public static func minBound() -> Swift.Float80 {
 //		return LDBL_MIN
 //	}
 //
-//	public static func maxBound() -> Float80 {
+//	public static func maxBound() -> Swift.Float80 {
 //		return LDBL_MAX
 //	}
 //}

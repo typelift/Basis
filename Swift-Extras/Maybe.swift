@@ -39,6 +39,18 @@ public func isNone<A>(o : Optional<A>) -> Bool {
 	}
 }
 
+/// Returns the value from an Optional.
+///
+/// If the given optional is None, this function throws an exception.
+public func fromSome<A>(m : Optional<A>) -> A {
+	switch m {
+		case .None:
+			return error("Cannot extract value from None")
+		case .Some(let x):
+			return x
+	}
+}
+
 /// Takes a default value and an optional.  If the optional is empty, the default value is returned.
 /// If the optional contains a value, that value is returned.
 ///

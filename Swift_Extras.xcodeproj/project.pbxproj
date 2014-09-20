@@ -325,6 +325,7 @@
 				84CD29F919C4AA7C00E7E93F /* QSem.swift */,
 				84CD29F619C4A17D00E7E93F /* Chan.swift */,
 				84CD2A3C19C723AA00E7E93F /* Concurrent.swift */,
+				84CD2A3819C7234100E7E93F /* STM */,
 			);
 			name = Concurrent;
 			sourceTree = "<group>";
@@ -332,7 +333,6 @@
 		84CD29FD19C4B05700E7E93F /* Monad */ = {
 			isa = PBXGroup;
 			children = (
-				84CD2A3819C7234100E7E93F /* STM */,
 				84D1AB2919BCD3A900AF78E1 /* Monad.swift */,
 				84CD29FE19C4B06700E7E93F /* MonadFix.swift */,
 				84CD2A0119C4B1BC00E7E93F /* MonadZip.swift */,
@@ -387,8 +387,8 @@
 			children = (
 				84CD29FC19C4B03600E7E93F /* Concurrent */,
 				84BC2B3B19BFCE4100EFC8D3 /* Arrow.swift */,
-				84755D0A19BCCBA4002F644D /* Category.swift */,
 				84D1AB2B19BCD3BA00AF78E1 /* Applicative.swift */,
+				84755D0A19BCCBA4002F644D /* Category.swift */,
 				84CD29FD19C4B05700E7E93F /* Monad */,
 			);
 			name = Control;

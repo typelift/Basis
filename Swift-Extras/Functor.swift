@@ -8,16 +8,25 @@
 
 import Foundation
 
-/// Functors map functions from one class of object of Kind * -> * to another.  You can think of a
-/// functor as a map "inside" a type, such that the following diagram commutes:
+/// Functors map the functions and objects in one set to a different set of functions and objects.
+/// This is represented by any structure parametrized by some set A, and a function `fmap` that 
+/// takes objects in A to objects in B and wraps the result back in a functor.  `fmap` respects the
+/// following commutative diagram:
 ///
-///        F (f)
-///    F (A) -> F (B)
-///    |         |
-/// id |         | id
-///    |         |
-///    F (A) -> F (B)
-///        G (f)
+///
+///        F(A)
+///         •
+///         |\
+///         | \
+///         |  \
+///         |   \
+/// fmap f  |    \  fmap (f • g)
+///         |     \
+///         |      \
+///         |       \
+///         •--------•
+///       F(B)       F(C)
+///            fmap g
 ///
 /// Formally, a Functor is a mapping between Categories, but we have to restrict ourselves to the
 /// Category of Swift Types (S), so in practice a Functor is just an Endofunctor.  Functors are

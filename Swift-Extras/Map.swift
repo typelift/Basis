@@ -13,6 +13,7 @@ public enum MapD<K, A> {
 	case Destructure(UInt, K, A, Map<K, A>, Map<K, A>)
 }
 
+/// An immutable map between keys and values.
 public class Map<K, A> : K2<K, A> {
 	let size : UInt
 	let k : K!
@@ -36,14 +37,39 @@ public class Map<K, A> : K2<K, A> {
 	}
 }
 
+/// Produces an empty map.
 public func empty<K, A>() -> Map<K, A> {
 	return Map<K, A>(0, nil, nil, nil, nil)
 }
 
+/// Produces a map with one key-value pair.
 public func singleton<K, A>(key : K)(val : A) -> Map<K, A> {
 	return Map<K, A>(1, key, val, nil, nil)
 }
 
+/// Builds a map from an association list.
+///
+/// This function is left-biased in that if there are multiple keys for one value, only the last is
+/// retained.
+public func fromArray<K : Comparable, A>(xs : [(K, A)]) -> Map<K, A> {
+	return foldl({ insert(fst($1))(val: snd($1))(m: $0) })(z: empty())(l: xs)
+}
+
+/// Builds an association list from a map.
+public func toArray<K, A>(m : Map<K, A>) -> [(K, A)] {
+	return foldrWithKey({ (let k) in
+		return { (let x) in
+			return { (let l) in
+				return (k, x) +> l
+			}
+		}
+	})(z: [])(m: m)
+}
+
+/// Inserts a new key-value pair and returns a new map.
+///
+/// This function is left-biased in that it will replace any old value in the map with the new given
+/// value if the two keys are the same.
 public func insert<K : Comparable, A>(key : K)(val : A)(m: Map<K, A>) -> Map<K, A> {
 	switch m.destruct() {
 		case .Empty:
@@ -58,20 +84,13 @@ public func insert<K : Comparable, A>(key : K)(val : A)(m: Map<K, A>) -> Map<K, 
 	}
 }
 
-public func insertR<K : Comparable, A>(key : K)(val : A)(m: Map<K, A>) -> Map<K, A> {
-	switch m.destruct() {
-		case .Empty:
-			return singleton(key)(val: val)
-		case .Destructure(let sz, let ky, let y, let l, let r):
-			if key < ky {
-				return balance(ky)(x: y)(l: insert(key)(val: val)(m: l))(r: r)
-			} else if key > ky {
-				return balance(ky)(x: y)(l: l)(r: insert(key)(val: val)(m: r))
-			}
-			return m
-	}
-}
-
+/// Inserts a new key-value pair after applying a function to the new value and old value and
+/// returns a new map.
+///
+/// If a value does not exist for a given key, this function inserts a new key-value pair and 
+/// returns a new map.  If the a value does exist, the function will be called with the old and new
+/// values for that key, and the key-value pair of the key and the result of the function call is
+/// inserted.
 public func insertWith<K : Comparable, A>(f : A -> A -> A)(key : K)(val : A)(m : Map<K, A>) -> Map<K, A> {
 	let fn : K -> A -> A -> A = { (_) in
 		return { (let x) in
@@ -83,6 +102,13 @@ public func insertWith<K : Comparable, A>(f : A -> A -> A)(key : K)(val : A)(m :
 	return insertWithKey(fn)(key: key)(val: val)(m: m)
 }
 
+/// Inserts a new key-value pair after applying a function to the key, new value, and old value and
+/// returns a new map.
+///
+/// If a value does not exist for a given key, this function inserts a new key-value pair and
+/// returns a new map.  If the a value does exist, the function will be called with the key, and the 
+/// old and new values for that key, and the key-value pair of the key and the result of the 
+/// function call is inserted.
 public func insertWithKey<K : Comparable, A>(f : K -> A -> A -> A)(key : K)(val : A)(m : Map<K, A>) -> Map<K, A> {
 	switch m.destruct() {
 		case .Empty:
@@ -97,6 +123,9 @@ public func insertWithKey<K : Comparable, A>(f : K -> A -> A -> A)(key : K)(val 
 	}
 }
 
+/// Deletes a key and its associated value from the map and returns a new map.
+///
+/// If the key does not exist in the map, it is returned unmodified.
 public func delete<K : Comparable, A>(k : K)(m : Map<K, A>) -> Map<K, A> {
 	switch m.destruct() {
 		case .Empty:
@@ -111,10 +140,13 @@ public func delete<K : Comparable, A>(k : K)(m : Map<K, A>) -> Map<K, A> {
 	}
 }
 
+/// Finds and deletes the minimal element in a map of ordered keys.
+///
+/// This function is partial with respect to empty maps.
 public func deleteFindMin<K, A>(m : Map<K, A>) -> ((K, A), Map<K, A>) {
 	switch m.destruct() {
 		case .Empty:
-			return error("")
+			return error("Cannot delete the minimal element of an empty map.")
 		case .Destructure(_, let k, let x, let l, let r):
 			switch l.destruct() {
 				case .Empty:
@@ -126,10 +158,13 @@ public func deleteFindMin<K, A>(m : Map<K, A>) -> ((K, A), Map<K, A>) {
 	}
 }
 
+/// Finds and deletes the maximal element in a map of ordered keys.
+///
+/// This function is partial with respect to empty maps.
 public func deleteFindMax<K, A>(m : Map<K, A>) -> ((K, A), Map<K, A>) {
 	switch m.destruct() {
 		case .Empty:
-			return error("")
+			return error("Cannot delete the maximal element of an empty map.")
 		case .Destructure(_, let k, let x, let l, let r):
 			switch l.destruct() {
 				case .Empty:

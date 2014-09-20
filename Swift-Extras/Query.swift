@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Returns whether a map is empty in constant time.
 public func null<K, A>(m : Map<K, A>) -> Bool {
 	switch m.destruct() {
 		case .Empty:
@@ -17,6 +18,7 @@ public func null<K, A>(m : Map<K, A>) -> Bool {
 	}
 }
 
+/// Returns the size of a map in constant time.
 public func size<K, A>(m : Map<K, A>) -> UInt {
 	switch m.destruct() {
 		case .Empty:
@@ -26,6 +28,9 @@ public func size<K, A>(m : Map<K, A>) -> UInt {
 	}
 }
 
+/// Looks up the value associated with a key in the map.
+///
+/// If the key does not exist, this function returns None.  Else is returns that value in a Some.
 public func lookup<K : Comparable, A>(key : K)(m : Map<K, A>) -> Optional<A> {
 	switch m.destruct() {
 		case .Empty:
@@ -40,6 +45,7 @@ public func lookup<K : Comparable, A>(key : K)(m : Map<K, A>) -> Optional<A> {
 	}
 }
 
+/// Returns whether a given key is a member of the map.
 public func member<K : Comparable, A>(key : K)(m : Map<K, A>) -> Bool {
 	switch m.destruct() {
 		case .Empty:
@@ -54,10 +60,14 @@ public func member<K : Comparable, A>(key : K)(m : Map<K, A>) -> Bool {
 	}
 }
 
+/// Returns whether a given key is not a member of the map.
 public func notMember<K : Comparable, A>(key : K)(m : Map<K, A>) -> Bool {
 	return !member(key)(m: m)
 }
 
+/// Finds the value associated with a key in the map.
+///
+/// If this given key is not a member of the map, this function throws an exception.
 public func find<K : Comparable, A>(key : K)(m : Map<K, A>) -> A {
 	switch m.destruct() {
 		case .Empty:
@@ -72,6 +82,8 @@ public func find<K : Comparable, A>(key : K)(m : Map<K, A>) -> A {
 	}
 }
 
+/// Finds the value associated with a key in the map, returning a default value if no such key is a
+/// member of the map.
 public func findWithDefault<K : Comparable, A>(def: A)(key : K)(m : Map<K, A>) -> A {
 	switch m.destruct() {
 		case .Empty:

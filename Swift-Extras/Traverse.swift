@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Map a function over all values in the map.
 public func map<K, A, B>(f : A -> B)(m : Map<K, A>) -> Map<K, B> {
 	switch m.destruct() {
 		case .Empty:
@@ -17,6 +18,7 @@ public func map<K, A, B>(f : A -> B)(m : Map<K, A>) -> Map<K, B> {
 	}
 }
 
+/// Map a function over all keys and values in the map.
 public func mapWithKey<K, A, B>(f : K -> A -> B)(m : Map<K, A>) -> Map<K, B> {
 	switch m.destruct() {
 		case .Empty:
@@ -26,6 +28,7 @@ public func mapWithKey<K, A, B>(f : K -> A -> B)(m : Map<K, A>) -> Map<K, B> {
 	}
 }
 
+/// Post-order fold of a function over the map.
 public func foldr<K, A, B>(f : A -> B -> B)(z : B)(m : Map<K, A>) -> B {
 	switch m.destruct() {
 		case .Empty:
@@ -35,6 +38,7 @@ public func foldr<K, A, B>(f : A -> B -> B)(z : B)(m : Map<K, A>) -> B {
 	}
 }
 
+/// Post-order fold of an operator over the map.
 public func foldr<K, A, B>(f : (A , B) -> B)(z : B)(m : Map<K, A>) -> B {
 	switch m.destruct() {
 		case .Empty:
@@ -44,6 +48,7 @@ public func foldr<K, A, B>(f : (A , B) -> B)(z : B)(m : Map<K, A>) -> B {
 	}
 }
 
+/// Pre-order fold of a function over the map.
 public func foldl<K, A, B>(f: B -> A -> B) (z: B)(m : Map<K, A>) -> B {
 	switch m.destruct() {
 		case .Empty:
@@ -53,6 +58,7 @@ public func foldl<K, A, B>(f: B -> A -> B) (z: B)(m : Map<K, A>) -> B {
 	}
 }
 
+/// Pre-order fold of an operator over the map.
 public func foldl<K, A, B>(f: (B, A) -> B) (z: B)(m : Map<K, A>) -> B {
 	switch m.destruct() {
 		case .Empty:
@@ -62,7 +68,7 @@ public func foldl<K, A, B>(f: (B, A) -> B) (z: B)(m : Map<K, A>) -> B {
 	}
 }
 
-
+/// Post-order fold of a function over the keys a values of a map.
 public func foldrWithKey<K, A, B>(f : K -> A -> B -> B)(z : B)(m : Map<K, A>) -> B {
 	switch m.destruct() {
 		case .Empty:
@@ -72,6 +78,7 @@ public func foldrWithKey<K, A, B>(f : K -> A -> B -> B)(z : B)(m : Map<K, A>) ->
 	}
 }
 
+/// Pre-order fold of a function over the keys a values of a map.
 public func foldlWithKey<K, A, B>(f: A -> K -> B -> A) (z: A)(m : Map<K, B>) -> A {
 	switch m.destruct() {
 		case .Empty:
@@ -81,10 +88,12 @@ public func foldlWithKey<K, A, B>(f: A -> K -> B -> A) (z: A)(m : Map<K, B>) -> 
 	}
 }
 
+/// Returns an array of all values in the map in ascending order of their keys.
 public func elems<K, A>(m : Map<K, A>) -> [A] {
 	return foldr(+>)(z: [])(m: m)
 }
 
+/// Returns ana array of all keys in the map in ascending order.
 public func keys<K, A>(m : Map<K, A>) -> [K] {
 	return foldrWithKey({ (let x) in
 		return { (_) in
