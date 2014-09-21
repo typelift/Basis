@@ -1,0 +1,29 @@
+//
+//  String.swift
+//  Basis
+//
+//  Created by Robert Widmann on 9/14/14.
+//  Copyright (c) 2014 Robert Widmann. All rights reserved.
+//
+
+import Foundation
+
+extension String {
+	public func unpack() -> [Character] {
+		return Array(self)
+	}
+	
+	public func destruct() -> ArrayD<Character> {
+		return Array(self).destruct()
+	}
+}
+
+/// Packs an array of characters into a String.
+public func pack(x : [Character]) -> String {
+	return String(seq: x)
+}
+
+/// Unpacks a string into an array of characters.
+public func unpack(s : String) -> [Character] {
+	return Array(s)
+}
