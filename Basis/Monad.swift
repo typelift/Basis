@@ -43,7 +43,7 @@ public protocol Monad : Applicative {
 
 /// A monoid for monads.
 public protocol MonadPlus : Monad {
-	func mzero() -> FA
-	func mplus(FA) -> FA -> FA
+	class func mzero() -> FA
+	class func mplus(FA) -> FA -> FA
 }
 

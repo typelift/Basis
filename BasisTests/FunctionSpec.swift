@@ -6,8 +6,11 @@
 //  Copyright (c) 2014 Robert Widmann. All rights reserved.
 //
 
-import Foundation
+#if os(OSX)
 import Basis
+#else
+import MobileBasis
+#endif
 import XCTest
 
 class FunctionSpec : XCTestCase {

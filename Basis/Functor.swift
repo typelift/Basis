@@ -51,7 +51,7 @@ public protocol Functor {
 
 	/// Constant Replace | Replaces all values in the target Functor with a singular constant value
 	/// from the source Functor.
-	func <^(A, FB) -> FA
+	func <%(A, FB) -> FA
 }
 
 /// Eases writing a definition for Constant Replace.  Hand it an fmap, and x in B, and a source.

@@ -60,6 +60,7 @@ extension Array {
 	}
 }
 
+
 extension Array : Functor {
 	typealias A = T
 	typealias B = Any
@@ -70,7 +71,7 @@ extension Array : Functor {
 	}
 }
 
-public func <^<A, B>(x : A, l : Array<B>) -> Array<A> {
+public func <%<A, B>(x : A, l : Array<B>) -> Array<A> {
 	return Array.fmap(const(x))(l)
 }
 
@@ -135,11 +136,11 @@ public func >><A, B>(x : [A], y : [B]) -> [B] {
 }
 
 extension Array : MonadPlus {
-	public func mzero() -> Array<T> {
+	public static func mzero() -> Array<T> {
 		return []
 	}
 	
-	public func mplus(l : Array<T>) -> Array<T> -> Array<T> {
+	public static func mplus(l : Array<T>) -> Array<T> -> Array<T> {
 		return { l ++ $0 }
 	}
 }

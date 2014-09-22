@@ -85,7 +85,7 @@ infix operator >>> {
 /// MARK: Data.Functor
 
 /// "Replace" | Maps all the values "inside" one functor to a user-specified constant.
-infix operator <^ {
+infix operator <% {
 	precedence 4
 	associativity left
 }

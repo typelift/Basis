@@ -27,14 +27,14 @@ public func tracePrintableID<A : Printable>(x : A) -> A {
 }
 
 public func traceStack<A>(msg : String)(e : A) -> A {
-	return do_({ () -> IO<A> in
+	return do_ { () -> IO<A> in
 		var stack : [String]!
 		stack <- currentCallStack()
 		if stack.count != 0 {
 			return putStrLn(msg + foldr(+)(z: "")(l: stack)) >> IO.pure(e)
 		}
 		return putStrLn(msg) >> IO.pure(e)
-	}).unsafePerformIO()
+	}.unsafePerformIO()
 }
 
 public func currentCallStack() -> IO<[String]> {

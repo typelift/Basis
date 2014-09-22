@@ -131,7 +131,7 @@ public func <%><A, B>(f : A -> B, o : Optional<A>) -> Optional<B> {
 	return Optional.fmap(f)(o)
 }
 
-public func <^<A, B>(x : A, o : Optional<B>) -> Optional<A> {
+public func <%<A, B>(x : A, o : Optional<B>) -> Optional<A> {
 	return defaultReplace(Optional.fmap)(x: x)(f: o)
 }
 
@@ -202,11 +202,11 @@ public func >>-<A, B>(x : Optional<A>, f : A -> Optional<B>) -> Optional<B> {
 }
 
 extension Optional : MonadPlus {
-	public func mzero() -> Optional<A> {
+	public static func mzero() -> Optional<A> {
 		return .None
 	}
 	
-	public func mplus(l : Optional<A>) -> Optional<A> -> Optional<A> {
+	public static func mplus(l : Optional<A>) -> Optional<A> -> Optional<A> {
 		return {
 			switch l {
 				case .None:

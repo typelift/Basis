@@ -30,7 +30,8 @@ public protocol Monoid {
 	class func mappend(Self) -> Self -> Self
 }
 
-// Uncomment to crash Swiftc
+/// Invoking static members of generic types crashes Swiftc
+/// rdar://18406342
 //public func mconcat<M : Monoid>(l : [M]) -> M {
 //	return foldr(M.mappend)(z: M.mempty())(l: l)
 //}

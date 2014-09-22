@@ -42,7 +42,7 @@ public func <%><S, A, B>(f: A -> B, st: ST<S, A>) -> ST<S, B> {
 	return ST.fmap(f)(st)
 }
 
-public func <^<S, A, B>(x : A, l : ST<S, B>) -> ST<S, A> {
+public func <%<S, A, B>(x : A, l : ST<S, B>) -> ST<S, A> {
 	return ST.fmap(const(x))(l)
 }
 

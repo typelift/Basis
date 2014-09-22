@@ -123,7 +123,7 @@ public func <%><A, B, C>(f: B -> C, either : Either<A, B>) -> Either<A, C> {
 	return Either.fmap(f)(either)
 }
 
-public func <^ <A, B, C>(x : B, either : Either<A, C>) -> Either<A, B> {
+public func <% <A, B, C>(x : B, either : Either<A, C>) -> Either<A, B> {
 	return Either.fmap(const(x))(either)
 }
 

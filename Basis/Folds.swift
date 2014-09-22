@@ -145,7 +145,7 @@ public func concat<A>(xss : [[A]]) -> [A] {
 
 /// Map a function over a list and concatenate the results.
 public func concatMap<A, B>(f : A -> [B])(l : [A]) -> [B] {
-	return foldr({ $1 ++ f($0) })(z: [])(l: l)
+	return foldr({ f($0) ++ $1 })(z: [])(l: l)
 }
 
 /// Returns the maximum value in a list of comparable values.

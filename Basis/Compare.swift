@@ -24,11 +24,11 @@ public func groupBy<A>(cmp : A -> A -> Bool)(l : [A]) -> [[A]] {
 /// other according to an equality operator.
 public func groupBy<A>(cmp : (A, A) -> Bool)(l : [A]) -> [[A]] {
 	switch l.destruct() {
-	case .Empty:
-		return []
-	case .Destructure(let x, let xs):
-		let (ys, zs) = span({ cmp(x, $0) })(l: xs)
-		return (x +> ys) +> groupBy(cmp)(l: zs)
+		case .Empty:
+			return []
+		case .Destructure(let x, let xs):
+			let (ys, zs) = span({ cmp(x, $0) })(l: xs)
+			return (x +> ys) +> groupBy(cmp)(l: zs)
 	}
 }
 
@@ -36,12 +36,12 @@ public func groupBy<A>(cmp : (A, A) -> Bool)(l : [A]) -> [[A]] {
 public func nubBy<A>(eq : A -> A -> Bool) -> [A] -> [A] {
 	return { (let lst) in
 		switch lst.destruct() {
-		case .Empty():
-			return []
-		case .Destructure(let x, let xs):
-			return [x] + nubBy(eq)(xs.filter({ (let y) in
-				return !(eq(x)(y))
-			}))
+			case .Empty():
+				return []
+			case .Destructure(let x, let xs):
+				return [x] + nubBy(eq)(xs.filter({ (let y) in
+					return !(eq(x)(y))
+				}))
 		}
 	}
 }
@@ -50,12 +50,12 @@ public func nubBy<A>(eq : A -> A -> Bool) -> [A] -> [A] {
 public func nubBy<A>(eq : (A, A) -> Bool) -> [A] -> [A] {
 	return { (let lst) in
 		switch lst.destruct() {
-		case .Empty():
-			return []
-		case .Destructure(let x, let xs):
-			return [x] + nubBy(eq)(xs.filter({ (let y) in
-				return !(eq(x, y))
-			}))
+			case .Empty():
+				return []
+			case .Destructure(let x, let xs):
+				return [x] + nubBy(eq)(xs.filter({ (let y) in
+					return !(eq(x, y))
+				}))
 		}
 	}
 }

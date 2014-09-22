@@ -6,9 +6,13 @@
 //  Copyright (c) 2014 Robert Widmann. All rights reserved.
 //
 
-import Foundation
+#if os(OSX)
 import Basis
+#else
+import MobileBasis
+#endif
 import XCTest
+
 
 class FunctionsSpec : XCTestCase {
 	func testId() {
@@ -90,8 +94,8 @@ class FunctionsSpec : XCTestCase {
 
 		var srt = sortBy((>) |*| fst)(l: arr)
 		
-		XCTAssertTrue(all({ $0 == true })(l: zip(srt.map(fst))(l2: sarr.map(fst)).map(==)), "")
-		XCTAssertTrue(all({ $0 == true })(l: zip(srt.map(snd))(l2: sarr.map(snd)).map(==)), "")
+		XCTAssertTrue(and(zip(srt.map(fst))(l2: sarr.map(fst)).map(==)), "")
+		XCTAssertTrue(and(zip(srt.map(snd))(l2: sarr.map(snd)).map(==)), "")
 	}
 	
 	func testFixpoint() {

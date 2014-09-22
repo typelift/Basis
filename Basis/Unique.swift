@@ -12,9 +12,7 @@ import Foundation
 /// hashed.
 public class Unique : K0, Equatable, Hashable, Comparable {
 	private class var source : IORef<Int> {
-		var ref : IORef<Int>!
-		ref <- newIORef(0)
-		return ref
+		return innerSource
 	}
 	
 	private let val : Int
@@ -61,3 +59,9 @@ public func <(lhs: Unique, rhs: Unique) -> Bool {
 public func ==(lhs: Unique, rhs: Unique) -> Bool {
 	return lhs.val == rhs.val
 }
+
+private let innerSource : IORef<Int> = {
+	var ref : IORef<Int>!
+	ref <- newIORef(0)
+	return ref
+}()

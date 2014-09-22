@@ -94,7 +94,7 @@ public func <%><A, B>(f: A -> B, io : IO<A>) -> IO<B> {
 	return IO.fmap(f)(io)
 }
 
-public func <^ <A, B>(x : A, io : IO<B>) -> IO<A> {
+public func <% <A, B>(x : A, io : IO<B>) -> IO<A> {
 	return IO.fmap(const(x))(io)
 }
 
