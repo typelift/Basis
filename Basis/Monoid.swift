@@ -24,19 +24,21 @@ import Foundation
 ///               with other elements, doesn't alter their value.  Like 0 in addition of the
 ///               integers: 0 + 1 = 1 + 0 = 1
 public protocol Monoid {
+	typealias M
+
 	/// The identity element.
-	class func mempty() -> Self
+	class func mempty() -> M
 	/// An associative binary operator.
-	class func mappend(Self) -> Self -> Self
+	class func mappend(M) -> M -> M
 }
 
-/// Invoking static members of generic types crashes Swiftc
-/// rdar://18406342
-//public func mconcat<M : Monoid>(l : [M]) -> M {
-//	return foldr(M.mappend)(z: M.mempty())(l: l)
-//}
+public func mconcat<M, S: Monoid where S.M == M>(s: S, t: [M]) -> M {
+	return (t.reduce(S.mempty()) { S.mappend($0)($1) })
+}
 
 extension Array : Monoid {
+	typealias M = Array<T>
+
 	public static func mempty() -> Array<T> {
 		return []
 	}

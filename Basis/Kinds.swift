@@ -1,6 +1,6 @@
 //
 //  Kinds.swift
-//  Swift-Extras
+//  Basis
 //
 //  Created by Robert Widmann on 9/7/14.
 //  Copyright (c) 2014 Robert Widmann. All rights reserved.

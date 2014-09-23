@@ -81,38 +81,24 @@ public func |*|<A, B, C>(o : (B, B) -> C, f : A -> B) -> A -> A -> C {
 /// combiner, returns a function that applies the right hand side to two arguments, then runs both
 /// results through the combiner.
 public func on<A, B, C>(o : B -> B -> C)(f : A -> B) -> A -> A -> C {
-	return { (let x) in
-		return {(let y) in 
-			return o(f(x))(f(y))
-		}
-	}
+	return { x in { y in o(f(x))(f(y)) } }
 }
 
 /// On | Given a "combining" function and a function that converts arguments to the target of the
 /// combiner, returns a function that applies the right hand side to two arguments, then runs both
 /// results through the combiner.
 public func on<A, B, C>(o : (B, B) -> C)(f : A -> B) -> A -> A -> C {
-	return { (let x) in
-		return {(let y) in 
-			return o(f(x), f(y))
-		}
-	}
+	return { x in { y in o(f(x), f(y)) } }
 }
 
 /// Returns a function with the position of the arguments switched.
 public func flip<A, B, C>(f : A -> B -> C) -> B -> A -> C {
-	return { (let b) in
-		return { (let a) in
-			return f(a)(b)
-		}
-	}
+	return { b in { a in f(a)(b) } }
 }
 
 /// Returns an uncurried function with the position of the arguments in the tuple switched.
 public func flip<A, B, C>(f : (A, B) -> C) -> (B, A) -> C {
-	return { (let t) in
-		return f(snd(t), fst(t))
-	}
+	return { t in f(snd(t), fst(t)) }
 }
 
 /// Applies a function to an argument until a given predicate returns true.
