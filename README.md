@@ -18,11 +18,3 @@ Basis comes wrapped up as a framework and iOS and OS X.  Simply add the project 
 ```
 import Basis
 ``` 
-
-or 
-
-```
-import MobileBasis
-```
-
-for those on iOS.
