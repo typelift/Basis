@@ -158,6 +158,39 @@ public func do_<A>(fn: () -> IO<A>) -> IO<A> {
 	return fn()
 }
 
+public func sequence<A>(ms : [IO<A>]) -> IO<[A]> {
+	return foldr({ m in { n in
+		do_ { () -> [A] in
+			var x : A!
+			var xs : [A]!
+
+			x <- m
+			xs <- n
+			return [x] + xs
+		}
+		}})(z: IO.pure([]))(l: ms)
+}
+
+public func sequence_<A>(ms : [IO<A>]) -> IO<()> {
+	return foldr(curry(>>))(z: IO.pure(()))(l: ms)
+}
+
+public func mapM<A, B>(f : A -> IO<B>) -> [A] -> IO<[B]> {
+	return { ms in sequence(ms.map(f)) }
+}
+
+public func mapM_<A, B>(f : A -> IO<B>) -> [A] -> IO<()> {
+	return { ms in sequence_(ms.map(f)) }
+}
+
+public func forM<A, B>(l: [A])(f : A -> IO<B>) -> IO<[B]> {
+	return mapM(f)(l)
+}
+
+public func forM<A, B>(l: [A])(f : A -> IO<B>) -> IO<()> {
+	return mapM_(f)(l)
+}
+
 /// Herein lies the real world.  It is incredibly magic and sacred and not to be touched.  Those who
 /// do rarely come out alive...
 internal struct World<A> {}
