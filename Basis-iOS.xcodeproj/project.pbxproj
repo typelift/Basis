@@ -66,6 +66,7 @@
 		84922D1219D237DA00AE9A7C /* Tuple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922CE019D237DA00AE9A7C /* Tuple.swift */; };
 		84922D1319D237DA00AE9A7C /* Unique.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922CE119D237DA00AE9A7C /* Unique.swift */; };
 		84922D1419D237DA00AE9A7C /* Zip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922CE219D237DA00AE9A7C /* Zip.swift */; };
+		84922EB319D386BD00AE9A7C /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922EB219D386BD00AE9A7C /* Result.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -131,6 +132,7 @@
 		84922CE019D237DA00AE9A7C /* Tuple.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tuple.swift; sourceTree = "<group>"; };
 		84922CE119D237DA00AE9A7C /* Unique.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Unique.swift; sourceTree = "<group>"; };
 		84922CE219D237DA00AE9A7C /* Zip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Zip.swift; sourceTree = "<group>"; };
+		84922EB219D386BD00AE9A7C /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -307,6 +309,7 @@
 				84922CD019D237DA00AE9A7C /* Maybe.swift */,
 				84922CD419D237DA00AE9A7C /* Monoid.swift */,
 				84922CD519D237DA00AE9A7C /* Operators.swift */,
+				84922EB219D386BD00AE9A7C /* Result.swift */,
 				84922CD919D237DA00AE9A7C /* ST.swift */,
 				84922CDA19D237DA00AE9A7C /* STRef.swift */,
 				84922CE019D237DA00AE9A7C /* Tuple.swift */,
@@ -461,6 +464,7 @@
 				84922D0D19D237DA00AE9A7C /* String.swift in Sources */,
 				84922CFC19D237DA00AE9A7C /* Kinds.swift in Sources */,
 				84922CF319D237DA00AE9A7C /* Exit.swift in Sources */,
+				84922EB319D386BD00AE9A7C /* Result.swift in Sources */,
 				84922CE419D237DA00AE9A7C /* Arrow.swift in Sources */,
 				84922D0C19D237DA00AE9A7C /* STRef.swift in Sources */,
 				84922CF719D237DA00AE9A7C /* Functor.swift in Sources */,
