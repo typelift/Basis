@@ -32,7 +32,7 @@ public protocol Monoid {
 	class func mappend(M) -> M -> M
 }
 
-public func mconcat<M, S: Monoid where S.M == M>(s: S, t: [M]) -> M {
+public func mconcat<S: Monoid>(s: S, t: [S.M]) -> S.M {
 	return (t.reduce(S.mempty()) { S.mappend($0)($1) })
 }
 
