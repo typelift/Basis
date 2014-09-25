@@ -6,11 +6,7 @@
 //  Copyright (c) 2014 TypeLift. All rights reserved.
 //
 
-#if os(OSX)
 import Basis
-#else
-import MobileBasis
-#endif
 import XCTest
 
 class FunctionSpec : XCTestCase {
