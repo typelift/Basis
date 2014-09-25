@@ -10,13 +10,13 @@ import Foundation
 
 // The IO Monad is a means of representing a computation which, when performed, interacts with
 // the outside world (i.e. performs effects) to arrive at some result of type A.
-public final class IO<A> : K1<A> {	
+public final class IO<A> : K1<A> {
 	internal let apply: World<RealWorld> -> (World<RealWorld>, A)
 
 	init(apply: World<RealWorld> -> (World<RealWorld>, A)) {
 		self.apply = apply
 	}
-	
+
 	// The infamous "back door" to the IO Monad.  Forces strict evaluation
 	// of the IO action and returns a result.
 	public func unsafePerformIO() -> A  {
@@ -104,7 +104,7 @@ extension IO : Applicative {
 			return (rw, a)
 		})
 	}
-	
+
 }
 
 public func <*><A, B>(fn: IO<A -> B>, m: IO<A>) -> IO<B> {
@@ -150,12 +150,22 @@ public func <-<A>(inout lhs: A!, rhs: IO<A>) {
 	lhs = rhs.unsafePerformIO()
 }
 
+public func <-<A>(inout lhs: A?, rhs: IO<A>) {
+	lhs = .Some(rhs.unsafePerformIO())
+}
+
 public func do_<A>(fn: () -> A) -> IO<A> {
-	return IO.pure(fn())
+	return IO<A>({ (let rw) in
+		return (rw, fn())
+	})
 }
 
 public func do_<A>(fn: () -> IO<A>) -> IO<A> {
-	return fn()
+	return IO<A>({ (let rw) in
+		var x : A!
+		x <- fn()
+		return (rw, x)
+	})
 }
 
 public func sequence<A>(ms : [IO<A>]) -> IO<[A]> {

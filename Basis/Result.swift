@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 TypeLift. All rights reserved.
 //
 
+import Foundation
+
 /// Result is similar to an Either, except specialized to have an Error case that can
 /// only contain an NSError.
 public final class Result<A> : K1<A> {
