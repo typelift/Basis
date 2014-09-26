@@ -255,6 +255,7 @@
 		84922D8519D2390B00AE9A7C /* List */ = {
 			isa = PBXGroup;
 			children = (
+				84922CC319D237DA00AE9A7C /* Folds.swift */,
 				84922CCB19D237DA00AE9A7C /* Lazy.swift */,
 				84922CCD19D237DA00AE9A7C /* List.swift */,
 				84922CD719D237DA00AE9A7C /* Scans.swift */,
@@ -300,7 +301,6 @@
 				84922CBD19D237DA00AE9A7C /* Compare.swift */,
 				84922CBE19D237DA00AE9A7C /* Either.swift */,
 				84922CC219D237DA00AE9A7C /* Foldable.swift */,
-				84922CC319D237DA00AE9A7C /* Folds.swift */,
 				84922CC419D237DA00AE9A7C /* Function.swift */,
 				84922CC519D237DA00AE9A7C /* Functor.swift */,
 				84922CC619D237DA00AE9A7C /* Infinity.swift */,

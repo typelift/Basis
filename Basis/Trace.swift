@@ -8,24 +8,27 @@
 
 import Foundation
 
+/// Prints a message before returning a value.
 public func trace<A>(msg : String)(e : A) -> A {
 	return do_({ () -> IO<A> in
 		return putStrLn(msg) >> IO.pure(e)
 	}).unsafePerformIO()
 }
 
-public func traceID(msg : String) -> String {
+internal func traceID(msg : String) -> String {
 	return trace(msg)(e: msg)
 }
 
+/// Prints a printable object before returning a value.
 public func tracePrintable<A : Printable, B>(x : A)(e : B) -> B {
 	return trace(x.description)(e: e)
 }
 
-public func tracePrintableID<A : Printable>(x : A) -> A {
+internal func tracePrintableID<A : Printable>(x : A) -> A {
 	return trace(x.description)(e: x)
 }
 
+/// Prints out a stack trace before returning a value.
 public func traceStack<A>(msg : String)(e : A) -> A {
 	return do_ { () -> IO<A> in
 		var stack : [String]!
@@ -37,6 +40,7 @@ public func traceStack<A>(msg : String)(e : A) -> A {
 	}.unsafePerformIO()
 }
 
+/// Gets the current call stack symbols.
 public func currentCallStack() -> IO<[String]> {
 	return IO({ (let rw) in
 		return (rw, NSThread.callStackSymbols() as [String])

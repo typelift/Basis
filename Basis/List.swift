@@ -8,6 +8,9 @@
 
 import Foundation
 
+/// Returns the first element of a non-empty list.
+///
+/// If the provided list is empty, this function throws an exception.
 public func head<A>(l : [A]) -> A {
 	switch l.destruct() {
 		case .Empty:
@@ -17,6 +20,9 @@ public func head<A>(l : [A]) -> A {
 	}
 }
 
+/// Returns an array of all elements but the first in a non-empty list.
+///
+/// If the provided list if empty, this function throws an exception.
 public func tail<A>(l : [A]) -> [A] {
 	switch l.destruct() {
 		case .Empty:

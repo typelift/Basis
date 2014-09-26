@@ -34,7 +34,6 @@ public class Unique : K0, Equatable, Hashable, Comparable {
 public func newUnique() -> IO<Unique> {
 	return do_({ () -> Unique in		
 		var r : Int!
-		
 		r <- modifyIORef(Unique.source)({ $0 + 1 }) >> readIORef(Unique.source)
 		return Unique(r)
 	})

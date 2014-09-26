@@ -154,12 +154,20 @@ public func <-<A>(inout lhs: A?, rhs: IO<A>) {
 	lhs = .Some(rhs.unsafePerformIO())
 }
 
-public func do_<A>(fn: () -> A) -> IO<A> {
-	return IO<A>({ (let rw) in
-		return (rw, fn())
-	})
-}
-
+/// Wraps up a closure in a lazy IO action.
+///
+/// Do-notation is a special syntax taken from Haskell.  In Haskell, one uses do-notation as a 
+/// shorthand for chains of Monadic operators, and for more "imperative-looking" code.  While Swift
+/// does not allow us to define a DSL that specific, we can use the implicit sequencing of its 
+/// imperative statements and call execution of those statements our "desugaring".
+///
+/// Generally, do-notation in the Basis is used around side-effecting code.  Do-blocks in Swift are
+/// therefore more useful as a means of delimiting pure and side-effecting code from one another, 
+/// while also retaining the benefits of the lazy IO monad.
+///
+/// It is important to note that IO actions returned are lazy.  This means the provided block will
+/// not be executed until the values inside are requested, either with an extract (`<-`) or a call
+/// to `unsafePerformIO()`
 public func do_<A>(fn: () -> IO<A>) -> IO<A> {
 	return IO<A>({ (let rw) in
 		var x : A!
@@ -168,6 +176,24 @@ public func do_<A>(fn: () -> IO<A>) -> IO<A> {
 	})
 }
 
+/// Wraps up a closure returning a value in a lazy IO action.
+///
+/// This variant of do-blocks allows one to write more natural looking code.  The return keyword
+/// actually becomes monadic return.  For example
+///
+/// 	return do_ { () -> Unique in
+///			var r : Int!
+///			r <- modifyIORef(Unique.source)({ $0 + 1 }) >> readIORef(Unique.source)
+///			return Unique(r)
+///		}
+public func do_<A>(fn: () -> A) -> IO<A> {
+	return IO<A>({ (let rw) in
+		return (rw, fn())
+	})
+}
+
+/// Executes a list of IO actions sequentially, accumulating their results in a list in another IO
+/// action
 public func sequence<A>(ms : [IO<A>]) -> IO<[A]> {
 	return foldr({ m in { n in
 		do_ { () -> [A] in
@@ -178,26 +204,33 @@ public func sequence<A>(ms : [IO<A>]) -> IO<[A]> {
 			xs <- n
 			return [x] + xs
 		}
-		}})(z: IO.pure([]))(l: ms)
+	}})(z: IO.pure([]))(l: ms)
 }
 
+/// Executes a list of IO actions sequentially, discarding thei result of each along the way.
 public func sequence_<A>(ms : [IO<A>]) -> IO<()> {
 	return foldr(curry(>>))(z: IO.pure(()))(l: ms)
 }
 
+/// Maps a function over a list, then sequences the resulting IO actions together, accumulating 
+/// their results in a list in another IO action.
 public func mapM<A, B>(f : A -> IO<B>) -> [A] -> IO<[B]> {
 	return { ms in sequence(ms.map(f)) }
 }
 
+/// Maps a function over a list, then sequences the resulting IO actions together, discarding the
+/// result of each along the way.
 public func mapM_<A, B>(f : A -> IO<B>) -> [A] -> IO<()> {
 	return { ms in sequence_(ms.map(f)) }
 }
 
+/// mapM with its arguments flipped around.
 public func forM<A, B>(l: [A])(f : A -> IO<B>) -> IO<[B]> {
 	return mapM(f)(l)
 }
 
-public func forM<A, B>(l: [A])(f : A -> IO<B>) -> IO<()> {
+/// mapM_ with its arguments flipped around.
+public func forM_<A, B>(l: [A])(f : A -> IO<B>) -> IO<()> {
 	return mapM_(f)(l)
 }
 
