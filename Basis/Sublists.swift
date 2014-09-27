@@ -38,12 +38,7 @@ public func take<A>(n : Int) -> [A] -> [A] {
 public func drop<A>(n : Int) -> [A] -> [A] {
 	return { l in
 		if n <= 0 {
-			switch l.destruct() {
-				case .Empty:
-					return []
-				case .Destructure(let x, let xs):
-					return xs
-			}
+			return l
 		}
 		
 		switch l.destruct() {
