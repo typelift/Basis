@@ -14,16 +14,18 @@ import Foundation
 ///     take(3([1,2]) == [1,2]
 ///     take(-1)([1,2]) == []
 ///     take(0)([1,2]) == []
-public func take<A>(n : Int)(l : [A]) -> [A] {
-	if n <= 0 {
-		return []
-	}
-	
-	switch l.destruct() {
-		case .Empty:
+public func take<A>(n : Int) -> [A] -> [A] {
+	return { l in
+		if n <= 0 {
 			return []
-		case .Destructure(let x, let xs):
-			return x +> take(n - 1)(l: xs)
+		}
+		
+		switch l.destruct() {
+			case .Empty:
+				return []
+			case .Destructure(let x, let xs):
+				return x +> take(n - 1)(xs)
+		}
 	}
 }
 
@@ -33,96 +35,104 @@ public func take<A>(n : Int)(l : [A]) -> [A] {
 ///     drop 3 [1,2] == []
 ///     drop (-1) [1,2] == [1,2]
 ///     drop 0 [1,2] == [1,2]
-public func drop<A>(n : Int)(l : [A]) -> [A] {
-	if n <= 0 {
+public func drop<A>(n : Int) -> [A] -> [A] {
+	return { l in
+		if n <= 0 {
+			switch l.destruct() {
+				case .Empty:
+					return []
+				case .Destructure(let x, let xs):
+					return xs
+			}
+		}
+		
 		switch l.destruct() {
 			case .Empty:
 				return []
 			case .Destructure(let x, let xs):
-				return xs
+				return drop(n - 1)(xs)
 		}
-	}
-	
-	switch l.destruct() {
-		case .Empty:
-			return []
-		case .Destructure(let x, let xs):
-			return drop(n - 1)(l: xs)
 	}
 }
 
 /// Returns a tuple containing the first n elements of a list first and the remaining elements 
 /// second.
-public func splitAt<A>(n : Int)(l : [A]) -> ([A], [A]) {
-	return (take(n)(l: l), drop(n)(l: l))
+public func splitAt<A>(n : Int) -> [A] -> ([A], [A]) {
+	return { l in (take(n)(l), drop(n)(l)) }
 }
 
 /// Returns a list of the first elements that satisfy a predicate until that predicate returns 
 /// false.
-public func takeWhile<A>(p : A -> Bool)(l : [A]) -> [A] {
-	switch l.destruct() {
-		case .Empty:
-			return []
-		case .Destructure(let x, let xs):
-			if p(x) {
-				return x +> takeWhile(p)(l : xs)
-			}
-			return []
+public func takeWhile<A>(p : A -> Bool) -> [A] -> [A] {
+	return { l in
+		switch l.destruct() {
+			case .Empty:
+				return []
+			case .Destructure(let x, let xs):
+				if p(x) {
+					return x +> takeWhile(p)(xs)
+				}
+				return []
+		}
 	}
 }
 
 /// Returns a list of the first elements that do not satisfy a predicate until that predicate 
 /// returns false.
-public func dropWhile<A>(p : A -> Bool)(l : [A]) -> [A] {
-	switch l.destruct() {
-		case .Empty:
-			return []
-		case .Destructure(let x, let xs):
-			if p(x) {
-				return dropWhile(p)(l : xs)
-			}
-			return l
+public func dropWhile<A>(p : A -> Bool) -> [A] -> [A] {
+	return { l in
+		switch l.destruct() {
+			case .Empty:
+				return []
+			case .Destructure(let x, let xs):
+				if p(x) {
+					return dropWhile(p)(xs)
+				}
+				return l
+		}
 	}
 }
 
 /// Returns a tuple with the first elements that satisfy a predicate until that predicate returns
 /// false first, and a the rest of the elements second.
-public func span<A>(p : A -> Bool)(l : [A]) -> ([A], [A]) {
-	switch l.destruct() {
-		case .Empty:
-			return ([], [])
-		case .Destructure(let x, let xs):
-			if p(x) {
-				let (ys, zs) = span(p)(l : xs)
-				return (x +> ys, zs)
-			}
-			return ([], l)
+public func span<A>(p : A -> Bool) -> [A] -> ([A], [A]) {
+	return { l in
+		switch l.destruct() {
+			case .Empty:
+				return ([], [])
+			case .Destructure(let x, let xs):
+				if p(x) {
+					let (ys, zs) = span(p)(xs)
+					return (x +> ys, zs)
+				}
+				return ([], l)
+		}
 	}
 }
 
 /// Returns a tuple with the first elements that do not satisfy a predicate until that predicate 
 /// returns false first, and a the rest of the elements second.
-public func extreme<A>(p : A -> Bool)(l : [A]) -> ([A], [A]) {
-	return span({ ((!) • p)($0) })(l: l)
+public func extreme<A>(p : A -> Bool) -> [A] -> ([A], [A]) {
+	return { l in span({ ((!) • p)($0) })(l) }
 }
 
 /// Takes a list and groups its arguments into sublists of duplicate elements found next to each
 /// other.
 public func group<A : Equatable>(xs : [A]) -> [[A]] {
-	return groupBy({ $0 == $1 })(l: xs)
+	return groupBy({ $0 == $1 })(xs)
 }
 
 /// Sorts a list in ascending order.
 public func sort<A : Comparable>(xs : [A]) -> [A] {
-	return sortBy({ $0 < $1 })(l: xs)
+	return sortBy({ $0 < $1 })(xs)
 }
 
 /// Takes an element and inserts it into the first position where it is less than or equal to the
 /// next element.
 ///
 /// If a value is inserted into a sorted list, the resulting list is also sorted.
-public func insert<A : Comparable>(x : A)(l : [A]) -> [A] {
-	return insertBy({ $0 <= $1 })(x: x)(l: l)
+public func insert<A : Comparable>(x : A) -> [A] -> [A] {
+	return { l in insertBy({ $0 <= $1 })(x)(l) }
 }
 
 /// Removes duplicates from a list.

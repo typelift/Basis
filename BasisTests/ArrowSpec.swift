@@ -9,7 +9,7 @@
 import Basis
 import XCTest
 
-class FunctionSpec : XCTestCase {
+class ArrowSpec : XCTestCase {
 	func function1(x : Int) -> Int {
 		return x + 1
 	}
@@ -26,7 +26,7 @@ class FunctionSpec : XCTestCase {
 		XCTAssertTrue(suc.apply(suc.apply(suc.apply(0))) == 3, "")
 		XCTAssertTrue(suc.apply(suc.apply(suc.apply(suc.apply(0)))) == 4, "")
 	}
-	
+
 	func testFunction2() {
 		let plus = ^(function2)
 

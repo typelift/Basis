@@ -61,13 +61,13 @@ class MaybeSpec : XCTestCase {
 		let x = Optional.Some(5)
 		let l = [ x, nil, x, nil, x, nil, x ]
 
-		XCTAssertTrue(foldr1(+)(l: catOptionals(l)) == 20, "")
+		XCTAssertTrue(foldr1(+)(catOptionals(l)) == 20, "")
 	}
 
 	func testMapOptionals() {
 		let l = [ [5], [], [5], [], [5], [] ]
 
-		XCTAssertTrue(foldr1(+)(l: mapOptional(listToOptional)(l: l)) == 15, "")
+		XCTAssertTrue(foldr1(+)(mapOptional(listToOptional)(l: l)) == 15, "")
 	}
 }
 

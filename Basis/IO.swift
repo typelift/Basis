@@ -204,12 +204,12 @@ public func sequence<A>(ms : [IO<A>]) -> IO<[A]> {
 			xs <- n
 			return [x] + xs
 		}
-	}})(z: IO.pure([]))(l: ms)
+	}})(IO.pure([]))(ms)
 }
 
-/// Executes a list of IO actions sequentially, discarding thei result of each along the way.
+/// Executes a list of IO actions sequentially, discarding the result of each along the way.
 public func sequence_<A>(ms : [IO<A>]) -> IO<()> {
-	return foldr(curry(>>))(z: IO.pure(()))(l: ms)
+	return foldr(curry(>>))(IO.pure(()))(ms)
 }
 
 /// Maps a function over a list, then sequences the resulting IO actions together, accumulating 

@@ -34,7 +34,7 @@ public func traceStack<A>(msg : String)(e : A) -> A {
 		var stack : [String]!
 		stack <- currentCallStack()
 		if stack.count != 0 {
-			return putStrLn(msg + foldr(+)(z: "")(l: stack)) >> IO.pure(e)
+			return putStrLn(msg + foldr(+)("")(stack)) >> IO.pure(e)
 		}
 		return putStrLn(msg) >> IO.pure(e)
 	}.unsafePerformIO()

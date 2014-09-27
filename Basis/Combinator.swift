@@ -59,8 +59,8 @@ public func •<A, B, C>(f : B -> C, g : A -> B) -> A -> C {
 /// we have to be incredibly careful and take an extra parameter to avoid infinite expansion of the
 /// call tree.  Recursive functions must also be careful and include an extra level of lambda
 /// abstraction (that is, take themselves as a parameter).
-public func fix<A>(f : ((A -> A) -> A -> A))(x : A) -> A {
-	return f(fix(f))(x)
+public func fix<A>(f : ((A -> A) -> A -> A)) -> A -> A {
+	return { x in f(fix(f))(x) }
 }
 
 /// On | Given a "combining" function and a function that converts arguments to the target of the
@@ -80,8 +80,8 @@ public func |*|<A, B, C>(o : (B, B) -> C, f : A -> B) -> A -> A -> C {
 /// On | Given a "combining" function and a function that converts arguments to the target of the
 /// combiner, returns a function that applies the right hand side to two arguments, then runs both
 /// results through the combiner.
-public func on<A, B, C>(o : B -> B -> C)(f : A -> B) -> A -> A -> C {
-	return { x in { y in o(f(x))(f(y)) } }
+public func on<A, B, C>(o : B -> B -> C) -> (A -> B) -> A -> A -> C {
+	return { f in { x in { y in o(f(x))(f(y)) } } }
 }
 
 /// On | Given a "combining" function and a function that converts arguments to the target of the
@@ -102,11 +102,8 @@ public func flip<A, B, C>(f : (A, B) -> C) -> (B, A) -> C {
 }
 
 /// Applies a function to an argument until a given predicate returns true.
-public func until<A>(p : A -> Bool)(f : A -> A)(x : A) -> A {
-	if p(x) {
-		return x
-	}
-	return until(p)(f: f)(x: f(x))
+public func until<A>(p : A -> Bool) -> (A -> A) -> A -> A {
+	return { f in { x in p(x) ? x : until(p)(f)(f(x)) } }
 }
 
 /// A type-restricted version of const.  In cases of typing ambiguity, using this function forces

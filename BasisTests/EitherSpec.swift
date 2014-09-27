@@ -18,8 +18,8 @@ class EitherSpec : XCTestCase {
 		let left = Either<Int, Int>.left(10)
 		let right = Either<Int, Int>.right(10)
 
-		XCTAssertTrue(either(l)(right: r)(e: left) == 35, "")
-		XCTAssertTrue(either(l)(right: r)(e: right) == 20, "")
+		XCTAssertTrue(either(l)(r)(left) == 35, "")
+		XCTAssertTrue(either(l)(r)(right) == 20, "")
 	}
 }
 

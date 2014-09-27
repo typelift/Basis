@@ -13,13 +13,15 @@ import Foundation
 /// the left to the right.
 /// 
 ///     scanl(f)(z)([x1, x2, ...]) == [z, f(z, x1), f(f(z, x1), x2), ...]
-public func scanl<B, A>(f : B -> A -> B)(q : B)(ls : [A]) -> [B] {
-	switch ls.destruct() {
+public func scanl<B, A>(f : B -> A -> B) -> B -> [A] -> [B] {
+	return { q in { ls in
+		switch ls.destruct() {
 		case .Empty:
 			return []
 		case .Destructure(let x, let xs):
-			return scanl(f)(q: f(q)(x))(ls: xs)
-	}
+			return scanl(f)(f(q)(x))(xs)
+		}
+	} }
 }
 
 /// Takes a binary operator, an initial value, and a list and scans the function across each element
@@ -27,36 +29,42 @@ public func scanl<B, A>(f : B -> A -> B)(q : B)(ls : [A]) -> [B] {
 /// the left to the right.
 /// 
 ///     scanl(f)(z)([x1, x2, ...]) == [z, f(z, x1), f(f(z, x1), x2), ...]
-public func scanl<B, A>(f : (B, A) -> B)(q : B)(ls : [A]) -> [B] {
-	switch ls.destruct() {
-		case .Empty:
-			return []
-		case .Destructure(let x, let xs):
-			return scanl(f)(q: f(q, x))(ls: xs)
-	}
+public func scanl<B, A>(f : (B, A) -> B) -> B -> [A] -> [B] {
+	return { q in { ls in
+		switch ls.destruct() {
+			case .Empty:
+				return []
+			case .Destructure(let x, let xs):
+				return scanl(f)(f(q, x))(xs)
+		}
+	} }
 }
 
 /// Takes a binary function and a list and scans the function across each element of the list 
 /// accumulating the results of successive function calls applied to the reduced values from the 
 /// left to the right.
-public func scanl1<A>(f : A -> A -> A)(l: [A]) -> [A]{
-	switch l.destruct() {
-		case .Empty:
-			return []
-		case .Destructure(let x, let xs):
-			return scanl(f)(q: x)(ls: xs)
+public func scanl1<A>(f : A -> A -> A) -> [A] -> [A] {
+	return { l in
+		switch l.destruct() {
+			case .Empty:
+				return []
+			case .Destructure(let x, let xs):
+				return scanl(f)(x)(xs)
+		}
 	}
 }
 
 /// Takes a binary operator and a list and scans the function across each element of the list 
 /// accumulating the results of successive function calls applied to the reduced values from the 
 /// left to the right.
-public func scanl1<A>(f : (A, A) -> A)(l: [A]) -> [A]{
-	switch l.destruct() {
-		case .Empty:
-			return []
-		case .Destructure(let x, let xs):
-			return scanl(f)(q: x)(ls: xs)
+public func scanl1<A>(f : (A, A) -> A) -> [A] -> [A] {
+	return { l in
+		switch l.destruct() {
+			case .Empty:
+				return []
+			case .Destructure(let x, let xs):
+				return scanl(f)(x)(xs)
+		}
 	}
 }
 
@@ -65,13 +73,15 @@ public func scanl1<A>(f : (A, A) -> A)(l: [A]) -> [A]{
 /// the right to the left.
 /// 
 ///     scanr(f)(z)([x1, x2, ...]) == [..., f(f(z, x1), x2), f(z, x1), z]
-public func scanr<B, A>(f : A -> B -> B)(q : B)(ls : [A]) -> [B] {
-	switch ls.destruct() {
-		case .Empty:
-			return [q]
-		case .Destructure(let x, let xs):
-			return f(x)(q) +> scanr(f)(q: q)(ls: xs)
-	}
+public func scanr<B, A>(f : A -> B -> B) -> B -> [A] -> [B] {
+	return { q in { ls in
+		switch ls.destruct() {
+			case .Empty:
+				return [q]
+			case .Destructure(let x, let xs):
+				return f(x)(q) +> scanr(f)(q)(xs)
+		}
+	} }
 }
 
 /// Takes a binary operator, an initial value, and a list and scans the function across each element
@@ -79,31 +89,35 @@ public func scanr<B, A>(f : A -> B -> B)(q : B)(ls : [A]) -> [B] {
 /// the right to the left.
 /// 
 ///     scanr(f)(z)([x1, x2, ...]) == [..., f(f(z, x1), x2), f(z, x1), z]
-public func scanr<B, A>(f : (A, B) -> B)(q : B)(ls : [A]) -> [B] {
-	switch ls.destruct() {
-		case .Empty:
-			return [q]
-		case .Destructure(let x, let xs):
-			return f(x, q) +> scanr(f)(q: q)(ls: xs)
-	}
+public func scanr<B, A>(f : (A, B) -> B) -> B -> [A] -> [B] {
+	return { q in { ls in
+		switch ls.destruct() {
+			case .Empty:
+				return [q]
+			case .Destructure(let x, let xs):
+				return f(x, q) +> scanr(f)(q)(xs)
+		}
+	} }
 }
 
 /// Takes a binary function and a list and scans the function across each element of the list 
 /// accumulating the results of successive function calls applied to the reduced values from the 
 /// right to the left.
-public func scanr1<A>(f : A -> A -> A)(l: [A]) -> [A]{
-	switch l.destruct() {
-		case .Empty:
-			return []
-		case .Destructure(let x, let xs) where xs.count == 0:
-			return [x]
-		case .Destructure(let x, let xs):
-			let qs = scanr1(f)(l: xs)
-			switch qs.destruct() {
+public func scanr1<A>(f : A -> A -> A) -> [A] -> [A] {
+	return { l in
+		switch l.destruct() {
+			case .Empty:
+				return []
+			case .Destructure(let x, let xs) where xs.count == 0:
+				return [x]
+			case .Destructure(let x, let xs):
+				let qs = scanr1(f)(xs)
+				switch qs.destruct() {
 				case .Empty:
-					assert(false, "")
+					assert(false, "Cannot scanr1 across an empty list.")
 				case .Destructure(let q, _):
 					return f(x)(q) +> qs
+				}
 		}
 	}
 }
@@ -111,20 +125,22 @@ public func scanr1<A>(f : A -> A -> A)(l: [A]) -> [A]{
 /// Takes a binary operator and a list and scans the function across each element of the list 
 /// accumulating the results of successive function calls applied to the reduced values from the 
 /// right to the left.
-public func scanr1<A>(f : (A, A) -> A)(l: [A]) -> [A]{
-	switch l.destruct() {
-		case .Empty:
-			return []
-		case .Destructure(let x, let xs) where xs.count == 0:
-			return [x]
-		case .Destructure(let x, let xs):
-			let qs = scanr1(f)(l: xs)
-			switch qs.destruct() {
-				case .Empty:
-					assert(false, "")
-				case .Destructure(let q, _):
-					return f(x, q) +> qs
-			}
+public func scanr1<A>(f : (A, A) -> A) -> [A] -> [A] {
+	return { l in
+		switch l.destruct() {
+			case .Empty:
+				return []
+			case .Destructure(let x, let xs) where xs.count == 0:
+				return [x]
+			case .Destructure(let x, let xs):
+				let qs = scanr1(f)(xs)
+				switch qs.destruct() {
+					case .Empty:
+						assert(false, "Cannot scanr1 across an empty list.")
+					case .Destructure(let q, _):
+						return f(x, q) +> qs
+				}
+		}
 	}
 }
 

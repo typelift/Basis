@@ -82,7 +82,7 @@ class OperatorsSpec : XCTestCase {
 		let l = [1, 2, 3, 4, 5]
 		let f = { $0 * 10 }
 
-		XCTAssertTrue(and(zip(f <%> l)(l2: l.map(f)).map(==)), "")
+		XCTAssertTrue(and(zip(f <%> l)(l.map(f)).map(==)), "")
 	}
 
 	func testSequence() {
@@ -90,8 +90,8 @@ class OperatorsSpec : XCTestCase {
 		let l2 = [6, 7, 8, 9, 10]
 
 		let ar = l1 *> l2
-		XCTAssertTrue(and(zip(l1 <* l2)(l2: concatMap({ replicate(5)(x: $0) })(l: l1)).map(==)), "")
-		XCTAssertTrue(and(zip(l1 *> l2)(l2: l2).map(==)), "")
+		XCTAssertTrue(and(zip(l1 <* l2)(concatMap({ replicate(5)(x: $0) })(l: l1)).map(==)), "")
+		XCTAssertTrue(and(zip(l1 *> l2)(l2).map(==)), "")
 	}
 
 	func testChoose() {

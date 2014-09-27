@@ -9,68 +9,76 @@
 import Foundation
 
 /// Zips two lists into an array of pairs.
-public func zip<A, B>(l : [A])(l2 : [B]) -> [(A, B)] {
-	switch l.destruct() {
-		case .Empty:
-			return []
-		case .Destructure(let a, let as_):
-			switch l2.destruct() {
-				case .Empty:
-					return []
-				case .Destructure(let b, let bs):
-					return (a, b) +> zip(as_)(l2: bs)
-			}
-	}
-}
-
-/// Zips three lists into an array of triples.
-public func zip3<A, B, C>(l : [A])(l2 : [B])(l3 : [C]) -> [(A, B, C)] {
-	switch l.destruct() {
-		case .Empty:
-			return []
-		case .Destructure(let a, let as_):
-			switch l2.destruct() {
-				case .Empty:
-					return []
-				case .Destructure(let b, let bs):
-					switch l3.destruct() {
+public func zip<A, B>(l : [A]) -> [B] -> [(A, B)] {
+	return { l2 in
+		switch l.destruct() {
+			case .Empty:
+				return []
+			case .Destructure(let a, let as_):
+				switch l2.destruct() {
 					case .Empty:
 						return []
-					case .Destructure(let c, let cs):
-						return (a, b, c) +> zip3(as_)(l2: bs)(l3: cs)
+					case .Destructure(let b, let bs):
+						return (a, b) +> zip(as_)(bs)
 				}
 		}
 	}
 }
 
-/// Zips together the elements of two lists according to a combining function.
-public func zipWith<A, B, C>(f : A -> B -> C)(l : [A])(l2 : [B]) -> [C] {
-	switch l.destruct() {
-	case .Empty:
-		return []
-	case .Destructure(let a, let as_):
-		switch l2.destruct() {
+/// Zips three lists into an array of triples.
+public func zip3<A, B, C>(l : [A]) -> [B] -> [C] -> [(A, B, C)] {
+	return { l2 in { l3 in
+		switch l.destruct() {
 			case .Empty:
 				return []
-			case .Destructure(let b, let bs):
-				return f(a)(b) +> zipWith(f)(l: as_)(l2: bs)
+			case .Destructure(let a, let as_):
+				switch l2.destruct() {
+					case .Empty:
+						return []
+					case .Destructure(let b, let bs):
+						switch l3.destruct() {
+						case .Empty:
+							return []
+						case .Destructure(let c, let cs):
+							return (a, b, c) +> zip3(as_)(bs)(cs)
+						}
+				}
 		}
-	}
+	} }
+}
+
+/// Zips together the elements of two lists according to a combining function.
+public func zipWith<A, B, C>(f : A -> B -> C) -> [A] -> [B] -> [C] {
+	return { l in { l2 in
+		switch l.destruct() {
+			case .Empty:
+				return []
+			case .Destructure(let a, let as_):
+				switch l2.destruct() {
+					case .Empty:
+						return []
+					case .Destructure(let b, let bs):
+						return f(a)(b) +> zipWith(f)(as_)(bs)
+				}
+		}
+	} }
 }
 
 /// Zips together the elements of two lists according to a combining operator.
-public func zipWith<A, B, C>(f : (A, B) -> C)(l : [A])(l2 : [B]) -> [C] {
-	switch l.destruct() {
-		case .Empty:
-			return []
-		case .Destructure(let a, let as_):
-			switch l2.destruct() {
-				case .Empty:
-					return []
-				case .Destructure(let b, let bs):
-					return f(a, b) +> zipWith(f)(l: as_)(l2: bs)
-			}
-	}
+public func zipWith<A, B, C>(f : (A, B) -> C) -> [A] -> [B] -> [C] {
+	return { l in { l2 in
+		switch l.destruct() {
+			case .Empty:
+				return []
+			case .Destructure(let a, let as_):
+				switch l2.destruct() {
+					case .Empty:
+						return []
+					case .Destructure(let b, let bs):
+						return f(a, b) +> zipWith(f)(as_)(bs)
+				}
+		}
+	} }
 }
 
 /// Unzips an array of tuples into a tuple of arrays.

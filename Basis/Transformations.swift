@@ -16,21 +16,25 @@ public func map<A, B>(f : A -> B)(l : [A]) -> [B] {
 /// Takes a separator and a list and intersperses that element throughout the list.
 ///
 ///     intersperse(1)([1, 2, 3]) == [1, 1, 2, 1, 3, 1]
-public func intersperse<A>(sep : A)(l : [A]) -> [A] {
-	switch l.destruct() {
-		case .Empty:
-			return []
-		case .Destructure(let x, let xs):
-			return x +> prependToAll(sep)(l: xs)
+public func intersperse<A>(sep : A) -> [A] -> [A] {
+	return { l in
+		switch l.destruct() {
+			case .Empty:
+				return []
+			case .Destructure(let x, let xs):
+				return x +> prependToAll(sep)(xs)
+		}
 	}
 }
 
-private func prependToAll<A>(sep : A)(l : [A]) -> [A] {
-	switch l.destruct() {
-		case .Empty:
-			return []
-		case .Destructure(let x, let xs):
-			return sep +> x +> prependToAll(sep)(l: xs)
+private func prependToAll<A>(sep : A) -> [A] -> [A] {
+	return { l in
+		switch l.destruct() {
+			case .Empty:
+				return []
+			case .Destructure(let x, let xs):
+				return sep +> x +> prependToAll(sep)(xs)
+		}
 	}
 }
 
@@ -54,17 +58,12 @@ public func transpose<A>(xss : [[A]]) -> [[A]] {
 /// Partitions the elements of a list according to a predicate.
 ///
 /// partition({ $0 < 3 })([1, 2, 3, 4, 5]) == ([1, 2],[3, 4, 5])
-public func partition<A>(p : A -> Bool)(l : [A]) -> ([A], [A]) {
-	return foldr(select(p))(z: ([], []))(l: l)
+public func partition<A>(p : A -> Bool) -> [A] -> ([A], [A]) {
+	return { l in foldr(select(p))(([], []))(l) }
 }
 
-private func select<A>(p : A -> Bool)(x : A) -> ([A], [A]) -> ([A], [A]) {
-	return { (let t) in
-		if p(x) {
-			return (x +> fst(t), snd(t))
-		}
-		return (fst(t), x +> snd(t))
-	}
+private func select<A>(p : A -> Bool) -> A -> ([A], [A]) -> ([A], [A]) {
+	return { x in { t in p(x) ? (x +> fst(t), snd(t)) : (fst(t), x +> snd(t)) } }
 }
 
 /// Returns a list of all subsequences of a list.
@@ -83,7 +82,7 @@ public func nonEmptySubsequences<A>(xs : [A]) -> [[A]] {
 				return { (let r) in
 					return ys +> (x +> ys) +> r
 				}
-			})(z: [])(l: nonEmptySubsequences(xs))
+			})([])(nonEmptySubsequences(xs))
 	}
 }
 

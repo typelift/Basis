@@ -27,7 +27,7 @@ class UniqueSpec : XCTestCase {
 		let a = [u1, u2, u3, u4, u5]
 		let s = subsequences(a).filter({ $0.count == 2 }).map({ head($0) ∏ (head • tail)($0) })
 
-		XCTAssertTrue(and(zip(a)(l2: a).map(==)), "")
+		XCTAssertTrue(and(zip(a)(a).map(==)), "")
 		XCTAssertTrue(!and(s.map({ $0! == $1! })), "")
 	}
 }

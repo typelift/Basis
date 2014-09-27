@@ -14,14 +14,14 @@ class MonoidSpec : XCTestCase {
 		let m = [1, 2, 3, 4, 5]
 
 		XCTAssertTrue(Array<Int>.mempty().count == [].count, "")
-		XCTAssertTrue(and(zip(Array.mappend(m)(Array.mempty()))(l2: m).map(==)), "")
+		XCTAssertTrue(and(zip(Array.mappend(m)(Array.mempty()))(m).map(==)), "")
 	}
 
 	func testArrayMappend() {
 		let m = [1, 2, 3, 4, 5]
 		let n = [6, 7, 8, 9, 10]
 
-		XCTAssertTrue(and(zip(Array.mappend(m)(n))(l2: m + n).map(==)), "")
+		XCTAssertTrue(and(zip(Array.mappend(m)(n))(m + n).map(==)), "")
 	}
 }
 

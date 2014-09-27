@@ -81,17 +81,17 @@ class FunctionsSpec : XCTestCase {
 	func testUntil() {
 		let x = 1
 		
-		XCTAssertTrue(until({ $0 == 5 })({ $0 + 1 })(x: x) == 5, "")
+		XCTAssertTrue(until({ $0 == 5 })({ $0 + 1 })(x) == 5, "")
 	}
 	
 	func testOn() {
 		var arr : [(Int, String)] = [(2, "Second"), (1, "First"), (5, "Fifth"), (3, "Third"), (4, "Fourth")]
 		var sarr : [(Int, String)] = [(1, "First"), (2, "Second"), (3, "Third"), (4, "Fourth"), (5, "Fifth")]
 
-		var srt = sortBy((>) |*| fst)(l: arr)
+		var srt = sortBy((>) |*| fst)(arr)
 		
-		XCTAssertTrue(and(zip(srt.map(fst))(l2: sarr.map(fst)).map(==)), "")
-		XCTAssertTrue(and(zip(srt.map(snd))(l2: sarr.map(snd)).map(==)), "")
+		XCTAssertTrue(and(zip(srt.map(fst))(sarr.map(fst)).map(==)), "")
+		XCTAssertTrue(and(zip(srt.map(snd))(sarr.map(snd)).map(==)), "")
 	}
 	
 	func testFixpoint() {
@@ -104,6 +104,6 @@ class FunctionsSpec : XCTestCase {
 			}
 		}
 		
-		XCTAssertTrue(fix(f)(x: 5) == 120, "")
+		XCTAssertTrue(fix(f)(5) == 120, "")
 	}
 }

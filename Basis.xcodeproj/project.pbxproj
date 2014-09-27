@@ -62,12 +62,12 @@
 		84922EB119D3869B00AE9A7C /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922EB019D3869B00AE9A7C /* Result.swift */; };
 		84A802E019D3BD3D00E71F93 /* MonoidSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A802DE19D3BC1200E71F93 /* MonoidSpec.swift */; };
 		84C9967D19CE89F40046906D /* Basis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C9967119CE89F30046906D /* Basis.framework */; };
-		84C9970319CE8A970046906D /* FunctionSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C996FD19CE8A970046906D /* FunctionSpec.swift */; };
 		84C9970419CE8A970046906D /* FunctionsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C996FE19CE8A970046906D /* FunctionsSpec.swift */; };
 		84C9970519CE8A970046906D /* InfinitySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C996FF19CE8A970046906D /* InfinitySpec.swift */; };
 		84C9970619CE8A970046906D /* OperatorsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C9970019CE8A970046906D /* OperatorsSpec.swift */; };
 		84C9970719CE8A970046906D /* StringSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C9970119CE8A970046906D /* StringSpec.swift */; };
 		84C9970819CE8A970046906D /* TupleSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C9970219CE8A970046906D /* TupleSpec.swift */; };
+		84F9062E19D638BD0035D429 /* ArrowSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F9062D19D638BD0035D429 /* ArrowSpec.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -139,12 +139,12 @@
 		84C9967119CE89F30046906D /* Basis.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Basis.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		84C9967C19CE89F40046906D /* BasisTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BasisTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		84C9968219CE89F40046906D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		84C996FD19CE8A970046906D /* FunctionSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FunctionSpec.swift; sourceTree = "<group>"; };
 		84C996FE19CE8A970046906D /* FunctionsSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FunctionsSpec.swift; sourceTree = "<group>"; };
 		84C996FF19CE8A970046906D /* InfinitySpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfinitySpec.swift; sourceTree = "<group>"; };
 		84C9970019CE8A970046906D /* OperatorsSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperatorsSpec.swift; sourceTree = "<group>"; };
 		84C9970119CE8A970046906D /* StringSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringSpec.swift; sourceTree = "<group>"; };
 		84C9970219CE8A970046906D /* TupleSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TupleSpec.swift; sourceTree = "<group>"; };
+		84F9062D19D638BD0035D429 /* ArrowSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrowSpec.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -309,8 +309,8 @@
 		84C9968019CE89F40046906D /* BasisTests */ = {
 			isa = PBXGroup;
 			children = (
+				84F9062D19D638BD0035D429 /* ArrowSpec.swift */,
 				8418FC5119CFB3480010923E /* EitherSpec.swift */,
-				84C996FD19CE8A970046906D /* FunctionSpec.swift */,
 				84C996FE19CE8A970046906D /* FunctionsSpec.swift */,
 				84C996FF19CE8A970046906D /* InfinitySpec.swift */,
 				8418FC4E19CFAED80010923E /* MaybeSpec.swift */,
@@ -496,6 +496,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84F9062E19D638BD0035D429 /* ArrowSpec.swift in Sources */,
 				84C9970619CE8A970046906D /* OperatorsSpec.swift in Sources */,
 				84C9970519CE8A970046906D /* InfinitySpec.swift in Sources */,
 				84C9970419CE8A970046906D /* FunctionsSpec.swift in Sources */,
@@ -504,7 +505,6 @@
 				8418FC4F19CFAED80010923E /* MaybeSpec.swift in Sources */,
 				8418FC4C19CFA9BA0010923E /* UniqueSpec.swift in Sources */,
 				84C9970819CE8A970046906D /* TupleSpec.swift in Sources */,
-				84C9970319CE8A970046906D /* FunctionSpec.swift in Sources */,
 				84C9970719CE8A970046906D /* StringSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

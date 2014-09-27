@@ -105,7 +105,7 @@ public func <*<A, B>(a : Array<A>, b : Array<B>) -> Array<A> {
 	return const <%> a <*> b
 }
 
-extension Array : Applicative {
+extension Array : Alternative {
 	typealias FLA = Array<[A]>
 	
 	public func empty() -> Array<A> {

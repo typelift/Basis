@@ -48,13 +48,15 @@ public final class Either<A, B> : K2<A, B> {
 
 /// Case analysis.  If the Either is Left, applies the left function to that value.  Else, if the 
 /// either is right, applies the right function to that value.
-public func either<A, B, C>(left : A -> C)(right : B -> C)(e : Either<A, B>) -> C {
-	switch e.destruct() {
-		case .Left(let x):
-			return left(x.unBox())
-		case .Right(let y):
-			return right(y.unBox())
-	}
+public func either<A, B, C>(left : A -> C) -> (B -> C) -> Either<A, B> -> C {
+	return { right in { e in
+		switch e.destruct() {
+			case .Left(let x):
+				return left(x.unBox())
+			case .Right(let y):
+				return right(y.unBox())
+		}
+	} }
 }
 
 /// Extracts all eithers that have left values in order.

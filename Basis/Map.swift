@@ -43,8 +43,8 @@ public func empty<K, A>() -> Map<K, A> {
 }
 
 /// Produces a map with one key-value pair.
-public func singleton<K, A>(key : K)(val : A) -> Map<K, A> {
-	return Map<K, A>(1, key, val, nil, nil)
+public func singleton<K, A>(key : K) -> A -> Map<K, A> {
+	return { val in Map<K, A>(1, key, val, nil, nil) }
 }
 
 /// Builds a map from an association list.
@@ -52,7 +52,7 @@ public func singleton<K, A>(key : K)(val : A) -> Map<K, A> {
 /// This function is left-biased in that if there are multiple keys for one value, only the last is
 /// retained.
 public func fromArray<K : Comparable, A>(xs : [(K, A)]) -> Map<K, A> {
-	return foldl({ insert(fst($1))(val: snd($1))(m: $0) })(z: empty())(l: xs)
+	return foldl({ insert(fst($1))(snd($1))($0) })(empty())(xs)
 }
 
 /// Builds an association list from a map.
@@ -63,25 +63,27 @@ public func toArray<K, A>(m : Map<K, A>) -> [(K, A)] {
 				return (k, x) +> l
 			}
 		}
-	})(z: [])(m: m)
+	})([])(m)
 }
 
 /// Inserts a new key-value pair and returns a new map.
 ///
 /// This function is left-biased in that it will replace any old value in the map with the new given
 /// value if the two keys are the same.
-public func insert<K : Comparable, A>(key : K)(val : A)(m: Map<K, A>) -> Map<K, A> {
-	switch m.destruct() {
-		case .Empty:
-			return singleton(key)(val: val)
-		case .Destructure(let sz, let ky, let y, let l, let r):
-			if key < ky {
-				return balance(ky)(x: y)(l: insert(key)(val: val)(m: l))(r: r)
-			} else if key > ky {
-				return balance(ky)(x: y)(l: l)(r: insert(key)(val: val)(m: r))
-			}
-			return Map(sz, key, val, l, r)
-	}
+public func insert<K : Comparable, A>(key : K) -> A -> Map<K, A> -> Map<K, A> {
+	return { val in { m in
+		switch m.destruct() {
+			case .Empty:
+				return singleton(key)(val)
+			case .Destructure(let sz, let ky, let y, let l, let r):
+				if key < ky {
+					return balance(ky)(x: y)(l: insert(key)(val)(l))(r: r)
+				} else if key > ky {
+					return balance(ky)(x: y)(l: l)(r: insert(key)(val)(r))
+				}
+				return Map(sz, key, val, l, r)
+		}
+	} }
 }
 
 /// Inserts a new key-value pair after applying a function to the new value and old value and
@@ -91,15 +93,17 @@ public func insert<K : Comparable, A>(key : K)(val : A)(m: Map<K, A>) -> Map<K, 
 /// returns a new map.  If the a value does exist, the function will be called with the old and new
 /// values for that key, and the key-value pair of the key and the result of the function call is
 /// inserted.
-public func insertWith<K : Comparable, A>(f : A -> A -> A)(key : K)(val : A)(m : Map<K, A>) -> Map<K, A> {
-	let fn : K -> A -> A -> A = { (_) in
-		return { (let x) in
-			return { (let y) in
-				return f(x)(y)
+public func insertWith<K : Comparable, A>(f : A -> A -> A) -> K -> A -> Map<K, A> -> Map<K, A> {
+	return { key in { val in { m in
+		let fn : K -> A -> A -> A = { (_) in
+			return { (let x) in
+				return { (let y) in
+					return f(x)(y)
+				}
 			}
 		}
-	}
-	return insertWithKey(fn)(key: key)(val: val)(m: m)
+		return insertWithKey(fn)(key)(val)(m)
+	} } }
 }
 
 /// Inserts a new key-value pair after applying a function to the key, new value, and old value and
@@ -109,34 +113,38 @@ public func insertWith<K : Comparable, A>(f : A -> A -> A)(key : K)(val : A)(m :
 /// returns a new map.  If the a value does exist, the function will be called with the key, and the 
 /// old and new values for that key, and the key-value pair of the key and the result of the 
 /// function call is inserted.
-public func insertWithKey<K : Comparable, A>(f : K -> A -> A -> A)(key : K)(val : A)(m : Map<K, A>) -> Map<K, A> {
-	switch m.destruct() {
-		case .Empty:
-			return singleton(key)(val: val)
-		case .Destructure(let sy, let ky, let y, let l, let r):
-			if key < ky {
-				return balance(ky)(x: y)(l: insertWithKey(f)(key: key)(val: val)(m: l))(r: r)
-			} else if key > ky {
-				return balance(ky)(x: y)(l: l)(r: insertWithKey(f)(key: key)(val: val)(m: r))
-			}
-			return Map(sy, key, (f(key)(val)(y)), l, r)
-	}
+public func insertWithKey<K : Comparable, A>(f : K -> A -> A -> A) -> K -> A -> Map<K, A> -> Map<K, A> {
+	return { key in { val in { m in
+		switch m.destruct() {
+			case .Empty:
+				return singleton(key)(val)
+			case .Destructure(let sy, let ky, let y, let l, let r):
+				if key < ky {
+					return balance(ky)(x: y)(l: insertWithKey(f)(key)(val)(l))(r: r)
+				} else if key > ky {
+					return balance(ky)(x: y)(l: l)(r: insertWithKey(f)(key)(val)(r))
+				}
+				return Map(sy, key, (f(key)(val)(y)), l, r)
+		}
+	} } }
 }
 
 /// Deletes a key and its associated value from the map and returns a new map.
 ///
 /// If the key does not exist in the map, it is returned unmodified.
-public func delete<K : Comparable, A>(k : K)(m : Map<K, A>) -> Map<K, A> {
-	switch m.destruct() {
-		case .Empty:
-			return empty()
-		case .Destructure(_, let kx, let x, let l, let r):
-			if k < kx {
-				return balance(kx)(x: x)(l: delete(k)(m: m))(r: r)
-			} else if k > kx {
-				return balance(kx)(x: x)(l: l)(r: delete(k)(m: m))
-			}
-			return glue(l, r)
+public func delete<K : Comparable, A>(k : K) -> Map<K, A> -> Map<K, A> {
+	return { m in
+		switch m.destruct() {
+			case .Empty:
+				return empty()
+			case .Destructure(_, let kx, let x, let l, let r):
+				if k < kx {
+					return balance(kx)(x: x)(l: delete(k)(m))(r: r)
+				} else if k > kx {
+					return balance(kx)(x: x)(l: l)(r: delete(k)(m))
+				}
+				return glue(l, r)
+		}
 	}
 }
 
