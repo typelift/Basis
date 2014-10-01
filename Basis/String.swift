@@ -20,7 +20,7 @@ extension String {
 
 /// Packs an array of characters into a String.
 public func pack(x : [Character]) -> String {
-	return String(seq: x)
+	return String(x)
 }
 
 /// Unpacks a string into an array of characters.

@@ -109,7 +109,7 @@ public func elems<K, A>(m : Map<K, A>) -> [A] {
 	return foldr(+>)([])(m)
 }
 
-/// Returns ana array of all keys in the map in ascending order.
+/// Returns an array of all keys in the map in ascending order.
 public func keys<K, A>(m : Map<K, A>) -> [K] {
 	return foldrWithKey({ (let x) in
 		return { (_) in

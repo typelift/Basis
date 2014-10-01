@@ -9,7 +9,7 @@
 import Foundation
 
 /// Immediately terminates the program with an error message.
-public func error<A>(x : StaticString) -> A {
+public func error<A>(x : String) -> A {
 	assert(false, x)
 }
 

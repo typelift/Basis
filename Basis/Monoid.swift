@@ -36,14 +36,14 @@ public func mconcat<M, S: Monoid where S.M == M>(s: S, t: [M]) -> M {
 	return (t.reduce(S.mempty()) { S.mappend($0)($1) })
 }
 
-extension Array : Monoid {
-	typealias M = Array<T>
-
-	public static func mempty() -> Array<T> {
-		return []
-	}
-	
-	public static func mappend(l : Array<T>) -> Array<T> -> Array<T> {
-		return { l ++ $0 }
-	}
-}
+//extension Array : Monoid {
+//	typealias M = Array<T>
+//
+//	public static func mempty() -> Array<T> {
+//		return []
+//	}
+//	
+//	public static func mappend(l : Array<T>) -> Array<T> -> Array<T> {
+//		return { l ++ $0 }
+//	}
+//}

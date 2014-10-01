@@ -116,7 +116,7 @@ public func asTypeOf<A>(x : A) -> A -> A {
 /// function forces its first argument to resolve to the type of the second argument.  
 ///
 /// Composed because it is the face one makes when having to tell the typechecker how to do its job.
-public func >=<<A>(x : A, y : A) -> A {
+public func >-<<A>(x : A, y : A) -> A {
 	return asTypeOf(x)(y)
 }
 

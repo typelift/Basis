@@ -25,40 +25,40 @@ public protocol Foldable {
 //	return FA.foldMap(id)(f)
 //}
 
-extension Optional : Foldable {
-	typealias TA = Optional<A>
-
-// Uncomment to crash Swiftc
-//	public static func foldMap<M : Monoid>(f : A -> M) -> Optional<A> -> M {
-//		return { (let x) in
-//			self.foldr(M.mappend • f)(M.mempty())(x)
+//extension Optional : Foldable {
+//	typealias TA = Optional<A>
+//
+//// Uncomment to crash Swiftc
+////	public static func foldMap<M : Monoid>(f : A -> M) -> Optional<A> -> M {
+////		return { (let x) in
+////			self.foldr(M.mappend • f)(M.mempty())(x)
+////		}
+////	}
+//
+//	public static func foldr<B>(f : A -> B -> B) -> B -> Optional<A> -> B {
+//		return { (let z) in
+//			return { (let m) in
+//				switch m {
+//				case .None:
+//					return z
+//				case .Some(let x):
+//					return f(x)(z)
+//				}
+//			}
+//		}
+//
+//	}
+//
+//	public static func foldl<B>(f : B -> A -> B) -> B -> Optional<A> -> B {
+//		return { (let z) in
+//			return { (let m) in
+//				switch m {
+//					case .None:
+//						return z
+//					case .Some(let x):
+//						return f(z)(x)
+//				}
+//			}
 //		}
 //	}
-
-	public static func foldr<B>(f : A -> B -> B) -> B -> Optional<A> -> B {
-		return { (let z) in
-			return { (let m) in
-				switch m {
-				case .None:
-					return z
-				case .Some(let x):
-					return f(x)(z)
-				}
-			}
-		}
-
-	}
-
-	public static func foldl<B>(f : B -> A -> B) -> B -> Optional<A> -> B {
-		return { (let z) in
-			return { (let m) in
-				switch m {
-					case .None:
-						return z
-					case .Some(let x):
-						return f(z)(x)
-				}
-			}
-		}
-	}
-}
+//}

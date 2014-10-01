@@ -50,7 +50,7 @@ public func transpose<A>(xss : [[A]]) -> [[A]] {
 				case .Empty:
 					return transpose(xss)
 				case .Destructure(let x, let xs):
-					return (x +> concatMap(Array.pure • head)(l: xss)) +> transpose(xs +> concatMap(Array.pure • tail)(l: xss))
+					return (x +> concatMap({ [head($0)] })(l: xss)) +> transpose(xs +> concatMap({ [tail($0)]} )(l: xss))
 			}
 	}
 }

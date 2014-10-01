@@ -72,40 +72,40 @@ class OperatorsSpec : XCTestCase {
 		XCTAssertTrue((h >>> g >>> f).apply(x) == f.apply(g.apply(h.apply(x))), "")
 	}
 
-	func testReplace() {
-		let l = [1, 2, 3, 4, 5]
-
-		XCTAssertTrue(and(true <% l), "")
-	}
-
-	func testFmap() {
-		let l = [1, 2, 3, 4, 5]
-		let f = { $0 * 10 }
-
-		XCTAssertTrue(and(zip(f <%> l)(l.map(f)).map(==)), "")
-	}
-
-	func testSequence() {
-		let l1 = [1, 2, 3, 4, 5]
-		let l2 = [6, 7, 8, 9, 10]
-
-		let ar = l1 *> l2
-		XCTAssertTrue(and(zip(l1 <* l2)(concatMap({ replicate(5)(x: $0) })(l: l1)).map(==)), "")
-		XCTAssertTrue(and(zip(l1 *> l2)(l2).map(==)), "")
-	}
-
-	func testChoose() {
-		let x : Int? = Optional.Some(10)
-		let y : Int? = Optional.None
-
-		XCTAssertTrue((x <|> y) == x, "")
-	}
-
-	func testBind() {
-		let x : Int? = Optional.Some(10)
-
-		XCTAssertTrue((x >>- { .Some($0) }) == id(x), "")
-	}
+//	func testReplace() {
+//		let l = [1, 2, 3, 4, 5]
+//
+//		XCTAssertTrue(and(true <% l), "")
+//	}
+//
+//	func testFmap() {
+//		let l = [1, 2, 3, 4, 5]
+//		let f = { $0 * 10 }
+//
+//		XCTAssertTrue(and(zip(f <%> l)(l.map(f)).map(==)), "")
+//	}
+//
+//	func testSequence() {
+//		let l1 = [1, 2, 3, 4, 5]
+//		let l2 = [6, 7, 8, 9, 10]
+//
+//		let ar = l1 *> l2
+//		XCTAssertTrue(and(zip(l1 <* l2)(concatMap({ replicate(5)(x: $0) })(l: l1)).map(==)), "")
+//		XCTAssertTrue(and(zip(l1 *> l2)(l2).map(==)), "")
+//	}
+//
+//	func testChoose() {
+//		let x : Int? = Optional.Some(10)
+//		let y : Int? = Optional.None
+//
+//		XCTAssertTrue((x <|> y) == x, "")
+//	}
+//
+//	func testBind() {
+//		let x : Int? = Optional.Some(10)
+//
+//		XCTAssertTrue((x >>- { .Some($0) }) == id(x), "")
+//	}
 
 	func testSplit() {
 		let f = ^{ $0 + 5 }
