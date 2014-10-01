@@ -156,12 +156,12 @@ public func all<A>(p : A -> Bool) -> [A] -> Bool {
 
 /// Concatenate a list of lists.
 public func concat<A>(xss : [[A]]) -> [A] {
-	return foldr({ $0 ++ $1 })([])(xss)
+	return foldr({ $0 + $1 })([])(xss)
 }
 
 /// Map a function over a list and concatenate the results.
 public func concatMap<A, B>(f : A -> [B])(l : [A]) -> [B] {
-	return foldr({ f($0) ++ $1 })([])(l)
+	return foldr({ f($0) + $1 })([])(l)
 }
 
 /// Returns the maximum value in a list of comparable values.

@@ -32,13 +32,6 @@ public func tail<A>(l : [A]) -> [A] {
 	}
 }
 
-infix operator ++ { associativity left }
-
-func ++<T>(var lhs : [T], rhs : [T]) -> [T] {
-	lhs += rhs
-	return lhs
-}
-
 func <|<T>(lhs : T, rhs : [T]) -> [T] {
 	var arr = rhs
 	arr.insert(lhs, atIndex: 0)

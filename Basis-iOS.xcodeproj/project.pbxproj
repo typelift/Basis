@@ -169,7 +169,6 @@
 				841FE02319DB7E390068636A /* Search.swift */,
 				841FE02419DB7E390068636A /* String.swift */,
 				841FE02519DB7E390068636A /* Sublists.swift */,
-				841FE02619DB7E390068636A /* Trace.swift */,
 				841FE02719DB7E390068636A /* Transformations.swift */,
 				841FE02819DB7E390068636A /* Zip.swift */,
 			);
@@ -295,6 +294,7 @@
 				84922CC019D237DA00AE9A7C /* Exception.swift */,
 				84922CC119D237DA00AE9A7C /* Exit.swift */,
 				84922CC819D237DA00AE9A7C /* IO.swift */,
+				841FE02619DB7E390068636A /* Trace.swift */,
 			);
 			name = System;
 			sourceTree = "<group>";
