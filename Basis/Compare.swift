@@ -17,7 +17,7 @@ public func groupBy<A>(cmp : A -> A -> Bool) -> [A] -> [[A]] {
 				return []
 			case .Destructure(let x, let xs):
 				let (ys, zs) = span(cmp(x))(xs)
-				return (x +> ys) +> groupBy(cmp)(zs)
+				return (x <| ys) <| groupBy(cmp)(zs)
 		}
 	}
 }
@@ -31,7 +31,7 @@ public func groupBy<A>(cmp : (A, A) -> Bool) -> [A] -> [[A]] {
 				return []
 			case .Destructure(let x, let xs):
 				let (ys, zs) = span({ cmp(x, $0) })(xs)
-				return (x +> ys) +> groupBy(cmp)(zs)
+				return (x <| ys) <| groupBy(cmp)(zs)
 		}
 	}
 }
@@ -82,9 +82,9 @@ public func insertBy<A>(cmp: A -> A -> Bool) -> A -> [A] -> [A] {
 				return [x]
 			case .Destructure(let y, let ys):
 				if cmp(x)(y) {
-					return y +> insertBy(cmp)(x)(ys)
+					return y <| insertBy(cmp)(x)(ys)
 				}
-				return x +> l
+				return x <| l
 		}
 	} }
 }
@@ -97,9 +97,9 @@ public func insertBy<A>(cmp: (A, A) -> Bool) -> A -> [A] -> [A] {
 				return [x]
 			case .Destructure(let y, let ys):
 				if cmp(x, y) {
-					return y +> insertBy(cmp)(x)(ys)
+					return y <| insertBy(cmp)(x)(ys)
 				}
-				return x +> l
+				return x <| l
 		}
 	} }
 }

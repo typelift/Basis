@@ -19,7 +19,7 @@ public func zip<A, B>(l : [A]) -> [B] -> [(A, B)] {
 					case .Empty:
 						return []
 					case .Destructure(let b, let bs):
-						return (a, b) +> zip(as_)(bs)
+						return (a, b) <| zip(as_)(bs)
 				}
 		}
 	}
@@ -40,7 +40,7 @@ public func zip3<A, B, C>(l : [A]) -> [B] -> [C] -> [(A, B, C)] {
 						case .Empty:
 							return []
 						case .Destructure(let c, let cs):
-							return (a, b, c) +> zip3(as_)(bs)(cs)
+							return (a, b, c) <| zip3(as_)(bs)(cs)
 						}
 				}
 		}
@@ -58,7 +58,7 @@ public func zipWith<A, B, C>(f : A -> B -> C) -> [A] -> [B] -> [C] {
 					case .Empty:
 						return []
 					case .Destructure(let b, let bs):
-						return f(a)(b) +> zipWith(f)(as_)(bs)
+						return f(a)(b) <| zipWith(f)(as_)(bs)
 				}
 		}
 	} }
@@ -75,7 +75,7 @@ public func zipWith<A, B, C>(f : (A, B) -> C) -> [A] -> [B] -> [C] {
 					case .Empty:
 						return []
 					case .Destructure(let b, let bs):
-						return f(a, b) +> zipWith(f)(as_)(bs)
+						return f(a, b) <| zipWith(f)(as_)(bs)
 				}
 		}
 	} }

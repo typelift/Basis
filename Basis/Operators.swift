@@ -15,7 +15,7 @@ import Foundation
 ///
 /// g • f x = g(f(x))
 infix operator • {
-	precedence 9
+	precedence 190
 	associativity right
 }
 
@@ -29,7 +29,7 @@ infix operator • {
 ///
 /// Haskellers will know this as the ($) combinator.
 infix operator <| {
-	precedence 0
+	precedence 100
 	associativity right
 }
 
@@ -41,7 +41,7 @@ infix operator ∏ {}
 /// Sometimes, a computation looks more natural when data is computer first on the right side of
 /// an expression and applied to a function on the left.
 infix operator |> {
-	precedence 0
+	precedence 100
 	associativity left
 }
 
@@ -49,7 +49,7 @@ infix operator |> {
 /// combiner, returns a function that applies the right hand side to two arguments, then runs both
 /// results through the combiner.
 infix operator |*| {
-	precedence 0
+	precedence 100
 	associativity left
 }
 
@@ -58,7 +58,7 @@ infix operator |*| {
 ///
 /// Composed because it is the face one makes when having to tell the typechecker how to do its job.
 infix operator >-< {
-	precedence 0
+	precedence 100
 	associativity left
 }
 
@@ -69,7 +69,7 @@ infix operator >-< {
 ///
 /// This function is literally `•`, but for Categories.
 infix operator <<< {
-	precedence 1
+	precedence 110
 	associativity right
 }
 
@@ -78,7 +78,7 @@ infix operator <<< {
 ///
 /// Function composition with the arguments flipped.
 infix operator >>> {
-	precedence 1
+	precedence 110
 	associativity right
 }
 
@@ -86,13 +86,13 @@ infix operator >>> {
 
 /// "Replace" | Maps all the values "inside" one functor to a user-specified constant.
 infix operator <% {
-	precedence 4
+	precedence 140
 	associativity left
 }
 
 /// Fmap | Like fmap, but infix for your convenience.
 infix operator <%> {
-	precedence 4
+	precedence 140
 	associativity left
 }
 
@@ -101,7 +101,7 @@ infix operator <%> {
 
 /// Ap | Promotes function application.
 infix operator <*> {
-	precedence 4
+	precedence 140
 	associativity left
 }
 
@@ -111,7 +111,7 @@ infix operator <*> {
 /// Default definition: 
 ///		`const(id) <%> a <*> b`
 infix operator *> {
-	precedence 4
+	precedence 140
 	associativity left
 }
 
@@ -120,20 +120,20 @@ infix operator *> {
 /// Default definition: 
 ///		`const <%> a <*> b`
 infix operator <* {
-	precedence 4
+	precedence 140
 	associativity left
 }
 
 /// Choose | Makes Applicative a monoid.
 infix operator <|> {
-	precedence 3
+	precedence 130
 	associativity left
 }
 
 /// MARK: Control.Monad
 
 infix operator >>- {
-	precedence 1
+	precedence 110
 	associativity left
 }
 
@@ -147,7 +147,7 @@ infix operator <- {}
 /// Split | Splits two computations and combines the result into one Arrow yielding a tuple of
 /// the result of each side.
 infix operator *** {
-	precedence 3
+	precedence 130
 	associativity right
 }
 
@@ -155,7 +155,7 @@ infix operator *** {
 /// splits the computation and combines the result of each Arrow into a tuple of the result of
 /// each side.
 infix operator &&& {
-	precedence 3
+	precedence 130
 	associativity right
 }
 
@@ -163,14 +163,14 @@ infix operator &&& {
 
 /// Splat | Splits two computations and combines the results into Eithers on the left and right.
 infix operator +++ {
-	precedence 2
+	precedence 120
 	associativity right
 }
 
 /// Fanin | Given two functions with the same target but different sources, this function splits
 /// the input between the two and merges the output.
 infix operator ||| {
-	precedence 2
+	precedence 120
 	associativity right
 }
 
@@ -178,7 +178,7 @@ infix operator ||| {
 
 /// Op | Combines two ArrowZero monoids.
 infix operator <+> {
-	precedence 5
+	precedence 150
 	associativity right
 }
 

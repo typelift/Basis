@@ -60,7 +60,7 @@ public func toArray<K, A>(m : Map<K, A>) -> [(K, A)] {
 	return foldrWithKey({ (let k) in
 		return { (let x) in
 			return { (let l) in
-				return (k, x) +> l
+				return (k, x) <| l
 			}
 		}
 	})([])(m)

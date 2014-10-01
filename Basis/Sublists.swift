@@ -24,7 +24,7 @@ public func take<A>(n : Int) -> [A] -> [A] {
 			case .Empty:
 				return []
 			case .Destructure(let x, let xs):
-				return x +> take(n - 1)(xs)
+				return x <| take(n - 1)(xs)
 		}
 	}
 }
@@ -65,7 +65,7 @@ public func takeWhile<A>(p : A -> Bool) -> [A] -> [A] {
 				return []
 			case .Destructure(let x, let xs):
 				if p(x) {
-					return x +> takeWhile(p)(xs)
+					return x <| takeWhile(p)(xs)
 				}
 				return []
 		}
@@ -98,7 +98,7 @@ public func span<A>(p : A -> Bool) -> [A] -> ([A], [A]) {
 			case .Destructure(let x, let xs):
 				if p(x) {
 					let (ys, zs) = span(p)(xs)
-					return (x +> ys, zs)
+					return (x <| ys, zs)
 				}
 				return ([], l)
 		}
@@ -141,7 +141,7 @@ public func inits<A>(l : [A]) -> [[A]] {
 		case .Empty:
 			return []
 		case .Destructure(let x, let xs):
-			return [] +> subInits(l)
+			return [] <| subInits(l)
 	}
 }
 
@@ -150,7 +150,7 @@ private func subInits<A>(l : [A]) -> [[A]] {
 		case .Empty:
 			return []
 		case .Destructure(let x, let xs):
-			return map({ x +> $0 })(l: inits(xs))
+			return map({ x <| $0 })(l: inits(xs))
 	}
 }
 
@@ -160,7 +160,7 @@ public func tails<A>(l : [A]) -> [[A]] {
 		case .Empty:
 			return []
 		case .Destructure(let x, let xs):
-			return xs +> subTails(l)
+			return xs <| subTails(l)
 	}
 }
 
@@ -169,6 +169,6 @@ private func subTails<A>(l : [A]) -> [[A]] {
 		case .Empty:
 			return []
 		case .Destructure(let x, let xs):
-			return map({ x +> $0 })(l: inits(xs))
+			return map({ x <| $0 })(l: inits(xs))
 	}
 }

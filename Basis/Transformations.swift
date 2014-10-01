@@ -22,7 +22,7 @@ public func intersperse<A>(sep : A) -> [A] -> [A] {
 			case .Empty:
 				return []
 			case .Destructure(let x, let xs):
-				return x +> prependToAll(sep)(xs)
+				return x <| prependToAll(sep)(xs)
 		}
 	}
 }
@@ -33,7 +33,7 @@ private func prependToAll<A>(sep : A) -> [A] -> [A] {
 			case .Empty:
 				return []
 			case .Destructure(let x, let xs):
-				return sep +> x +> prependToAll(sep)(xs)
+				return sep <| x <| prependToAll(sep)(xs)
 		}
 	}
 }
@@ -50,7 +50,7 @@ public func transpose<A>(xss : [[A]]) -> [[A]] {
 				case .Empty:
 					return transpose(xss)
 				case .Destructure(let x, let xs):
-					return (x +> concatMap({ [head($0)] })(l: xss)) +> transpose(xs +> concatMap({ [tail($0)]} )(l: xss))
+					return (x <| concatMap({ [head($0)] })(l: xss)) <| transpose(xs <| concatMap({ [tail($0)]} )(l: xss))
 			}
 	}
 }
@@ -63,14 +63,14 @@ public func partition<A>(p : A -> Bool) -> [A] -> ([A], [A]) {
 }
 
 private func select<A>(p : A -> Bool) -> A -> ([A], [A]) -> ([A], [A]) {
-	return { x in { t in p(x) ? (x +> fst(t), snd(t)) : (fst(t), x +> snd(t)) } }
+	return { x in { t in p(x) ? (x <| fst(t), snd(t)) : (fst(t), x <| snd(t)) } }
 }
 
 /// Returns a list of all subsequences of a list.
 ///
 ///     subsequences([1, 2, 3]) == [[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]]
 public func subsequences<A>(xs : [A]) -> [[A]] {
-	return [] +> nonEmptySubsequences(xs)
+	return [] <| nonEmptySubsequences(xs)
 }
 
 public func nonEmptySubsequences<A>(xs : [A]) -> [[A]] {
@@ -78,9 +78,9 @@ public func nonEmptySubsequences<A>(xs : [A]) -> [[A]] {
 		case .Empty:
 			return []
 		case .Destructure(let x, let xs):
-			return [x] +> foldr({ (let ys : [A]) in
+			return [x] <| foldr({ (let ys : [A]) in
 				return { (let r) in
-					return ys +> (x +> ys) +> r
+					return ys <| (x <| ys) <| r
 				}
 			})([])(nonEmptySubsequences(xs))
 	}

@@ -39,9 +39,7 @@ func ++<T>(var lhs : [T], rhs : [T]) -> [T] {
 	return lhs
 }
 
-infix operator +> { associativity right }
-
-func +><T>(lhs : T, rhs : [T]) -> [T] {
+func <|<T>(lhs : T, rhs : [T]) -> [T] {
 	var arr = rhs
 	arr.insert(lhs, atIndex: 0)
 	return arr
@@ -187,7 +185,7 @@ internal func destructure<A, B>(x : [A:B]) -> DDestructure<A, B> {
 	let hd = g.next()!
 	var arr : [(A, B)] = []
 	while let v = g.next() {
-		arr = v +> arr
+		arr = (v <| arr)
 	}
 	return .Destructure(hd, arr)
 }

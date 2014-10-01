@@ -17,9 +17,9 @@ public func scanl<B, A>(f : B -> A -> B) -> B -> [A] -> [B] {
 	return { q in { ls in
 		switch ls.destruct() {
 			case .Empty:
-				return q +> []
+				return q <| []
 			case .Destructure(let x, let xs):
-				return q +> scanl(f)(f(q)(x))(xs)
+				return q <| scanl(f)(f(q)(x))(xs)
 		}
 	} }
 }
@@ -33,9 +33,9 @@ public func scanl<B, A>(f : (B, A) -> B) -> B -> [A] -> [B] {
 	return { q in { ls in
 		switch ls.destruct() {
 			case .Empty:
-				return q +> []
+				return q <| []
 			case .Destructure(let x, let xs):
-				return q +> scanl(f)(f(q, x))(xs)
+				return q <| scanl(f)(f(q, x))(xs)
 		}
 	} }
 }
@@ -79,7 +79,7 @@ public func scanr<B, A>(f : A -> B -> B) -> B -> [A] -> [B] {
 			case .Empty:
 				return [q]
 			case .Destructure(let x, let xs):
-				return f(x)(q) +> scanr(f)(q)(xs)
+				return f(x)(q) <| scanr(f)(q)(xs)
 		}
 	} }
 }
@@ -95,7 +95,7 @@ public func scanr<B, A>(f : (A, B) -> B) -> B -> [A] -> [B] {
 			case .Empty:
 				return [q]
 			case .Destructure(let x, let xs):
-				return f(x, q) +> scanr(f)(q)(xs)
+				return f(x, q) <| scanr(f)(q)(xs)
 		}
 	} }
 }
@@ -116,7 +116,7 @@ public func scanr1<A>(f : A -> A -> A) -> [A] -> [A] {
 					case .Empty:
 						assert(false, "Cannot scanr1 across an empty list.")
 					case .Destructure(let q, _):
-						return f(x)(q) +> qs
+						return f(x)(q) <| qs
 				}
 		}
 	}
@@ -138,7 +138,7 @@ public func scanr1<A>(f : (A, A) -> A) -> [A] -> [A] {
 					case .Empty:
 						assert(false, "Cannot scanr1 across an empty list.")
 					case .Destructure(let q, _):
-						return f(x, q) +> qs
+						return f(x, q) <| qs
 				}
 		}
 	}
