@@ -12,23 +12,17 @@ import XCTest
 
 class UniqueSpec : XCTestCase {
 	func testUniqueness() {
-		var u1 : Unique!
-		var u2 : Unique!
-		var u3 : Unique!
-		var u4 : Unique!
-		var u5 : Unique!
-
-		u1 <- newUnique()
-		u2 <- newUnique()
-		u3 <- newUnique()
-		u4 <- newUnique()
-		u5 <- newUnique()
+		let u1 = !newUnique()
+		let u2 = !newUnique()
+		let u3 = !newUnique()
+		let u4 = !newUnique()
+		let u5 = !newUnique()
 
 		let a = [u1, u2, u3, u4, u5]
 		let s = subsequences(a).filter({ $0.count == 2 }).map({ head($0) ∏ (head • tail)($0) })
 
 		XCTAssertTrue(and(zip(a)(a).map(==)), "")
-		XCTAssertTrue(!and(s.map({ $0! == $1! })), "")
+		XCTAssertTrue(!and(s.map({ $0 == $1 })), "")
 	}
 }
 

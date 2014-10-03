@@ -140,7 +140,7 @@ infix operator >>- {
 /// MARK: System.IO
 
 /// Extract | Extracts a value from a monadic computation.
-infix operator <- {}
+prefix operator ! {}
 
 /// MARK: Control.Arrow
 

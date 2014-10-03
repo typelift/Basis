@@ -31,8 +31,7 @@ internal func tracePrintableID<A : Printable>(x : A) -> A {
 /// Prints out a stack trace before returning a value.
 public func traceStack<A>(msg : String)(e : A) -> A {
 	return do_ { () -> IO<A> in
-		var stack : [String]!
-		stack <- currentCallStack()
+		let stack : [String] = !currentCallStack()
 		if stack.count != 0 {
 			return putStrLn(msg + foldr(+)("")(stack)) >> IO.pure(e)
 		}

@@ -33,8 +33,7 @@ public class Unique : K0, Equatable, Hashable, Comparable {
 /// times newUnique may be called.
 public func newUnique() -> IO<Unique> {
 	return do_({ () -> Unique in		
-		var r : Int!
-		r <- modifyIORef(Unique.source)({ $0 + 1 }) >> readIORef(Unique.source)
+		let r : Int = !(modifyIORef(Unique.source)({ $0 + 1 }) >> readIORef(Unique.source))
 		return Unique(r)
 	})
 }
@@ -60,7 +59,6 @@ public func ==(lhs: Unique, rhs: Unique) -> Bool {
 }
 
 private let innerSource : IORef<Int> = {
-	var ref : IORef<Int>!
-	ref <- newIORef(0)
+	let ref : IORef<Int> = !newIORef(0)
 	return ref
 }()

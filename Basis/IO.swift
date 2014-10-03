@@ -70,8 +70,7 @@ public func getContents() -> IO<String> {
 /// then output to standard out.
 public func interact(f : String -> String) -> IO<()> {
 	return do_ {
-		var s : String = ""
-		s <- getContents()
+		let s : String = !getContents()
 		return putStr(f(s))
 	}
 }
@@ -142,16 +141,8 @@ public func >><A, B>(x: IO<A>, y: IO<B>) -> IO<B> {
 	})
 }
 
-public func <-<A>(inout lhs: A, rhs: IO<A>) {
-	lhs = rhs.unsafePerformIO()
-}
-
-public func <-<A>(inout lhs: A!, rhs: IO<A>) {
-	lhs = rhs.unsafePerformIO()
-}
-
-public func <-<A>(inout lhs: A?, rhs: IO<A>) {
-	lhs = .Some(rhs.unsafePerformIO())
+public prefix func !<A>(m: IO<A>) -> A {
+	return m.unsafePerformIO()
 }
 
 /// Wraps up a closure in a lazy IO action.
@@ -170,9 +161,7 @@ public func <-<A>(inout lhs: A?, rhs: IO<A>) {
 /// to `unsafePerformIO()`
 public func do_<A>(fn: () -> IO<A>) -> IO<A> {
 	return IO<A>({ (let rw) in
-		var x : A!
-		x <- fn()
-		return (rw, x)
+		return (rw, !fn())
 	})
 }
 
@@ -197,11 +186,8 @@ public func do_<A>(fn: () -> A) -> IO<A> {
 public func sequence<A>(ms : [IO<A>]) -> IO<[A]> {
 	return foldr({ m in { n in
 		do_ { () -> [A] in
-			var x : A!
-			var xs : [A]!
-
-			x <- m
-			xs <- n
+			let x : A = !m
+			let xs : [A] = !n
 			return [x] + xs
 		}
 	}})(IO.pure([]))(ms)

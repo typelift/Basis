@@ -10,7 +10,7 @@ import Foundation
 
 /// Mutable references in the IO monad.
 public final class IORef<A> : K1<A> {
-	var value : STRef<RealWorld, A>
+	let value : STRef<RealWorld, A>
 	
 	init(_ v : STRef<RealWorld, A>) {
 		self.value = v

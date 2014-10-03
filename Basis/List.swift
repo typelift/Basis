@@ -32,10 +32,9 @@ public func tail<A>(l : [A]) -> [A] {
 	}
 }
 
-func <|<T>(lhs : T, rhs : [T]) -> [T] {
-	var arr = rhs
-	arr.insert(lhs, atIndex: 0)
-	return arr
+func <|<T>(lhs : T, var rhs : [T]) -> [T] {
+	rhs.insert(lhs, atIndex: 0)
+	return rhs
 }
 
 
