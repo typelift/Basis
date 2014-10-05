@@ -4,9 +4,8 @@
 //
 //  Created by Robert Widmann on 9/17/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
-
-import Foundation
 
 /// Prints a message before returning a value.
 public func trace<A>(msg : String)(e : A) -> A {

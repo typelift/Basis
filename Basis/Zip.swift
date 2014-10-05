@@ -4,9 +4,8 @@
 //
 //  Created by Robert Widmann on 9/7/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
-
-import Foundation
 
 /// Zips two lists into an array of pairs.
 public func zip<A, B>(l : [A]) -> [B] -> [(A, B)] {

@@ -4,9 +4,8 @@
 //
 //  Created by Robert Widmann on 9/7/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
-
-import Foundation
 
 /// Returns whether an element is a member of a list.
 public func elem<A : Equatable>(e : A) -> [A] -> Bool {

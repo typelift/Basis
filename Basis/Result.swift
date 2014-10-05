@@ -4,9 +4,8 @@
 //
 //  Created by Robert Widmann on 9/24/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
-
-import Foundation
 
 /// Result is similar to an Either, except specialized to have an Error case that can
 /// only contain an NSError.
@@ -149,10 +148,10 @@ extension Result : Applicative {
 
 public func <*><A, B>(f : Result<A -> B> , r : Result<A>) ->  Result<B> {
 	switch f.destruct() {
-	case .Error(let e):
-		return Result.error(e)
-	case .Value(let f):
-		return Result.fmap(f.unBox())(r)
+		case .Error(let e):
+			return Result.error(e)
+		case .Value(let f):
+			return Result.fmap(f.unBox())(r)
 	}
 }
 

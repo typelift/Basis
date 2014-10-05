@@ -4,9 +4,8 @@
 //
 //  Created by Robert Widmann on 9/9/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
-
-import Foundation
 
 /// An Arrow is most famous for being a "Generalization of a Monad".  They're probably better
 /// described as a more general view of computation.  Where a monad M<A> yields a value of type A

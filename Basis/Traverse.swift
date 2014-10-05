@@ -4,9 +4,8 @@
 //
 //  Created by Robert Widmann on 9/16/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
-
-import Foundation
 
 /// Map a function over all values in the map.
 public func map<K, A, B>(f : A -> B) -> Map<K, A> -> Map<K, B> {

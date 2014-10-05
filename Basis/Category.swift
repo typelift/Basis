@@ -4,9 +4,8 @@
 //
 //  Created by Robert Widmann on 9/7/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
-
-import Foundation
 
 /// A Category is an algebraic structure consisting of a set of objects and a set of morphisms
 /// between those objects.  Each object includes an identity morphism, and composition of morphisms

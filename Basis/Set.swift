@@ -4,9 +4,8 @@
 //
 //  Created by Robert Widmann on 10/3/14.
 //  Copyright (c) 2014 Robert Widmann. All rights reserved.
+//  Released under the MIT license.
 //
-
-import Foundation
 
 public enum SetD<A> {
 	case Empty

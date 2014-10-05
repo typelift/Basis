@@ -4,9 +4,8 @@
 //
 //  Created by Robert Widmann on 9/7/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
-
-import Foundation
 
 /// Bounded types are types that have definable upper and lower limits.  For types like the Int and
 /// Float, their limits are the minimum and maximum possible values representable in their bit-

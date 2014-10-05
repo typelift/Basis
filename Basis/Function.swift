@@ -4,9 +4,8 @@
 //
 //  Created by Robert Widmann on 9/7/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
-
-import Foundation
 
 /// The type of a function from T -> U.  Swift does not consider `->` to be a type constructor as in
 /// most other (*cough* saner *cough*) languages, so this is more of an improvisation than a

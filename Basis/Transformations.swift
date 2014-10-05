@@ -4,9 +4,8 @@
 //
 //  Created by Robert Widmann on 9/14/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
-
-import Foundation
 
 /// Maps a function over a list and returns a new list containing the mapped values.
 public func map<A, B>(f : A -> B)(l : [A]) -> [B] {

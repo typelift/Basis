@@ -4,10 +4,8 @@
 //
 //  Created by Robert Widmann on 9/7/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
-
-import Foundation
-import Swift
 
 /// Returns an infinite list of repeated applications of a function to a value x.
 ///

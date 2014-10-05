@@ -4,9 +4,8 @@
 //
 //  Created by Robert Widmann on 9/10/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
-
-import Foundation
 
 // The strict state-transformer monad.  ST<S, A> represents
 // a computation returning a value of type A using some internal

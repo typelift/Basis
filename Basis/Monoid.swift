@@ -4,9 +4,8 @@
 //
 //  Created by Robert Widmann on 9/10/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
-
-import Foundation
 
 /// Monoids are algebraic structures consisting of a set of elements, an associative binary operator
 /// to combine two of those elements together, and a single specialized element called the identity 

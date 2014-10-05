@@ -4,6 +4,7 @@
 //
 //  Created by Robert Widmann on 9/13/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
 
 /// Abstract Unique objects.  Objects of type Unique may be compared for equality and ordering and 
@@ -52,6 +53,4 @@ public func ==(lhs: Unique, rhs: Unique) -> Bool {
 	return lhs.val == rhs.val
 }
 
-private let innerSource : IORef<Int> = {
-	return !newIORef(0)
-}()
+private let innerSource : IORef<Int> = !newIORef(0)

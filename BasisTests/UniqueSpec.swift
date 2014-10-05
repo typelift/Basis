@@ -4,6 +4,7 @@
 //
 //  Created by Robert Widmann on 9/21/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
 
 import Basis

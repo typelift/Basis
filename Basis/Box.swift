@@ -4,9 +4,8 @@
 //
 //  Created by Robert Widmann on 9/9/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
-
-import Foundation
 
 /// The infamous Box Hack.  Oh, how I'd love to say this was a Sort.  Let's hope we get ADTs soon...
 ///

@@ -4,9 +4,8 @@
 //
 //  Created by Robert Widmann on 9/10/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
-
-import Foundation
 
 // Strict mutable references.
 public final class STRef<S, A> : K2<S, A> {

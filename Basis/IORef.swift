@@ -4,9 +4,8 @@
 //
 //  Created by Robert Widmann on 9/10/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
-
-import Foundation
 
 /// Mutable references in the IO monad.
 public final class IORef<A> : K1<A> {

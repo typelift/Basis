@@ -4,9 +4,8 @@
 //
 //  Created by Robert Widmann on 9/13/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
-
-import Foundation
 
 public protocol Exception : Printable {	}
 

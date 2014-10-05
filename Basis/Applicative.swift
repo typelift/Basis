@@ -4,9 +4,8 @@
 //
 //  Created by Robert Widmann on 9/7/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
-
-import Foundation
 
 /// Applicative sits in the middle distance between a Functor and a Monad.  While you do not get
 /// >>- yet, there is more than enough power in the generality of the interface to make up for it.

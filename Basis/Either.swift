@@ -4,9 +4,8 @@
 //
 //  Created by Robert Widmann on 9/9/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
-
-import Foundation
 
 /// Either represents a computation that either produces a result (left) or fails with an error
 /// (right).

@@ -4,9 +4,8 @@
 //
 //  Created by Robert Widmann on 9/7/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
-
-import Foundation
 
 public struct LazySequenceOf<S : SequenceType, A where S.Generator.Element == A> : SequenceType {
 	let seq : S

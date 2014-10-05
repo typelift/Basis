@@ -4,9 +4,8 @@
 //
 //  Created by Robert Widmann on 9/7/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
-
-import Foundation
 
 /// Takes a binary function, an initial value, and a list and scans the function across each element
 /// of a list accumulating the results of successive function calls applied to reduced values from 

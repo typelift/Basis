@@ -4,9 +4,8 @@
 //
 //  Created by Robert Widmann on 9/7/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
-
-import Foundation
 
 /// Functors map the functions and objects in one set to a different set of functions and objects.
 /// This is represented by any structure parametrized by some set A, and a function `fmap` that 

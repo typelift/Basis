@@ -4,6 +4,7 @@
 //
 //  Created by Robert Widmann on 9/7/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
 
 import Basis
@@ -45,12 +46,12 @@ class OperatorsSpec : XCTestCase {
 		XCTAssertTrue(snd(x ∏ y) == snd((x, y)), "")
 	}
 
-// Uncomment to crash Swiftc
+// Uncomment to crash Swiftz
 //	func testOn() {
 //		let x = "String"
 //		let y = 20
 //
-//		XCTAssertTrue(on(+)(f: { pow($0, 2.0) })(4.0)(4.0) == 10.0, "")
+//		XCTAssertTrue(on(+)(f: { s in pow(s, 2.0) })(4.0)(4.0) == 10.0, "")
 //
 //	}
 
@@ -94,18 +95,18 @@ class OperatorsSpec : XCTestCase {
 //		XCTAssertTrue(and(zip(l1 *> l2)(l2).map(==)), "")
 //	}
 //
-//	func testChoose() {
-//		let x : Int? = Optional.Some(10)
-//		let y : Int? = Optional.None
-//
-//		XCTAssertTrue((x <|> y) == x, "")
-//	}
-//
-//	func testBind() {
-//		let x : Int? = Optional.Some(10)
-//
-//		XCTAssertTrue((x >>- { .Some($0) }) == id(x), "")
-//	}
+	func testChoose() {
+		let x : Maybe<Int> = Maybe.just(10)
+		let y : Maybe<Int> = Maybe.nothing()
+
+		XCTAssertTrue((x <|> y) === x, "")
+	}
+
+	func testBind() {
+		let x : Maybe<Int> = Maybe.just(10)
+
+		XCTAssertTrue(fromJust(x >>- { v in Maybe.just(v) }) == fromJust(x), "")
+	}
 
 	func testSplit() {
 		let f = ^{ $0 + 5 }

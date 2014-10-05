@@ -4,9 +4,8 @@
 //
 //  Created by Robert Widmann on 9/10/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
-
-import Foundation
 
 /// Extract the first component of a pair.
 public func fst<A, B>(t : (A, B)) -> A {
@@ -48,7 +47,7 @@ public func swap<A, B>(t : (A, B)) -> (B, A) {
 /// Pair Formation | Forms a pair from two arguments.  (⌥ + ⇧ + P)
 ///
 /// (,), the pair formation operator, is a reserved symbol in Swift with a meaning beyond just 
-/// tuple formation.  This means it is also not a proper function.  
+/// tuple formation.  This means it is also not a proper function.
 public func ∏<A, B>(l : A, r : B) -> (A, B) {
 	return (l, r)
 }

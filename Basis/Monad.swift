@@ -4,9 +4,8 @@
 //
 //  Created by Robert Widmann on 9/7/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
-
-import Foundation
 
 /// A Monad is an (Endo)Functor (but really, that doesn't matter because all Functors in Swift are
 /// *technically* endofunctors) that respects a common-sense set of laws called the Monoid Laws:
