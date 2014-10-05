@@ -246,7 +246,6 @@
 				84922D3319D237E000AE9A7C /* Map.swift */,
 				84922D3A19D237E000AE9A7C /* Query.swift */,
 				84922D4319D237E000AE9A7C /* Traverse.swift */,
-				842963B119DF7A3A003FCBE8 /* Set.swift */,
 			);
 			name = Map;
 			sourceTree = "<group>";
@@ -269,6 +268,7 @@
 				84522CDB19E10EE200E4423A /* Optional.swift */,
 				84922D3819D237E000AE9A7C /* Monoid.swift */,
 				84922EB019D3869B00AE9A7C /* Result.swift */,
+				842963B119DF7A3A003FCBE8 /* Set.swift */,
 				84922D3D19D237E000AE9A7C /* ST.swift */,
 				84922D3E19D237E000AE9A7C /* STRef.swift */,
 				84922D4419D237E000AE9A7C /* Tuple.swift */,
