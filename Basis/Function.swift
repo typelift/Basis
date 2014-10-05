@@ -89,9 +89,7 @@ public func *** <B, C, D, E>(f : Function<B, C>, g : Function<D, E>) -> Function
 }
 
 public func &&& <B, C, D>(f : Function<B, C>, g : Function<B, D>) -> Function<B, (C, D)> {
-	return ^{ (let b) in
-		return (b, b)
-	} >>> f *** g
+	return ^{ b in (b, b) } >>> f *** g
 }
 
 extension Function : ArrowChoice {
