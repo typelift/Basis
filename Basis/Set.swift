@@ -125,6 +125,59 @@ public func delete<A : Comparable>(k : A) -> Set<A> -> Set<A> {
 	}
 }
 
+/// Post-order fold of a function over the map.
+public func foldr<A, B>(f : A -> B -> B) -> B -> Set<A> -> B {
+	return  { z in { m in
+		switch m.destruct() {
+			case .Empty:
+				return z
+			case .Destructure(_, let x, let l, let r):
+				return foldr(f)(f(x)(foldr(f)(z)(r)))(l)
+		}
+	} }
+}
+
+/// Post-order fold of an operator over the map.
+public func foldr<A, B>(f : (A , B) -> B) -> B -> Set<A> -> B {
+	return  { z in { m in
+		switch m.destruct() {
+			case .Empty:
+				return z
+			case .Destructure(_, let x, let l, let r):
+				return foldr(f)(f(x, foldr(f)(z)(r)))(l)
+		}
+	} }
+}
+
+/// Pre-order fold of a function over the map.
+public func foldl<A, B>(f: B -> A -> B) -> B -> Set<A> -> B {
+	return  { z in { m in
+		switch m.destruct() {
+			case .Empty:
+				return z
+			case .Destructure(_, let x, let l, let r):
+				return foldl(f)(f(foldl(f)(z)(l))(x))(r)
+		}
+	} }
+}
+
+/// Pre-order fold of an operator over the map.
+public func foldl<A, B>(f: (B, A) -> B) -> B -> Set<A> -> B {
+	return  { z in { m in
+		switch m.destruct() {
+			case .Empty:
+				return z
+			case .Destructure(_, let x, let l, let r):
+				return foldl(f)(f(foldl(f)(z)(l), x))(r)
+		}
+	} }
+}
+
+/// Returns an array of all values in the set in ascending order of their keys.
+public func elems<A>(m : Set<A>) -> [A] {
+	return foldr(<|)([])(m)
+}
+
 /// Finds and deletes the minimal element in a set of ordered elements.
 ///
 /// This function is partial with respect to empty sets.
