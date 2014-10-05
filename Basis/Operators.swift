@@ -132,9 +132,30 @@ infix operator <|> {
 
 /// MARK: Control.Monad
 
+/// Bind | Composes two monadic actions by passing the value inside the monad on the left to the
+/// function on the right.
 infix operator >>- {
 	precedence 110
 	associativity left
+}
+
+/// Bind | Composes two monadic actions by passing the value inside the monad on the right to the
+/// funciton on the left.
+infix operator -<< {
+	precedence 110
+	associativity right
+}
+
+/// Kleisli Compose Right | Left-to-right Kleisli composition of monads.
+infix operator >=> {
+	precedence 110
+	associativity right
+}
+
+/// Kleisli Compose Left | Right-to-left Kleisli composition of monads.
+infix operator <=< {
+	precedence 110
+	associativity right
 }
 
 /// MARK: System.IO

@@ -20,27 +20,27 @@ public final class IO<A> : K1<A> {
 	// The infamous "back door" to the IO Monad.  Forces strict evaluation
 	// of the IO action and returns a result.
 	public func unsafePerformIO() -> A  {
-		return (snd • self.apply)(realWorld)
+		return self.apply(realWorld).1
 	}
 }
 
 /// Writes a character to standard output.
-public func putChar(c : Character) -> IO<()> {
+public func putChar(c : Character) -> IO<Void> {
 	return IO.pure(print(c))
 }
 
 /// Writes a string to standard output.
-public func putStr(s : String) -> IO<()> {
+public func putStr(s : String) -> IO<Void> {
 	return IO.pure(print(s))
 }
 
 /// Writes a string and a newline to standard output.
-public func putStrLn(s : String) -> IO<()> {
+public func putStrLn(s : String) -> IO<Void> {
 	return IO.pure(println(s))
 }
 
 /// Writes the description of an object to standard output.
-public func print<A : Printable>(x : A) -> IO<()> {
+public func print<A : Printable>(x : A) -> IO<Void> {
 	return putStrLn(x.description)
 }
 
@@ -68,7 +68,7 @@ public func getContents() -> IO<String> {
 
 /// Takes a function that is given the contents of standard input.  The result of that function is
 /// then output to standard out.
-public func interact(f : String -> String) -> IO<()> {
+public func interact(f : String -> String) -> IO<Void> {
 	return do_ {
 		let s : String = !getContents()
 		return putStr(f(s))
@@ -99,9 +99,7 @@ public func <% <A, B>(x : A, io : IO<B>) -> IO<A> {
 
 extension IO : Applicative {
 	public class func pure(a: A) -> IO<A> {
-		return IO<A>({ (let rw) in
-			return (rw, a)
-		})
+		return IO<A>({ rw in (rw, a) })
 	}
 
 }
@@ -131,16 +129,6 @@ extension IO : Monad {
 	}
 }
 
-public func >>-<A, B>(x: IO<A>, f: A -> IO<B>) -> IO<B> {
-	return x.bind(f)
-}
-
-public func >><A, B>(x: IO<A>, y: IO<B>) -> IO<B> {
-	return x.bind({ (_) in
-		return y
-	})
-}
-
 public prefix func !<A>(m: IO<A>) -> A {
 	return m.unsafePerformIO()
 }
@@ -160,25 +148,15 @@ public prefix func !<A>(m: IO<A>) -> A {
 /// not be executed until the values inside are requested, either with an extract (`<-`) or a call
 /// to `unsafePerformIO()`
 public func do_<A>(fn: () -> IO<A>) -> IO<A> {
-	return IO<A>({ (let rw) in
-		return (rw, !fn())
-	})
+	return IO<A>({ rw in (rw, !fn()) })
 }
 
 /// Wraps up a closure returning a value in a lazy IO action.
 ///
 /// This variant of do-blocks allows one to write more natural looking code.  The return keyword
-/// actually becomes monadic return.  For example
-///
-/// 	return do_ { () -> Unique in
-///			var r : Int!
-///			r <- modifyIORef(Unique.source)({ $0 + 1 }) >> readIORef(Unique.source)
-///			return Unique(r)
-///		}
+/// becomes monadic return.
 public func do_<A>(fn: () -> A) -> IO<A> {
-	return IO<A>({ (let rw) in
-		return (rw, fn())
-	})
+	return IO<A>({ rw in (rw, fn()) })
 }
 
 /// Executes a list of IO actions sequentially, accumulating their results in a list in another IO
@@ -194,8 +172,8 @@ public func sequence<A>(ms : [IO<A>]) -> IO<[A]> {
 }
 
 /// Executes a list of IO actions sequentially, discarding the result of each along the way.
-public func sequence_<A>(ms : [IO<A>]) -> IO<()> {
-	return foldr(curry(>>))(IO.pure(()))(ms)
+public func sequence_<A>(ms : [IO<A>]) -> IO<Void> {
+	return foldr({ x, y in x.bind({ _ in y }) })(IO<Void>.pure(Void()))(ms)
 }
 
 /// Maps a function over a list, then sequences the resulting IO actions together, accumulating 
@@ -206,7 +184,7 @@ public func mapM<A, B>(f : A -> IO<B>) -> [A] -> IO<[B]> {
 
 /// Maps a function over a list, then sequences the resulting IO actions together, discarding the
 /// result of each along the way.
-public func mapM_<A, B>(f : A -> IO<B>) -> [A] -> IO<()> {
+public func mapM_<A, B>(f : A -> IO<B>) -> [A] -> IO<Void> {
 	return { ms in sequence_(ms.map(f)) }
 }
 
@@ -216,7 +194,7 @@ public func forM<A, B>(l: [A])(f : A -> IO<B>) -> IO<[B]> {
 }
 
 /// mapM_ with its arguments flipped around.
-public func forM_<A, B>(l: [A])(f : A -> IO<B>) -> IO<()> {
+public func forM_<A, B>(l: [A])(f : A -> IO<B>) -> IO<Void> {
 	return mapM_(f)(l)
 }
 

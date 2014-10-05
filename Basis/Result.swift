@@ -175,16 +175,6 @@ extension Result : Monad {
 	}
 }
 
-public func >>-<A, B>(xs : Result<A>, f : A -> Result<B>) -> Result<B> {
-	return xs.bind(f)
-}
-
-public func >><A, B>(x : Result<A>, y : Result<B>) -> Result<B> {
-	return x >>- { (_) in
-		return y
-	}
-}
-
 public enum ResultD<A> {
 	case Error(NSError)
 	case Value(Box<A>)

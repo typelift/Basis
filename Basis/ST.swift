@@ -77,17 +77,6 @@ extension ST : Monad {
 	}
 }
 
-
-public func >>-<S, A, B>(x : ST<S, A>, f : A -> ST<S, B>) -> ST<S, B> {
-	return x.bind(f)
-}
-
-public func >><S, A, B>(x : ST<S, A>, y : ST<S, B>) -> ST<S, B> {
-	return x.bind({ (_) in
-		return y
-	})
-}
-
 // Shifts an ST computation into the IO monad.  Only ST's indexed
 // by the real world qualify to be converted.
 internal func stToIO<A>(m: ST<RealWorld, A>) -> IO<A> {

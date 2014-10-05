@@ -6,15 +6,9 @@
 //  Copyright (c) 2014 TypeLift. All rights reserved.
 //
 
-import Foundation
-
 /// Abstract Unique objects.  Objects of type Unique may be compared for equality and ordering and 
 /// hashed.
 public class Unique : K0, Equatable, Hashable, Comparable {
-	private class var source : IORef<Int> {
-		return innerSource
-	}
-	
 	private let val : Int
 	
 	public var hashValue: Int { 
@@ -32,8 +26,8 @@ public class Unique : K0, Equatable, Hashable, Comparable {
 /// value of type Unique returned by previous calls to newUnique. There is no limit on the number of
 /// times newUnique may be called.
 public func newUnique() -> IO<Unique> {
-	return do_({ () -> Unique in		
-		let r : Int = !(modifyIORef(Unique.source)({ $0 + 1 }) >> readIORef(Unique.source))
+	return do_({ () -> Unique in
+		let r = !(modifyIORef(innerSource)({ $0 + 1 }) >> readIORef(innerSource))
 		return Unique(r)
 	})
 }
@@ -59,6 +53,5 @@ public func ==(lhs: Unique, rhs: Unique) -> Bool {
 }
 
 private let innerSource : IORef<Int> = {
-	let ref : IORef<Int> = !newIORef(0)
-	return ref
+	return !newIORef(0)
 }()
