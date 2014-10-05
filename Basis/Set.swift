@@ -44,6 +44,48 @@ public func singleton<A>(val : A) -> Set<A> {
 	return Set<A>(1, val, nil, nil)
 }
 
+/// Returns whether a set is empty in constant time.
+public func null<A>(m : Set<A>) -> Bool {
+	switch m.destruct() {
+		case .Empty:
+			return true
+		case .Destructure(_, _, _, _):
+			return false
+	}
+}
+
+/// Returns the size of a set in constant time.
+public func size<A>(m : Set<A>) -> UInt {
+	switch m.destruct() {
+		case .Empty:
+			return 0
+		case .Destructure(let sz, _, _, _):
+			return sz
+	}
+}
+
+/// Returns whether a given key is a member of the set.
+public func member<A : Comparable>(val : A) -> Set<A> -> Bool {
+	return { m in
+		switch m.destruct() {
+			case .Empty:
+				return false
+			case let .Destructure(_, x, l, r):
+				if val < x {
+					return member(val)(l)
+				} else if val > x {
+					return member(val)(r)
+				}
+				return true
+		}
+	}
+}
+
+/// Returns whether a given key is not a member of the set.
+public func notMember<A : Comparable>(val : A) -> Set<A> -> Bool {
+	return { m in !member(val)(m) }
+}
+
 /// Inserts a value pair and returns a new set.
 ///
 /// This function is left-biased in that it will replace any old value in the set with the new given
