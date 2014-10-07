@@ -216,7 +216,7 @@ public func <|><A>(l : Maybe<A>, r : Maybe<A>) -> Maybe<A> {
 	}
 }
 
-extension Maybe : Monad {	
+extension Maybe : Monad {
 	public func bind<B>(f : A -> Maybe<B>) -> Maybe<B> {
 		switch self.destruct() {
 			case .Nothing:

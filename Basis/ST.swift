@@ -26,6 +26,8 @@ public final class ST<S, A> : K2<S, A> {
 
 extension ST : Functor {
 	typealias B = Any
+	typealias FA = ST<S, A>
+	typealias FB = ST<S, B>
 
 	public class func fmap<B>(f: A -> B) -> ST<S, A> -> ST<S, B> {
 		return { (let st) in
@@ -70,10 +72,20 @@ public func <*<S, A, B>(a : ST<S, A>, b : ST<S, B>) -> ST<S, A> {
 	return const <%> a <*> b
 }
 
-extension ST : Monad {	
+extension ST : Monad {
 	public func bind<B>(f: A -> ST<S, B>) -> ST<S, B> {
 		return f(runST())
 	}
+}
+
+public func >>-<S, A, B>(x : ST<S, A>, f : A -> ST<S, B>) -> ST<S, B> {
+	return x.bind(f)
+}
+
+public func >><S, A, B>(x : ST<S, A>, y : ST<S, B>) -> ST<S, B> {
+	return x.bind({ (_) in
+		return y
+	})
 }
 
 // Shifts an ST computation into the IO monad.  Only ST's indexed

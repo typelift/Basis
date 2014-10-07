@@ -77,8 +77,9 @@ public func interact(f : String -> String) -> IO<Void> {
 }
 
 extension IO : Functor {
-	typealias FA = IO<A>
 	typealias B = Any
+	typealias FA = IO<A>
+	typealias FB = IO<B>
 
 	public class func fmap<B>(f: A -> B) -> IO<A> -> IO<B> {
 		return { (let io) in
@@ -128,6 +129,16 @@ extension IO : Monad {
 			return f(a).apply(nw)
 		})
 	}
+}
+
+public func >>-<A, B>(x: IO<A>, f: A -> IO<B>) -> IO<B> {
+	return x.bind(f)
+}
+
+public func >><A, B>(x: IO<A>, y: IO<B>) -> IO<B> {
+	return x.bind({ (_) in
+		return y
+	})
 }
 
 public prefix func !<A>(m: IO<A>) -> A {

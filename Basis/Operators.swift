@@ -145,18 +145,6 @@ infix operator -<< {
 	associativity right
 }
 
-/// Kleisli Compose Right | Left-to-right Kleisli composition of monads.
-infix operator >=> {
-	precedence 110
-	associativity right
-}
-
-/// Kleisli Compose Left | Right-to-left Kleisli composition of monads.
-infix operator <=< {
-	precedence 110
-	associativity right
-}
-
 /// MARK: System.IO
 
 /// Extract | Extracts a value from a monadic computation.

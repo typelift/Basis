@@ -163,6 +163,15 @@ extension Either : Monad {
 		}
 	}
 }
+public func >>-<A, B, C>(xs : Either<A, B>, f : Either<A, B>.A -> Either<A, C>) -> Either<A, C> {
+	return xs.bind(f)
+}
+
+public func >><A, B, C>(x : Either<A, B>, y : Either<A, C>) -> Either<A, C> {
+	return x >>- { (_) in
+		return y
+	}
+}
 
 public enum EitherD<A, B> {
 	case Left(Box<A>)

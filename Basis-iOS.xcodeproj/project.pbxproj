@@ -37,7 +37,6 @@
 		84922CEA19D237DA00AE9A7C /* Bounded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922CB819D237DA00AE9A7C /* Bounded.swift */; };
 		84922CEB19D237DA00AE9A7C /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922CB919D237DA00AE9A7C /* Box.swift */; };
 		84922CEC19D237DA00AE9A7C /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922CBA19D237DA00AE9A7C /* Category.swift */; };
-		84922CED19D237DA00AE9A7C /* Coerce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922CBB19D237DA00AE9A7C /* Coerce.swift */; };
 		84922CEE19D237DA00AE9A7C /* Combinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922CBC19D237DA00AE9A7C /* Combinator.swift */; };
 		84922CF019D237DA00AE9A7C /* Either.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922CBE19D237DA00AE9A7C /* Either.swift */; };
 		84922CF119D237DA00AE9A7C /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922CBF19D237DA00AE9A7C /* Error.swift */; };
@@ -437,7 +436,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84922CED19D237DA00AE9A7C /* Coerce.swift in Sources */,
 				84922D1119D237DA00AE9A7C /* Traverse.swift in Sources */,
 				841FE02D19DB7E390068636A /* String.swift in Sources */,
 				84922D0519D237DA00AE9A7C /* MonadZip.swift in Sources */,
