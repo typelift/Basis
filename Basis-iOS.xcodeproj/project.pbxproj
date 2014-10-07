@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8415CED719E4B4560037742B /* Coerce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922CBB19D237DA00AE9A7C /* Coerce.swift */; };
 		841FE02919DB7E390068636A /* Lazy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841FE02019DB7E390068636A /* Lazy.swift */; };
 		841FE02A19DB7E390068636A /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841FE02119DB7E390068636A /* List.swift */; };
 		841FE02B19DB7E390068636A /* Scans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841FE02219DB7E390068636A /* Scans.swift */; };
@@ -476,6 +477,7 @@
 				84922CE419D237DA00AE9A7C /* Arrow.swift in Sources */,
 				84922D0C19D237DA00AE9A7C /* STRef.swift in Sources */,
 				84922CF719D237DA00AE9A7C /* Functor.swift in Sources */,
+				8415CED719E4B4560037742B /* Coerce.swift in Sources */,
 				84922D0219D237DA00AE9A7C /* Maybe.swift in Sources */,
 				84922CFB19D237DA00AE9A7C /* IORef.swift in Sources */,
 				84922CEC19D237DA00AE9A7C /* Category.swift in Sources */,
