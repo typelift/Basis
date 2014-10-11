@@ -9,17 +9,17 @@
 
 public enum MapD<K, A> {
 	case Empty
-	case Destructure(UInt, K, A, Map<K, A>, Map<K, A>)
+	case Destructure(UInt, K, A, Map<K, A>!, Map<K, A>!)
 }
 
 /// An immutable map between keys and values.
-public class Map<K, A> : K2<K, A> {
+public final class Map<K, A> : K2<K, A> {
 	let size : UInt
 	let k : K!
 	let a : A!
 	let l : Map<K, A>!
 	let r : Map<K, A>!
-	
+
 	init(_ size : UInt, _ k : K!, _ a : A!, _ l : Map<K, A>!, _ r : Map<K, A>!) {
 		self.size = size
 		self.k = k
@@ -27,9 +27,9 @@ public class Map<K, A> : K2<K, A> {
 		self.l = l
 		self.r = r
 	}
-	
+
 	public func destruct() -> MapD<K, A> {
-		if self.size == 0 {
+		if self.size == 0 || k == nil || a == nil {
 			return .Empty
 		}
 		return .Destructure(size, k, a, l, r)
@@ -72,23 +72,23 @@ public func toArray<K, A>(m : Map<K, A>) -> [(K, A)] {
 public func insert<K : Comparable, A>(key : K) -> A -> Map<K, A> -> Map<K, A> {
 	return { val in { m in
 		switch m.destruct() {
-			case .Empty:
-				return singleton(key)(val)
-			case .Destructure(let sz, let ky, let y, let l, let r):
-				if key < ky {
-					return balance(ky)(x: y)(l: insert(key)(val)(l))(r: r)
-				} else if key > ky {
-					return balance(ky)(x: y)(l: l)(r: insert(key)(val)(r))
-				}
-				return Map(sz, key, val, l, r)
+		case .Empty:
+			return singleton(key)(val)
+		case .Destructure(let sz, let ky, let y, let l, let r):
+			if key < ky {
+				return balance(ky)(x: y)(l: insert(key)(val)(l))(r: r)
+			} else if key > ky {
+				return balance(ky)(x: y)(l: l)(r: insert(key)(val)(r))
+			}
+			return Map(sz, key, val, l, r)
 		}
-	} }
+		} }
 }
 
 /// Inserts a new key-value pair after applying a function to the new value and old value and
 /// returns a new map.
 ///
-/// If a value does not exist for a given key, this function inserts a new key-value pair and 
+/// If a value does not exist for a given key, this function inserts a new key-value pair and
 /// returns a new map.  If the a value does exist, the function will be called with the old and new
 /// values for that key, and the key-value pair of the key and the result of the function call is
 /// inserted.
@@ -102,30 +102,30 @@ public func insertWith<K : Comparable, A>(f : A -> A -> A) -> K -> A -> Map<K, A
 			}
 		}
 		return insertWithKey(fn)(key)(val)(m)
-	} } }
+		} } }
 }
 
 /// Inserts a new key-value pair after applying a function to the key, new value, and old value and
 /// returns a new map.
 ///
 /// If a value does not exist for a given key, this function inserts a new key-value pair and
-/// returns a new map.  If the a value does exist, the function will be called with the key, and the 
-/// old and new values for that key, and the key-value pair of the key and the result of the 
+/// returns a new map.  If the a value does exist, the function will be called with the key, and the
+/// old and new values for that key, and the key-value pair of the key and the result of the
 /// function call is inserted.
 public func insertWithKey<K : Comparable, A>(f : K -> A -> A -> A) -> K -> A -> Map<K, A> -> Map<K, A> {
 	return { key in { val in { m in
 		switch m.destruct() {
-			case .Empty:
-				return singleton(key)(val)
-			case .Destructure(let sy, let ky, let y, let l, let r):
-				if key < ky {
-					return balance(ky)(x: y)(l: insertWithKey(f)(key)(val)(l))(r: r)
-				} else if key > ky {
-					return balance(ky)(x: y)(l: l)(r: insertWithKey(f)(key)(val)(r))
-				}
-				return Map(sy, key, (f(key)(val)(y)), l, r)
+		case .Empty:
+			return singleton(key)(val)
+		case .Destructure(let sy, let ky, let y, let l, let r):
+			if key < ky {
+				return balance(ky)(x: y)(l: insertWithKey(f)(key)(val)(l))(r: r)
+			} else if key > ky {
+				return balance(ky)(x: y)(l: l)(r: insertWithKey(f)(key)(val)(r))
+			}
+			return Map(sy, key, (f(key)(val)(y)), l, r)
 		}
-	} } }
+		} } }
 }
 
 /// Deletes a key and its associated value from the map and returns a new map.
@@ -134,15 +134,15 @@ public func insertWithKey<K : Comparable, A>(f : K -> A -> A -> A) -> K -> A -> 
 public func delete<K : Comparable, A>(k : K) -> Map<K, A> -> Map<K, A> {
 	return { m in
 		switch m.destruct() {
-			case .Empty:
-				return empty()
-			case .Destructure(_, let kx, let x, let l, let r):
-				if k < kx {
-					return balance(kx)(x: x)(l: delete(k)(m))(r: r)
-				} else if k > kx {
-					return balance(kx)(x: x)(l: l)(r: delete(k)(m))
-				}
-				return glue(l, r)
+		case .Empty:
+			return empty()
+		case .Destructure(_, let kx, let x, let l, let r):
+			if k < kx {
+				return balance(kx)(x: x)(l: delete(k)(m))(r: r)
+			} else if k > kx {
+				return balance(kx)(x: x)(l: l)(r: delete(k)(m))
+			}
+			return glue(l, r)
 		}
 	}
 }
@@ -152,16 +152,16 @@ public func delete<K : Comparable, A>(k : K) -> Map<K, A> -> Map<K, A> {
 /// This function is partial with respect to empty maps.
 public func deleteFindMin<K, A>(m : Map<K, A>) -> ((K, A), Map<K, A>) {
 	switch m.destruct() {
+	case .Empty:
+		return error("Cannot delete the minimal element of an empty map.")
+	case .Destructure(_, let k, let x, let l, let r):
+		switch l.destruct() {
 		case .Empty:
-			return error("Cannot delete the minimal element of an empty map.")
-		case .Destructure(_, let k, let x, let l, let r):
-			switch l.destruct() {
-				case .Empty:
-					return ((k, x), r)
-				case .Destructure(_, _, _, _, _):
-					let (km, l1) = deleteFindMin(l)
-					return (km, balance(k)(x: x)(l: l1)(r: r))
-			}
+			return ((k, x), r)
+		case .Destructure(_, _, _, _, _):
+			let (km, l1) = deleteFindMin(l)
+			return (km, balance(k)(x: x)(l: l1)(r: r))
+		}
 	}
 }
 
@@ -170,16 +170,16 @@ public func deleteFindMin<K, A>(m : Map<K, A>) -> ((K, A), Map<K, A>) {
 /// This function is partial with respect to empty maps.
 public func deleteFindMax<K, A>(m : Map<K, A>) -> ((K, A), Map<K, A>) {
 	switch m.destruct() {
+	case .Empty:
+		return error("Cannot delete the maximal element of an empty map.")
+	case .Destructure(_, let k, let x, let l, let r):
+		switch l.destruct() {
 		case .Empty:
-			return error("Cannot delete the maximal element of an empty map.")
-		case .Destructure(_, let k, let x, let l, let r):
-			switch l.destruct() {
-				case .Empty:
-					return ((k, x), r)
-				case .Destructure(_, _, _, _, _):
-					let (km, r1) = deleteFindMin(l)
-					return (km, balance(k)(x: x)(l: l)(r: r1))
-			}
+			return ((k, x), r)
+		case .Destructure(_, _, _, _, _):
+			let (km, r1) = deleteFindMin(l)
+			return (km, balance(k)(x: x)(l: l)(r: r1))
+		}
 	}
 }
 
@@ -200,63 +200,63 @@ private func balance<K, A>(k : K)(x : A)(l : Map<K, A>)(r : Map<K, A>) -> Map<K,
 
 private func rotateL<K, A>(k : K)(x : A)(l : Map<K, A>)(r : Map<K, A>) -> Map<K, A> {
 	switch r.destruct() {
-		case .Empty:
-			return error("")
-		case .Destructure(_, _, _, let ly, let ry):
-			if ly.size < 2 * ry.size {
-				return single(k)(x1: x)(t1: l)(t2: r)
-			}
-			return double(k)(x1: x)(t1: l)(t2: r)
+	case .Empty:
+		return error("")
+	case .Destructure(_, _, _, let ly, let ry):
+		if ly.size < 2 * ry.size {
+			return single(k)(x1: x)(t1: l)(t2: r)
+		}
+		return double(k)(x1: x)(t1: l)(t2: r)
 	}
 }
 
 private func rotateR<K, A>(k : K)(x : A)(l : Map<K, A>)(r : Map<K, A>) -> Map<K, A> {
 	switch l.destruct() {
-		case .Empty:
-			return error("")
-		case .Destructure(_, _, _, let ly, let ry):
-			if ly.size < 2 * ry.size {
-				return single(k)(x1: x)(t1: l)(t2: r)
-			}
-			return double(k)(x1: x)(t1: l)(t2: r)
+	case .Empty:
+		return error("")
+	case .Destructure(_, _, _, let ly, let ry):
+		if ly.size < 2 * ry.size {
+			return single(k)(x1: x)(t1: l)(t2: r)
+		}
+		return double(k)(x1: x)(t1: l)(t2: r)
 	}
 }
 
 private func single<K, A>(k1 : K)(x1 : A)(t1 : Map<K, A>)(t2 : Map<K, A>) -> Map<K, A> {
 	switch t2.destruct() {
+	case .Empty:
+		switch t1.destruct() {
 		case .Empty:
-			switch t1.destruct() {
-				case .Empty:
-					return error("")
-				case .Destructure(_, let k2, let x2, let t1, let t3):
-					return bin(k2, x2, t1, bin(k1, x1, t3, t2))
+			return error("")
+		case .Destructure(_, let k2, let x2, let t1, let t3):
+			return bin(k2, x2, t1, bin(k1, x1, t3, t2))
 		}
-		case .Destructure(_, let k2, let x2, let t2, let t3):
-			return bin(k2, x2, bin(k1, x1, t1, t2), t3)
+	case .Destructure(_, let k2, let x2, let t2, let t3):
+		return bin(k2, x2, bin(k1, x1, t1, t2), t3)
 	}
 }
 
 private func double<K, A>(k1 : K)(x1 : A)(t1 : Map<K, A>)(t2 : Map<K, A>) -> Map<K, A> {
 	switch t2.destruct() {
+	case .Empty:
+		switch t1.destruct() {
 		case .Empty:
-			switch t1.destruct() {
-				case .Empty:
-					return error("")
-				case .Destructure(_, let k2, let x2, let b, let t4):
-					switch b.destruct() {
-						case .Empty:
-							return error("")
-						case .Destructure(_, let k3, let x3, let t2, let t3):
-							return bin(k3, x3, bin(k2, x2, t1, t2), bin(k1, x1, t3, t4))
-					}
-			}
-	case .Destructure(_, let k2, let x2, let b, let t4):
+			return error("")
+		case .Destructure(_, let k2, let x2, let b, let t4):
 			switch b.destruct() {
-				case .Empty:
-					return error("")
-				case .Destructure(_, let k3, let x3, let t2, let t3):
-					return bin(k3, x3, bin(k1, x1, t1, t2), bin(k2, x2, t3, t4))
+			case .Empty:
+				return error("")
+			case .Destructure(_, let k3, let x3, let t2, let t3):
+				return bin(k3, x3, bin(k2, x2, t1, t2), bin(k1, x1, t3, t4))
 			}
+		}
+	case .Destructure(_, let k2, let x2, let b, let t4):
+		switch b.destruct() {
+		case .Empty:
+			return error("")
+		case .Destructure(_, let k3, let x3, let t2, let t3):
+			return bin(k3, x3, bin(k1, x1, t1, t2), bin(k2, x2, t3, t4))
+		}
 	}
 }
 
@@ -267,7 +267,7 @@ private func glue<K, A>(l : Map<K, A>, r : Map<K, A>) -> Map<K, A> {
 	if r.size == 0 {
 		return l
 	}
-	
+
 	if l.size > r.size {
 		let ((km, m), l1) = deleteFindMax(l)
 		return balance(km)(x: m)(l: l1)(r: r)

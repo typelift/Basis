@@ -9,7 +9,7 @@
 
 public enum SetD<A> {
 	case Empty
-	case Destructure(UInt, A, Set<A>, Set<A>)
+	case Destructure(UInt, A, Set<A>!, Set<A>!)
 }
 
 /// An immutable set of values.
@@ -27,7 +27,7 @@ public class Set<A> : K1<A> {
 	}
 
 	public func destruct() -> SetD<A> {
-		if self.size == 0 {
+		if self.size == 0 || a == nil {
 			return .Empty
 		}
 		return .Destructure(size, a, l, r)
