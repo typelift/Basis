@@ -20,7 +20,8 @@ public protocol Applicative : Functor {
 	/// Functor and herds up the results.
 	func <*>(FAB , Self) -> FB
 	
-	/// Sequence Right | Disregards the Functor on the Left.
+	/// Sequence Right | Executes the action in the functor on the left and returns the functor on
+	/// the right.
 	///
 	/// Default definition: 
 	///		`const(id) <%> a <*> b`

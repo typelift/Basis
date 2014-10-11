@@ -7,6 +7,96 @@
 //  Released under the MIT license.
 //
 
+/// Returns whether the two arrays are in ascending order or are equal.
+///
+/// Arrays are equal when they contain the same elements in the same order.  An array is always
+/// larger than the empty array.  If the arrays cannot be determined to have different sizes of
+/// elements, the heads of subsequent sub-arrays are compared wtih this ordering predicate until a
+/// match is found.
+public func <=<T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
+	switch lhs.destruct() {
+		case .Empty:
+			switch rhs.destruct() {
+				case .Empty:
+					return true
+				case .Destructure(_, _):
+					return true
+			}
+		case .Destructure(let x, let xs):
+			switch rhs.destruct() {
+				case .Empty:
+					return false
+				case .Destructure(let y, let ys):
+					return (x == y) ? (xs <= ys) : x <= y
+		}
+	}
+}
+
+/// Returns whether the two arrays are in descending order or are equal.
+///
+/// Arrays are equal when they contain the same elements in the same order.  An array is always
+/// larger than the empty array.  If the arrays cannot be determined to have different sizes of
+/// elements, the heads of subsequent sub-arrays are compared wtih this ordering predicate until a
+/// match is found.
+public func >=<T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
+	switch lhs.destruct() {
+		case .Empty:
+			switch rhs.destruct() {
+				case .Empty:
+					return true
+				case .Destructure(_, _):
+					return false
+			}
+		case .Destructure(let x, let xs):
+			switch rhs.destruct() {
+				case .Empty:
+					return true
+				case .Destructure(let y, let ys):
+					return (x == y) ? (xs >= ys) : x >= y
+			}
+	}
+}
+
+/// Returns whether the two arrays are in ascending order.
+public func <<T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
+	switch lhs.destruct() {
+		case .Empty:
+			switch rhs.destruct() {
+				case .Empty:
+					return false
+				case .Destructure(_, _):
+					return true
+			}
+		case .Destructure(let x, let xs):
+			switch rhs.destruct() {
+				case .Empty:
+					return false
+				case .Destructure(let y, let ys):
+					return (x == y) ? (xs < ys) : x < y
+			}
+	}
+}
+
+/// Returns whether the two arrays are in descending order.
+public func ><T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
+	switch lhs.destruct() {
+		case .Empty:
+			switch rhs.destruct() {
+				case .Empty:
+					return false
+				case .Destructure(_, _):
+					return false
+			}
+		case .Destructure(let x, let xs):
+			switch rhs.destruct() {
+				case .Empty:
+					return true
+				case .Destructure(let y, let ys):
+					return (x == y) ? (xs > ys) : x > y
+			}
+	}
+}
+
 /// Takes a list and groups its arguments into sublists of duplicate elements found next to each
 /// other according to an equality predicate.
 public func groupBy<A>(cmp : A -> A -> Bool) -> [A] -> [[A]] {

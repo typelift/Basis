@@ -118,7 +118,7 @@ public func listToMaybe<A>(l : [A]) -> Maybe<A> {
 
 /// Takes a list of maybes and returns a list of all the values of the Just's in the list.
 public func catMaybes<A>(l : [Maybe<A>]) -> [A] {
-	return concatMap(maybeToList)(l: l)
+	return concatMap(maybeToList)(l)
 }
 
 /// Maps a function over a list.  If the result of the function is Nothing, the value is not included

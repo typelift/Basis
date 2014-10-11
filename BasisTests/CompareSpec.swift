@@ -26,4 +26,41 @@ class CompareSpec : XCTestCase {
 
 		XCTAssertTrue(and(zip(nubBy(==)(x))(y).map(==)), "")
 	}
+
+	func testArrayComparisons() {
+		let xs = [1, 2, 3, 4]
+		let ys = [1, 2, 3]
+		let zs = [3, 4, 5]
+
+		XCTAssertTrue(xs >= xs, "")
+		XCTAssertTrue(ys >= ys, "")
+		XCTAssertTrue(zs >= zs, "")
+
+		XCTAssertTrue(xs <= xs, "")
+		XCTAssertTrue(ys <= ys, "")
+		XCTAssertTrue(zs <= zs, "")
+
+		XCTAssertTrue(xs >= ys, "")
+		XCTAssertTrue(zs >= ys, "")
+		XCTAssertTrue(xs <= zs, "")
+
+		XCTAssertTrue(ys <= xs, "")
+		XCTAssertTrue(ys <= zs, "")
+		XCTAssertTrue(zs >= xs, "")
+
+		XCTAssertTrue(xs > ys, "")
+		XCTAssertTrue(zs > ys, "")
+		XCTAssertTrue(xs < zs, "")
+
+		XCTAssertTrue(ys < xs, "")
+		XCTAssertTrue(ys < zs, "")
+		XCTAssertTrue(zs > xs, "")
+
+		let l : [Int] = []
+		let r : [Int] = []
+		XCTAssertTrue(l >= r, "")
+		XCTAssertTrue(l <= r, "")
+		XCTAssertFalse(l < r, "")
+		XCTAssertFalse(l > r, "")
+	}
 }

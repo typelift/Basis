@@ -86,7 +86,7 @@ public func listToOptional<A>(l : [A]) -> Optional<A> {
 
 /// Takes a list of optionals and returns a list of all the values of the Some's in the list.
 public func catOptionals<A>(l : [Optional<A>]) -> [A] {
-	return concatMap(optionalToList)(l: l)
+	return concatMap(optionalToList)(l)
 }
 
 /// Maps a function over a list.  If the result of the function is None, the value is not included

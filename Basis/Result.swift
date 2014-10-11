@@ -61,7 +61,7 @@ public func errors<A, B>(l : [Result<A>]) -> [NSError] {
 			default:
 				return []
 		}
-	})(l: l)
+	})(l)
 }
 
 /// Extracts all eithers that have values in order.
@@ -73,7 +73,7 @@ public func values<A>(l : [Result<A>]) -> [A] {
 			default:
 				return []
 		}
-	})(l: l)
+	})(l)
 }
 
 /// Returns whether a result holds a value.

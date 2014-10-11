@@ -67,7 +67,7 @@ public func lefts<A, B>(l : [Either<A, B>]) -> [A] {
 			default:
 				return []
 		}
-	})(l: l)
+	})(l)
 }
 
 /// Extracts all eithers that have right values in order.
@@ -79,7 +79,7 @@ public func rights<A, B>(l : [Either<A, B>]) -> [B] {
 			default:
 				return []
 		}
-	})(l: l)
+	})(l)
 }
 
 /// Returns whether an either holds a right value.

@@ -7,12 +7,12 @@
 //  Released under the MIT license.
 //
 
-/// MARK: Data.Functions
+/// MARK: Data.Combinator
 
 /// Function Composition | Composes the target of the left function with the source of the second
 /// function to pipe the results through one larger function from left source to right target.
 ///
-/// g • f x = g(f(x))
+///		g • f x = g(f(x))
 infix operator • {
 	precedence 190
 	associativity right

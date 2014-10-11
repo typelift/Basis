@@ -19,6 +19,8 @@
 		841FE03119DB7E390068636A /* Zip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841FE02819DB7E390068636A /* Zip.swift */; };
 		841FE04819DB7EE80068636A /* Compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841FE04619DB7EE80068636A /* Compare.swift */; };
 		841FE04919DB7EE80068636A /* Folds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841FE04719DB7EE80068636A /* Folds.swift */; };
+		8434F96B19E8BA00008D9909 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8434F96A19E8BA00008D9909 /* Version.swift */; };
+		8434F96F19E8BDF5008D9909 /* VersionSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8434F96E19E8BDF5008D9909 /* VersionSpec.swift */; };
 		84922CA719D237B900AE9A7C /* EitherSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922C9D19D237B900AE9A7C /* EitherSpec.swift */; };
 		84922CA819D237B900AE9A7C /* ArrowSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922C9E19D237B900AE9A7C /* ArrowSpec.swift */; };
 		84922CA919D237B900AE9A7C /* FunctionsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922C9F19D237B900AE9A7C /* FunctionsSpec.swift */; };
@@ -84,6 +86,8 @@
 		841FE02819DB7E390068636A /* Zip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Zip.swift; sourceTree = "<group>"; };
 		841FE04619DB7EE80068636A /* Compare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Compare.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		841FE04719DB7EE80068636A /* Folds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Folds.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		8434F96A19E8BA00008D9909 /* Version.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
+		8434F96E19E8BDF5008D9909 /* VersionSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VersionSpec.swift; sourceTree = "<group>"; };
 		84922C8419D2375F00AE9A7C /* Basis.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Basis.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		84922C8F19D2375F00AE9A7C /* BasisTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BasisTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		84922C9D19D237B900AE9A7C /* EitherSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = EitherSpec.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -225,6 +229,7 @@
 				84922CA419D237B900AE9A7C /* StringSpec.swift */,
 				84922CA519D237B900AE9A7C /* TupleSpec.swift */,
 				84922CA619D237B900AE9A7C /* UniqueSpec.swift */,
+				8434F96E19E8BDF5008D9909 /* VersionSpec.swift */,
 				84922C9119D2375F00AE9A7C /* Supporting Files */,
 			);
 			path = BasisTests;
@@ -325,6 +330,7 @@
 				84922CDA19D237DA00AE9A7C /* STRef.swift */,
 				84922CE019D237DA00AE9A7C /* Tuple.swift */,
 				84922CE119D237DA00AE9A7C /* Unique.swift */,
+				8434F96A19E8BA00008D9909 /* Version.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -448,6 +454,7 @@
 				84922CFA19D237DA00AE9A7C /* IO.swift in Sources */,
 				84922CEA19D237DA00AE9A7C /* Bounded.swift in Sources */,
 				841FE04819DB7EE80068636A /* Compare.swift in Sources */,
+				8434F96B19E8BA00008D9909 /* Version.swift in Sources */,
 				84922CF119D237DA00AE9A7C /* Error.swift in Sources */,
 				84922CE319D237DA00AE9A7C /* Applicative.swift in Sources */,
 				841FE02919DB7E390068636A /* Lazy.swift in Sources */,
@@ -504,6 +511,7 @@
 				84F9071519D64DE10035D429 /* ScansSpec.swift in Sources */,
 				84922CA919D237B900AE9A7C /* FunctionsSpec.swift in Sources */,
 				84922CAF19D237B900AE9A7C /* TupleSpec.swift in Sources */,
+				8434F96F19E8BDF5008D9909 /* VersionSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
