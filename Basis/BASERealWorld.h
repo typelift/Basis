@@ -13,7 +13,6 @@ extern NSString *const CFIExceptionDomain;
 
 @interface BASERealWorld : NSObject
 
-+ (void)raise:(NSString *)exception;
 + (void)catch:(void(^)(void))block to:(void(^)(NSException *))toBlock;
 
 

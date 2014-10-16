@@ -14,10 +14,6 @@ NSString *const CFIExceptionDomain = @"CFIExceptionDomain";
 
 @implementation BASERealWorld
 
-+ (void)raise:(NSString *)exception {
-	[NSException raise:CFIExceptionDomain format:@"%@", exception];
-}
-
 + (void)catch:(void(^)(void))block to:(void(^)(NSException *))toBlock {
 	@try {
 		block();

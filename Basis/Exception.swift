@@ -17,19 +17,18 @@ public struct SomeException : Exception {
 	}
 }
 
-public func throw<A, E : Exception>(e : E) -> A {
-	BASERealWorld.raise(e.description)
-	return undefined()
+public func throw<A>(e : Exception) -> A {
+	assert(false, e.description)
 }
 
-
 public func throwIO<A>(e : Exception) -> IO<A> {
-	BASERealWorld.raise(e.description)
-	return undefined()
+	return do_ { () -> A in
+		return throw(e)
+	}
 }
 
 public func catchException<A>(io : IO<A>)(handler: Exception -> IO<A>) -> IO<A> {
-	return catch(io)({ (let excn : NSException!) in
+	return catch(io)({ (let excn : Exception) in
 		return handler(SomeException(excn.description ?? ""))
 	})
 }
@@ -71,9 +70,9 @@ public func finally<A, B>(a : IO<A>)(then : IO<B>) -> IO<A> {
 	})
 }
 
-private func catch<A>(io : IO<A>)(h : (NSException! -> IO<A>)) -> IO<A> {
+private func catch<A>(io : IO<A>)(h : (Exception -> IO<A>)) -> IO<A> {
 	var val : A! 
-	BASERealWorld.catch({ val = io.unsafePerformIO() }, to: { val = h($0).unsafePerformIO() })
+	BASERealWorld.catch({ val = io.unsafePerformIO() }, to: { val = h(SomeException($0.description ?? "")).unsafePerformIO() })
 	return IO.pure(val!)
 }
 
