@@ -33,7 +33,7 @@ public func catchException<A>(io : IO<A>)(handler: Exception -> IO<A>) -> IO<A> 
 	})
 }
 
-
+// TODO: Masked exceptions?
 public func mask<A, B>(io : (IO<A> -> IO<A>) -> IO<B>) -> IO<B> {
 	return do_ {
 		return io(id)
@@ -70,9 +70,32 @@ public func finally<A, B>(a : IO<A>)(then : IO<B>) -> IO<A> {
 	})
 }
 
+public func try<A>(io : IO<A>) -> IO<Either<Exception, A>> {
+	return catch(io >>- { v in IO.pure(Either.right(v)) })(h: { e in IO.pure(Either.left(e)) })
+}
+
+public func tryJust<A, B>(p : Exception -> Maybe<B>) -> IO<A> -> IO<Either<B, A>> {
+	return { io in
+		do_ {
+			let r = !try(io)
+			switch r.destruct() {
+				case .Right(let bv):
+					return IO.pure(Either.right(bv.unBox()))
+				case .Left(let be):
+					switch p(be.unBox()).destruct() {
+						case .Nothing:
+							return throwIO(be.unBox())
+						case .Just(let b):
+							return IO.pure(Either.left(b))
+					}
+			}
+		}
+	}
+}
+
 private func catch<A>(io : IO<A>)(h : (Exception -> IO<A>)) -> IO<A> {
 	var val : A! 
-	BASERealWorld.catch({ val = io.unsafePerformIO() }, to: { val = h(SomeException($0.description ?? "")).unsafePerformIO() })
+	BASERealWorld.catch({ val = io.unsafePerformIO() }, to: { val = !h(SomeException($0.description ?? "")) })
 	return IO.pure(val!)
 }
 
