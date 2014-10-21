@@ -177,10 +177,10 @@
 		841FE03C19DB7E7C0068636A /* List */ = {
 			isa = PBXGroup;
 			children = (
+				841FE03419DB7E7C0068636A /* List.swift */,
 				841FE03319DB7E7C0068636A /* Lazy.swift */,
 				841FE04A19DB7EEC0068636A /* Compare.swift */,
 				841FE04B19DB7EEC0068636A /* Folds.swift */,
-				841FE03419DB7E7C0068636A /* List.swift */,
 				84922D2A19D237E000AE9A7C /* Infinity.swift */,
 				841FE03519DB7E7C0068636A /* Scans.swift */,
 				841FE03619DB7E7C0068636A /* Search.swift */,

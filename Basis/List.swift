@@ -31,11 +31,14 @@ public func tail<A>(l : [A]) -> [A] {
 	}
 }
 
-func <|<T>(lhs : T, var rhs : [T]) -> [T] {
+public func cons<T>(x : T) -> [T] -> [T] {
+	return { xs in x <| xs }
+}
+
+public func <|<T>(lhs : T, var rhs : [T]) -> [T] {
 	rhs.insert(lhs, atIndex: 0)
 	return rhs
 }
-
 
 public enum ArrayD<A> {
 	case Empty
