@@ -41,7 +41,7 @@ public func mask<A, B>(io : (IO<A> -> IO<A>) -> IO<B>) -> IO<B> {
 }
 
 public func onException<A, B>(io : IO<A>)(what : IO<B>) -> IO<A> {
-	return catchException(io)({ (let e) in
+	return catchException(io)({ e in
 		return do_({
 			let b : B = !what
 			return throwIO(e)

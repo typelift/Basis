@@ -22,8 +22,8 @@ public func snd<A, B>(t : (A, B)) -> B {
 /// A curried function is a function that always returns another function or a value when applied
 /// as opposed to an uncurried function which may take tuples.
 public func curry<A, B, C>(f : (A, B) -> C) ->  A -> B -> C {
-	return { (let a) in
-		return { (let b) in
+	return { a in
+		return { b in
 			return f((a, b))
 		}
 	}
@@ -34,7 +34,7 @@ public func curry<A, B, C>(f : (A, B) -> C) ->  A -> B -> C {
 /// An uncurried function may take tuples as opposed to a curried function which must take a single
 /// value and return a single value or function.
 public func uncurry<A, B, C>(f : A -> B -> C) -> (A, B) -> C {
-	return { (let t) in
+	return { t in
 		return f(fst(t))(snd(t))
 	}
 }

@@ -1,6 +1,6 @@
 //
 //  Kinds.swift
-//  Basis
+//  swiftz_core
 //
 //  Created by Robert Widmann on 9/7/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.
@@ -8,11 +8,6 @@
 //
 
 /// MARK: Kinds
-///
-/// Kinds are the "Type of Types".  Or, more accurately, a specifier for the arity of a type's
-/// default constructor.  Below is a hierarchy of kinds from *, all the way up to 
-/// * -> * -> * -> * -> * -> * -> * -> * -> * -> * -> *, where each * is a type in the Category of
-/// Swift Types (S)
 
 /// `*`
 public class K0 { public init() {} }

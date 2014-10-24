@@ -132,7 +132,7 @@ public func nubBy<A>(eq : A -> A -> Bool) -> [A] -> [A] {
 			case .Empty():
 				return []
 			case .Destructure(let x, let xs):
-				return [x] + nubBy(eq)(xs.filter({ (let y) in
+				return [x] + nubBy(eq)(xs.filter({ y in
 					return !(eq(x)(y))
 				}))
 		}
@@ -146,7 +146,7 @@ public func nubBy<A>(eq : (A, A) -> Bool) -> [A] -> [A] {
 			case .Empty():
 				return []
 			case .Destructure(let x, let xs):
-				return [x] + nubBy(eq)(xs.filter({ (let y) in
+				return [x] + nubBy(eq)(xs.filter({ y in
 					return !(eq(x, y))
 				}))
 		}

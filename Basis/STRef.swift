@@ -19,7 +19,7 @@ public final class STRef<S, A> : K2<S, A> {
 
 // Creates a new STRef
 public func newSTRef<S, A>(x : A) -> ST<S, STRef<S, A>> {
-	return ST(apply: { (let s) in
+	return ST(apply: { s in
 		let ref = STRef<S, A>(x)
 		return (s, ref)
 	})
@@ -32,7 +32,7 @@ public func readSTRef<S, A>(ref : STRef<S, A>) -> ST<S, A> {
 
 // Writes a new value into the reference.
 public func writeSTRef<S, A>(ref : STRef<S, A>)(a : A) -> ST<S, STRef<S, A>> {
-	return ST(apply: { (let s) in
+	return ST(apply: { s in
 		ref.value = a
 		return (s, ref)
 	})
@@ -40,7 +40,7 @@ public func writeSTRef<S, A>(ref : STRef<S, A>)(a : A) -> ST<S, STRef<S, A>> {
 
 // Modifies the reference and returns the updated result.
 public func modifySTRef<S, A>(ref : STRef<S, A>)(f: A -> A) -> ST<S, STRef<S, A>> {
-	return ST(apply: { (let s) in
+	return ST(apply: { s in
 		ref.value = f(ref.value)
 		return (s, ref)
 	})

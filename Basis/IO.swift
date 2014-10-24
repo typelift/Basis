@@ -82,8 +82,8 @@ extension IO : Functor {
 	typealias FB = IO<B>
 
 	public class func fmap<B>(f: A -> B) -> IO<A> -> IO<B> {
-		return { (let io) in
-			return IO<B>({ (let rw) in
+		return { io in
+			return IO<B>({ rw in
 				let (nw, a) = io.apply(rw)
 				return (nw, f(a))
 			})
@@ -107,7 +107,7 @@ extension IO : Applicative {
 }
 
 public func <*><A, B>(fn: IO<A -> B>, m: IO<A>) -> IO<B> {
-	return IO<B>({ (let rw) in
+	return IO<B>({ rw in
 		let f = fn.unsafePerformIO()
 		let (nw, x) = m.apply(rw)
 		return (nw, f(x))
@@ -124,7 +124,7 @@ public func <* <A, B>(a : IO<A>, b : IO<B>) -> IO<A> {
 
 extension IO : Monad {
 	public func bind<B>(f: A -> IO<B>) -> IO<B> {
-		return IO<B>({ (let rw) in
+		return IO<B>({ rw in
 			let (nw, a) = self.apply(rw)
 			return f(a).apply(nw)
 		})

@@ -56,9 +56,9 @@ public func fromArray<K : Comparable, A>(xs : [(K, A)]) -> Map<K, A> {
 
 /// Builds an association list from a map.
 public func toArray<K, A>(m : Map<K, A>) -> [(K, A)] {
-	return foldrWithKey({ (let k) in
-		return { (let x) in
-			return { (let l) in
+	return foldrWithKey({ k in
+		return { x in
+			return { l in
 				return (k, x) <| l
 			}
 		}
@@ -95,8 +95,8 @@ public func insert<K : Comparable, A>(key : K) -> A -> Map<K, A> -> Map<K, A> {
 public func insertWith<K : Comparable, A>(f : A -> A -> A) -> K -> A -> Map<K, A> -> Map<K, A> {
 	return { key in { val in { m in
 		let fn : K -> A -> A -> A = { (_) in
-			return { (let x) in
-				return { (let y) in
+			return { x in
+				return { y in
 					return f(x)(y)
 				}
 			}

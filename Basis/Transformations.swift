@@ -78,7 +78,7 @@ public func nonEmptySubsequences<A>(xs : [A]) -> [[A]] {
 			return []
 		case .Destructure(let x, let xs):
 			return [x] <| foldr({ (let ys : [A]) in
-				return { (let r) in
+				return { r in
 					return ys <| (x <| ys) <| r
 				}
 			})([])(nonEmptySubsequences(xs))

@@ -30,8 +30,8 @@ extension ST : Functor {
 	typealias FB = ST<S, B>
 
 	public class func fmap<B>(f: A -> B) -> ST<S, A> -> ST<S, B> {
-		return { (let st) in
-			return ST<S, B>(apply: { (let s) in
+		return { st in
+			return ST<S, B>(apply: { s in
 				let (nw, x) = st.apply(s: s)
 				return (nw, f(x))
 			})
@@ -51,14 +51,14 @@ extension ST : Applicative {
 	typealias FAB = ST<S, A -> B>
 
 	public class func pure<S, A>(a: A) -> ST<S, A> {
-		return ST<S, A>(apply: { (let s) in
+		return ST<S, A>(apply: { s in
 			return (s, a)
 		})
 	}
 }
 
 public func <*><S, A, B>(stfn: ST<S, A -> B>, st: ST<S, A>) -> ST<S, B> {
-	return ST<S, B>(apply: { (let s) in
+	return ST<S, B>(apply: { s in
 		let (nw, f) = stfn.apply(s: s)
 		return (nw, f(st.runST()))
 	})
