@@ -177,4 +177,14 @@ public func minimum<A : Comparable>(l : [A]) -> A {
 	return foldl1(min)(l)
 }
 
+/// Returns the sum of a list of numbers.
+public func sum<N : IntegerType>(l : [N]) -> N {
+	return foldl({ $0 + $1 })(0)(l)
+}
+
+/// Returns the product of a list of numbers.
+public func product<N : IntegerType>(l : [N]) -> N {
+	return foldl({ $0 * $1 })(1)(l)
+}
+
 
