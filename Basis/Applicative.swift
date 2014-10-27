@@ -7,8 +7,7 @@
 //  Released under the MIT license.
 //
 
-/// Applicative sits in the middle distance between a Functor and a Monad.  While you do not get
-/// >>- yet, there is more than enough power in the generality of the interface to make up for it.
+/// Applicative sits in the middle distance between a Functor and a Monad.  
 public protocol Applicative : Functor {
 	/// Type of Functors containing morphisms from our objects to a Target.
 	typealias FAB = K1<A -> B>

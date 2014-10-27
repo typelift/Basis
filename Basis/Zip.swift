@@ -10,11 +10,11 @@
 /// Zips two lists into an array of pairs.
 public func zip<A, B>(l : [A]) -> [B] -> [(A, B)] {
 	return { l2 in
-		switch l.destruct() {
+		switch destruct(l) {
 			case .Empty:
 				return []
 			case .Destructure(let a, let as_):
-				switch l2.destruct() {
+				switch destruct(l2) {
 					case .Empty:
 						return []
 					case .Destructure(let b, let bs):
@@ -27,15 +27,15 @@ public func zip<A, B>(l : [A]) -> [B] -> [(A, B)] {
 /// Zips three lists into an array of triples.
 public func zip3<A, B, C>(l : [A]) -> [B] -> [C] -> [(A, B, C)] {
 	return { l2 in { l3 in
-		switch l.destruct() {
+		switch destruct(l) {
 			case .Empty:
 				return []
 			case .Destructure(let a, let as_):
-				switch l2.destruct() {
+				switch destruct(l2) {
 					case .Empty:
 						return []
 					case .Destructure(let b, let bs):
-						switch l3.destruct() {
+						switch destruct(l3) {
 						case .Empty:
 							return []
 						case .Destructure(let c, let cs):
@@ -49,11 +49,11 @@ public func zip3<A, B, C>(l : [A]) -> [B] -> [C] -> [(A, B, C)] {
 /// Zips together the elements of two lists according to a combining function.
 public func zipWith<A, B, C>(f : A -> B -> C) -> [A] -> [B] -> [C] {
 	return { l in { l2 in
-		switch l.destruct() {
+		switch destruct(l) {
 			case .Empty:
 				return []
 			case .Destructure(let a, let as_):
-				switch l2.destruct() {
+				switch destruct(l2) {
 					case .Empty:
 						return []
 					case .Destructure(let b, let bs):
@@ -66,11 +66,11 @@ public func zipWith<A, B, C>(f : A -> B -> C) -> [A] -> [B] -> [C] {
 /// Zips together the elements of two lists according to a combining operator.
 public func zipWith<A, B, C>(f : (A, B) -> C) -> [A] -> [B] -> [C] {
 	return { l in { l2 in
-		switch l.destruct() {
+		switch destruct(l) {
 			case .Empty:
 				return []
 			case .Destructure(let a, let as_):
-				switch l2.destruct() {
+				switch destruct(l2) {
 					case .Empty:
 						return []
 					case .Destructure(let b, let bs):

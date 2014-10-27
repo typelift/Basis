@@ -12,8 +12,8 @@ extension String {
 		return Array(self)
 	}
 	
-	public func destruct() -> ArrayD<Character> {
-		return Array(self).destruct()
+	public func destructure() -> ArrayD<Character> {
+		return destruct(unpack())
 	}
 }
 

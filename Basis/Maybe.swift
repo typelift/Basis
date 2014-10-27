@@ -108,7 +108,7 @@ public func maybeToList<A>(o : Maybe<A>) -> [A] {
 
 /// Given a list, returns Nothing if the list is empty, or Just containing the head of the list.
 public func listToMaybe<A>(l : [A]) -> Maybe<A> {
-	switch l.destruct() {
+	switch destruct(l) {
 		case .Empty:
 			return Maybe.nothing()
 		case .Destructure(let x, _):
@@ -124,7 +124,7 @@ public func catMaybes<A>(l : [Maybe<A>]) -> [A] {
 /// Maps a function over a list.  If the result of the function is Nothing, the value is not included
 /// in the resulting list.
 public func mapMaybes<A, B>(f : A -> Maybe<B>)(l : [A]) -> [B] {
-	switch l.destruct() {
+	switch destruct(l) {
 		case .Empty:
 			return []
 		case let .Destructure(x, xs):

@@ -11,7 +11,7 @@
 ///
 /// If the provided list is empty, this function throws an exception.
 public func head<A>(l : [A]) -> A {
-	switch l.destruct() {
+	switch destruct(l) {
 		case .Empty:
 			assert(false, "Cannot take the head of an empty list.")
 		case .Destructure(let x, _):
@@ -23,7 +23,7 @@ public func head<A>(l : [A]) -> A {
 ///
 /// If the provided list if empty, this function throws an exception.
 public func tail<A>(l : [A]) -> [A] {
-	switch l.destruct() {
+	switch destruct(l) {
 		case .Empty:
 			assert(false, "Cannot take the tail of an empty list.")
 		case .Destructure(_, let xs):
@@ -45,19 +45,16 @@ public enum ArrayD<A> {
 	case Destructure(A, [A])
 }
 
-extension Array {
-	internal func destruct() -> ArrayD<T> {
-		if self.count == 0 {
-			return .Empty
-		} else if self.count == 1 {
-			return .Destructure(self[0], [])
-		}
-		let hd = self[0]
-		let tl = Array<T>(self[1..<self.count])
-		return .Destructure(hd, tl)
+public func destruct<T>(l : [T]) -> ArrayD<T> {
+	if l.count == 0 {
+		return .Empty
+	} else if l.count == 1 {
+		return .Destructure(l[0], [])
 	}
+	let hd = l[0]
+	let tl = Array<T>(l[1..<l.count])
+	return .Destructure(hd, tl)
 }
-
 
 //extension Array : Functor {
 //	typealias A = T
