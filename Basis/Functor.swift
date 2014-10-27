@@ -13,19 +13,19 @@
 /// following commutative diagram:
 ///
 ///
-///        F(A)
-///         •
-///         |\
-///         | \
-///         |  \
-///         |   \
-/// fmap f  |    \  fmap (f • g)
-///         |     \
-///         |      \
-///         |       \
-///         •--------•
-///       F(B)       F(C)
-///            fmap g
+///               F(A)
+///                 •
+///                / \
+///               /   \
+///              /     \
+///             /       \
+///    fmap f  /         \  fmap (f • g)
+///           /           \
+///          /             \
+///         /               \
+///         •----------------•
+///       F(B)              F(C)
+///               fmap g
 ///
 /// Formally, a Functor is a mapping between Categories, but we have to restrict ourselves to the
 /// Category of Swift Types (S), so in practice a Functor is just an Endofunctor.  Functors are

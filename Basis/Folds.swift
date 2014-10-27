@@ -11,7 +11,7 @@
 /// the list from left to right to yield a final value.
 public func foldl<A, B>(f: B -> A -> B) -> B -> [A] -> B {
 	return { z in { l in
-		switch l.destruct() {
+		switch destruct(l) {
 			case .Empty:
 				return z
 			case .Destructure(let x, let xs):
@@ -24,7 +24,7 @@ public func foldl<A, B>(f: B -> A -> B) -> B -> [A] -> B {
 /// the list from left to right to yield a final value.
 public func foldl<A, B>(f: (B, A) -> B) -> B -> [A] -> B {
 	return { z in { l in
-		switch l.destruct() {
+		switch destruct(l) {
 			case .Empty:
 				return z
 			case .Destructure(let x, let xs):
@@ -40,7 +40,7 @@ public func foldl<A, B>(f: (B, A) -> B) -> B -> [A] -> B {
 /// respect to the empty list.
 public func foldl1<A>(f: A -> A -> A) -> [A] -> A {
 	return { l in
-		switch l.destruct() {
+		switch destruct(l) {
 			case .Destructure(let x, let xs) where xs.count == 0:
 				return x
 			case .Destructure(let x, let xs):
@@ -58,7 +58,7 @@ public func foldl1<A>(f: A -> A -> A) -> [A] -> A {
 /// respect to the empty list.
 public func foldl1<A>(f: (A, A) -> A) -> [A] -> A {
 	return { l in
-		switch l.destruct() {
+		switch destruct(l) {
 			case .Destructure(let x, let xs) where xs.count == 0:
 				return x
 			case .Destructure(let x, let xs):
@@ -73,7 +73,7 @@ public func foldl1<A>(f: (A, A) -> A) -> [A] -> A {
 /// the list from right to left to yield a final value.
 public func foldr<A, B>(k: A -> B -> B) -> B -> [A] -> B {
 	return { z in { l in
-		switch l.destruct() {
+		switch destruct(l) {
 			case .Empty:
 				return z
 			case .Destructure(let x, let xs):
@@ -86,7 +86,7 @@ public func foldr<A, B>(k: A -> B -> B) -> B -> [A] -> B {
 /// the list from right to left to yield a final value.
 public func foldr<A, B>(k: (A, B) -> B) -> B -> [A] -> B {
 	return { z in { l in
-		switch l.destruct() {
+		switch destruct(l) {
 			case .Empty:
 				return z
 			case .Destructure(let x, let xs):
@@ -102,7 +102,7 @@ public func foldr<A, B>(k: (A, B) -> B) -> B -> [A] -> B {
 /// respect to the empty list.
 public func foldr1<A>(f: A -> A -> A) -> [A] -> A {
 	return { l in
-		switch l.destruct() {
+		switch destruct(l) {
 			case .Destructure(let x, let xs) where xs.count == 0:
 				return x
 			case .Destructure(let x, let xs):
@@ -120,7 +120,7 @@ public func foldr1<A>(f: A -> A -> A) -> [A] -> A {
 /// respect to the empty list.
 public func foldr1<A>(f: (A, A) -> A) -> [A] -> A {
 	return { l in
-		switch l.destruct() {
+		switch destruct(l) {
 			case .Destructure(let x, let xs) where xs.count == 0:
 				return x
 			case .Destructure(let x, let xs):

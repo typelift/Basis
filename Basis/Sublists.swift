@@ -19,7 +19,7 @@ public func take<A>(n : Int) -> [A] -> [A] {
 			return []
 		}
 		
-		switch l.destruct() {
+		switch destruct(l) {
 			case .Empty:
 				return []
 			case .Destructure(let x, let xs):
@@ -40,7 +40,7 @@ public func drop<A>(n : Int) -> [A] -> [A] {
 			return l
 		}
 		
-		switch l.destruct() {
+		switch destruct(l) {
 			case .Empty:
 				return []
 			case .Destructure(let x, let xs):
@@ -59,7 +59,7 @@ public func splitAt<A>(n : Int) -> [A] -> ([A], [A]) {
 /// false.
 public func takeWhile<A>(p : A -> Bool) -> [A] -> [A] {
 	return { l in
-		switch l.destruct() {
+		switch destruct(l) {
 			case .Empty:
 				return []
 			case .Destructure(let x, let xs):
@@ -75,7 +75,7 @@ public func takeWhile<A>(p : A -> Bool) -> [A] -> [A] {
 /// returns false.
 public func dropWhile<A>(p : A -> Bool) -> [A] -> [A] {
 	return { l in
-		switch l.destruct() {
+		switch destruct(l) {
 			case .Empty:
 				return []
 			case .Destructure(let x, let xs):
@@ -91,7 +91,7 @@ public func dropWhile<A>(p : A -> Bool) -> [A] -> [A] {
 /// false first, and a the rest of the elements second.
 public func span<A>(p : A -> Bool) -> [A] -> ([A], [A]) {
 	return { l in
-		switch l.destruct() {
+		switch destruct(l) {
 			case .Empty:
 				return ([], [])
 			case .Destructure(let x, let xs):
@@ -136,7 +136,7 @@ public func nub<A : Equatable>(xs : [A]) -> [A] {
 
 /// Returns all initial segments of a list.
 public func inits<A>(l : [A]) -> [[A]] {
-	switch l.destruct() {
+	switch destruct(l) {
 		case .Empty:
 			return []
 		case .Destructure(let x, let xs):
@@ -145,7 +145,7 @@ public func inits<A>(l : [A]) -> [[A]] {
 }
 
 private func subInits<A>(l : [A]) -> [[A]] {
-	switch l.destruct() {
+	switch destruct(l) {
 		case .Empty:
 			return []
 		case .Destructure(let x, let xs):
@@ -155,7 +155,7 @@ private func subInits<A>(l : [A]) -> [[A]] {
 
 /// Returns all final segments of a list.
 public func tails<A>(l : [A]) -> [[A]] {
-	switch l.destruct() {
+	switch destruct(l) {
 		case .Empty:
 			return []
 		case .Destructure(let x, let xs):
@@ -164,7 +164,7 @@ public func tails<A>(l : [A]) -> [[A]] {
 }
 
 private func subTails<A>(l : [A]) -> [[A]] {
-	switch l.destruct() {
+	switch destruct(l) {
 		case .Empty:
 			return []
 		case .Destructure(let x, let xs):
