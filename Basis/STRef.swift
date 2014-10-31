@@ -45,3 +45,14 @@ public func modifySTRef<S, A>(ref : STRef<S, A>)(f: A -> A) -> ST<S, STRef<S, A>
 		return (s, ref)
 	})
 }
+
+// MARK: Equatable
+
+// Simple reference equality when we've got two objects.
+public func ==<S, T : AnyObject>(lhs: STRef<S, T>, rhs: STRef<S, T>) -> Bool {
+	return lhs.value === rhs.value
+}
+
+public func !=<S, T : AnyObject>(lhs: STRef<S, T>, rhs: STRef<S, T>) -> Bool {
+	return !(lhs == rhs)
+}

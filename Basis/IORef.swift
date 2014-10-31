@@ -38,6 +38,17 @@ public func modifyIORef<A>(ref : IORef<A>)(vfn : (A -> A)) -> IO<Void> {
 	return stToIO(modifySTRef(ref.value)(vfn)) >> IO.pure(())
 }
 
+// MARK: Equatable
+
+// Simple reference equality when we've got two objects.
+public func ==<T : AnyObject>(lhs: IORef<T>, rhs: IORef<T>) -> Bool {
+	return lhs.value == rhs.value
+}
+
+public func !=<T : AnyObject>(lhs: IORef<T>, rhs: IORef<T>) -> Bool {
+	return !(lhs == rhs)
+}
+
 
 /// Not for human eyes
 private func stRefToIO<A>(m: STRef<RealWorld, A>) -> IO<STRef<RealWorld, A>> {

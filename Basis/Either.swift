@@ -102,6 +102,25 @@ public func isLeft<A, B>(e : Either<A, B>) -> Bool {
 	}
 }
 
+// MARK: Equatable
+
+public func ==<A : Equatable, B : Equatable>(lhs: Either<A, B>, rhs: Either<A, B>) -> Bool {
+	switch (lhs.destruct(), rhs.destruct()) {
+		case let (.Right(x), .Right(y)) where x.unBox() == y.unBox():
+			return true
+		case let (.Left(x), .Left(y)) where x.unBox() == y.unBox():
+			return true
+		default:
+			return false
+	}
+}
+
+public func !=<A : Equatable, B : Equatable>(lhs: Either<A, B>, rhs: Either<A, B>) -> Bool {
+	return !(lhs == rhs)
+}
+
+// MARK: Functor
+
 extension Either : Functor {
 	typealias C = Any
 	typealias FA = Either<A, B>

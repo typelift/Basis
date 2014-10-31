@@ -70,5 +70,32 @@ class MaybeSpec : XCTestCase {
 
 		XCTAssertTrue(foldr1(+)(mapOptional(listToOptional)(l: l)) == 15, "")
 	}
+	
+	func liftA<A, B>(f : A -> B) -> Maybe<A> -> Maybe<B> {
+		return { a in Maybe.pure(f) <*> a }
+	}
+	
+	func liftA2<A, B, C>(f : A -> B -> C) -> Maybe<A> -> Maybe<B> -> Maybe<C> {
+		return { a in { b in Maybe.pure(f) <*> a <*> b } }
+	}
+	
+	func liftA3<A, B, C, D>(f : A -> B -> C -> D) -> Maybe<A> -> Maybe<B> -> Maybe<C> -> Maybe<D> {
+		return { a in { b in { c in Maybe.pure(f) <*> a <*> b <*> c } } }
+	}
+	
+	func testApplicative() {
+		let a = Maybe.just(6)
+		let b = Maybe<Int>.nothing()
+		let c = Maybe.just(5)
+
+		let r = liftA2(curry(+))(a)(b)
+		XCTAssertTrue(r == Maybe<Int>.nothing())
+		
+		let rr = liftA2(curry(+))(a)(c)
+		XCTAssertTrue(rr == Maybe.just(11))
+		
+		let t = liftA3(pack3)(a)(b)(c)
+		XCTAssertTrue(t == Maybe<(Int, Int, Int)>.nothing())
+	}
 }
 

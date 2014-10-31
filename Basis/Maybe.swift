@@ -138,6 +138,40 @@ public func mapMaybes<A, B>(f : A -> Maybe<B>)(l : [A]) -> [B] {
 	}
 }
 
+// MARK: Equatable
+
+public func ==<V : Equatable>(lhs: Maybe<V>, rhs: Maybe<V>) -> Bool {
+	
+	switch (lhs.destruct(), rhs.destruct()) {
+		case (.Nothing, .Nothing):
+			return true
+		case let (.Just(l), .Just(r)) where l == r:
+			return true
+		default:
+			return false
+	}
+}
+
+// Fallback equality: All nothings are isomorphic.
+public func ==<V>(lhs: Maybe<V>, rhs: Maybe<V>) -> Bool {
+	switch (lhs.destruct(), rhs.destruct()) {
+	case (.Nothing, .Nothing):
+		return true
+	default:
+		return false
+	}
+}
+
+public func !=<V: Equatable>(lhs: Maybe<V>, rhs: Maybe<V>) -> Bool {
+	return !(lhs == rhs)
+}
+
+public func !=<V>(lhs: Maybe<V>, rhs: Maybe<V>) -> Bool {
+	return !(lhs == rhs)
+}
+
+// MARK: Functor
+
 extension Maybe : Functor {
 	typealias B = Any
 	
@@ -191,7 +225,7 @@ public func <*<A, B>(a : Maybe<A>, b : Maybe<B>) -> Maybe<A> {
 	return const <%> a <*> b
 }
 
-extension Maybe : Applicative {
+extension Maybe : Alternative {
 	typealias FLA = Maybe<[A]>
 	
 	public func empty() -> Maybe<A> {

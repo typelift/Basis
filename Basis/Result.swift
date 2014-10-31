@@ -96,7 +96,8 @@ public func isLeft<A, B>(e : Result<A>) -> Bool {
 	}
 }
 
-// Equatable
+// MARK: Equatable
+
 public func ==<V : Equatable>(lhs: Result<V>, rhs: Result<V>) -> Bool {
 	switch (lhs.destruct(), rhs.destruct()) {
 		case let (.Error(l), .Error(r)) where l == r:
@@ -111,6 +112,8 @@ public func ==<V : Equatable>(lhs: Result<V>, rhs: Result<V>) -> Bool {
 public func !=<V: Equatable>(lhs: Result<V>, rhs: Result<V>) -> Bool {
 	return !(lhs == rhs)
 }
+
+// MARK: Functor
 
 extension Result : Functor {
 	typealias B = Any
