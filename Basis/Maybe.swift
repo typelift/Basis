@@ -141,7 +141,6 @@ public func mapMaybes<A, B>(f : A -> Maybe<B>)(l : [A]) -> [B] {
 // MARK: Equatable
 
 public func ==<V : Equatable>(lhs: Maybe<V>, rhs: Maybe<V>) -> Bool {
-	
 	switch (lhs.destruct(), rhs.destruct()) {
 		case (.Nothing, .Nothing):
 			return true
@@ -155,10 +154,10 @@ public func ==<V : Equatable>(lhs: Maybe<V>, rhs: Maybe<V>) -> Bool {
 // Fallback equality: All nothings are isomorphic.
 public func ==<V>(lhs: Maybe<V>, rhs: Maybe<V>) -> Bool {
 	switch (lhs.destruct(), rhs.destruct()) {
-	case (.Nothing, .Nothing):
-		return true
-	default:
-		return false
+		case (.Nothing, .Nothing):
+			return true
+		default:
+			return false
 	}
 }
 

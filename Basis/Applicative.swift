@@ -7,9 +7,9 @@
 //  Released under the MIT license.
 //
 
-/// Applicative sits in the middle distance between a Functor and a Monad.  
+/// Applicative sits in the middle distance between a Functor and a Monad.
 public protocol Applicative : Functor {
-	/// Type of Functors containing morphisms from our objects to a Target.
+	/// Type of Functors containing morphisms from our objects to a target.
 	typealias FAB = K1<A -> B>
 	
 	/// Lifts a value into the Functor.
@@ -60,3 +60,4 @@ public protocol Alternative : Applicative {
 	///		some(v) <|> FLA.pure([])
 	func many(FA) -> FLA
 }
+
