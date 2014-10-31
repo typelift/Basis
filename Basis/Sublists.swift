@@ -135,39 +135,15 @@ public func nub<A : Equatable>(xs : [A]) -> [A] {
 }
 
 /// Returns all initial segments of a list.
-public func inits<A>(l : [A]) -> [[A]] {
-	switch destruct(l) {
-		case .Empty:
-			return []
-		case .Destructure(let x, let xs):
-			return [] <| subInits(l)
-	}
-}
-
-private func subInits<A>(l : [A]) -> [[A]] {
-	switch destruct(l) {
-		case .Empty:
-			return []
-		case .Destructure(let x, let xs):
-			return map({ x <| $0 })(l: inits(xs))
-	}
+public func inits<A>(l : [A]) -> [[A]] {	
+	return foldr({ x, xss in
+		return [] <| map({ x <| $0 })(xss)
+	})([[]])(l)
 }
 
 /// Returns all final segments of a list.
 public func tails<A>(l : [A]) -> [[A]] {
-	switch destruct(l) {
-		case .Empty:
-			return []
-		case .Destructure(let x, let xs):
-			return xs <| subTails(l)
-	}
-}
-
-private func subTails<A>(l : [A]) -> [[A]] {
-	switch destruct(l) {
-		case .Empty:
-			return []
-		case .Destructure(let x, let xs):
-			return map({ x <| $0 })(l: inits(xs))
-	}
+	return foldr({ x, y in
+		return (x <| head(y)) <| y
+	})([[]])(l)
 }

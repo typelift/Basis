@@ -8,8 +8,8 @@
 //
 
 /// Maps a function over a list and returns a new list containing the mapped values.
-public func map<A, B>(f : A -> B)(l : [A]) -> [B] {
-	return l.map(f)
+public func map<A, B>(f : A -> B) -> [A] -> [B] {
+	return { l in l.map(f) }
 }
 
 /// Takes a separator and a list and intersperses that element throughout the list.
