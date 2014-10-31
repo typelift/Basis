@@ -25,6 +25,7 @@
 		8434F96D19E8BA0A008D9909 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8434F96C19E8BA0A008D9909 /* Version.swift */; };
 		8434F97119E8BE43008D9909 /* VersionSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8434F97019E8BE43008D9909 /* VersionSpec.swift */; };
 		8434F97319E8C2FC008D9909 /* CompareSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8434F97219E8C2FC008D9909 /* CompareSpec.swift */; };
+		84423DE81A033BA700361829 /* ZipSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84423DE71A033BA700361829 /* ZipSpec.swift */; };
 		84522CDC19E10EE200E4423A /* Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84522CDB19E10EE200E4423A /* Optional.swift */; };
 		84922D4719D237E000AE9A7C /* Applicative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D1519D237E000AE9A7C /* Applicative.swift */; };
 		84922D4819D237E000AE9A7C /* Arrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D1619D237E000AE9A7C /* Arrow.swift */; };
@@ -103,6 +104,7 @@
 		8434F96C19E8BA0A008D9909 /* Version.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
 		8434F97019E8BE43008D9909 /* VersionSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VersionSpec.swift; sourceTree = "<group>"; };
 		8434F97219E8C2FC008D9909 /* CompareSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompareSpec.swift; sourceTree = "<group>"; };
+		84423DE71A033BA700361829 /* ZipSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZipSpec.swift; sourceTree = "<group>"; };
 		84522CDB19E10EE200E4423A /* Optional.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Optional.swift; sourceTree = "<group>"; };
 		84922D1519D237E000AE9A7C /* Applicative.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Applicative.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		84922D1619D237E000AE9A7C /* Arrow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Arrow.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -331,6 +333,7 @@
 				84C9970219CE8A970046906D /* TupleSpec.swift */,
 				8418FC4B19CFA9BA0010923E /* UniqueSpec.swift */,
 				8434F97019E8BE43008D9909 /* VersionSpec.swift */,
+				84423DE71A033BA700361829 /* ZipSpec.swift */,
 				84C9968119CE89F40046906D /* Supporting Files */,
 			);
 			path = BasisTests;
@@ -517,6 +520,7 @@
 				8434F97119E8BE43008D9909 /* VersionSpec.swift in Sources */,
 				84C9970419CE8A970046906D /* FunctionsSpec.swift in Sources */,
 				8418FC5219CFB3480010923E /* EitherSpec.swift in Sources */,
+				84423DE81A033BA700361829 /* ZipSpec.swift in Sources */,
 				84A802E019D3BD3D00E71F93 /* MonoidSpec.swift in Sources */,
 				8418FC4F19CFAED80010923E /* MaybeSpec.swift in Sources */,
 				8418FC4C19CFA9BA0010923E /* UniqueSpec.swift in Sources */,

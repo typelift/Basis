@@ -46,7 +46,7 @@ class OperatorsSpec : XCTestCase {
 		XCTAssertTrue(snd(x ∏ y) == snd((x, y)), "")
 	}
 
-// Uncomment to crash Swiftz
+// Uncomment to crash Swiftc
 //	func testOn() {
 //		let x = "String"
 //		let y = 20

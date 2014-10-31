@@ -15,7 +15,7 @@ class StringSpec : XCTestCase {
 	func testDestruct() {
 		let str = "abcdefghijklmnopqrstuvwxyz"
 		
-		XCTAssertTrue(all({ $0 == 1 })(map({ $0.count })(l: group(str.unpack()))), "")
+		XCTAssertTrue(all({ $0 == 1 })(map({ $0.count })(group(str.unpack()))), "")
 	}
 }
 

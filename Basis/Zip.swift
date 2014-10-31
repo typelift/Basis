@@ -80,27 +80,48 @@ public func zipWith<A, B, C>(f : (A, B) -> C) -> [A] -> [B] -> [C] {
 	} }
 }
 
+
+/// Zips together the elements of three lists according to a combining function.
+public func zipWith3<A, B, C, D>(f : A -> B -> C -> D) -> [A] -> [B] -> [C] -> [D] {
+	return { l in { l2 in { l3 in
+		switch destruct(l) {
+			case .Empty:
+				return []
+			case .Destructure(let a, let as_):
+				switch destruct(l2) {
+					case .Empty:
+						return []
+					case .Destructure(let b, let bs):
+						switch destruct(l3) {
+							case .Empty:
+								return []
+							case .Destructure(let c, let cs):
+								return f(a)(b)(c) <| zipWith3(f)(as_)(bs)(cs)
+					}
+			}
+		}
+	} } }
+}
+
 /// Unzips an array of tuples into a tuple of arrays.
 public func unzip<A, B>(l : [(A, B)]) -> ([A], [B]) {
-	var arra : [A] = []
-	var arrb : [B] = []
-	for (x, y) in l {
-		arra += [x]
-		arrb += [y]
+	switch destruct(l) {
+		case .Empty:
+			return ([], [])
+		case .Destructure(let (a, b), let tl):
+			let (t1, t2) : ([A], [B]) = unzip(tl)
+			return (a <| t1, b <| t2)
 	}
-	return (arra, arrb)
 }
 
 /// Unzips an array of triples into a triple of arrays.
 public func unzip3<A, B, C>(l : [(A, B, C)]) -> ([A], [B], [C]) {
-	var arra : [A] = []
-	var arrb : [B] = []
-	var arrc : [C] = []
-	for (x, y, z) in l {
-		arra += [x]
-		arrb += [y]
-		arrc += [z]
+	switch destruct(l) {
+		case .Empty:
+			return ([], [], [])
+		case .Destructure(let (a, b, c), let tl):
+			let (t1, t2, t3) : ([A], [B], [C]) = unzip3(tl)
+			return (a <| t1, b <| t2, c <| t3)
 	}
-	return (arra, arrb, arrc)
 }
 
