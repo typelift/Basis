@@ -46,14 +46,11 @@ class OperatorsSpec : XCTestCase {
 		XCTAssertTrue(snd(x ∏ y) == snd((x, y)), "")
 	}
 
-// Uncomment to crash Swiftc
-//	func testOn() {
-//		let x = "String"
-//		let y = 20
-//
-//		XCTAssertTrue(on(+)(f: { s in pow(s, 2.0) })(4.0)(4.0) == 10.0, "")
-//
-//	}
+	func testOn() {
+		let y = 32.0
+
+		XCTAssertTrue(on(+)(f: { s in pow(s, 2.0) })(4.0)(4.0) == y, "")
+	}
 
 	func testRLCompose() {
 		let f = ^{ $0 + 5 }
@@ -72,29 +69,7 @@ class OperatorsSpec : XCTestCase {
 
 		XCTAssertTrue((h >>> g >>> f).apply(x) == f.apply(g.apply(h.apply(x))), "")
 	}
-
-//	func testReplace() {
-//		let l = [1, 2, 3, 4, 5]
-//
-//		XCTAssertTrue(and(true <% l), "")
-//	}
-//
-//	func testFmap() {
-//		let l = [1, 2, 3, 4, 5]
-//		let f = { $0 * 10 }
-//
-//		XCTAssertTrue(and(zip(f <%> l)(l.map(f)).map(==)), "")
-//	}
-//
-//	func testSequence() {
-//		let l1 = [1, 2, 3, 4, 5]
-//		let l2 = [6, 7, 8, 9, 10]
-//
-//		let ar = l1 *> l2
-//		XCTAssertTrue(and(zip(l1 <* l2)(concatMap({ replicate(5)(x: $0) })(l: l1)).map(==)), "")
-//		XCTAssertTrue(and(zip(l1 *> l2)(l2).map(==)), "")
-//	}
-//
+	
 	func testChoose() {
 		let x : Maybe<Int> = Maybe.just(10)
 		let y : Maybe<Int> = Maybe.nothing()

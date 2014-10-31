@@ -32,7 +32,7 @@ extension Character : Bounded {
 	}
 	
 	public static func maxBound() -> Character {
-		return "\u{FFFF}"
+		return "\u{FFFFF}"
 	}
 }
 
