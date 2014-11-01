@@ -11,7 +11,7 @@
 // a computation returning a value of type A using some internal
 // context of type S.
 public final class ST<S, A> : K2<S, A> {	
-	private var apply:(s: World<RealWorld>) -> (World<RealWorld>, A)
+	private let apply:(s: World<RealWorld>) -> (World<RealWorld>, A)
 	
 	init(apply:(s: World<RealWorld>) -> (World<RealWorld>, A)) {
 		self.apply = apply

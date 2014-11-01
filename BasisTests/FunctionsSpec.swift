@@ -86,10 +86,10 @@ class FunctionsSpec : XCTestCase {
 	}
 	
 	func testOn() {
-		var arr : [(Int, String)] = [(2, "Second"), (1, "First"), (5, "Fifth"), (3, "Third"), (4, "Fourth")]
-		var sarr : [(Int, String)] = [(1, "First"), (2, "Second"), (3, "Third"), (4, "Fourth"), (5, "Fifth")]
+		let arr : [(Int, String)] = [(2, "Second"), (1, "First"), (5, "Fifth"), (3, "Third"), (4, "Fourth")]
+		let sarr : [(Int, String)] = [(1, "First"), (2, "Second"), (3, "Third"), (4, "Fourth"), (5, "Fifth")]
 
-		var srt = sortBy((>) |*| fst)(arr)
+		let srt = sortBy((>) |*| fst)(arr)
 		
 		XCTAssertTrue(and(zip(srt.map(fst))(sarr.map(fst)).map(==)), "")
 		XCTAssertTrue(and(zip(srt.map(snd))(sarr.map(snd)).map(==)), "")
