@@ -67,12 +67,26 @@
 		84922D1219D237DA00AE9A7C /* Tuple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922CE019D237DA00AE9A7C /* Tuple.swift */; };
 		84922D1319D237DA00AE9A7C /* Unique.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922CE119D237DA00AE9A7C /* Unique.swift */; };
 		84922EB319D386BD00AE9A7C /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922EB219D386BD00AE9A7C /* Result.swift */; };
+		849AA3A41A09836000472F08 /* Basis.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84922C8419D2375F00AE9A7C /* Basis.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		84A802E219D3BD5000E71F93 /* MonoidSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A802E119D3BD5000E71F93 /* MonoidSpec.swift */; };
 		84F43F0119E1B3B40012CF95 /* Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F43F0019E1B3B40012CF95 /* Optional.swift */; };
 		84F43F0519E1CA970012CF95 /* Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F43F0419E1CA970012CF95 /* Set.swift */; };
 		84F9063019D639980035D429 /* CompareSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F9062F19D639980035D429 /* CompareSpec.swift */; };
 		84F9071519D64DE10035D429 /* ScansSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F9071419D64DE10035D429 /* ScansSpec.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		849AA3A31A09835600472F08 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				849AA3A41A09836000472F08 /* Basis.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		841FE02019DB7E390068636A /* Lazy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Lazy.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -376,6 +390,7 @@
 				84922C8B19D2375F00AE9A7C /* Sources */,
 				84922C8C19D2375F00AE9A7C /* Frameworks */,
 				84922C8D19D2375F00AE9A7C /* Resources */,
+				849AA3A31A09835600472F08 /* CopyFiles */,
 			);
 			buildRules = (
 			);
