@@ -18,6 +18,9 @@ infix operator • {
 	associativity right
 }
 
+/// Pair Formation | Forms a pair from two arguments.  (⌥ + ⇧ + P)
+infix operator ∏ {}
+
 /// Pipe Backward | Applies the function to its left to an argument on its right.
 ///
 /// Chains of regular function applications are often made unnecessarily verbose and tedius by
@@ -32,13 +35,18 @@ infix operator <| {
 	associativity right
 }
 
-/// Pair Formation | Forms a pair from two arguments.  (⌥ + ⇧ + P)
-infix operator ∏ {}
-
 /// Pipe Forward | Applies the argument on its left to a function on its right.
 ///
 /// Sometimes, a computation looks more natural when data is computer first on the right side of
-/// an expression and applied to a function on the left.
+/// an expression and applied to a function on the left.  For example, this:
+///
+///		and(zip(nubBy(==)(x))(y).map(==))
+///		
+/// can also be written as:
+///
+///		let resl = nubBy(==)(x) |> zip(y)
+///								|> map(==)
+///								|> and
 infix operator |> {
 	precedence 100
 	associativity left

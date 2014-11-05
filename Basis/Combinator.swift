@@ -35,7 +35,15 @@ public func <|<A, B>(f : A -> B, x : A) -> B {
 /// Pipe Forward | Applies the argument on its left to a function on its right.
 ///
 /// Sometimes, a computation looks more natural when data is computer first on the right side of
-/// an expression and applied to a function on the left.
+/// an expression and applied to a function on the left.  For example, this:
+///
+///		and(zip(nubBy(==)(x))(y).map(==))
+///		
+/// can also be written as:
+///
+///		let resl = nubBy(==)(x) |> zip(y)
+///								|> map(==)
+///								|> and
 public func |><A, B>(x : A, f : A -> B) -> B {
 	return f(x)
 }
