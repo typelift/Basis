@@ -69,6 +69,14 @@ infix operator >-< {
 	associativity left
 }
 
+/// MARK: Data.Monoid
+
+/// Mappend | An associative binary operator that combines two elements of a monoid's set.
+infix operator <> {
+	precedence 160
+	associativity right
+}
+
 /// MARK: Control.Category
 
 /// Right-to-Left Composition | Composes two categories to form a new category with the source of
@@ -198,5 +206,8 @@ infix operator <+> {
 	associativity right
 }
 
+/// Lift | Lifts a function to an Arrow.
 prefix operator ^ {}
+
+/// Lower | Lowers an arrow to a function.
 postfix operator ^ {}

@@ -27,8 +27,10 @@ public protocol Monoid {
 
 	/// The identity element.
 	class func mempty() -> M
+	
 	/// An associative binary operator.
 	class func mappend(M) -> M -> M
+	func <>(M, M) -> M
 }
 
 public func mconcat<M, S: Monoid where S.M == M>(s: S, t: [M]) -> M {

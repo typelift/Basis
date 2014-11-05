@@ -50,11 +50,8 @@ public protocol Functor {
 
 	/// Constant Replace | Replaces all values in the target Functor with a singular constant value
 	/// from the source Functor.
+	///
+	/// Default definition: 
+	///		`curry(<%>) • const`
 	func <%(A, FB) -> FA
 }
-
-/// Eases writing a definition for Constant Replace.  Hand it an fmap, and x in B, and a source.
-public func defaultReplace<A, B, FA : Functor, FB : Functor>(fmap : (A -> B) -> FA -> FB)(x : B)(f : FA) -> FB {
-	return (fmap • const)(x)(f)
-}
-

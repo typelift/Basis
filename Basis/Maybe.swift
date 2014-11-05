@@ -195,7 +195,7 @@ public func <%><A, B>(f : A -> B, o : Maybe<A>) -> Maybe<B> {
 }
 
 public func <%<A, B>(x : A, o : Maybe<B>) -> Maybe<A> {
-	return defaultReplace(Maybe.fmap)(x: x)(f: o)
+	return (curry(<%>) • const)(x)(o)
 }
 
 extension Maybe : Applicative {
