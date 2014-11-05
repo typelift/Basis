@@ -30,11 +30,129 @@ public protocol Monoid {
 	
 	/// An associative binary operator.
 	class func mappend(M) -> M -> M
-	func <>(M, M) -> M
+}
+
+/// Mappend | An infix form of mappend for your convenience.
+public func <><M : Monoid>(l : M.M, r : M.M) -> M.M {
+	return M.mappend(l)(r)
 }
 
 public func mconcat<M, S: Monoid where S.M == M>(s: S, t: [M]) -> M {
 	return (t.reduce(S.mempty()) { S.mappend($0)($1) })
+}
+
+/// A monoid that `mappend`s its arguments flipped.
+public final class Dual<A> : K1<A> {
+	let dual : A
+	
+	init(_ dual : A) {
+		self.dual = dual
+	}
+}
+
+/// The monoid of endomorphisms under composition.
+public final class Endo<A> : K1<A> {
+	let apply : A -> A
+	
+	init(_ ap : A -> A) {
+		self.apply = ap
+	}
+}
+
+extension Endo : Monoid {
+	typealias M = Endo<A>
+	
+	public class func mempty() -> Endo<A> {
+		return Endo(id)
+	}
+	
+	public class func mappend(l : Endo<A>) -> Endo<A> -> Endo<A> {
+		return { r in Endo(l.apply • r.apply) }
+	}
+}
+
+/// The monoid of booleans under conjunction
+public final class All {
+	let val : Bool
+	
+	init(_ val : Bool) {
+		self.val = val
+	}
+}
+
+extension All : Monoid {
+	typealias M = All
+	
+	public class func mempty() -> All {
+		return All(true)
+	}
+	
+	public class func mappend(l : All) -> All -> All {
+		return { r in All(l.val && r.val) }
+	}
+}
+
+/// The monoid of booleans under disjunction
+public final class Any {
+	let val : Bool
+	
+	init(_ val : Bool) {
+		self.val = val
+	}
+}
+
+extension Any : Monoid {
+	typealias M = Any
+	
+	public class func mempty() -> Any {
+		return Any(true)
+	}
+	
+	public class func mappend(l : Any) -> Any -> Any {
+		return { r in Any(l.val || r.val) }
+	}
+}
+
+/// The left-biased maybe monoid.
+public final class First<A> : K1<A> {
+	let val : Maybe<A>
+	
+	init(_ val : Maybe<A>) {
+		self.val = val
+	}
+}
+
+extension First : Monoid {
+	typealias M = First<A>
+	
+	public class func mempty() -> First<A> {
+		return First(Maybe.nothing())
+	}
+	
+	public class func mappend(l : First<A>) -> First<A> -> First<A> {
+		return { r in First(maybe(r.val)(Maybe<A>.pure)(l.val)) }
+	}
+}
+
+/// The right-biased maybe monoid.
+public final class Last<A> : K1<A> {
+	let val : Maybe<A>
+	
+	init(_ val : Maybe<A>) {
+		self.val = val
+	}
+}
+
+extension Last : Monoid {
+	typealias M = Last<A>
+	
+	public class func mempty() -> Last<A> {
+		return Last(Maybe.nothing())
+	}
+	
+	public class func mappend(l : Last<A>) -> Last<A> -> Last<A> {
+		return { r in Last(maybe(l.val)(Maybe<A>.pure)(r.val)) }
+	}
 }
 
 //extension Array : Monoid {

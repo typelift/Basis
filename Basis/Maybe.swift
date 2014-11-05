@@ -41,13 +41,15 @@ public final class Maybe<A> : K1<A> {
 
 /// Takes a default value, a function, and a maybe.  If the maybe is Nothing, the default value
 /// is returned.  If the maybe is Just, the function is applied to the value inside.
-public func maybe<A, B>(def : B)(f : A -> B)(m : Maybe<A>) -> B {
-	switch m.destruct() {
-		case .Nothing:
-			return def
-		case .Just(let x):
-			return f(x)
-	}
+public func maybe<A, B>(def : B) -> (A -> B) -> Maybe<A> -> B {
+	return { f in { m in
+		switch m.destruct() {
+			case .Nothing:
+				return def
+			case .Just(let x):
+				return f(x)
+		}
+	} }
 }
 
 /// Returns whether a given maybe contains a value.
