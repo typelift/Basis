@@ -43,13 +43,15 @@ public final class Result<A> : K1<A> {
 
 /// Case analysis.  If the Result is Left, applies the left function to that value.  Else, if the
 /// either is right, applies the right function to that value.
-public func either<A, B>(left : NSError -> B)(right : A -> B)(e : Result<A>) -> B {
-	switch e.destruct() {
-		case .Error(let x):
-			return left(x)
-		case .Value(let y):
-			return right(y.unBox())
-	}
+public func either<A, B>(left : NSError -> B) -> (A -> B) -> Result<A> -> B {
+	return { right in { e in
+		switch e.destruct() {
+			case .Error(let x):
+				return left(x)
+			case .Value(let y):
+				return right(y.unBox())
+		}
+	} }
 }
 
 /// Extracts all eithers that have errors in order.
@@ -94,6 +96,11 @@ public func isLeft<A, B>(e : Result<A>) -> Bool {
 		default:
 			return false
 	}
+}
+
+/// Maps a Result to an Either.
+public func asEither<A>(e : Result<A>) -> Either<NSError, A> {
+	return either({ e in Either.left(e) })({ v in Either.right(v) })(e)
 }
 
 // MARK: Equatable

@@ -102,6 +102,11 @@ public func isLeft<A, B>(e : Either<A, B>) -> Bool {
 	}
 }
 
+/// Maps an either onto a Result given a function from left to an NSError.
+public func asResult<A, B>(e : Either<A, B>) -> (A -> NSError) -> Result<B> {
+	return { f in either({ e in Result.error(f(e)) })({ v in Result.value(v) })(e) }
+}
+
 // MARK: Equatable
 
 public func ==<A : Equatable, B : Equatable>(lhs: Either<A, B>, rhs: Either<A, B>) -> Bool {
