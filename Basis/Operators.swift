@@ -37,16 +37,16 @@ infix operator <| {
 
 /// Pipe Forward | Applies the argument on its left to a function on its right.
 ///
-/// Sometimes, a computation looks more natural when data is computer first on the right side of
-/// an expression and applied to a function on the left.  For example, this:
+/// Sometimes, a computation looks more natural when data is organizaed with this operator.  For 
+/// example, this:
 ///
 ///		and(zip(nubBy(==)(x))(y).map(==))
 ///		
 /// can also be written as:
 ///
-///		let resl = nubBy(==)(x) |> zip(y)
-///								|> map(==)
-///								|> and
+///		nubBy(==)(x) |> zip(y)
+///					 |> map(==)
+///					 |> and
 infix operator |> {
 	precedence 100
 	associativity left
