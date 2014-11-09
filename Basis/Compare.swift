@@ -14,21 +14,15 @@
 /// elements, the heads of subsequent sub-arrays are compared wtih this ordering predicate until a
 /// match is found.
 public func <=<T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
-	switch destruct(lhs) {
-		case .Empty:
-			switch destruct(rhs) {
-				case .Empty:
-					return true
-				case .Destructure(_, _):
-					return true
-			}
-		case .Destructure(let x, let xs):
-			switch destruct(rhs) {
-				case .Empty:
-					return false
-				case .Destructure(let y, let ys):
-					return (x == y) ? (xs <= ys) : x <= y
-		}
+	switch (destruct(lhs), destruct(rhs)) {
+		case (.Empty, .Empty):
+			return true
+		case (.Empty, .Destructure(_, _)):
+			return true
+		case (.Destructure(_, _), .Empty):
+			return false
+		case (.Destructure(let x, let xs), .Destructure(let y, let ys)):
+			return (x == y) ? (xs <= ys) : x <= y
 	}
 }
 
@@ -39,61 +33,43 @@ public func <=<T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
 /// elements, the heads of subsequent sub-arrays are compared wtih this ordering predicate until a
 /// match is found.
 public func >=<T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
-	switch destruct(lhs) {
-		case .Empty:
-			switch destruct(rhs) {
-				case .Empty:
-					return true
-				case .Destructure(_, _):
-					return false
-			}
-		case .Destructure(let x, let xs):
-			switch destruct(rhs) {
-				case .Empty:
-					return true
-				case .Destructure(let y, let ys):
-					return (x == y) ? (xs >= ys) : x >= y
-			}
+	switch (destruct(lhs), destruct(rhs)) {
+		case (.Empty, .Empty):
+			return true
+		case (.Empty, .Destructure(_, _)):
+			return false
+		case (.Destructure(_, _), .Empty):
+			return true
+		case (.Destructure(let x, let xs), .Destructure(let y, let ys)):
+			return (x == y) ? (xs >= ys) : x >= y
 	}
 }
 
 /// Returns whether the two arrays are in ascending order.
 public func <<T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
-	switch destruct(lhs) {
-		case .Empty:
-			switch destruct(rhs) {
-				case .Empty:
-					return false
-				case .Destructure(_, _):
-					return true
-			}
-		case .Destructure(let x, let xs):
-			switch destruct(rhs) {
-				case .Empty:
-					return false
-				case .Destructure(let y, let ys):
-					return (x == y) ? (xs < ys) : x < y
-			}
+	switch (destruct(lhs), destruct(rhs)) {
+		case (.Empty, .Empty):
+			return false
+		case (.Empty, .Destructure(_, _)):
+			return true
+		case (.Destructure(_, _), .Empty):
+			return false
+		case (.Destructure(let x, let xs), .Destructure(let y, let ys)):
+			return (x == y) ? (xs < ys) : x < y
 	}
 }
 
 /// Returns whether the two arrays are in descending order.
 public func ><T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
-	switch destruct(lhs) {
-		case .Empty:
-			switch destruct(rhs) {
-				case .Empty:
-					return false
-				case .Destructure(_, _):
-					return false
-			}
-		case .Destructure(let x, let xs):
-			switch destruct(rhs) {
-				case .Empty:
-					return true
-				case .Destructure(let y, let ys):
-					return (x == y) ? (xs > ys) : x > y
-			}
+	switch (destruct(lhs), destruct(rhs)) {
+		case (.Empty, .Empty):
+			return false
+		case (.Empty, .Destructure(_, _)):
+			return false
+		case (.Destructure(_, _), .Empty):
+			return true
+		case (.Destructure(let x, let xs), .Destructure(let y, let ys)):
+			return (x == y) ? (xs > ys) : x > y
 	}
 }
 
@@ -170,10 +146,7 @@ public func insertBy<A>(cmp: A -> A -> Bool) -> A -> [A] -> [A] {
 			case .Empty:
 				return [x]
 			case .Destructure(let y, let ys):
-				if cmp(x)(y) {
-					return y <| insertBy(cmp)(x)(ys)
-				}
-				return x <| l
+				return cmp(x)(y) ? y <| insertBy(cmp)(x)(ys) : x <| l
 		}
 	} }
 }
@@ -185,10 +158,7 @@ public func insertBy<A>(cmp: (A, A) -> Bool) -> A -> [A] -> [A] {
 			case .Empty:
 				return [x]
 			case .Destructure(let y, let ys):
-				if cmp(x, y) {
-					return y <| insertBy(cmp)(x)(ys)
-				}
-				return x <| l
+				return cmp(x, y) ? y <| insertBy(cmp)(x)(ys) :  x <| l
 		}
 	} }
 }
@@ -201,10 +171,7 @@ public func maximumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 				assert(false, "Cannot find the maximum element of an empty list.")
 			case .Destructure(_, _):
 				return foldl1({ (let t) -> A in
-					if cmp(fst(t))(snd(t)) {
-						return fst(t)
-					}
-					return snd(t)
+					return cmp(fst(t))(snd(t)) ? fst(t) : snd(t)
 				})(l)
 		}
 	}
@@ -218,10 +185,7 @@ public func maximumBy<A>(cmp : (A, A) -> Bool) -> [A] -> A {
 				assert(false, "Cannot find the maximum element of an empty list.")
 			case .Destructure(_, _):
 				return foldl1({ (let t) -> A in
-					if cmp(fst(t), snd(t)) {
-						return fst(t)
-					}
-					return snd(t)
+					return cmp(fst(t), snd(t)) ? fst(t) : snd(t)
 				})(l)
 		}
 	}
@@ -235,10 +199,7 @@ public func minimumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 				assert(false, "Cannot find the minimum element of an empty list.")
 			case .Destructure(_, _):
 				return foldl1({ (let t) -> A in
-					if cmp(fst(t))(snd(t)) {
-						return snd(t)
-					}
-					return fst(t)
+					return cmp(fst(t))(snd(t)) ? snd(t) :  fst(t)
 				})(l)
 		}
 	}
@@ -252,10 +213,7 @@ public func minimumBy<A>(cmp : (A, A) -> Bool) -> [A] -> A {
 				assert(false, "Cannot find the minimum element of an empty list.")
 			case .Destructure(_, _):
 				return foldl1({ (let t) -> A in
-					if cmp(fst(t), snd(t)) {
-						return snd(t)
-					}
-					return fst(t)
+					return cmp(fst(t), snd(t)) ? snd(t) : fst(t)
 				})(l)
 		}
 	}
