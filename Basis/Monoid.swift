@@ -43,7 +43,7 @@ public func mconcat<M, S: Monoid where S.M == M>(s: S, t: [M]) -> M {
 
 /// A monoid that `mappend`s its arguments flipped.
 public final class Dual<A> : K1<A> {
-	let dual : A
+	public let dual : A
 	
 	init(_ dual : A) {
 		self.dual = dual
@@ -52,7 +52,7 @@ public final class Dual<A> : K1<A> {
 
 /// The monoid of endomorphisms under composition.
 public final class Endo<A> : K1<A> {
-	let apply : A -> A
+	public let apply : A -> A
 	
 	init(_ ap : A -> A) {
 		self.apply = ap
@@ -73,7 +73,7 @@ extension Endo : Monoid {
 
 /// The monoid of booleans under conjunction
 public final class All {
-	let val : Bool
+	public let val : Bool
 	
 	init(_ val : Bool) {
 		self.val = val
@@ -94,7 +94,7 @@ extension All : Monoid {
 
 /// The monoid of booleans under disjunction
 public final class Any {
-	let val : Bool
+	public let val : Bool
 	
 	init(_ val : Bool) {
 		self.val = val
@@ -115,7 +115,7 @@ extension Any : Monoid {
 
 /// The left-biased maybe monoid.
 public final class First<A> : K1<A> {
-	let val : Maybe<A>
+	public let val : Maybe<A>
 	
 	init(_ val : Maybe<A>) {
 		self.val = val
@@ -136,7 +136,7 @@ extension First : Monoid {
 
 /// The right-biased maybe monoid.
 public final class Last<A> : K1<A> {
-	let val : Maybe<A>
+	public let val : Maybe<A>
 	
 	init(_ val : Maybe<A>) {
 		self.val = val
@@ -157,7 +157,7 @@ extension Last : Monoid {
 
 /// The monoid of ordered values under max.
 public final class Max<A : protocol<Comparable, Bounded>> : K1<A> {
-	let val : A
+	public let val : A
 	
 	init(_ max : A) {
 		self.val = max
@@ -178,7 +178,7 @@ extension Max : Monoid {
 
 /// The monoid of ordered values under min.
 public final class Min<A : protocol<Comparable, Bounded>> : K1<A> {
-	let val : A
+	public let val : A
 	
 	init(_ min : A) {
 		self.val = min
