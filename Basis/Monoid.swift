@@ -155,6 +155,48 @@ extension Last : Monoid {
 	}
 }
 
+/// The monoid of ordered values under max.
+public final class Max<A : protocol<Comparable, Bounded>> : K1<A> {
+	let val : A
+	
+	init(_ max : A) {
+		self.val = max
+	}
+}
+
+extension Max : Monoid {
+	typealias M = Max<A>
+	
+	public class func mempty() -> Max<A> {
+		return Max(A.minBound())
+	}
+	
+	public class func mappend(l : Max<A>) -> Max<A> -> Max<A> {
+		return { r in Max(max(l.val, r.val)) }
+	}
+}
+
+/// The monoid of ordered values under min.
+public final class Min<A : protocol<Comparable, Bounded>> : K1<A> {
+	let val : A
+	
+	init(_ min : A) {
+		self.val = min
+	}
+}
+
+extension Min : Monoid {
+	typealias M = Min<A>
+	
+	public class func mempty() -> Min<A> {
+		return Min(A.maxBound())
+	}
+	
+	public class func mappend(l : Min<A>) -> Min<A> -> Min<A> {
+		return { r in Min(min(l.val, r.val)) }
+	}
+}
+
 //extension Array : Monoid {
 //	typealias M = Array<T>
 //
