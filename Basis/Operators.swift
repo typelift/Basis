@@ -111,6 +111,17 @@ infix operator <%> {
 	associativity left
 }
 
+/// MARK: Data.Functor.Contravariant
+
+infix operator >%< {
+	precedence 140
+	associativity left
+}
+
+infix operator >% {
+	precedence 140
+	associativity left
+}
 
 /// MARK: Control.Applicative
 
@@ -119,7 +130,6 @@ infix operator <*> {
 	precedence 140
 	associativity left
 }
-
 
 /// Sequence Right | Disregards the Functor on the Left.
 ///
@@ -204,6 +214,23 @@ infix operator ||| {
 infix operator <+> {
 	precedence 150
 	associativity right
+}
+
+/// MARK: Control.Comonad.Zip
+
+infix operator >*< {
+	precedence 140
+	associativity left
+}
+
+infix operator >* {
+	precedence 140
+	associativity left
+}
+
+infix operator *< {
+	precedence 140
+	associativity left
 }
 
 /// Lift | Lifts a function to an Arrow.

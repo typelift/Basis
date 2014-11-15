@@ -37,6 +37,7 @@ public func <><M : Monoid>(l : M.M, r : M.M) -> M.M {
 	return M.mappend(l)(r)
 }
 
+/// 
 public func mconcat<M, S: Monoid where S.M == M>(s: S, t: [M]) -> M {
 	return (t.reduce(S.mempty()) { S.mappend($0)($1) })
 }
@@ -113,6 +114,48 @@ extension Any : Monoid {
 	}
 }
 
+public final class Sum<A : protocol<IntegerArithmeticType, IntegerLiteralConvertible>> {
+	public let sum : A
+	
+	init(_ sum : A) {
+		self.sum = sum
+	}
+}
+
+/// The monoid of arithmetic types under addition.
+extension Sum : Monoid {
+	typealias M = Sum
+	
+	public class func mempty() -> Sum {
+		return Sum(0)
+	}
+	
+	public class func mappend(l : Sum) -> Sum -> Sum {
+		return { r in Sum(l.sum + r.sum) }
+	}
+}
+
+public final class Product<A : protocol<IntegerArithmeticType, IntegerLiteralConvertible>> {
+	public let product : A
+	
+	init(_ product : A) {
+		self.product = product
+	}
+}
+
+/// The monoid of arithmetic types under multiplication.
+extension Product : Monoid {
+	typealias M = Product
+	
+	public class func mempty() -> Product {
+		return Product(1)
+	}
+	
+	public class func mappend(l : Product) -> Product -> Product {
+		return { r in Product(l.product * r.product) }
+	}
+}
+	
 /// The left-biased maybe monoid.
 public final class First<A> : K1<A> {
 	public let val : Maybe<A>
