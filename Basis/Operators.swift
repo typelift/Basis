@@ -113,11 +113,13 @@ infix operator <%> {
 
 /// MARK: Data.Functor.Contravariant
 
+/// Contramap | Maps all values "inside" one functor contravariantly.
 infix operator >%< {
 	precedence 140
 	associativity left
 }
 
+/// Replace | Maps all points to a specified constant contravariantly.
 infix operator >% {
 	precedence 140
 	associativity left
@@ -216,19 +218,22 @@ infix operator <+> {
 	associativity right
 }
 
-/// MARK: Control.Comonad.Zip
+/// MARK: Control.Comonad.Apply
 
+/// Ap | Promotes function application.
 infix operator >*< {
 	precedence 140
 	associativity left
 }
 
-infix operator >* {
+/// Sequence Right | Disregards the Functor on the Left.
+infix operator *< {
 	precedence 140
 	associativity left
 }
 
-infix operator *< {
+/// Sequence Left | Disregards the Functor on the Right.
+infix operator >* {
 	precedence 140
 	associativity left
 }
