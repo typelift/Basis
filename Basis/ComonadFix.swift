@@ -10,7 +10,7 @@
 public protocol ComonadFix : Comonad {
 	typealias FFAA = K1<K1<A> -> A>
 	
-	/// Calculates the fixed point of a monadic computation.
+	/// Calculates the fixed point of a comonadic context.
 	///
 	/// Default definition: 
 	///		x.extract()(F<F<A> -> A>.extend(F<A>.cofix)(x))
