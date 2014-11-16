@@ -8,13 +8,13 @@
 //
 
 /// A Comonad is the categorical dual to a Monad.  If a Monad is the model of a computation that 
-/// produces a value of type T, a Comonad is the a value produced from a context.
+/// produces a value of type T, a Comonad is a value produced from a context.
 ///
 /// "A comonoid in the monoidal category of endofunctors"
 public protocol Comonad : Copointed {
 	typealias FFA = K1<FA>
 
-	/// Takes a value in a context and wraps it in another context.
+	/// Cojoin | Takes a value in a context and wraps it in another context.
 	///
 	/// Default Definition:
 	///		`extend(id)`
