@@ -271,6 +271,72 @@ public func <><A : protocol<Comparable, Bounded>>(l : Min<A>, r : Min<A>) -> Min
 	return Min.mappend(l)(r)
 }
 
+/// MARK: Equatable
+
+public func ==(lhs : All, rhs : All) -> Bool {
+	return lhs.getAll == rhs.getAll
+}
+
+public func !=<T : Equatable>(lhs: All, rhs: All) -> Bool {
+	return !(lhs == rhs)
+}
+
+public func ==(lhs : Any, rhs : Any) -> Bool {
+	return lhs.getAny == rhs.getAny
+}
+
+public func !=<T : Equatable>(lhs: Any, rhs: Any) -> Bool {
+	return !(lhs == rhs)
+}
+
+public func ==<A : Equatable>(lhs : First<A>, rhs : First<A>) -> Bool {
+	return lhs.getFirst == rhs.getFirst
+}
+
+public func !=<A : Equatable>(lhs: First<A>, rhs: First<A>) -> Bool {
+	return !(lhs == rhs)
+}
+
+public func ==<A : Equatable>(lhs : Last<A>, rhs : Last<A>) -> Bool {
+	return lhs.getLast == rhs.getLast
+}
+
+public func !=<A : Equatable>(lhs: Last<A>, rhs: Last<A>) -> Bool {
+	return !(lhs == rhs)
+}
+
+public func ==<A : protocol<Comparable, Bounded, Equatable>>(lhs : Max<A>, rhs : Max<A>) -> Bool {
+	return lhs.getMax == rhs.getMax
+}
+
+public func !=<A : protocol<Comparable, Bounded, Equatable>>(lhs: Max<A>, rhs: Max<A>) -> Bool {
+	return !(lhs == rhs)
+}
+
+public func ==<A : protocol<Comparable, Bounded, Equatable>>(lhs : Min<A>, rhs : Min<A>) -> Bool {
+	return lhs.getMin == rhs.getMin
+}
+
+public func !=<A : protocol<Comparable, Bounded, Equatable>>(lhs: Min<A>, rhs: Min<A>) -> Bool {
+	return !(lhs == rhs)
+}
+
+public func ==<T : protocol<IntegerArithmeticType, IntegerLiteralConvertible, Equatable>>(lhs: Sum<T>, rhs: Sum<T>) -> Bool {
+	return lhs.getSum == rhs.getSum
+}
+
+public func !=<T : protocol<IntegerArithmeticType, IntegerLiteralConvertible, Equatable>>(lhs: Sum<T>, rhs: Sum<T>) -> Bool {
+	return !(lhs == rhs)
+}
+
+public func ==<T : protocol<IntegerArithmeticType, IntegerLiteralConvertible, Equatable>>(lhs: Product<T>, rhs: Product<T>) -> Bool {
+	return lhs.getProduct == rhs.getProduct
+}
+
+public func !=<T : protocol<IntegerArithmeticType, IntegerLiteralConvertible, Equatable>>(lhs: Product<T>, rhs: Product<T>) -> Bool {
+	return !(lhs == rhs)
+}
+
 //extension Array : Monoid {
 //	typealias M = Array<T>
 //

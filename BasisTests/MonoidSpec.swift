@@ -27,75 +27,75 @@ class MonoidSpec : XCTestCase {
 	}
 	
 	func testAllLeftIdentity() {
-		XCTAssertTrue((All.mempty() <> All(true)).getAll == true, "")
-		XCTAssertTrue((All.mempty() <> All(false)).getAll == false, "")
+		XCTAssertTrue((All.mempty() <> All(true)) == All(true), "")
+		XCTAssertTrue((All.mempty() <> All(false)) == All(false), "")
 	}
 	
 	func testAllRightIdentity() {
-		XCTAssertTrue((All(false) <> All.mempty()).getAll == false, "")
-		XCTAssertTrue((All(true) <> All.mempty()).getAll == true, "")
+		XCTAssertTrue((All(true) <> All.mempty()) == All(true), "")
+		XCTAssertTrue((All(false) <> All.mempty()) == All(false), "")
 	}
 	
 	func testAllMappend() {
 		let x = All(true)
 		let y = All(false)
 		let z = All(true)
-		XCTAssertTrue(((x <> y) <> z).getAll == (x <> (y <> z)).getAll, "")
+		XCTAssertTrue(((x <> y) <> z) == (x <> (y <> z)), "")
 	}
 	
 	func testAnyLeftIdentity() {
-		XCTAssertTrue((Any.mempty() <> Any(true)).getAny == true, "")
-		XCTAssertTrue((Any.mempty() <> Any(false)).getAny == false, "")
+		XCTAssertTrue((Any.mempty() <> Any(true)) == Any(true), "")
+		XCTAssertTrue((Any.mempty() <> Any(false)) == Any(false), "")
 	}
 	
 	func testAnyRightIdentity() {
-		XCTAssertTrue((Any(false) <> Any.mempty()).getAny == false, "")
-		XCTAssertTrue((Any(true) <> Any.mempty()).getAny == true, "")
+		XCTAssertTrue((Any(false) <> Any.mempty()) == Any(false), "")
+		XCTAssertTrue((Any(true) <> Any.mempty()) == Any(true), "")
 	}
 	
 	func testAnyMappend() {
 		let x = Any(true)
 		let y = Any(false)
 		let z = Any(true)
-		XCTAssertTrue(((x <> y) <> z).getAny == (x <> (y <> z)).getAny, "")
+		XCTAssertTrue(((x <> y) <> z) == (x <> (y <> z)), "")
 	}
 	
 	func testSumLeftIdentity() {
-		XCTAssertTrue((Sum.mempty() <> Sum(5)).getSum == 5, "")
+		XCTAssertTrue((Sum.mempty() <> Sum(5)) == Sum(5), "")
 	}
 	
 	func testSumRightIdentity() {
-		XCTAssertTrue((Sum(5) <> Sum.mempty()).getSum == 5, "")
+		XCTAssertTrue((Sum(5) <> Sum.mempty()) == Sum(5), "")
 	}
 	
 	func testSumMappend() {
 		let x = Sum(5)
 		let y = Sum(10)
 		let z = Sum(20)
-		XCTAssertTrue(((x <> y) <> z).getSum == (x <> (y <> z)).getSum, "")
+		XCTAssertTrue(((x <> y) <> z) == (x <> (y <> z)), "")
 	}	
 	
 	func testProductLeftIdentity() {
-		XCTAssertTrue((Product.mempty() <> Product(5)).getProduct == 5, "")
+		XCTAssertTrue((Product.mempty() <> Product(5)) == Product(5), "")
 	}
 	
 	func testProductRightIdentity() {
-		XCTAssertTrue((Product(5) <> Product.mempty()).getProduct == 5, "")
+		XCTAssertTrue((Product(5) <> Product.mempty()) == Product(5), "")
 	}
 	
 	func testProductMappend() {
 		let x = Product(5)
 		let y = Product(10)
 		let z = Product(20)
-		XCTAssertTrue(((x <> y) <> z).getProduct == (x <> (y <> z)).getProduct, "")
+		XCTAssertTrue(((x <> y) <> z) == (x <> (y <> z)), "")
 	}
 	
 	func testFirstLeftIdentity() {
-		XCTAssertTrue((First.mempty() <> First(Maybe.just(5))).getFirst == Maybe<Int>.just(5), "")
+		XCTAssertTrue((First.mempty() <> First(Maybe.just(5))) == First(Maybe.just(5)), "")
 	}
 	
 	func testFirstRightIdentity() {
-		XCTAssertTrue((First(Maybe.just(5)) <> First.mempty()).getFirst == Maybe.just(5), "")
+		XCTAssertTrue((First(Maybe.just(5)) <> First.mempty()) == First(Maybe.just(5)), "")
 	}
 	
 	func testFirstMappend() {
@@ -106,48 +106,48 @@ class MonoidSpec : XCTestCase {
 	}
 	
 	func testLastLeftIdentity() {
-		XCTAssertTrue((Last.mempty() <> Last(Maybe.just(5))).getLast == Maybe<Int>.just(5), "")
+		XCTAssertTrue((Last.mempty() <> Last(Maybe.just(5))) == Last(Maybe.just(5)), "")
 	}
 	
 	func testLastRightIdentity() {
-		XCTAssertTrue((Last(Maybe.just(5)) <> Last.mempty()).getLast == Maybe.just(5), "")
+		XCTAssertTrue((Last(Maybe.just(5)) <> Last.mempty()) == Last(Maybe.just(5)), "")
 	}
 	
 	func testLastMappend() {
 		let x = Last(Maybe.just(5))
 		let y = Last(Maybe.just(10))
 		let z = Last(Maybe.just(15))
-		XCTAssertTrue(((x <> y) <> z).getLast == (x <> (y <> z)).getLast, "")
+		XCTAssertTrue(((x <> y) <> z) == (x <> (y <> z)), "")
 	}
 	
 	func testMinLeftIdentity() {
-		XCTAssertTrue((Min.mempty() <> Min(5)).getMin == 5, "")
+		XCTAssertTrue((Min.mempty() <> Min(5)) == Min(5), "")
 	}
 	
 	func testMinRightIdentity() {
-		XCTAssertTrue((Min(5) <> Min.mempty()).getMin == 5, "")
+		XCTAssertTrue((Min(5) <> Min.mempty()) == Min(5), "")
 	}
 	
 	func testMinMappend() {
 		let x = Min(5)
 		let y = Min(10)
 		let z = Min(15)
-		XCTAssertTrue(((x <> y) <> z).getMin == (x <> (y <> z)).getMin, "")
+		XCTAssertTrue(((x <> y) <> z) == (x <> (y <> z)), "")
 	}
 	
 	func testMaxLeftIdentity() {
-		XCTAssertTrue((Max.mempty() <> Max(5)).getMax == 5, "")
+		XCTAssertTrue((Max.mempty() <> Max(5)) == Max(5), "")
 	}
 	
 	func testMaxRightIdentity() {
-		XCTAssertTrue((Max(5) <> Max.mempty()).getMax == 5, "")
+		XCTAssertTrue((Max(5) <> Max.mempty()) == Max(5), "")
 	}
 	
 	func testMaxMappend() {
 		let x = Max(5)
 		let y = Max(10)
 		let z = Max(15)
-		XCTAssertTrue(((x <> y) <> z).getMax == (x <> (y <> z)).getMax, "")
+		XCTAssertTrue(((x <> y) <> z) == (x <> (y <> z)), "")
 	}	
 }
 

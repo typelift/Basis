@@ -19,6 +19,18 @@ public final class Box<A> : K1<A> {
 	}
 }
 
+/// MARK: Equatable
+
+public func ==<T : Equatable>(lhs: Box<T>, rhs: Box<T>) -> Bool {
+	return lhs.unBox() == rhs.unBox()
+}
+
+public func !=<T : Equatable>(lhs: Box<T>, rhs: Box<T>) -> Bool {
+	return !(lhs == rhs)
+}
+
+/// MARK: Functor
+
 extension Box : Functor {
 	typealias B = Swift.Any
 	
