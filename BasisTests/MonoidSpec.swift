@@ -102,7 +102,7 @@ class MonoidSpec : XCTestCase {
 		let x = First(Maybe.just(5))
 		let y = First(Maybe.just(10))
 		let z = First(Maybe.just(15))
-		XCTAssertTrue(((x <> y) <> z).getFirst == (x <> (y <> z)).getFirst, "")
+		XCTAssertTrue(((x <> y) <> z) == (x <> (y <> z)), "")
 	}
 	
 	func testLastLeftIdentity() {
