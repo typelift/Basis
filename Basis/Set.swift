@@ -423,25 +423,25 @@ private func single<A>(x1 : A)(t1 : Set<A>)(t2 : Set<A>) -> Set<A> {
 
 private func double<A>(x1 : A)(t1 : Set<A>)(t2 : Set<A>) -> Set<A> {
 	switch t2.destruct() {
-	case .Empty:
-		switch t1.destruct() {
 		case .Empty:
-			return error("")
+			switch t1.destruct() {
+				case .Empty:
+					return error("")
+				case .Destructure(_, let x2, let b, let t4):
+					switch b.destruct() {
+						case .Empty:
+							return error("")
+						case .Destructure(_, let x3, let t2, let t3):
+							return bin(x3, bin(x2, t1, t2), bin(x1, t3, t4))
+					}
+			}
 		case .Destructure(_, let x2, let b, let t4):
 			switch b.destruct() {
 				case .Empty:
 					return error("")
 				case .Destructure(_, let x3, let t2, let t3):
-					return bin(x3, bin(x2, t1, t2), bin(x1, t3, t4))
+					return bin(x3, bin(x1, t1, t2), bin(x2, t3, t4))
 			}
-		}
-	case .Destructure(_, let x2, let b, let t4):
-		switch b.destruct() {
-			case .Empty:
-				return error("")
-			case .Destructure(_, let x3, let t2, let t3):
-				return bin(x3, bin(x1, t1, t2), bin(x2, t3, t4))
-		}
 	}
 }
 
