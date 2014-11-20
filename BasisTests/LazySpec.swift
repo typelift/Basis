@@ -1,6 +1,6 @@
 //
 //  LazySpec.swift
-//  Basis-iOS
+//  Basis
 //
 //  Created by Robert Widmann on 11/6/14.
 //  Copyright (c) 2014 Robert Widmann. All rights reserved.

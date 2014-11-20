@@ -7,16 +7,82 @@
 //  Released under the MIT license.
 //
 
-/// The infamous Box Hack.  Oh, how I'd love to say this was a Sort.  Let's hope we get ADTs soon...
+/// The infamous Box Hack.
 ///
-/// But as long as I have the space, Sorts are the type of Kinds which are the type of types.  As
-/// with Kinds, that's not necessarily the best way to think about them.  In fact, it's better to 
-/// not think of Sorts at all! There really is only one, called BOX, in Haskell, and it is fairly 
-/// useless.
+/// A box is also equivalent to the identity functor, which is also the most trivial instance of
+/// Comonad.
 public final class Box<A> : K1<A> {
 	public let unBox : () -> A
 	
 	public init(_ x : A) {
 		unBox = { x }
 	}
+}
+
+/// MARK: Equatable
+
+public func ==<T : Equatable>(lhs: Box<T>, rhs: Box<T>) -> Bool {
+	return lhs.unBox() == rhs.unBox()
+}
+
+public func !=<T : Equatable>(lhs: Box<T>, rhs: Box<T>) -> Bool {
+	return !(lhs == rhs)
+}
+
+/// MARK: Functor
+
+extension Box : Functor {
+	typealias B = Swift.Any
+	
+	typealias FA = Box<A>
+	typealias FB = Box<B>
+	
+	public class func fmap<B>(f : A -> B) -> Box<A> -> Box<B> {
+		return { b in Box<B>(f(b.unBox())) }
+	}
+}
+
+public func <%><A, B>(f : A -> B, b : Box<A>) -> Box<B> {
+	return Box.fmap(f)(b)
+}
+
+public func <%<A, B>(a : A, b : Box<B>) -> Box<A> {
+	return (curry(<%>) • const)(a)(b)
+}
+
+extension Box : Copointed {
+	public func extract() -> A {
+		return self.unBox()
+	}
+}
+
+extension Box : Comonad {
+	typealias FFA = Box<Box<A>>
+	
+	public class func duplicate(b : Box<A>) -> Box<Box<A>> {
+		return Box<Box<A>>(b)
+	}
+	
+	
+	public class func extend<B>(f : Box<A> -> B) -> Box<A> -> Box<B> {
+		return { b in 
+			return Box<Box<A>>.fmap(f)(Box<A>.duplicate(b))
+		}
+	}
+}
+
+extension Box : ComonadApply {
+	typealias FAB = Box<A -> B>
+}
+
+public func >*<<A, B>(fab : Box<A -> B> , b : Box<A>) -> Box<B> {
+	return Box(fab.unBox()(b.unBox()))
+}
+
+public func *<<A, B>(a : Box<A>, b : Box<B>) -> Box<B> {
+	return const(id) <%> a >*< b
+}
+
+public func >*<A, B>(a : Box<A>, b : Box<B>) -> Box<A> {
+	return const <%> a >*< b
 }

@@ -74,7 +74,7 @@ class OperatorsSpec : XCTestCase {
 		let x : Maybe<Int> = Maybe.just(10)
 		let y : Maybe<Int> = Maybe.nothing()
 
-		XCTAssertTrue((x <|> y) === x, "")
+		XCTAssertTrue((x <|> y) == x, "")
 	}
 
 	func testBind() {

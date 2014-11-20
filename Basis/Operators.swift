@@ -111,6 +111,19 @@ infix operator <%> {
 	associativity left
 }
 
+/// MARK: Data.Functor.Contravariant
+
+/// Contramap | Maps all values "inside" one functor contravariantly.
+infix operator >%< {
+	precedence 140
+	associativity left
+}
+
+/// Replace | Maps all points to a specified constant contravariantly.
+infix operator >% {
+	precedence 140
+	associativity left
+}
 
 /// MARK: Control.Applicative
 
@@ -119,7 +132,6 @@ infix operator <*> {
 	precedence 140
 	associativity left
 }
-
 
 /// Sequence Right | Disregards the Functor on the Left.
 ///
@@ -204,6 +216,26 @@ infix operator ||| {
 infix operator <+> {
 	precedence 150
 	associativity right
+}
+
+/// MARK: Control.Comonad.Apply
+
+/// Ap | Promotes function application.
+infix operator >*< {
+	precedence 140
+	associativity left
+}
+
+/// Sequence Right | Disregards the Functor on the Left.
+infix operator *< {
+	precedence 140
+	associativity left
+}
+
+/// Sequence Left | Disregards the Functor on the Right.
+infix operator >* {
+	precedence 140
+	associativity left
 }
 
 /// Lift | Lifts a function to an Arrow.

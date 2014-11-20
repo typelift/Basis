@@ -1,6 +1,6 @@
 //
 //  ScansSpec.swift
-//  Basis-iOS
+//  Basis
 //
 //  Created by Robert Widmann on 9/26/14.
 //  Copyright (c) 2014 TypeLift. All rights reserved.

@@ -10,19 +10,144 @@
 import Basis
 import XCTest
 
-//class MonoidSpec : XCTestCase {
-//	func testArrayMempty() {
-//		let m = [1, 2, 3, 4, 5]
-//
-//		XCTAssertTrue(Array<Int>.mempty().count == [].count, "")
-//		XCTAssertTrue(and(zip(Array.mappend(m)(Array.mempty()))(m).map(==)), "")
-//	}
-//
-//	func testArrayMappend() {
-//		let m = [1, 2, 3, 4, 5]
-//		let n = [6, 7, 8, 9, 10]
-//
-//		XCTAssertTrue(and(zip(Array.mappend(m)(n))(m + n).map(==)), "")
-//	}
-//}
+class MonoidSpec : XCTestCase {
+	func testEndoLeftIdentity() {
+		XCTAssertTrue((Endo.mempty() <> Endo(id)).appEndo(5) == 5, "")
+	}
+	
+	func testEndoRightIdentity() {
+		XCTAssertTrue((Endo(id) <> Endo.mempty()).appEndo(5) == 5, "")
+	}
+	
+	func testEndoMappend() {
+		let x = Endo<Int>(id)
+		let y = Endo<Int>(id)
+		let z = Endo<Int>(id)
+		XCTAssertTrue(((x <> y) <> z).appEndo(5) == (x <> (y <> z)).appEndo(5), "")
+	}
+	
+	func testAllLeftIdentity() {
+		XCTAssertTrue((All.mempty() <> All(true)) == All(true), "")
+		XCTAssertTrue((All.mempty() <> All(false)) == All(false), "")
+	}
+	
+	func testAllRightIdentity() {
+		XCTAssertTrue((All(true) <> All.mempty()) == All(true), "")
+		XCTAssertTrue((All(false) <> All.mempty()) == All(false), "")
+	}
+	
+	func testAllMappend() {
+		let x = All(true)
+		let y = All(false)
+		let z = All(true)
+		XCTAssertTrue(((x <> y) <> z) == (x <> (y <> z)), "")
+	}
+	
+	func testAnyLeftIdentity() {
+		XCTAssertTrue((Any.mempty() <> Any(true)) == Any(true), "")
+		XCTAssertTrue((Any.mempty() <> Any(false)) == Any(false), "")
+	}
+	
+	func testAnyRightIdentity() {
+		XCTAssertTrue((Any(false) <> Any.mempty()) == Any(false), "")
+		XCTAssertTrue((Any(true) <> Any.mempty()) == Any(true), "")
+	}
+	
+	func testAnyMappend() {
+		let x = Any(true)
+		let y = Any(false)
+		let z = Any(true)
+		XCTAssertTrue(((x <> y) <> z) == (x <> (y <> z)), "")
+	}
+	
+	func testSumLeftIdentity() {
+		XCTAssertTrue((Sum.mempty() <> Sum(5)) == Sum(5), "")
+	}
+	
+	func testSumRightIdentity() {
+		XCTAssertTrue((Sum(5) <> Sum.mempty()) == Sum(5), "")
+	}
+	
+	func testSumMappend() {
+		let x = Sum(5)
+		let y = Sum(10)
+		let z = Sum(20)
+		XCTAssertTrue(((x <> y) <> z) == (x <> (y <> z)), "")
+	}	
+	
+	func testProductLeftIdentity() {
+		XCTAssertTrue((Product.mempty() <> Product(5)) == Product(5), "")
+	}
+	
+	func testProductRightIdentity() {
+		XCTAssertTrue((Product(5) <> Product.mempty()) == Product(5), "")
+	}
+	
+	func testProductMappend() {
+		let x = Product(5)
+		let y = Product(10)
+		let z = Product(20)
+		XCTAssertTrue(((x <> y) <> z) == (x <> (y <> z)), "")
+	}
+	
+	func testFirstLeftIdentity() {
+		XCTAssertTrue((First.mempty() <> First(Maybe.just(5))) == First(Maybe.just(5)), "")
+	}
+	
+	func testFirstRightIdentity() {
+		XCTAssertTrue((First(Maybe.just(5)) <> First.mempty()) == First(Maybe.just(5)), "")
+	}
+	
+	func testFirstMappend() {
+		let x = First(Maybe.just(5))
+		let y = First(Maybe.just(10))
+		let z = First(Maybe.just(15))
+		XCTAssertTrue(((x <> y) <> z) == (x <> (y <> z)), "")
+	}
+	
+	func testLastLeftIdentity() {
+		XCTAssertTrue((Last.mempty() <> Last(Maybe.just(5))) == Last(Maybe.just(5)), "")
+	}
+	
+	func testLastRightIdentity() {
+		XCTAssertTrue((Last(Maybe.just(5)) <> Last.mempty()) == Last(Maybe.just(5)), "")
+	}
+	
+	func testLastMappend() {
+		let x = Last(Maybe.just(5))
+		let y = Last(Maybe.just(10))
+		let z = Last(Maybe.just(15))
+		XCTAssertTrue(((x <> y) <> z) == (x <> (y <> z)), "")
+	}
+	
+	func testMinLeftIdentity() {
+		XCTAssertTrue((Min.mempty() <> Min(5)) == Min(5), "")
+	}
+	
+	func testMinRightIdentity() {
+		XCTAssertTrue((Min(5) <> Min.mempty()) == Min(5), "")
+	}
+	
+	func testMinMappend() {
+		let x = Min(5)
+		let y = Min(10)
+		let z = Min(15)
+		XCTAssertTrue(((x <> y) <> z) == (x <> (y <> z)), "")
+	}
+	
+	func testMaxLeftIdentity() {
+		XCTAssertTrue((Max.mempty() <> Max(5)) == Max(5), "")
+	}
+	
+	func testMaxRightIdentity() {
+		XCTAssertTrue((Max(5) <> Max.mempty()) == Max(5), "")
+	}
+	
+	func testMaxMappend() {
+		let x = Max(5)
+		let y = Max(10)
+		let z = Max(15)
+		XCTAssertTrue(((x <> y) <> z) == (x <> (y <> z)), "")
+	}	
+}
 

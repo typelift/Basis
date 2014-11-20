@@ -30,11 +30,7 @@ public protocol Monoid {
 	
 	/// An associative binary operator.
 	class func mappend(M) -> M -> M
-}
-
-/// Mappend | An infix form of mappend for your convenience.
-public func <><M : Monoid>(l : M.M, r : M.M) -> M.M {
-	return M.mappend(l)(r)
+	func <>(M, M) -> M
 }
 
 public func mconcat<M, S: Monoid where S.M == M>(s: S, t: [M]) -> M {
@@ -45,17 +41,17 @@ public func mconcat<M, S: Monoid where S.M == M>(s: S, t: [M]) -> M {
 public final class Dual<A> : K1<A> {
 	public let dual : A
 	
-	init(_ dual : A) {
+	public init(_ dual : A) {
 		self.dual = dual
 	}
 }
 
 /// The monoid of endomorphisms under composition.
 public final class Endo<A> : K1<A> {
-	public let apply : A -> A
+	public let appEndo : A -> A
 	
-	init(_ ap : A -> A) {
-		self.apply = ap
+	public init(_ ap : A -> A) {
+		self.appEndo = ap
 	}
 }
 
@@ -67,16 +63,20 @@ extension Endo : Monoid {
 	}
 	
 	public class func mappend(l : Endo<A>) -> Endo<A> -> Endo<A> {
-		return { r in Endo(l.apply • r.apply) }
+		return { r in Endo(l.appEndo • r.appEndo) }
 	}
+}
+
+public func <><A>(l : Endo<A>, r : Endo<A>) -> Endo<A> {
+	return Endo.mappend(l)(r)
 }
 
 /// The monoid of booleans under conjunction
 public final class All {
-	public let val : Bool
+	public let getAll : Bool
 	
-	init(_ val : Bool) {
-		self.val = val
+	public init(_ val : Bool) {
+		self.getAll = val
 	}
 }
 
@@ -88,16 +88,20 @@ extension All : Monoid {
 	}
 	
 	public class func mappend(l : All) -> All -> All {
-		return { r in All(l.val && r.val) }
+		return { r in All(l.getAll && r.getAll) }
 	}
+}
+
+public func <>(l : All, r : All) -> All {
+	return All.mappend(l)(r)
 }
 
 /// The monoid of booleans under disjunction
 public final class Any {
-	public let val : Bool
+	public let getAny : Bool
 	
-	init(_ val : Bool) {
-		self.val = val
+	public init(_ val : Bool) {
+		self.getAny = val
 	}
 }
 
@@ -105,20 +109,74 @@ extension Any : Monoid {
 	typealias M = Any
 	
 	public class func mempty() -> Any {
-		return Any(true)
+		return Any(false)
 	}
 	
 	public class func mappend(l : Any) -> Any -> Any {
-		return { r in Any(l.val || r.val) }
+		return { r in Any(l.getAny || r.getAny) }
 	}
+}
+
+public func <>(l : Any, r : Any) -> Any {
+	return Any.mappend(l)(r)
+}
+
+/// The monoid of arithmetic types under addition.
+public final class Sum<A : protocol<IntegerArithmeticType, IntegerLiteralConvertible>> {
+	public let getSum : A
+	
+	public init(_ sum : A) {
+		self.getSum = sum
+	}
+}
+
+extension Sum : Monoid {
+	typealias M = Sum
+	
+	public class func mempty() -> Sum {
+		return Sum(0)
+	}
+	
+	public class func mappend(l : Sum) -> Sum -> Sum {
+		return { r in Sum(l.getSum + r.getSum) }
+	}
+}
+
+public func <><A : protocol<IntegerArithmeticType, IntegerLiteralConvertible>>(l : Sum<A>, r : Sum<A>) -> Sum<A> {
+	return Sum.mappend(l)(r)
+}
+
+/// The monoid of arithmetic types under multiplication.
+public final class Product<A : protocol<IntegerArithmeticType, IntegerLiteralConvertible>> {
+	public let getProduct : A
+	
+	public init(_ product : A) {
+		self.getProduct = product
+	}
+}
+
+extension Product : Monoid {
+	typealias M = Product
+	
+	public class func mempty() -> Product {
+		return Product(1)
+	}
+	
+	public class func mappend(l : Product) -> Product -> Product {
+		return { r in Product(l.getProduct * r.getProduct) }
+	}
+}
+	
+public func <><A : protocol<IntegerArithmeticType, IntegerLiteralConvertible>>(l : Product<A>, r : Product<A>) -> Product<A> {
+	return Product.mappend(l)(r)
 }
 
 /// The left-biased maybe monoid.
 public final class First<A> : K1<A> {
-	public let val : Maybe<A>
+	public let getFirst : Maybe<A>
 	
-	init(_ val : Maybe<A>) {
-		self.val = val
+	public init(_ val : Maybe<A>) {
+		self.getFirst = val
 	}
 }
 
@@ -130,16 +188,20 @@ extension First : Monoid {
 	}
 	
 	public class func mappend(l : First<A>) -> First<A> -> First<A> {
-		return { r in First(maybe(r.val)(Maybe<A>.pure)(l.val)) }
+		return { r in First(maybe(r.getFirst)(Maybe<A>.pure)(l.getFirst)) }
 	}
+}
+
+public func <><A>(l : First<A>, r : First<A>) -> First<A> {
+	return First.mappend(l)(r)
 }
 
 /// The right-biased maybe monoid.
 public final class Last<A> : K1<A> {
-	public let val : Maybe<A>
+	public let getLast : Maybe<A>
 	
-	init(_ val : Maybe<A>) {
-		self.val = val
+	public init(_ val : Maybe<A>) {
+		self.getLast = val
 	}
 }
 
@@ -151,16 +213,20 @@ extension Last : Monoid {
 	}
 	
 	public class func mappend(l : Last<A>) -> Last<A> -> Last<A> {
-		return { r in Last(maybe(l.val)(Maybe<A>.pure)(r.val)) }
+		return { r in Last(maybe(l.getLast)(Maybe<A>.pure)(r.getLast)) }
 	}
+}
+
+public func <><A>(l : Last<A>, r : Last<A>) -> Last<A> {
+	return Last.mappend(l)(r)
 }
 
 /// The monoid of ordered values under max.
 public final class Max<A : protocol<Comparable, Bounded>> : K1<A> {
-	public let val : A
+	public let getMax : A
 	
-	init(_ max : A) {
-		self.val = max
+	public init(_ max : A) {
+		self.getMax = max
 	}
 }
 
@@ -172,16 +238,20 @@ extension Max : Monoid {
 	}
 	
 	public class func mappend(l : Max<A>) -> Max<A> -> Max<A> {
-		return { r in Max(max(l.val, r.val)) }
+		return { r in Max(max(l.getMax, r.getMax)) }
 	}
+}
+
+public func <><A : protocol<Comparable, Bounded>>(l : Max<A>, r : Max<A>) -> Max<A> {
+	return Max.mappend(l)(r)
 }
 
 /// The monoid of ordered values under min.
 public final class Min<A : protocol<Comparable, Bounded>> : K1<A> {
-	public let val : A
+	public let getMin : A
 	
-	init(_ min : A) {
-		self.val = min
+	public init(_ min : A) {
+		self.getMin = min
 	}
 }
 
@@ -193,8 +263,78 @@ extension Min : Monoid {
 	}
 	
 	public class func mappend(l : Min<A>) -> Min<A> -> Min<A> {
-		return { r in Min(min(l.val, r.val)) }
+		return { r in Min(min(l.getMin, r.getMin)) }
 	}
+}
+
+public func <><A : protocol<Comparable, Bounded>>(l : Min<A>, r : Min<A>) -> Min<A> {
+	return Min.mappend(l)(r)
+}
+
+/// MARK: Equatable
+
+public func ==(lhs : All, rhs : All) -> Bool {
+	return lhs.getAll == rhs.getAll
+}
+
+public func !=<T : Equatable>(lhs: All, rhs: All) -> Bool {
+	return !(lhs == rhs)
+}
+
+public func ==(lhs : Any, rhs : Any) -> Bool {
+	return lhs.getAny == rhs.getAny
+}
+
+public func !=<T : Equatable>(lhs: Any, rhs: Any) -> Bool {
+	return !(lhs == rhs)
+}
+
+public func ==<A : Equatable>(lhs : First<A>, rhs : First<A>) -> Bool {
+	return lhs.getFirst == rhs.getFirst
+}
+
+public func !=<A : Equatable>(lhs: First<A>, rhs: First<A>) -> Bool {
+	return !(lhs == rhs)
+}
+
+public func ==<A : Equatable>(lhs : Last<A>, rhs : Last<A>) -> Bool {
+	return lhs.getLast == rhs.getLast
+}
+
+public func !=<A : Equatable>(lhs: Last<A>, rhs: Last<A>) -> Bool {
+	return !(lhs == rhs)
+}
+
+public func ==<A : protocol<Comparable, Bounded, Equatable>>(lhs : Max<A>, rhs : Max<A>) -> Bool {
+	return lhs.getMax == rhs.getMax
+}
+
+public func !=<A : protocol<Comparable, Bounded, Equatable>>(lhs: Max<A>, rhs: Max<A>) -> Bool {
+	return !(lhs == rhs)
+}
+
+public func ==<A : protocol<Comparable, Bounded, Equatable>>(lhs : Min<A>, rhs : Min<A>) -> Bool {
+	return lhs.getMin == rhs.getMin
+}
+
+public func !=<A : protocol<Comparable, Bounded, Equatable>>(lhs: Min<A>, rhs: Min<A>) -> Bool {
+	return !(lhs == rhs)
+}
+
+public func ==<T : protocol<IntegerArithmeticType, IntegerLiteralConvertible, Equatable>>(lhs: Sum<T>, rhs: Sum<T>) -> Bool {
+	return lhs.getSum == rhs.getSum
+}
+
+public func !=<T : protocol<IntegerArithmeticType, IntegerLiteralConvertible, Equatable>>(lhs: Sum<T>, rhs: Sum<T>) -> Bool {
+	return !(lhs == rhs)
+}
+
+public func ==<T : protocol<IntegerArithmeticType, IntegerLiteralConvertible, Equatable>>(lhs: Product<T>, rhs: Product<T>) -> Bool {
+	return lhs.getProduct == rhs.getProduct
+}
+
+public func !=<T : protocol<IntegerArithmeticType, IntegerLiteralConvertible, Equatable>>(lhs: Product<T>, rhs: Product<T>) -> Bool {
+	return !(lhs == rhs)
 }
 
 //extension Array : Monoid {
