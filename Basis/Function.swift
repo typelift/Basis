@@ -82,9 +82,7 @@ extension Function : Arrow {
 }
 
 public func *** <B, C, D, E>(f : Function<B, C>, g : Function<D, E>) -> Function<(B, D), (C, E)> {
-	return ^{ (let t : (B, D)) in
-		return (f.apply(fst(t)), g.apply(snd(t)))
-	}
+	return ^{ t in  (f.apply(fst(t)), g.apply(snd(t))) }
 }
 
 public func &&& <B, C, D>(f : Function<B, C>, g : Function<B, D>) -> Function<B, (C, D)> {
@@ -128,12 +126,12 @@ extension Function : ArrowApply {
 	}
 }
 
-//extension Function : ArrowLoop {
-//	typealias LOOP = Function<(AB, D), (AC, D)>
-//	
-//	public func loop(f : Function<(AB, D), (AC, D)>) -> Function<T, U> {
-//		return f.apply(loop(f))
-//	}
-//}
+extension Function : ArrowLoop {
+	typealias LOOP = Function<(AB, D), (AC, D)>
+	
+	public class func loop<B, C>(f : Function<(B, D), (C, D)>) -> Function<B, C> {
+		return ^({ k in Function.loop(f).apply(k) })
+	}
+}
 
 

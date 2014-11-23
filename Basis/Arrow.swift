@@ -151,5 +151,5 @@ public protocol ArrowApply : Arrow {
 public protocol ArrowLoop : Arrow {
 	typealias LOOP = K2<(AB, D), (AC, D)>
 	
-	func loop(LOOP) -> ABC
+	class func loop(LOOP) -> ABC
 }
