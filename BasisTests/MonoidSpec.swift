@@ -11,6 +11,21 @@ import Basis
 import XCTest
 
 class MonoidSpec : XCTestCase {
+	func testDualLeftIdentity() {
+		XCTAssertTrue((Dual<All>.mempty() <> Dual<All>(All(false))).getDual == All(false), "")
+	}
+	
+	func testDualRightIdentity() {
+		XCTAssertTrue((Dual(All(false)) <> Dual<All>.mempty()).getDual == All(false), "")
+	}
+	
+	func testDualMappend() {
+		let x = Dual<All>(All(true))
+		let y = Dual<All>(All(false))
+		let z = Dual<All>(All(true))
+		XCTAssertTrue(((x <> y) <> z).getDual == (x <> (y <> z)).getDual, "")
+	}
+	
 	func testEndoLeftIdentity() {
 		XCTAssertTrue((Endo.mempty() <> Endo(id)).appEndo(5) == 5, "")
 	}

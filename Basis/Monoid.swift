@@ -38,12 +38,28 @@ public func mconcat<M, S: Monoid where S.M == M>(s: S, t: [M]) -> M {
 }
 
 /// A monoid that `mappend`s its arguments flipped.
-public final class Dual<A> : K1<A> {
-	public let dual : A
+public final class Dual<A : Monoid> : K1<A> {
+	public let getDual : A.M
 	
-	public init(_ dual : A) {
-		self.dual = dual
+	public init(_ dual : A.M) {
+		self.getDual = dual
 	}
+}
+
+extension Dual : Monoid {
+	typealias M = Dual<A>
+	
+	public class func mempty() -> Dual<A> {
+		return Dual<A>(A.mempty())
+	}
+	
+	public class func mappend(l : Dual<A>) -> Dual<A> -> Dual<A> {
+		return { r in Dual<A>(A.mappend(r.getDual)(l.getDual)) }
+	}
+}
+
+public func <><A : Monoid>(l : Dual<A>, r : Dual<A>) -> Dual<A> {
+	return Dual.mappend(l)(r)
 }
 
 /// The monoid of endomorphisms under composition.
@@ -273,11 +289,19 @@ public func <><A : protocol<Comparable, Bounded>>(l : Min<A>, r : Min<A>) -> Min
 
 /// MARK: Equatable
 
+public func ==<A : Monoid where A.M : Equatable>(lhs : Dual<A>, rhs : Dual<A>) -> Bool {
+	return lhs.getDual == rhs.getDual
+}
+
+public func !=<A : Monoid where A.M : Equatable>(lhs: Dual<A>, rhs: Dual<A>) -> Bool {
+	return !(lhs == rhs)
+}
+
 public func ==(lhs : All, rhs : All) -> Bool {
 	return lhs.getAll == rhs.getAll
 }
 
-public func !=<T : Equatable>(lhs: All, rhs: All) -> Bool {
+public func !=(lhs: All, rhs: All) -> Bool {
 	return !(lhs == rhs)
 }
 
@@ -285,7 +309,7 @@ public func ==(lhs : Any, rhs : Any) -> Bool {
 	return lhs.getAny == rhs.getAny
 }
 
-public func !=<T : Equatable>(lhs: Any, rhs: Any) -> Bool {
+public func !=(lhs: Any, rhs: Any) -> Bool {
 	return !(lhs == rhs)
 }
 
