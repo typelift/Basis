@@ -25,7 +25,7 @@ public func const<A, B>(x : A) -> B -> A {
 /// large amounts of parenthesis.  Because this operator has a low precedence and is right-
 /// associative, it can often be used to elide parenthesis such that the following holds:
 ///
-///		f <| g <| h x  =  f (g (h x))
+///     f <| g <| h x  =  f (g (h x))
 ///
 /// Haskellers will know this as the ($) combinator.
 public func <|<A, B>(f : A -> B, x : A) -> B {
@@ -37,13 +37,13 @@ public func <|<A, B>(f : A -> B, x : A) -> B {
 /// Sometimes, a computation looks more natural when data is computer first on the right side of
 /// an expression and applied to a function on the left.  For example, this:
 ///
-///		and(zip(nubBy(==)(x))(y).map(==))
+///     and(zip(nubBy(==)(x))(y).map(==))
 ///		
 /// can also be written as:
 ///
-///		let resl = nubBy(==)(x) |> zip(y)
-///								|> map(==)
-///								|> and
+///     let result = nubBy(==)(x) |> zip(y)
+///                               |> map(==)
+///                               |> and
 public func |><A, B>(x : A, f : A -> B) -> B {
 	return f(x)
 }
@@ -59,7 +59,7 @@ public func •<A, B, C>(f : B -> C, g : A -> B) -> A -> C {
 /// The fixpoint combinator is a higher-order function that computes the fixed point of an equation.
 /// That is, the point at which further application of x is the same x
 ///
-///		x = f(x)
+///     x = f(x)
 ///
 /// The fixpoint combinator models recursion in the untyped lambda calculus, and is notoriously
 /// difficult to define and type in ML-style systems.  Especially because Swift is strict by default

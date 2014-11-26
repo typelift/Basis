@@ -10,7 +10,7 @@
 // The strict state-transformer monad.  ST<S, A> represents
 // a computation returning a value of type A using some internal
 // context of type S.
-public final class ST<S, A> : K2<S, A> {	
+public struct ST<S, A> {	
 	private let apply:(s: World<RealWorld>) -> (World<RealWorld>, A)
 	
 	init(apply:(s: World<RealWorld>) -> (World<RealWorld>, A)) {
@@ -29,7 +29,7 @@ extension ST : Functor {
 	typealias FA = ST<S, A>
 	typealias FB = ST<S, B>
 
-	public class func fmap<B>(f: A -> B) -> ST<S, A> -> ST<S, B> {
+	public static func fmap<B>(f: A -> B) -> ST<S, A> -> ST<S, B> {
 		return { st in
 			return ST<S, B>(apply: { s in
 				let (nw, x) = st.apply(s: s)
@@ -50,7 +50,7 @@ public func <%<S, A, B>(x : A, l : ST<S, B>) -> ST<S, A> {
 extension ST : Applicative {
 	typealias FAB = ST<S, A -> B>
 
-	public class func pure<S, A>(a: A) -> ST<S, A> {
+	public static func pure<S, A>(a: A) -> ST<S, A> {
 		return ST<S, A>(apply: { s in
 			return (s, a)
 		})
@@ -86,6 +86,12 @@ public func >><S, A, B>(x : ST<S, A>, y : ST<S, B>) -> ST<S, B> {
 	return x.bind({ (_) in
 		return y
 	})
+}
+
+extension ST : MonadFix {
+	public static func mfix(f : A -> ST<S, A>) -> ST<S, A> {
+		return f(ST.mfix(f).runST())
+	}
 }
 
 // Shifts an ST computation into the IO monad.  Only ST's indexed

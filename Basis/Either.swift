@@ -7,6 +7,11 @@
 //  Released under the MIT license.
 //
 
+public enum EitherD<A, B> {
+	case Left(Box<A>)
+	case Right(Box<B>)
+}
+
 /// Either represents a computation that either produces a result (left) or fails with an error
 /// (right).
 public struct Either<A, B>  {
@@ -197,8 +202,16 @@ public func >><A, B, C>(x : Either<A, B>, y : Either<A, C>) -> Either<A, C> {
 	}
 }
 
-public enum EitherD<A, B> {
-	case Left(Box<A>)
-	case Right(Box<B>)
+extension Either : MonadFix {
+	public static func mfix(f : B -> Either<A, B>) -> Either<A, B> {
+		func fromRight(e : Either<A, B>) -> B {
+			switch e.destruct() {
+				case .Right(let br):
+					return br.unBox()
+				case .Left(let bl):
+					return error("Cannot take fixpoint of left Either")
+			}
+		}
+		return f(fromRight(Either.mfix(f)))
+	}
 }
-

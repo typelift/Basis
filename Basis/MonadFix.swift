@@ -13,9 +13,3 @@ public protocol MonadFix : Monad {
 	class func mfix(A -> FA) -> FA
 }
 
-// Uncomment to crash Swiftc rdar://18619154
-//extension Maybe : MonadFix {
-//	public class func mfix(f : A -> Maybe<A>) -> Maybe<A> {
-//		return f(fromJust(mfix(f)))
-//	}
-//}

@@ -281,3 +281,9 @@ extension Maybe : MonadPlus {
 		}
 	}
 }
+
+extension Maybe : MonadFix {
+	public static func mfix(f : A -> Maybe<A>) -> Maybe<A> {
+		return f(fromJust(mfix(f)))
+	}
+}

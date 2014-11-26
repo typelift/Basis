@@ -210,6 +210,12 @@ public func forM_<A, B>(l: [A])(f : A -> IO<B>) -> IO<Void> {
 	return mapM_(f)(l)
 }
 
+extension IO : MonadFix {
+	public static func mfix(f : A -> IO<A>) -> IO<A> {
+		return f(IO.mfix(f).unsafePerformIO())
+	}
+}
+
 /// Herein lies the real world.  It is incredibly magic and sacred and not to be touched.  Those who
 /// do rarely come out alive...
 internal struct World<A> {}
