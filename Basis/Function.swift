@@ -13,7 +13,7 @@
 ///
 /// Functions like this (called arrows) actually respect a number of laws, and are an entire
 /// algebraic struture in their own right.
-public final class Function<T, U> : K2<T, U>, Arrow {
+public struct Function<T, U> {
 	typealias A = T
 	typealias B = U
 	typealias C = Any
@@ -35,7 +35,7 @@ extension Function : Category {
 	typealias CBC = Function<B, C>
 	typealias CAC = Function<A, C>
 	
-	public class func id() -> Function<T, T> {
+	public static func id() -> Function<T, T> {
 		return Function<T, T>({ $0 })
 	}
 }
@@ -68,7 +68,7 @@ extension Function : Arrow {
 	typealias ABD = Function<AB, D>
 	typealias FANOUT = Function<AB, (AC, D)>
 	
-	public class func arr(f : T -> U) -> Function<AB, AC> {
+	public static func arr(f : T -> U) -> Function<AB, AC> {
 		return Function<AB, AC>({ f($0) })
 	}
 	
@@ -113,7 +113,7 @@ public func +++<B, C, D, E>(f : Function<B, C>, g : Function<D, E>) -> Function<
 }
 
 public func |||<B, C, D>(f : Function<B, D>, g : Function<C, D>) -> Function<Either<B, C>, D> {
-	return Function.arr(either(f.apply)(g.apply))
+	return Function.arr(either({ f.apply($0) })({ g.apply($0) }))
 }
 
 extension Function : ArrowApply {
@@ -129,7 +129,7 @@ extension Function : ArrowApply {
 extension Function : ArrowLoop {
 	typealias LOOP = Function<(AB, D), (AC, D)>
 	
-	public class func loop<B, C>(f : Function<(B, D), (C, D)>) -> Function<B, C> {
+	public static func loop<B, C>(f : Function<(B, D), (C, D)>) -> Function<B, C> {
 		return ^({ k in Function.loop(f).apply(k) })
 	}
 }

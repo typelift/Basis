@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Robert Widmann. All rights reserved.
 //
 
-public final class Const<A, B> : K1<A> {
+public struct Const<A, B> {
 	public let val : A
 	
 	public init(_ val : A) {
@@ -18,7 +18,7 @@ extension Const : Functor {
 	typealias FA = Const<A, B>
 	typealias FB = Const<A, B>
 	
-	public class func fmap<C>(A -> C) -> Const<A, B> -> Const<A, B> {
+	public static func fmap<C>(A -> C) -> Const<A, B> -> Const<A, B> {
 		return { c in Const<A, B>(c.val) }
 	}
 }
@@ -32,7 +32,7 @@ public func <%<A, B>(a : A, c : Const<A, B>) -> Const<A, B> {
 }
 
 extension Const : Contravariant {
-	public class func contramap(A -> B) -> Const<A, B> -> Const<A, B> {
+	public static func contramap(A -> B) -> Const<A, B> -> Const<A, B> {
 		return { c in Const<A, B>(c.val) }
 	}
 }

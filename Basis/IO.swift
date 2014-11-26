@@ -11,7 +11,7 @@ import Foundation
 
 // The IO Monad is a means of representing a computation which, when performed, interacts with
 // the outside world (i.e. performs effects) to arrive at some result of type A.
-public final class IO<A> : K1<A> {
+public struct IO<A> {
 	internal let apply: World<RealWorld> -> (World<RealWorld>, A)
 
 	init(apply: World<RealWorld> -> (World<RealWorld>, A)) {
@@ -81,7 +81,7 @@ extension IO : Functor {
 	typealias FA = IO<A>
 	typealias FB = IO<B>
 
-	public class func fmap<B>(f: A -> B) -> IO<A> -> IO<B> {
+	public static func fmap<B>(f: A -> B) -> IO<A> -> IO<B> {
 		return { io in
 			return IO<B>({ rw in
 				let (nw, a) = io.apply(rw)
@@ -100,7 +100,7 @@ public func <% <A, B>(x : A, io : IO<B>) -> IO<A> {
 }
 
 extension IO : Applicative {
-	public class func pure(a: A) -> IO<A> {
+	public static func pure(a: A) -> IO<A> {
 		return IO<A>({ rw in (rw, a) })
 	}
 

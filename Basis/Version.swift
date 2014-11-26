@@ -11,7 +11,7 @@
 ///
 /// Versions are equal if they have the same number, value, and ordering of branch versions and the 
 /// same tags that may not necessarily be in the same order.  
-public final class Version : K0 {
+public struct Version {
 	public let versionBranch : [Int]
 	public let versionTags : [String]
 
