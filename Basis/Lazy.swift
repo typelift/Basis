@@ -13,7 +13,7 @@ internal enum LazyState<A> {
 }
 
 /// @autoclosure as a monad.
-public final class Lazy<A> : K1<A> {
+public struct Lazy<A> {
 	let state : STRef<(), LazyState<A>>
 	
 	init(_ state : STRef<(), LazyState<A>>) {
@@ -48,7 +48,7 @@ extension Lazy : Functor {
 	typealias FA = Lazy<A>
 	typealias FB = Lazy<B>
 	
-	public class func fmap<B>(f: A -> B) -> Lazy<A> -> Lazy<B> {
+	public static func fmap<B>(f: A -> B) -> Lazy<A> -> Lazy<B> {
 		return { st in
 			switch readSTRef(st.state).runST() {
 				case .Eventually(let d):
@@ -71,7 +71,7 @@ public func <%<A, B>(x : A, l : Lazy<B>) -> Lazy<A> {
 extension Lazy : Applicative {
 	typealias FAB = Lazy<A -> B>
 	
-	public class func pure<A>(a: A) -> Lazy<A> {
+	public static func pure<A>(a: A) -> Lazy<A> {
 		return Lazy<A>(newSTRef(.Now(Box(a))).runST())
 	}
 }

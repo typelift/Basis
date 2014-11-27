@@ -9,7 +9,7 @@
 
 /// Result is similar to an Either, except specialized to have an Error case that can
 /// only contain an NSError.
-public final class Result<A> : K1<A> {
+public struct Result<A> {
 	let lVal : NSError?
 	let rVal : A?
 
@@ -21,15 +21,15 @@ public final class Result<A> : K1<A> {
 		self.rVal = right
 	}
 
-	public class func error(x : NSError) -> Result<A> {
+	public static func error(x : NSError) -> Result<A> {
 		return Result(left: x)
 	}
 
-	public class func value(x : A) -> Result<A> {
+	public static func value(x : A) -> Result<A> {
 		return Result(right: x)
 	}
 
-	public class func value(x : Box<A>) -> Result<A> {
+	public static func value(x : Box<A>) -> Result<A> {
 		return Result(right: x.unBox())
 	}
 
@@ -127,7 +127,7 @@ extension Result : Functor {
 	typealias FA = Result<A>
 	typealias FB = Result<B>
 
-	public class func fmap<B>(f : A -> B) -> Result<A> -> Result<B> {
+	public static func fmap<B>(f : A -> B) -> Result<A> -> Result<B> {
 		return {
 			switch $0.destruct() {
 				case .Error(let b):
@@ -151,7 +151,7 @@ public func <% <A, B>(x : A, either : Result<B>) -> Result<A> {
 extension Result : Applicative {
 	typealias FAB = Result<A -> B>
 
-	public class func pure(x : A) -> Result<A> {
+	public static func pure(x : A) -> Result<A> {
 		return Result.value(x)
 	}
 }

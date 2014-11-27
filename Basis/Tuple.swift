@@ -103,12 +103,12 @@ public func pack11<A, B, C, D, E, F, G, H, I, J, K>(a : A)(b : B)(c : C)(d : D)(
 }
 
 /// pack a duodectuple
-public func pack12<A, B, C, D, E, F, G, H, I, J, K, L>(a : A)(b : B)(c : C)(d : D)(e : E)(f : F)(g : G)(h : H)(i : I)(j : J)(k : K, l : L) -> (A, B, C, D, E, F, G, H, I, J, K, L) {
+public func pack12<A, B, C, D, E, F, G, H, I, J, K, L>(a : A)(b : B)(c : C)(d : D)(e : E)(f : F)(g : G)(h : H)(i : I)(j : J)(k : K)(l : L) -> (A, B, C, D, E, F, G, H, I, J, K, L) {
 	return (a, b, c, d, e, f, g, h, i, j, k, l)
 }
 
 /// pack a tredectuple
-public func pack13<A, B, C, D, E, F, G, H, I, J, K, L, M>(a : A)(b : B)(c : C)(d : D)(e : E)(f : F)(g : G)(h : H)(i : I)(j : J)(k : K, l : L)(m : M) -> (A, B, C, D, E, F, G, H, I, J, K, L, M) {
+public func pack13<A, B, C, D, E, F, G, H, I, J, K, L, M>(a : A)(b : B)(c : C)(d : D)(e : E)(f : F)(g : G)(h : H)(i : I)(j : J)(k : K)(l : L)(m : M) -> (A, B, C, D, E, F, G, H, I, J, K, L, M) {
 	return (a, b, c, d, e, f, g, h, i, j, k, l, m)
 }
 

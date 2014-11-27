@@ -7,9 +7,14 @@
 //  Released under the MIT license.
 //
 
+public enum EitherD<A, B> {
+	case Left(Box<A>)
+	case Right(Box<B>)
+}
+
 /// Either represents a computation that either produces a result (left) or fails with an error
 /// (right).
-public final class Either<A, B> : K2<A, B> {
+public struct Either<A, B>  {
 	let lVal : A?
 	let rVal : B?
 	
@@ -21,19 +26,19 @@ public final class Either<A, B> : K2<A, B> {
 		self.rVal = right
 	}
 
-	public class func left(x : A) -> Either<A, B> {
+	public static func left(x : A) -> Either<A, B> {
 		return Either(left: x)
 	}
 	
-	public class func right(x : B) -> Either<A, B> {
+	public static func right(x : B) -> Either<A, B> {
 		return Either(right: x)
 	}
 	
-	public class func left(x : Box<A>) -> Either<A, B> {
+	public static func left(x : Box<A>) -> Either<A, B> {
 		return Either(left: x.unBox())
 	}
 	
-	public class func right(x : Box<B>) -> Either<A, B> {
+	public static func right(x : Box<B>) -> Either<A, B> {
 		return Either(right: x.unBox())
 	}
 	
@@ -131,7 +136,7 @@ extension Either : Functor {
 	typealias FA = Either<A, B>
 	typealias FB = Either<A, C>
 
-	public class func fmap<C>(f : B -> C) -> Either<A, B> -> Either<A, C> {
+	public static func fmap<C>(f : B -> C) -> Either<A, B> -> Either<A, C> {
 		return { 
 			switch $0.destruct() {
 				case .Left(let b):
@@ -155,7 +160,7 @@ public func <% <A, B, C>(x : B, either : Either<A, C>) -> Either<A, B> {
 extension Either : Applicative {
 	typealias FAB = Either<A, B -> C>
 	
-	public class func pure(x : Either<A, B>.A) -> Either<A, B>.FA {
+	public static func pure(x : Either<A, B>.A) -> Either<A, B>.FA {
 		return Either.right(x)
 	}
 }
@@ -197,8 +202,16 @@ public func >><A, B, C>(x : Either<A, B>, y : Either<A, C>) -> Either<A, C> {
 	}
 }
 
-public enum EitherD<A, B> {
-	case Left(Box<A>)
-	case Right(Box<B>)
+extension Either : MonadFix {
+	public static func mfix(f : B -> Either<A, B>) -> Either<A, B> {
+		func fromRight(e : Either<A, B>) -> B {
+			switch e.destruct() {
+				case .Right(let br):
+					return br.unBox()
+				case .Left(let bl):
+					return error("Cannot take fixpoint of left Either")
+			}
+		}
+		return f(fromRight(Either.mfix(f)))
+	}
 }
-

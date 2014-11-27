@@ -19,7 +19,7 @@ public enum MaybeD<A> {
 ///
 /// This class is a temporary shim around Optionals until a future swift re-allows extending generic
 /// classes and structures outside the current module.
-public final class Maybe<A> : K1<A> {
+public struct Maybe<A> {
 	let val : A?
 
 	init(_ val : A?) {
@@ -30,11 +30,11 @@ public final class Maybe<A> : K1<A> {
 		return (val == nil) ? .Nothing : .Just(val!)
 	}
 
-	public class func nothing() -> Maybe<A> {
+	public static func nothing() -> Maybe<A> {
 		return Maybe(nil)
 	}
 
-	public class func just(x : A) -> Maybe<A> {
+	public static func just(x : A) -> Maybe<A> {
 		return Maybe(x)
 	}
 }
@@ -179,7 +179,7 @@ extension Maybe : Functor {
 	typealias FB = Maybe<B>
 	
 
-	public class func fmap<B>(f : A -> B) -> Maybe<A> -> Maybe<B> {
+	public static func fmap<B>(f : A -> B) -> Maybe<A> -> Maybe<B> {
 		return { m in
 			switch m.destruct() {
 				case .Nothing:
@@ -202,7 +202,7 @@ public func <%<A, B>(x : A, o : Maybe<B>) -> Maybe<A> {
 extension Maybe : Applicative {
 	typealias FAB = Maybe<A -> B>
 	
-	public class func pure(x : A) -> Maybe<A> {
+	public static func pure(x : A) -> Maybe<A> {
 		return Maybe.just(x)
 	}
 }
@@ -266,11 +266,11 @@ public func >>-<A, B>(x : Maybe<A>, f : A -> Maybe<B>) -> Maybe<B> {
 }
 
 extension Maybe : MonadPlus {
-	public class func mzero() -> Maybe<A> {
+	public static func mzero() -> Maybe<A> {
 		return Maybe.nothing()
 	}
 	
-	public class func mplus(l : Maybe<A>) -> Maybe<A> -> Maybe<A> {
+	public static func mplus(l : Maybe<A>) -> Maybe<A> -> Maybe<A> {
 		return { r in
 			switch l.destruct() {
 				case .Nothing:
@@ -279,5 +279,11 @@ extension Maybe : MonadPlus {
 					return l
 			}
 		}
+	}
+}
+
+extension Maybe : MonadFix {
+	public static func mfix(f : A -> Maybe<A>) -> Maybe<A> {
+		return f(fromJust(mfix(f)))
 	}
 }

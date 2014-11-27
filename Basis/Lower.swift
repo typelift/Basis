@@ -12,8 +12,7 @@ public postfix func ^<A, B>(f : Function<A, B>) -> A -> B {
 }
 
 public postfix func ^<A, B, C>(f : Function<A, Function<B, C>>) -> A -> B -> C {
-	return { f.apply($0) |> { $0.apply } }
-
+	return { f.apply($0) |> { g in { g.apply($0) } } }
 }
 
 public postfix func ^<A, B, C, D>(f : Function<A, Function<B, Function<C, D>>>) -> A -> B -> C -> D {
