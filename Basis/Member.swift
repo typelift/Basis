@@ -3,7 +3,8 @@
 //  Basis
 //
 //  Created by Robert Widmann on 11/28/14.
-//  Copyright (c) 2014 Robert Widmann. All rights reserved.
+//  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
 
 /// Takes a member function from a class or struct and transforms it into a closure.  To get a value
