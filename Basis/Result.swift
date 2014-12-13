@@ -124,7 +124,6 @@ public func !=<V: Equatable>(lhs: Result<V>, rhs: Result<V>) -> Bool {
 
 extension Result : Functor {
 	typealias B = Any
-	typealias FA = Result<A>
 	typealias FB = Result<B>
 
 	public static func fmap<B>(f : A -> B) -> Result<A> -> Result<B> {

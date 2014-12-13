@@ -78,7 +78,6 @@ public func interact(f : String -> String) -> IO<Void> {
 
 extension IO : Functor {
 	typealias B = Any
-	typealias FA = IO<A>
 	typealias FB = IO<B>
 
 	public static func fmap<B>(f: A -> B) -> IO<A> -> IO<B> {

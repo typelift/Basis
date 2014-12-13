@@ -24,14 +24,11 @@
 ///                contramap g
 ///
 /// A Functor with the arrows turned around.
-protocol Contravariant {
+public protocol Contravariant {
 	/// Type of Source Objects
 	typealias A
 	/// Type of Target Objects
 	typealias B
-	
-	/// Type of our Functor
-	typealias FA = K1<A>
 	
 	/// Type of a target Functor
 	typealias FB = K1<B>
@@ -39,13 +36,13 @@ protocol Contravariant {
 	/// Contravariant map "inside" a Functor.
 	///
 	/// F on our diagram.
-	class func contramap(A -> B) -> FB -> FA
-	func >%<(A -> B, FB) -> FA
+	class func contramap(A -> B) -> FB -> Self
+	func >%<(A -> B, FB) -> Self
 	
 	/// Contravariant Constant Replace | Replaces all values in the target Functor with a singular 
 	/// constant value from the source Functor.
 	///
 	/// Default definition: 
 	///		`curry(>%<) • const`
-	func >%(B, FB) -> FA
+	func >%(B, FB) -> Self
 }

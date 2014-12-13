@@ -12,17 +12,17 @@
 ///
 /// "A comonoid in the monoidal category of endofunctors"
 public protocol Comonad : Copointed {
-	typealias FFA = K1<FA>
+	typealias FFA = K1<Self>
 
 	/// Cojoin | Takes a value in a context and wraps it in another context.
 	///
 	/// Default Definition:
 	///		`extend(id)`
-	class func duplicate(FA) -> FFA
+	class func duplicate(Self) -> FFA
 	
 	/// Cobind | Computes a value in a context, fmaps that value, then wraps it back in a functor.
 	///
 	/// Default Definition:
 	///		`fmap(f) • duplicate`
-	class func extend(FA -> B) -> FA -> FB
+	class func extend(Self -> B) -> Self -> FB
 }

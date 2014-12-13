@@ -18,12 +18,12 @@ public protocol MonadZip : Monad {
 	typealias FTAB = K1<(A, B)>
 	
 	/// Zip for monads.
-	func mzip(FA) -> FB -> FTAB
+	func mzip(Self) -> FB -> FTAB
 	
 	/// ZipWith for monads.
-	func mzipWith(A -> B -> C) -> FA -> FB -> FC
+	func mzipWith(A -> B -> C) -> Self -> FB -> FC
 	
 	/// Unzip for monads.
-	func munzip(FTAB) -> (FA, FB)
+	func munzip(FTAB) -> (Self, FB)
 }
 

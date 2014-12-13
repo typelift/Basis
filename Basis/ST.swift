@@ -26,7 +26,6 @@ public struct ST<S, A> {
 
 extension ST : Functor {
 	typealias B = Any
-	typealias FA = ST<S, A>
 	typealias FB = ST<S, B>
 
 	public static func fmap<B>(f: A -> B) -> ST<S, A> -> ST<S, B> {

@@ -34,7 +34,6 @@ public func !=<T : Equatable>(lhs: Box<T>, rhs: Box<T>) -> Bool {
 extension Box : Functor {
 	typealias B = Swift.Any
 	
-	typealias FA = Box<A>
 	typealias FB = Box<B>
 	
 	public class func fmap<B>(f : A -> B) -> Box<A> -> Box<B> {

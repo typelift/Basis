@@ -175,7 +175,6 @@ public func !=<T, V>(lhs: Maybe<T>, rhs: Maybe<V>) -> Bool {
 extension Maybe : Functor {
 	typealias B = Any
 	
-	typealias FA = Maybe<A>
 	typealias FB = Maybe<B>
 	
 

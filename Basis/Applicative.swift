@@ -17,7 +17,7 @@ public protocol Applicative : Functor {
 	typealias FAB = K1<A -> B>
 	
 	/// Lifts a value into the Functor.
-	class func pure(A) -> FA
+	class func pure(A) -> Self
 	
 	/// Sequential Application | Applies the function "inside the Functor" to the "inside" of our 
 	/// Functor and herds up the results.
@@ -34,7 +34,7 @@ public protocol Applicative : Functor {
 	///
 	/// Default definition: 
 	///		`const <%> a <*> b`
-	func <*(Self, FB) -> FA
+	func <*(Self, FB) -> Self
 }
 
 /// Alternatives are Applicative Monoids.
@@ -43,25 +43,25 @@ public protocol Alternative : Applicative {
 	typealias FLA = K1<[A]>
 	
 	/// Returns the identity element.
-	func empty() -> FA
+	func empty() -> Self
 	
 	/// Choose | Chooses the greater of two Alternatives.
 	///
 	/// This function will attempt to choose an Alternative that is not the empty() Alternative.
-	func <|>(FA, FA) -> FA
+	func <|>(Self, Self) -> Self
 
 	/// One or more
 	///
 	/// The least solution to the equation:
 	///
 	///		curry((+>)) <%> v <*> many(v)
-	func some(FA) -> FLA
+	func some(Self) -> FLA
 
 	/// Zero or more
 	///
 	/// The least solution to the equation:
 	///
 	///		some(v) <|> FLA.pure([])
-	func many(FA) -> FLA
+	func many(Self) -> FLA
 }
 

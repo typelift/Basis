@@ -45,7 +45,6 @@ public func force<A>(l : Lazy<A>) -> A {
 
 extension Lazy : Functor {
 	typealias B = Any
-	typealias FA = Lazy<A>
 	typealias FB = Lazy<B>
 	
 	public static func fmap<B>(f: A -> B) -> Lazy<A> -> Lazy<B> {

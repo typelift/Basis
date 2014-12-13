@@ -14,7 +14,7 @@ public protocol ComonadApply : Comonad {
 	/// Type of Functors containing morphisms from our objects to a target.
 	typealias FAB = K1<A -> B>
 	
-	func >*<(FAB , FA) -> FB
+	func >*<(FAB , Self) -> FB
 	
 	/// Sequence Right | Executes the action in the functor on the left and returns the functor on
 	/// the right.
@@ -27,5 +27,5 @@ public protocol ComonadApply : Comonad {
 	///
 	/// Default definition: 
 	///		`const <%> a >*< b`
-	func >*(Self, FB) -> FA
+	func >*(Self, FB) -> Self
 }
