@@ -49,6 +49,12 @@ public func <%<A, B>(a : A, b : Box<B>) -> Box<A> {
 	return (curry(<%>) • const)(a)(b)
 }
 
+extension Box : Pointed {
+	public class func pure(x : A) -> Box<A> {
+		return Box(x)
+	}
+}
+
 extension Box : Copointed {
 	public func extract() -> A {
 		return self.unBox()
