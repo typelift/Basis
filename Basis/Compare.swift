@@ -73,6 +73,17 @@ public func ><T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
 	}
 }
 
+/// Maps an argument into a comparable form for use with the xxxBy functions.
+///
+///
+///     let x = [(2, 3), (1, 4), (4, 2), (5, 1), (3, 5)]
+///     
+///     sortBy(comparing(fst))(x) = [(1, 4), (2, 3), (3, 5), (4, 2), (5, 1)]
+///     sortBy(comparing(snd))(x) = [(5, 1), (4, 2), (2, 3), (1, 4), (3, 5)]
+public func comparing<A : Comparable, B>(p : B -> A) -> B -> B -> Bool {
+	return { x in { y in p(x) < p(y) } }
+}
+
 /// Takes a list and groups its arguments into sublists of duplicate elements found next to each
 /// other according to an equality predicate.
 public func groupBy<A>(cmp : A -> A -> Bool) -> [A] -> [[A]] {
