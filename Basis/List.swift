@@ -14,7 +14,7 @@ public func head<A>(l : [A]) -> A {
 	switch destruct(l) {
 		case .Empty:
 			assert(false, "Cannot take the head of an empty list.")
-		case .Destructure(let x, _):
+		case .Cons(let x, _):
 			return x
 	}
 }
@@ -26,7 +26,7 @@ public func tail<A>(l : [A]) -> [A] {
 	switch destruct(l) {
 		case .Empty:
 			assert(false, "Cannot take the tail of an empty list.")
-		case .Destructure(_, let xs):
+		case .Cons(_, let xs):
 			return xs
 	}
 }
@@ -42,18 +42,70 @@ public func <|<T>(lhs : T, var rhs : [T]) -> [T] {
 
 public enum ArrayD<A> {
 	case Empty
-	case Destructure(A, [A])
+	case Cons(A, [A])
 }
 
+/// Destructures a list into its constituent parts.
+///
+/// If the given list is empty, this function returns .Empty.  If the list is non-empty, this
+/// function returns .Cons(hd, tl)
 public func destruct<T>(l : [T]) -> ArrayD<T> {
 	if l.count == 0 {
 		return .Empty
 	} else if l.count == 1 {
-		return .Destructure(l[0], [])
+		return .Cons(l[0], [])
 	}
 	let hd = l[0]
 	let tl = Array<T>(l[1..<l.count])
-	return .Destructure(hd, tl)
+	return .Cons(hd, tl)
+}
+
+/// Takes two lists and returns true if the first list is a prefix of the second list.
+public func isPrefixOf<A : Equatable>(l : [A]) -> [A] -> Bool {
+	return { r in
+		switch (destruct(l), destruct(r)) {
+			case (_, .Empty):
+				return false
+			case (.Empty, _):
+				return true
+			case (.Cons(let x, let xs), .Cons(let y, let ys)):
+				return x == y && isPrefixOf(xs)(ys)
+			default:
+				return false
+		}
+	}
+}
+
+/// Takes two lists and returns true if the first list is a suffix of the second list.
+public func isSuffixOf<A : Equatable>(l : [A]) -> [A] -> Bool {
+	return { r in isPrefixOf(l.reverse())(r.reverse()) }
+}
+
+/// Takes two lists and returns true if the first list is contained entirely anywhere in the second
+/// list.
+public func isInfixOf<A : Equatable>(l : [A]) -> [A] -> Bool {
+	return { r in  any(isPrefixOf(l))(tails(r)) }
+}
+
+/// Takes two lists and drops items in the first from the second.  If the first list is not a prefix
+/// of the second list this function returns Nothing.
+public func stripPrefix<A : Equatable>(l : [A]) -> [A] -> Maybe<[A]> {
+	return { r in
+		switch (destruct(l), destruct(r)) {
+			case (.Empty, _):
+				return Maybe.just(r)
+			case (.Cons(let x, let xs), .Cons(let y, let ys)) where x == y:
+				return stripPrefix(xs)(ys)
+			default:
+				return Maybe.nothing()
+		}
+	}
+}
+
+/// Takes two lists and drops items in the first from the end of the second.  If the first list is 
+/// not a suffix of the second list this function returns nothing.
+public func stripSuffix<A : Equatable>(l : [A]) -> [A] -> Maybe<[A]> {
+	return { r in Maybe.fmap(reverse) <| stripPrefix(l.reverse())(r.reverse()) }
 }
 
 //extension Array : Functor {
