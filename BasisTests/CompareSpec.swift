@@ -26,6 +26,20 @@ class CompareSpec : XCTestCase {
 
 		XCTAssertTrue(and(zip(nubBy(==)(x))(y).map(==)), "")
 	}
+	
+	func testComparing() {
+		let x = [(2, 3), (1, 4), (4, 2), (5, 1), (3, 5)]
+		let y = [(1, 4), (2, 3), (3, 5), (4, 2), (5, 1)]
+		let z = [(5, 1), (4, 2), (2, 3), (1, 4), (3, 5)]
+		
+		let s = sortBy(comparing(fst))(x)
+		XCTAssertTrue(s.map(fst) == y.map(fst), "") 
+		XCTAssertTrue(s.map(snd) == y.map(snd), "") 
+		
+		let t = sortBy(comparing(snd))(x)
+		XCTAssertTrue(t.map(fst) == z.map(fst), "") 
+		XCTAssertTrue(t.map(snd) == z.map(snd), "") 
+	}
 
 	func testArrayComparisons() {
 		let xs = [1, 2, 3, 4]

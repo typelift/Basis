@@ -82,6 +82,7 @@
 		84D4D8F61A18095F001F5E4D /* Comonad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D8F21A18095F001F5E4D /* Comonad.swift */; };
 		84D4D8F71A18095F001F5E4D /* ComonadFix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D8F31A18095F001F5E4D /* ComonadFix.swift */; };
 		84D4D8FA1A181649001F5E4D /* ComonadApply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D8F91A181649001F5E4D /* ComonadApply.swift */; };
+		84D77DF91A3CF9F4000F5683 /* ListSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D77DF81A3CF9F4000F5683 /* ListSpec.swift */; };
 		84F9062E19D638BD0035D429 /* ArrowSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F9062D19D638BD0035D429 /* ArrowSpec.swift */; };
 /* End PBXBuildFile section */
 
@@ -186,6 +187,7 @@
 		84D4D8F21A18095F001F5E4D /* Comonad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comonad.swift; sourceTree = "<group>"; };
 		84D4D8F31A18095F001F5E4D /* ComonadFix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComonadFix.swift; sourceTree = "<group>"; };
 		84D4D8F91A181649001F5E4D /* ComonadApply.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComonadApply.swift; sourceTree = "<group>"; };
+		84D77DF81A3CF9F4000F5683 /* ListSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListSpec.swift; sourceTree = "<group>"; };
 		84F9062D19D638BD0035D429 /* ArrowSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ArrowSpec.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 /* End PBXFileReference section */
 
@@ -363,6 +365,7 @@
 				84C996FE19CE8A970046906D /* FunctionsSpec.swift */,
 				84C996FF19CE8A970046906D /* InfinitySpec.swift */,
 				8441AAAB1A0C531A008D5701 /* LazySpec.swift */,
+				84D77DF81A3CF9F4000F5683 /* ListSpec.swift */,
 				8418FC4E19CFAED80010923E /* MaybeSpec.swift */,
 				84095F0E1A28EAEC00956141 /* MemberSpec.swift */,
 				84A802DE19D3BC1200E71F93 /* MonoidSpec.swift */,
@@ -578,6 +581,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84D77DF91A3CF9F4000F5683 /* ListSpec.swift in Sources */,
 				84F9062E19D638BD0035D429 /* ArrowSpec.swift in Sources */,
 				84C9970619CE8A970046906D /* OperatorsSpec.swift in Sources */,
 				8441AAAC1A0C531A008D5701 /* LazySpec.swift in Sources */,
