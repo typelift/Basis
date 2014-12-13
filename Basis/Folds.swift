@@ -14,7 +14,7 @@ public func foldl<A, B>(f: B -> A -> B) -> B -> [A] -> B {
 		switch destruct(l) {
 			case .Empty:
 				return z
-			case .Destructure(let x, let xs):
+			case .Cons(let x, let xs):
 				return foldl(f)(f(z)(x))(xs)
 		}
 	} }
@@ -27,7 +27,7 @@ public func foldl<A, B>(f: (B, A) -> B) -> B -> [A] -> B {
 		switch destruct(l) {
 			case .Empty:
 				return z
-			case .Destructure(let x, let xs):
+			case .Cons(let x, let xs):
 				return foldl(f)(f(z, x))(xs)
 		}
 	} }
@@ -41,9 +41,9 @@ public func foldl<A, B>(f: (B, A) -> B) -> B -> [A] -> B {
 public func foldl1<A>(f: A -> A -> A) -> [A] -> A {
 	return { l in
 		switch destruct(l) {
-			case .Destructure(let x, let xs) where xs.count == 0:
+			case .Cons(let x, let xs) where xs.count == 0:
 				return x
-			case .Destructure(let x, let xs):
+			case .Cons(let x, let xs):
 				return foldl(f)(x)(xs)
 			case .Empty:
 				assert(false, "Cannot invoke foldl1 with an empty list.")
@@ -59,9 +59,9 @@ public func foldl1<A>(f: A -> A -> A) -> [A] -> A {
 public func foldl1<A>(f: (A, A) -> A) -> [A] -> A {
 	return { l in
 		switch destruct(l) {
-			case .Destructure(let x, let xs) where xs.count == 0:
+			case .Cons(let x, let xs) where xs.count == 0:
 				return x
-			case .Destructure(let x, let xs):
+			case .Cons(let x, let xs):
 				return foldl(f)(x)(xs)
 			case .Empty:
 				assert(false, "Cannot invoke foldl1 with an empty list.")
@@ -76,7 +76,7 @@ public func foldr<A, B>(k: A -> B -> B) -> B -> [A] -> B {
 		switch destruct(l) {
 			case .Empty:
 				return z
-			case .Destructure(let x, let xs):
+			case .Cons(let x, let xs):
 				return k(x)(foldr(k)(z)(xs))
 		}
 	} }
@@ -89,7 +89,7 @@ public func foldr<A, B>(k: (A, B) -> B) -> B -> [A] -> B {
 		switch destruct(l) {
 			case .Empty:
 				return z
-			case .Destructure(let x, let xs):
+			case .Cons(let x, let xs):
 				return k(x, foldr(k)(z)(xs))
 		}
 	} }
@@ -103,9 +103,9 @@ public func foldr<A, B>(k: (A, B) -> B) -> B -> [A] -> B {
 public func foldr1<A>(f: A -> A -> A) -> [A] -> A {
 	return { l in
 		switch destruct(l) {
-			case .Destructure(let x, let xs) where xs.count == 0:
+			case .Cons(let x, let xs) where xs.count == 0:
 				return x
-			case .Destructure(let x, let xs):
+			case .Cons(let x, let xs):
 				return f(x)(foldr1(f)(xs))
 			case .Empty:
 				assert(false, "Cannot invoke foldr1 with an empty list.")
@@ -121,9 +121,9 @@ public func foldr1<A>(f: A -> A -> A) -> [A] -> A {
 public func foldr1<A>(f: (A, A) -> A) -> [A] -> A {
 	return { l in
 		switch destruct(l) {
-			case .Destructure(let x, let xs) where xs.count == 0:
+			case .Cons(let x, let xs) where xs.count == 0:
 				return x
-			case .Destructure(let x, let xs):
+			case .Cons(let x, let xs):
 				return f(x, foldr1(f)(xs))
 			case .Empty:
 				assert(false, "Cannot invoke foldr1 with an empty list.")

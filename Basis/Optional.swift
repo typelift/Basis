@@ -79,7 +79,7 @@ public func listToOptional<A>(l : [A]) -> Optional<A> {
 	switch destruct(l) {
 		case .Empty:
 			return .None
-		case .Destructure(let x, _):
+		case .Cons(let x, _):
 			return .Some(x)
 	}
 }
@@ -95,7 +95,7 @@ public func mapOptional<A, B>(f : A -> Optional<B>)(l : [A]) -> [B] {
 	switch destruct(l) {
 		case .Empty:
 			return []
-		case .Destructure(let x, let xs):
+		case .Cons(let x, let xs):
 			let rs = mapOptional(f)(l: xs)
 			switch f(x) {
 				case .None:

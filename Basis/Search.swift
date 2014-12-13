@@ -38,7 +38,7 @@ public func lookup<A : Equatable, B>(e : A) -> [(A, B)] -> Optional<B> {
 		switch destruct(d) {
 			case .Empty:
 				return .None
-			case .Destructure(let (x, y), let xys):
+			case .Cons(let (x, y), let xys):
 				if e == x {
 					return .Some(y)
 				}

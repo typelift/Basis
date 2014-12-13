@@ -113,7 +113,7 @@ public func listToMaybe<A>(l : [A]) -> Maybe<A> {
 	switch destruct(l) {
 		case .Empty:
 			return Maybe.nothing()
-		case .Destructure(let x, _):
+		case .Cons(let x, _):
 			return Maybe.just(x)
 	}
 }
@@ -129,7 +129,7 @@ public func mapMaybes<A, B>(f : A -> Maybe<B>)(l : [A]) -> [B] {
 	switch destruct(l) {
 		case .Empty:
 			return []
-		case let .Destructure(x, xs):
+		case let .Cons(x, xs):
 			let rs = mapMaybes(f)(l: xs)
 			switch f(x).destruct() {
 				case .Nothing:

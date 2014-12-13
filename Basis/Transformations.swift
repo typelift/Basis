@@ -20,7 +20,7 @@ public func intersperse<A>(sep : A) -> [A] -> [A] {
 		switch destruct(l) {
 			case .Empty:
 				return []
-			case .Destructure(let x, let xs):
+			case .Cons(let x, let xs):
 				return x <| prependToAll(sep)(xs)
 		}
 	}
@@ -31,7 +31,7 @@ private func prependToAll<A>(sep : A) -> [A] -> [A] {
 		switch destruct(l) {
 			case .Empty:
 				return []
-			case .Destructure(let x, let xs):
+			case .Cons(let x, let xs):
 				return sep <| x <| prependToAll(sep)(xs)
 		}
 	}
@@ -44,11 +44,11 @@ public func transpose<A>(xss : [[A]]) -> [[A]] {
 	switch destruct(xss) {
 		case .Empty:
 			return []
-		case .Destructure(let x, let xss):
+		case .Cons(let x, let xss):
 			switch destruct(x) {
 				case .Empty:
 					return transpose(xss)
-				case .Destructure(let x, let xs):
+				case .Cons(let x, let xs):
 					return (x <| concatMap({ [head($0)] })(xss)) <| transpose(xs <| concatMap({ [tail($0)]} )(xss))
 			}
 	}
@@ -76,7 +76,7 @@ public func nonEmptySubsequences<A>(xs : [A]) -> [[A]] {
 	switch destruct(xs) {
 		case .Empty:
 			return []
-		case .Destructure(let x, let xs):
+		case .Cons(let x, let xs):
 			return [x] <| foldr({ (let ys : [A]) in
 				return { r in
 					return ys <| (x <| ys) <| r

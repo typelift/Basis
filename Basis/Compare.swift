@@ -17,11 +17,11 @@ public func <=<T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
 	switch (destruct(lhs), destruct(rhs)) {
 		case (.Empty, .Empty):
 			return true
-		case (.Empty, .Destructure(_, _)):
+		case (.Empty, .Cons(_, _)):
 			return true
-		case (.Destructure(_, _), .Empty):
+		case (.Cons(_, _), .Empty):
 			return false
-		case (.Destructure(let x, let xs), .Destructure(let y, let ys)):
+		case (.Cons(let x, let xs), .Cons(let y, let ys)):
 			return (x == y) ? (xs <= ys) : x <= y
 	}
 }
@@ -36,11 +36,11 @@ public func >=<T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
 	switch (destruct(lhs), destruct(rhs)) {
 		case (.Empty, .Empty):
 			return true
-		case (.Empty, .Destructure(_, _)):
+		case (.Empty, .Cons(_, _)):
 			return false
-		case (.Destructure(_, _), .Empty):
+		case (.Cons(_, _), .Empty):
 			return true
-		case (.Destructure(let x, let xs), .Destructure(let y, let ys)):
+		case (.Cons(let x, let xs), .Cons(let y, let ys)):
 			return (x == y) ? (xs >= ys) : x >= y
 	}
 }
@@ -50,11 +50,11 @@ public func <<T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
 	switch (destruct(lhs), destruct(rhs)) {
 		case (.Empty, .Empty):
 			return false
-		case (.Empty, .Destructure(_, _)):
+		case (.Empty, .Cons(_, _)):
 			return true
-		case (.Destructure(_, _), .Empty):
+		case (.Cons(_, _), .Empty):
 			return false
-		case (.Destructure(let x, let xs), .Destructure(let y, let ys)):
+		case (.Cons(let x, let xs), .Cons(let y, let ys)):
 			return (x == y) ? (xs < ys) : x < y
 	}
 }
@@ -64,11 +64,11 @@ public func ><T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
 	switch (destruct(lhs), destruct(rhs)) {
 		case (.Empty, .Empty):
 			return false
-		case (.Empty, .Destructure(_, _)):
+		case (.Empty, .Cons(_, _)):
 			return false
-		case (.Destructure(_, _), .Empty):
+		case (.Cons(_, _), .Empty):
 			return true
-		case (.Destructure(let x, let xs), .Destructure(let y, let ys)):
+		case (.Cons(let x, let xs), .Cons(let y, let ys)):
 			return (x == y) ? (xs > ys) : x > y
 	}
 }
@@ -91,7 +91,7 @@ public func groupBy<A>(cmp : A -> A -> Bool) -> [A] -> [[A]] {
 		switch destruct(l) {
 			case .Empty:
 				return []
-			case .Destructure(let x, let xs):
+			case .Cons(let x, let xs):
 				let (ys, zs) = span(cmp(x))(xs)
 				return (x <| ys) <| groupBy(cmp)(zs)
 		}
@@ -105,7 +105,7 @@ public func groupBy<A>(cmp : (A, A) -> Bool) -> [A] -> [[A]] {
 		switch destruct(l) {
 			case .Empty:
 				return []
-			case .Destructure(let x, let xs):
+			case .Cons(let x, let xs):
 				let (ys, zs) = span({ cmp(x, $0) })(xs)
 				return (x <| ys) <| groupBy(cmp)(zs)
 		}
@@ -118,7 +118,7 @@ public func nubBy<A>(eq : A -> A -> Bool) -> [A] -> [A] {
 		switch destruct(lst) {
 			case .Empty():
 				return []
-			case .Destructure(let x, let xs):
+			case .Cons(let x, let xs):
 				return [x] + nubBy(eq)(xs.filter({ y in
 					return !(eq(x)(y))
 				}))
@@ -132,7 +132,7 @@ public func nubBy<A>(eq : (A, A) -> Bool) -> [A] -> [A] {
 		switch destruct(lst) {
 			case .Empty():
 				return []
-			case .Destructure(let x, let xs):
+			case .Cons(let x, let xs):
 				return [x] + nubBy(eq)(xs.filter({ y in
 					return !(eq(x, y))
 				}))
@@ -156,7 +156,7 @@ public func insertBy<A>(cmp: A -> A -> Bool) -> A -> [A] -> [A] {
 		switch destruct(l) {
 			case .Empty:
 				return [x]
-			case .Destructure(let y, let ys):
+			case .Cons(let y, let ys):
 				return cmp(x)(y) ? x <| l : y <| insertBy(cmp)(x)(ys)
 		}
 	} }
@@ -168,7 +168,7 @@ public func insertBy<A>(cmp: (A, A) -> Bool) -> A -> [A] -> [A] {
 		switch destruct(l) {
 			case .Empty:
 				return [x]
-			case .Destructure(let y, let ys):
+			case .Cons(let y, let ys):
 				return cmp(x, y) ?  x <| l : y <| insertBy(cmp)(x)(ys)
 		}
 	} }
@@ -180,7 +180,7 @@ public func maximumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 		switch destruct(l) {
 			case .Empty:
 				assert(false, "Cannot find the maximum element of an empty list.")
-			case .Destructure(_, _):
+			case .Cons(_, _):
 				return foldl1({ (let t) -> A in
 					return cmp(fst(t))(snd(t)) ? fst(t) : snd(t)
 				})(l)
@@ -194,7 +194,7 @@ public func maximumBy<A>(cmp : (A, A) -> Bool) -> [A] -> A {
 		switch destruct(l) {
 			case .Empty:
 				assert(false, "Cannot find the maximum element of an empty list.")
-			case .Destructure(_, _):
+			case .Cons(_, _):
 				return foldl1({ (let t) -> A in
 					return cmp(fst(t), snd(t)) ? fst(t) : snd(t)
 				})(l)
@@ -208,7 +208,7 @@ public func minimumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 		switch destruct(l) {
 			case .Empty:
 				assert(false, "Cannot find the minimum element of an empty list.")
-			case .Destructure(_, _):
+			case .Cons(_, _):
 				return foldl1({ (let t) -> A in
 					return cmp(fst(t))(snd(t)) ? snd(t) :  fst(t)
 				})(l)
@@ -222,7 +222,7 @@ public func minimumBy<A>(cmp : (A, A) -> Bool) -> [A] -> A {
 		switch destruct(l) {
 			case .Empty:
 				assert(false, "Cannot find the minimum element of an empty list.")
-			case .Destructure(_, _):
+			case .Cons(_, _):
 				return foldl1({ (let t) -> A in
 					return cmp(fst(t), snd(t)) ? snd(t) : fst(t)
 				})(l)

@@ -22,7 +22,7 @@ public func take<A>(n : Int) -> [A] -> [A] {
 		switch destruct(l) {
 			case .Empty:
 				return []
-			case .Destructure(let x, let xs):
+			case .Cons(let x, let xs):
 				return x <| take(n - 1)(xs)
 		}
 	}
@@ -43,7 +43,7 @@ public func drop<A>(n : Int) -> [A] -> [A] {
 		switch destruct(l) {
 			case .Empty:
 				return []
-			case .Destructure(let x, let xs):
+			case .Cons(let x, let xs):
 				return drop(n - 1)(xs)
 		}
 	}
@@ -62,7 +62,7 @@ public func takeWhile<A>(p : A -> Bool) -> [A] -> [A] {
 		switch destruct(l) {
 			case .Empty:
 				return []
-			case .Destructure(let x, let xs):
+			case .Cons(let x, let xs):
 				if p(x) {
 					return x <| takeWhile(p)(xs)
 				}
@@ -78,7 +78,7 @@ public func dropWhile<A>(p : A -> Bool) -> [A] -> [A] {
 		switch destruct(l) {
 			case .Empty:
 				return []
-			case .Destructure(let x, let xs):
+			case .Cons(let x, let xs):
 				if p(x) {
 					return dropWhile(p)(xs)
 				}
@@ -94,7 +94,7 @@ public func span<A>(p : A -> Bool) -> [A] -> ([A], [A]) {
 		switch destruct(l) {
 			case .Empty:
 				return ([], [])
-			case .Destructure(let x, let xs):
+			case .Cons(let x, let xs):
 				if p(x) {
 					let (ys, zs) = span(p)(xs)
 					return (x <| ys, zs)

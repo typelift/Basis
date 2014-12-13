@@ -11,7 +11,7 @@
 public func zip<A, B>(l : [A]) -> [B] -> [(A, B)] {
 	return { l2 in
 		switch (destruct(l), destruct(l2)) {
-			case (.Destructure(let a, let as_), .Destructure(let b, let bs)):
+			case (.Cons(let a, let as_), .Cons(let b, let bs)):
 				return (a, b) <| zip(as_)(bs)
 			default:
 				return []
@@ -23,7 +23,7 @@ public func zip<A, B>(l : [A]) -> [B] -> [(A, B)] {
 public func zip3<A, B, C>(l : [A]) -> [B] -> [C] -> [(A, B, C)] {
 	return { l2 in { l3 in
 		switch (destruct(l), destruct(l2), destruct(l3)) {
-			case (.Destructure(let a, let as_), .Destructure(let b, let bs), .Destructure(let c, let cs)):
+			case (.Cons(let a, let as_), .Cons(let b, let bs), .Cons(let c, let cs)):
 				return (a, b, c) <| zip3(as_)(bs)(cs)
 			default:
 				return []
@@ -35,7 +35,7 @@ public func zip3<A, B, C>(l : [A]) -> [B] -> [C] -> [(A, B, C)] {
 public func zipWith<A, B, C>(f : A -> B -> C) -> [A] -> [B] -> [C] {
 	return { l in { l2 in
 		switch (destruct(l), destruct(l2)) {
-			case (.Destructure(let a, let as_), .Destructure(let b, let bs)):
+			case (.Cons(let a, let as_), .Cons(let b, let bs)):
 				return f(a)(b) <| zipWith(f)(as_)(bs)
 			default:
 				return []
@@ -47,7 +47,7 @@ public func zipWith<A, B, C>(f : A -> B -> C) -> [A] -> [B] -> [C] {
 public func zipWith<A, B, C>(f : (A, B) -> C) -> [A] -> [B] -> [C] {
 	return { l in { l2 in
 		switch (destruct(l), destruct(l2)) {
-			case (.Destructure(let a, let as_), .Destructure(let b, let bs)):
+			case (.Cons(let a, let as_), .Cons(let b, let bs)):
 				return f(a, b) <| zipWith(f)(as_)(bs)
 			default:
 				return []
@@ -59,7 +59,7 @@ public func zipWith<A, B, C>(f : (A, B) -> C) -> [A] -> [B] -> [C] {
 public func zipWith3<A, B, C, D>(f : A -> B -> C -> D) -> [A] -> [B] -> [C] -> [D] {
 	return { l in { l2 in { l3 in
 		switch (destruct(l), destruct(l2), destruct(l3)) {
-			case (.Destructure(let a, let as_), .Destructure(let b, let bs), .Destructure(let c, let cs)):
+			case (.Cons(let a, let as_), .Cons(let b, let bs), .Cons(let c, let cs)):
 				return f(a)(b)(c) <| zipWith3(f)(as_)(bs)(cs)
 			default:
 				return []
@@ -72,7 +72,7 @@ public func unzip<A, B>(l : [(A, B)]) -> ([A], [B]) {
 	switch destruct(l) {
 		case .Empty:
 			return ([], [])
-		case .Destructure(let (a, b), let tl):
+		case .Cons(let (a, b), let tl):
 			let (t1, t2) : ([A], [B]) = unzip(tl)
 			return (a <| t1, b <| t2)
 	}
@@ -83,7 +83,7 @@ public func unzip3<A, B, C>(l : [(A, B, C)]) -> ([A], [B], [C]) {
 	switch destruct(l) {
 		case .Empty:
 			return ([], [], [])
-		case .Destructure(let (a, b, c), let tl):
+		case .Cons(let (a, b, c), let tl):
 			let (t1, t2, t3) : ([A], [B], [C]) = unzip3(tl)
 			return (a <| t1, b <| t2, c <| t3)
 	}
