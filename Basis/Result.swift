@@ -147,21 +147,29 @@ public func <% <A, B>(x : A, either : Result<B>) -> Result<A> {
 	return Result.fmap(const(x))(either)
 }
 
-extension Result : Applicative {
-	typealias FAB = Result<A -> B>
-
+extension Result : Pointed {
 	public static func pure(x : A) -> Result<A> {
 		return Result.value(x)
 	}
 }
 
+extension Result : Applicative {
+	typealias FAB = Result<A -> B>
+	
+	public static func ap<A, B>(f : Result<A -> B>) -> Result<A> ->  Result<B> {
+		return { r in
+			switch f.destruct() {
+				case .Error(let e):
+					return Result<B>.error(e)
+				case .Value(let f):
+					return Result<A>.fmap(f.unBox())(r)
+			}
+		}
+	}	
+}
+
 public func <*><A, B>(f : Result<A -> B> , r : Result<A>) ->  Result<B> {
-	switch f.destruct() {
-		case .Error(let e):
-			return Result.error(e)
-		case .Value(let f):
-			return Result.fmap(f.unBox())(r)
-	}
+	return Result<A>.ap(f)(r)
 }
 
 public func *><A, B>(a : Result<A>, b : Result<B>) -> Result<B> {

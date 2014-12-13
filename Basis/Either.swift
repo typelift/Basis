@@ -166,15 +166,21 @@ extension Either : Pointed {
 
 extension Either : Applicative {
 	typealias FAB = Either<L, R -> C>
+	
+	public static func ap<C>(f : Either<L, R -> C>) -> Either<L, R> -> Either<L, C> {
+		return { e in 
+			switch f.destruct() {
+				case .Left(let e):
+					return Either<L, C>.left(e)
+				case .Right(let f):
+					return Either<L, R>.fmap(f.unBox())(e)
+			}
+		}
+	}
 }
 
 public func <*><A, B, C>(f : Either<A, B -> C> , r : Either<A, B>) ->  Either<A, C> {
-	switch f.destruct() {
-		case .Left(let e):
-			return Either.left(e)
-		case .Right(let f):
-			return Either.fmap(f.unBox())(r)
-	}
+	return Either<A, B>.ap(f)(r)
 }
 
 public func *><A, B, C>(a : Either<A, B>, b : Either<A, C>) -> Either<A, C> {
