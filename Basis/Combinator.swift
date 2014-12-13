@@ -108,11 +108,6 @@ public func flip<A, B, C>(f : (A, B) -> C) -> (B, A) -> C {
 	return { t in f(snd(t), fst(t)) }
 }
 
-/// Applies a function to an argument until a given predicate returns true.
-public func until<A>(p : A -> Bool) -> (A -> A) -> A -> A {
-	return { f in { x in p(x) ? x : until(p)(f)(f(x)) } }
-}
-
 /// A type-restricted version of const.  In cases of typing ambiguity, using this function forces
 /// its first argument to resolve to the type of the second argument.
 public func asTypeOf<A>(x : A) -> A -> A {
@@ -127,3 +122,7 @@ public func >-<<A>(x : A, y : A) -> A {
 	return asTypeOf(x)(y)
 }
 
+/// Applies a function to an argument until a given predicate returns true.
+public func until<A>(p : A -> Bool) -> (A -> A) -> A -> A {
+	return { f in { x in p(x) ? x : until(p)(f)(f(x)) } }
+}

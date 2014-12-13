@@ -146,7 +146,7 @@ public func insertBy<A>(cmp: A -> A -> Bool) -> A -> [A] -> [A] {
 			case .Empty:
 				return [x]
 			case .Destructure(let y, let ys):
-				return cmp(x)(y) ? y <| insertBy(cmp)(x)(ys) : x <| l
+				return cmp(x)(y) ? x <| l : y <| insertBy(cmp)(x)(ys)
 		}
 	} }
 }
@@ -158,7 +158,7 @@ public func insertBy<A>(cmp: (A, A) -> Bool) -> A -> [A] -> [A] {
 			case .Empty:
 				return [x]
 			case .Destructure(let y, let ys):
-				return cmp(x, y) ? y <| insertBy(cmp)(x)(ys) :  x <| l
+				return cmp(x, y) ?  x <| l : y <| insertBy(cmp)(x)(ys)
 		}
 	} }
 }
