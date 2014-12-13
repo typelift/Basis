@@ -3,7 +3,8 @@
 Basis
 =====
 
-The Basis provides a number of foundational functions, types, and typeclasses for applications that wish to use a pure functional core, or frameworks that wish to extend the Basis.  Present in this repository are all the necessary components to handle system interaction, universe control, data flow, and a number of extensions and improvements to the Swift Standard Library and its structures.  Higher-level APIs and structures are generally excluded from the Basis to be implemented in other libraries.
+The Basis is an exploration of pure declarative programming and reasoning in Swift.  It by no means contains idiomatic code, but is instead intended to be a repository for structures and ideas grounded in theory and mathematics.  Present in this repository are the necessary components to handle system interaction, control, data flow, and a number of extensions and improvements to the Swift Standard Library and its structures.  Higher-level APIs and structures are generally excluded from the Basis to be implemented in other libraries.
+ 
 
 It Gets Better!
 ===============
