@@ -16,6 +16,8 @@ public protocol Applicative : Pointed, Functor {
 	/// Type of Functors containing morphisms from our objects to a target.
 	typealias FAB = K1<A -> B>
 	
+	class func ap(FAB) -> Self -> FB
+	
 	/// Sequential Application | Applies the function "inside the Functor" to the "inside" of our 
 	/// Functor and herds up the results.
 	func <*>(FAB , Self) -> FB
