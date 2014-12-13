@@ -68,6 +68,12 @@ extension Dual : Pointed {
 	}
 }
 
+extension Dual : Copointed {
+	public func extract() -> A.M {
+		return self.getDual
+	}
+}
+
 /// The monoid of endomorphisms under composition.
 public struct Endo<A> {
 	public let appEndo : A -> A
@@ -180,6 +186,12 @@ extension Sum : Pointed {
 	}
 }
 
+extension Sum : Copointed {
+	public func extract() -> A {
+		return self.getSum
+	}
+}
+
 /// The monoid of arithmetic types under multiplication.
 public struct Product<A : protocol<IntegerArithmeticType, IntegerLiteralConvertible>> {
 	public let getProduct : A
@@ -208,6 +220,12 @@ public func <><A : protocol<IntegerArithmeticType, IntegerLiteralConvertible>>(l
 extension Product : Pointed {
 	public static func pure(x : A) -> Product<A> {
 		return Product(x)
+	}
+}
+
+extension Product : Copointed {
+	public func extract() -> A {
+		return self.getProduct
 	}
 }
 
@@ -242,6 +260,12 @@ extension First : Pointed {
 	}
 }
 
+//extension First : Copointed {
+//	public func extract() -> Maybe<A> {
+//		return self.getFirst
+//	}
+//}
+
 /// The right-biased maybe monoid.
 public struct Last<A> {
 	public let getLast : Maybe<A>
@@ -272,6 +296,12 @@ extension Last : Pointed {
 		return Last(Maybe(x))
 	}
 }
+
+//extension Last : Copointed {
+//	public func extract() -> Maybe<A> {
+//		return self.getLast
+//	}
+//}
 
 /// The monoid of ordered values under max.
 public struct Max<A : protocol<Comparable, Bounded>> {
@@ -304,6 +334,12 @@ extension Max : Pointed {
 	}
 }
 
+extension Max : Copointed {
+	public func extract() -> A {
+		return self.getMax
+	}
+}
+
 /// The monoid of ordered values under min.
 public struct Min<A : protocol<Comparable, Bounded>> {
 	public let getMin : A
@@ -332,6 +368,12 @@ public func <><A : protocol<Comparable, Bounded>>(l : Min<A>, r : Min<A>) -> Min
 extension Min : Pointed {
 	public static func pure(x : A) -> Min<A> {
 		return Min(x)
+	}
+}
+
+extension Min : Copointed {
+	public func extract() -> A {
+		return self.getMin
 	}
 }
 
