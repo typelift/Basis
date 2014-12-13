@@ -98,12 +98,13 @@ public func <% <A, B>(x : A, io : IO<B>) -> IO<A> {
 	return IO.fmap(const(x))(io)
 }
 
-extension IO : Applicative {
+extension IO : Pointed {
 	public static func pure(a: A) -> IO<A> {
 		return IO<A>({ rw in (rw, a) })
 	}
-
 }
+
+extension IO : Applicative { }
 
 public func <*><A, B>(fn: IO<A -> B>, m: IO<A>) -> IO<B> {
 	return IO<B>({ rw in

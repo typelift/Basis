@@ -13,7 +13,7 @@ public enum SetD<A> {
 }
 
 /// An immutable set of values.
-public class Set<A> : K1<A> {
+public final class Set<A> : K1<A> {
 	let size : UInt
 	let a : A!
 	let l : Set<A>!
@@ -245,6 +245,12 @@ public func union<A : Comparable>(s1 : Set<A>) -> Set<A> -> Set<A> {
 						return hedgeUnion(.None, .None, s1, s2)
 				}
 		}
+	}
+}
+
+extension Set : Pointed {
+	public class func pure(x : A) -> Set<A> {
+		return singleton(x)
 	}
 }
 

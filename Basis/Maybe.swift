@@ -198,12 +198,14 @@ public func <%<A, B>(x : A, o : Maybe<B>) -> Maybe<A> {
 	return (curry(<%>) • const)(x)(o)
 }
 
-extension Maybe : Applicative {
-	typealias FAB = Maybe<A -> B>
-	
+extension Maybe : Pointed {
 	public static func pure(x : A) -> Maybe<A> {
 		return Maybe.just(x)
 	}
+}
+
+extension Maybe : Applicative {
+	typealias FAB = Maybe<A -> B>
 }
 
 public func <*><A, B>(f : Maybe<A -> B> , o : Maybe<A>) -> Maybe<B> {
