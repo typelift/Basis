@@ -7,9 +7,7 @@
 //  Released under the MIT license.
 //
 
-/// Copointed sits in the middle distance between a Functor and a Comonad.  It is a functor equipped
-/// with a copoint that extracts a value from the functor.
-public protocol Copointed : Functor {	
-	/// Lifts a value from the Functor.
+public protocol Copointed {	
+	typealias A
 	func extract() -> A
 }
