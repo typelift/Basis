@@ -82,7 +82,6 @@
 		84D4D8F61A18095F001F5E4D /* Comonad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D8F21A18095F001F5E4D /* Comonad.swift */; };
 		84D4D8F71A18095F001F5E4D /* ComonadFix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D8F31A18095F001F5E4D /* ComonadFix.swift */; };
 		84D4D8FA1A181649001F5E4D /* ComonadApply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D8F91A181649001F5E4D /* ComonadApply.swift */; };
-		84ECD4531A3A9269005C6A64 /* Yoneda.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84ECD4521A3A9269005C6A64 /* Yoneda.swift */; };
 		84F9062E19D638BD0035D429 /* ArrowSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F9062D19D638BD0035D429 /* ArrowSpec.swift */; };
 /* End PBXBuildFile section */
 
@@ -187,7 +186,6 @@
 		84D4D8F21A18095F001F5E4D /* Comonad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comonad.swift; sourceTree = "<group>"; };
 		84D4D8F31A18095F001F5E4D /* ComonadFix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComonadFix.swift; sourceTree = "<group>"; };
 		84D4D8F91A181649001F5E4D /* ComonadApply.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComonadApply.swift; sourceTree = "<group>"; };
-		84ECD4521A3A9269005C6A64 /* Yoneda.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Yoneda.swift; sourceTree = "<group>"; };
 		84F9062D19D638BD0035D429 /* ArrowSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ArrowSpec.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 /* End PBXFileReference section */
 
@@ -320,7 +318,6 @@
 				84922D4419D237E000AE9A7C /* Tuple.swift */,
 				84922D4519D237E000AE9A7C /* Unique.swift */,
 				8434F96C19E8BA0A008D9909 /* Version.swift */,
-				84ECD4521A3A9269005C6A64 /* Yoneda.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -528,7 +525,6 @@
 				841FE03F19DB7E7C0068636A /* Scans.swift in Sources */,
 				84922D4D19D237E000AE9A7C /* Bottom.swift in Sources */,
 				84922D6719D237E000AE9A7C /* Monad.swift in Sources */,
-				84ECD4531A3A9269005C6A64 /* Yoneda.swift in Sources */,
 				84922D7719D237E000AE9A7C /* Unique.swift in Sources */,
 				84922D5E19D237E000AE9A7C /* IO.swift in Sources */,
 				84922D4E19D237E000AE9A7C /* Bounded.swift in Sources */,
