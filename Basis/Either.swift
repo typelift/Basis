@@ -133,7 +133,6 @@ public func !=<A : Equatable, B : Equatable>(lhs: Either<A, B>, rhs: Either<A, B
 
 extension Either : Functor {
 	typealias C = Any
-	typealias FA = Either<A, B>
 	typealias FB = Either<A, C>
 
 	public static func fmap<C>(f : B -> C) -> Either<A, B> -> Either<A, C> {
@@ -160,7 +159,7 @@ public func <% <A, B, C>(x : B, either : Either<A, C>) -> Either<A, B> {
 extension Either : Applicative {
 	typealias FAB = Either<A, B -> C>
 	
-	public static func pure(x : Either<A, B>.A) -> Either<A, B>.FA {
+	public static func pure(x : Either<A, B>.A) -> Either<A, B> {
 		return Either.right(x)
 	}
 }

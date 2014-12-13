@@ -36,22 +36,19 @@ public protocol Functor {
 	/// Type of Target Objects
 	typealias B
 	
-	/// Type of our Functor
-	typealias FA = K1<A>
-	
 	/// Type of a target Functor
 	typealias FB = K1<B>
 	
 	/// Map "inside" a Functor.
 	///
 	/// F on our diagram.
-	class func fmap(A -> B) -> FA -> FB
-	func <%>(A -> B, FA) -> FB
+	class func fmap(A -> B) -> Self -> FB
+	func <%>(A -> B, Self) -> FB
 
 	/// Constant Replace | Replaces all values in the target Functor with a singular constant value
 	/// from the source Functor.
 	///
 	/// Default definition: 
 	///		`curry(<%>) • const`
-	func <%(A, FB) -> FA
+	func <%(A, FB) -> Self
 }

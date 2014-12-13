@@ -41,19 +41,19 @@ public protocol Monad : Applicative {
 
 /// A monoid for monads.
 public protocol MonadPlus : Monad {
-	class func mzero() -> FA
-	class func mplus(FA) -> FA -> FA
+	class func mzero() -> Self
+	class func mplus(Self) -> Self -> Self
 }
 
-public func guard<M : MonadPlus where M.A == Void, M.FA == M>(b : Bool) -> M {
+public func guard<M : MonadPlus where M.A == Void>(b : Bool) -> M {
 	return b ? M.pure(()) : M.mzero()
 }
 
-public func when<M : Monad where M.A == Void, M.FA == M>(b : Bool) -> M -> M {
+public func when<M : Monad where M.A == Void>(b : Bool) -> M -> M {
 	return { m in b ? m : M.pure(()) }
 }
 
-public func unless<M : Monad where M.A == Void, M.FA == M>(b : Bool) -> M -> M {
+public func unless<M : Monad where M.A == Void>(b : Bool) -> M -> M {
 	return { m in b ? M.pure(()) : m }
 }
 

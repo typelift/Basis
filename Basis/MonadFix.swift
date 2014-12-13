@@ -10,6 +10,6 @@
 /// Monads that admit left-tightening recursion.
 public protocol MonadFix : Monad {
 	/// Calculates the fixed point of a monadic computation.
-	class func mfix(A -> FA) -> FA
+	class func mfix(A -> Self) -> Self
 }
 
