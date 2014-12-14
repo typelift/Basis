@@ -138,7 +138,7 @@ public func and(l : [Bool]) -> Bool {
 
 /// Returns the disjunction of a Boolean list.
 public func or(l : [Bool]) -> Bool {
-	return foldr({$0 || $1})(true)(l)
+	return foldr({$0 || $1})(false)(l)
 }
 
 /// Maps a predicate over a list.  For the result to be true, the predicate must be satisfied at

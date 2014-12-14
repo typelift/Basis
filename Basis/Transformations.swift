@@ -12,6 +12,11 @@ public func map<A, B>(f : A -> B) -> [A] -> [B] {
 	return { l in l.map(f) }
 }
 
+/// Replace all occurrences of a value in a list by another value.
+public func replace<A : Equatable>(x : A) -> A -> [A] -> [A] {
+	return { y in { xs in xs.map({ z in z == x ? y : z }) } }
+}
+
 /// Takes a separator and a list and intersperses that element throughout the list.
 ///
 ///     intersperse(1)([1, 2, 3]) == [1, 1, 2, 1, 3, 1]

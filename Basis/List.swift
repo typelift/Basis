@@ -64,12 +64,10 @@ public func destruct<T>(l : [T]) -> ArrayD<T> {
 public func isPrefixOf<A : Equatable>(l : [A]) -> [A] -> Bool {
 	return { r in
 		switch (destruct(l), destruct(r)) {
-			case (_, .Empty):
-				return false
+			case (.Cons(let x, let xs), .Cons(let y, let ys)) where (x == y):
+				return isPrefixOf(xs)(ys)
 			case (.Empty, _):
 				return true
-			case (.Cons(let x, let xs), .Cons(let y, let ys)):
-				return x == y && isPrefixOf(xs)(ys)
 			default:
 				return false
 		}
@@ -84,7 +82,7 @@ public func isSuffixOf<A : Equatable>(l : [A]) -> [A] -> Bool {
 /// Takes two lists and returns true if the first list is contained entirely anywhere in the second
 /// list.
 public func isInfixOf<A : Equatable>(l : [A]) -> [A] -> Bool {
-	return { r in  any(isPrefixOf(l))(tails(r)) }
+	return { r in any(isPrefixOf(l))(tails(r)) }
 }
 
 /// Takes two lists and drops items in the first from the second.  If the first list is not a prefix

@@ -152,18 +152,18 @@ public func ==<V : Equatable>(lhs: Maybe<V>, rhs: Maybe<V>) -> Bool {
 	}
 }
 
+public func !=<V: Equatable>(lhs: Maybe<V>, rhs: Maybe<V>) -> Bool {
+	return !(lhs == rhs)
+}
+
 // Fallback equality: All nothings are isomorphic.
 public func ==<T, V>(lhs: Maybe<T>, rhs: Maybe<V>) -> Bool {
 	switch (lhs.destruct(), rhs.destruct()) {
-	case (.Nothing, .Nothing):
-		return true
-	default:
-		return false
+		case (.Nothing, .Nothing):
+			return true
+		default:
+			return false
 	}
-}
-
-public func !=<V: Equatable>(lhs: Maybe<V>, rhs: Maybe<V>) -> Bool {
-	return !(lhs == rhs)
 }
 
 public func !=<T, V>(lhs: Maybe<T>, rhs: Maybe<V>) -> Bool {
