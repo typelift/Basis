@@ -25,6 +25,8 @@
 		8434F96F19E8BDF5008D9909 /* VersionSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8434F96E19E8BDF5008D9909 /* VersionSpec.swift */; };
 		8441AAAA1A0C51C4008D5701 /* LazySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8441AAA91A0C51C4008D5701 /* LazySpec.swift */; };
 		847E99E01A48B39600B5B8CE /* FoldsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847E99DF1A48B39600B5B8CE /* FoldsSpec.swift */; };
+		84896B471A475849006F3EA9 /* TrampolineSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84896B461A475849006F3EA9 /* TrampolineSpec.swift */; };
+		84896B491A475854006F3EA9 /* Trampoline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84896B481A475854006F3EA9 /* Trampoline.swift */; };
 		84922CA719D237B900AE9A7C /* EitherSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922C9D19D237B900AE9A7C /* EitherSpec.swift */; };
 		84922CA819D237B900AE9A7C /* ArrowSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922C9E19D237B900AE9A7C /* ArrowSpec.swift */; };
 		84922CA919D237B900AE9A7C /* FunctionsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922C9F19D237B900AE9A7C /* FunctionsSpec.swift */; };
@@ -117,6 +119,8 @@
 		8434F96E19E8BDF5008D9909 /* VersionSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VersionSpec.swift; sourceTree = "<group>"; };
 		8441AAA91A0C51C4008D5701 /* LazySpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LazySpec.swift; sourceTree = "<group>"; };
 		847E99DF1A48B39600B5B8CE /* FoldsSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoldsSpec.swift; sourceTree = "<group>"; };
+		84896B461A475849006F3EA9 /* TrampolineSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrampolineSpec.swift; sourceTree = "<group>"; };
+		84896B481A475854006F3EA9 /* Trampoline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trampoline.swift; sourceTree = "<group>"; };
 		84922C8419D2375F00AE9A7C /* Basis.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Basis.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		84922C8F19D2375F00AE9A7C /* BasisTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BasisTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		84922C9D19D237B900AE9A7C /* EitherSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = EitherSpec.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -259,6 +263,7 @@
 				847E99DF1A48B39600B5B8CE /* FoldsSpec.swift */,
 				84922C9F19D237B900AE9A7C /* FunctionsSpec.swift */,
 				84922CA019D237B900AE9A7C /* InfinitySpec.swift */,
+				84896B461A475849006F3EA9 /* TrampolineSpec.swift */,
 				8441AAA91A0C51C4008D5701 /* LazySpec.swift */,
 				84D77DFA1A3CF9FA000F5683 /* ListSpec.swift */,
 				84922CA219D237B900AE9A7C /* MaybeSpec.swift */,
@@ -298,11 +303,12 @@
 			isa = PBXGroup;
 			children = (
 				84922CB119D237DA00AE9A7C /* Applicative.swift */,
-				84D4D8EE1A16EBDB001F5E4D /* Copointed.swift */,
 				84922D8319D238D400AE9A7C /* Arrow */,
 				84922CBA19D237DA00AE9A7C /* Category.swift */,
 				84D4D8E91A16EBB3001F5E4D /* Comonad */,
+				84D4D8EE1A16EBDB001F5E4D /* Copointed.swift */,
 				84922D8419D238DB00AE9A7C /* Monad */,
+				84896B481A475854006F3EA9 /* Trampoline.swift */,
 			);
 			name = Control;
 			sourceTree = "<group>";
@@ -516,6 +522,7 @@
 				841FE02B19DB7E390068636A /* Scans.swift in Sources */,
 				84922CE919D237DA00AE9A7C /* Bottom.swift in Sources */,
 				84922D0319D237DA00AE9A7C /* Monad.swift in Sources */,
+				84896B491A475854006F3EA9 /* Trampoline.swift in Sources */,
 				84922D1319D237DA00AE9A7C /* Unique.swift in Sources */,
 				84922CFA19D237DA00AE9A7C /* IO.swift in Sources */,
 				84922CEA19D237DA00AE9A7C /* Bounded.swift in Sources */,
@@ -571,6 +578,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				84D77DFB1A3CF9FA000F5683 /* ListSpec.swift in Sources */,
+				84896B471A475849006F3EA9 /* TrampolineSpec.swift in Sources */,
 				84922CB019D237B900AE9A7C /* UniqueSpec.swift in Sources */,
 				84922CA819D237B900AE9A7C /* ArrowSpec.swift in Sources */,
 				8441AAAA1A0C51C4008D5701 /* LazySpec.swift in Sources */,
