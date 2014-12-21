@@ -10,7 +10,6 @@
 import Basis
 import XCTest
 
-
 class InfinitySpec : XCTestCase {
 	func testIterate() {
 		let arr = iterate({ 1 + $0 })(0)
@@ -45,4 +44,3 @@ class InfinitySpec : XCTestCase {
 		XCTAssertTrue(arr[5] == "Goodbye", "")
 	}
 }
-

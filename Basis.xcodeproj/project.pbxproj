@@ -32,6 +32,8 @@
 		84522CDC19E10EE200E4423A /* Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84522CDB19E10EE200E4423A /* Optional.swift */; };
 		847E99DC1A48B1CD00B5B8CE /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847E99DB1A48B1CD00B5B8CE /* Stream.swift */; };
 		847E99DE1A48B38A00B5B8CE /* FoldsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847E99DD1A48B38A00B5B8CE /* FoldsSpec.swift */; };
+		84896B431A469179006F3EA9 /* Trampoline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84896B421A469179006F3EA9 /* Trampoline.swift */; };
+		84896B451A475841006F3EA9 /* TrampolineSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84896B441A475841006F3EA9 /* TrampolineSpec.swift */; };
 		84922D4719D237E000AE9A7C /* Applicative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D1519D237E000AE9A7C /* Applicative.swift */; };
 		84922D4819D237E000AE9A7C /* Arrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D1619D237E000AE9A7C /* Arrow.swift */; };
 		84922D4919D237E000AE9A7C /* BASERealWorld.h in Headers */ = {isa = PBXBuildFile; fileRef = 84922D1719D237E000AE9A7C /* BASERealWorld.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -136,6 +138,8 @@
 		84522CDB19E10EE200E4423A /* Optional.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Optional.swift; sourceTree = "<group>"; };
 		847E99DB1A48B1CD00B5B8CE /* Stream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stream.swift; sourceTree = "<group>"; };
 		847E99DD1A48B38A00B5B8CE /* FoldsSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoldsSpec.swift; sourceTree = "<group>"; };
+		84896B421A469179006F3EA9 /* Trampoline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trampoline.swift; sourceTree = "<group>"; };
+		84896B441A475841006F3EA9 /* TrampolineSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrampolineSpec.swift; sourceTree = "<group>"; };
 		84922D1519D237E000AE9A7C /* Applicative.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Applicative.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		84922D1619D237E000AE9A7C /* Arrow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Arrow.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		84922D1719D237E000AE9A7C /* BASERealWorld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BASERealWorld.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -232,11 +236,12 @@
 			isa = PBXGroup;
 			children = (
 				84922D1519D237E000AE9A7C /* Applicative.swift */,
-				84D4D8F01A180959001F5E4D /* Copointed.swift */,
 				84922D7A19D2381800AE9A7C /* Arrow */,
 				84922D1E19D237E000AE9A7C /* Category.swift */,
 				84D4D8F51A18095F001F5E4D /* Comonad */,
+				84D4D8F01A180959001F5E4D /* Copointed.swift */,
 				84922D7B19D2382000AE9A7C /* Monad */,
+				84896B421A469179006F3EA9 /* Trampoline.swift */,
 			);
 			name = Control;
 			sourceTree = "<group>";
@@ -367,6 +372,7 @@
 				847E99DD1A48B38A00B5B8CE /* FoldsSpec.swift */,
 				84C996FE19CE8A970046906D /* FunctionsSpec.swift */,
 				84C996FF19CE8A970046906D /* InfinitySpec.swift */,
+				84896B441A475841006F3EA9 /* TrampolineSpec.swift */,
 				8441AAAB1A0C531A008D5701 /* LazySpec.swift */,
 				84D77DF81A3CF9F4000F5683 /* ListSpec.swift */,
 				8418FC4E19CFAED80010923E /* MaybeSpec.swift */,
@@ -530,6 +536,7 @@
 				841FE04219DB7E7C0068636A /* Sublists.swift in Sources */,
 				841FE03F19DB7E7C0068636A /* Scans.swift in Sources */,
 				84922D4D19D237E000AE9A7C /* Bottom.swift in Sources */,
+				84896B431A469179006F3EA9 /* Trampoline.swift in Sources */,
 				84922D6719D237E000AE9A7C /* Monad.swift in Sources */,
 				84922D7719D237E000AE9A7C /* Unique.swift in Sources */,
 				84922D5E19D237E000AE9A7C /* IO.swift in Sources */,
@@ -585,6 +592,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				84D77DF91A3CF9F4000F5683 /* ListSpec.swift in Sources */,
+				84896B451A475841006F3EA9 /* TrampolineSpec.swift in Sources */,
 				84F9062E19D638BD0035D429 /* ArrowSpec.swift in Sources */,
 				84C9970619CE8A970046906D /* OperatorsSpec.swift in Sources */,
 				8441AAAC1A0C531A008D5701 /* LazySpec.swift in Sources */,
