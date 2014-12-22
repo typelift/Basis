@@ -30,8 +30,8 @@
 		8441AAAC1A0C531A008D5701 /* LazySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8441AAAB1A0C531A008D5701 /* LazySpec.swift */; };
 		84423DE81A033BA700361829 /* ZipSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84423DE71A033BA700361829 /* ZipSpec.swift */; };
 		84522CDC19E10EE200E4423A /* Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84522CDB19E10EE200E4423A /* Optional.swift */; };
-		847E99DE1A48B38A00B5B8CE /* FoldsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847E99DD1A48B38A00B5B8CE /* FoldsSpec.swift */; };
 		847E99DC1A48B1CD00B5B8CE /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847E99DB1A48B1CD00B5B8CE /* Stream.swift */; };
+		847E99DE1A48B38A00B5B8CE /* FoldsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847E99DD1A48B38A00B5B8CE /* FoldsSpec.swift */; };
 		84922D4719D237E000AE9A7C /* Applicative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D1519D237E000AE9A7C /* Applicative.swift */; };
 		84922D4819D237E000AE9A7C /* Arrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D1619D237E000AE9A7C /* Arrow.swift */; };
 		84922D4919D237E000AE9A7C /* BASERealWorld.h in Headers */ = {isa = PBXBuildFile; fileRef = 84922D1719D237E000AE9A7C /* BASERealWorld.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -134,8 +134,8 @@
 		8441AAAB1A0C531A008D5701 /* LazySpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LazySpec.swift; sourceTree = "<group>"; };
 		84423DE71A033BA700361829 /* ZipSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZipSpec.swift; sourceTree = "<group>"; };
 		84522CDB19E10EE200E4423A /* Optional.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Optional.swift; sourceTree = "<group>"; };
-		847E99DD1A48B38A00B5B8CE /* FoldsSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoldsSpec.swift; sourceTree = "<group>"; };
 		847E99DB1A48B1CD00B5B8CE /* Stream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stream.swift; sourceTree = "<group>"; };
+		847E99DD1A48B38A00B5B8CE /* FoldsSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoldsSpec.swift; sourceTree = "<group>"; };
 		84922D1519D237E000AE9A7C /* Applicative.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Applicative.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		84922D1619D237E000AE9A7C /* Arrow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Arrow.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		84922D1719D237E000AE9A7C /* BASERealWorld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BASERealWorld.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -216,7 +216,6 @@
 			isa = PBXGroup;
 			children = (
 				841FE03419DB7E7C0068636A /* List.swift */,
-				841FE03319DB7E7C0068636A /* Lazy.swift */,
 				841FE04A19DB7EEC0068636A /* Compare.swift */,
 				841FE04B19DB7EEC0068636A /* Folds.swift */,
 				841FE03519DB7E7C0068636A /* Scans.swift */,
@@ -308,6 +307,7 @@
 				84922D2819D237E000AE9A7C /* Function.swift */,
 				84D4D8E11A16E376001F5E4D /* Functor */,
 				84922D2D19D237E000AE9A7C /* IORef.swift */,
+				841FE03319DB7E7C0068636A /* Lazy.swift */,
 				841FE03C19DB7E7C0068636A /* List */,
 				84922D7F19D2388500AE9A7C /* Map */,
 				84922D3419D237E000AE9A7C /* Maybe.swift */,
