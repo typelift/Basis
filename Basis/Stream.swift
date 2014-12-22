@@ -8,7 +8,11 @@
 
 /// A lazy infinite sequence of values.
 public struct Stream<T> {
-	let st : @autoclosure() -> (head : T, tail : Stream<T>)
+	let step : @autoclosure() -> (head : T, tail : Stream<T>)
+	
+	init(_ step : @autoclosure() -> (head : T, tail : Stream<T>)) {
+		self.step = step
+	}
 	
 	public subscript(n : UInt) -> T {
 		return index(self)(n)
@@ -19,40 +23,40 @@ public struct Stream<T> {
 public func index<T>(s : Stream<T>) -> UInt -> T {
 	return { n in
 		if n == 0 {
-			return s.st().head
+			return s.step().head
 		}
-		return index(s.st().tail)(n - 1)
+		return index(s.step().tail)(n - 1)
 	}
 }
 
 /// Returns the first element of a Stream.
 public func head<T>(s : Stream<T>) -> T {
-	return s.st().head
+	return s.step().head
 }
 
 /// Returns the remaining elements of a Stream.
 public func tail<T>(s : Stream<T>) -> Stream<T> {
-	return s.st().tail
+	return s.step().tail
 }
 
 /// Returns a Stream of all initial segments of a Stream.
 public func inits<T>(s : Stream<T>) -> Stream<[T]> {
-	return Stream(st: ([], map({ s.st().head <| $0 })(inits(s.st().tail))))
+	return Stream(([], map({ s.step().head <| $0 })(inits(s.step().tail))))
 }
 
 /// Returns a Stream of all final segments of a Stream.
 public func tails<T>(s : Stream<T>) -> Stream<Stream<T>> {
-	return Stream(st: (s, tails(s.st().tail)))
+	return Stream((s, tails(s.step().tail)))
 }
 
 /// Repeats a value into a constant stream of that same value.
 public func repeat<T>(x : T) -> Stream<T> {
-	return Stream(st: (x, repeat(x)))
+	return Stream((x, repeat(x)))
 }
 
 /// Returns a Stream of an infinite number of iteratations of applications of a function to a value.
 public func iterate<T>(f : T -> T) -> T -> Stream<T> {
-	return { x in Stream(st: (x, iterate(f)(f(x)))) }
+	return { x in Stream((x, iterate(f)(f(x)))) }
 }
 
 /// Cycles a non-empty list into an infinite Stream of repeating values.
@@ -63,13 +67,13 @@ public func cycle<T>(xs : [T]) -> Stream<T> {
 		case .Empty:
 			return error("Cannot cycle an empty list.")
 		case .Cons(let x, let xs):
-			return Stream(st: (x, cycle(xs + [x])))
+			return Stream((x, cycle(xs + [x])))
 	}
 }
 
 /// Maps a function over a Stream and returns a new Stream of those values.
 public func map<A, B>(f : A -> B) -> Stream<A> -> Stream<B> {
-	return { s in Stream(st: (f(s.st().head), map(f)(s.st().tail))) }
+	return { s in Stream((f(s.step().head), map(f)(s.step().tail))) }
 }
 
 /// Uses function to construct a Stream.
@@ -78,35 +82,35 @@ public func map<A, B>(f : A -> B) -> Stream<A> -> Stream<B> {
 public func unfold<A, B>(f : A -> (B, A)) -> A -> Stream<B> {
 	return { z in  
 		let (x, d) = f(z)
-		return Stream(st: (x, unfold(f)(d)))
+		return Stream((x, unfold(f)(d)))
 	}
 }
 
 /// Returns a Stream of alternating elements from each Stream.
 public func interleave<T>(s1 : Stream<T>) -> Stream<T> -> Stream<T> {
-	return { s2 in Stream(st: (s1.st().head, interleave(s2)(s1))) }
+	return { s2 in Stream((s1.step().head, interleave(s2)(s1))) }
 }
 
 /// Creates a Stream alternating an element in between the values of another Stream.
 public func intersperse<T>(x : T) -> Stream<T> -> Stream<T> {
-	return { s in Stream(st: (s.st().head, Stream(st: (x, intersperse(x)(s.st().tail))))) }
+	return { s in Stream((s.step().head, Stream((x, intersperse(x)(s.step().tail))))) }
 }
 
 /// Returns a Stream of successive reduced values.
 public func scanl<A, B>(f : A -> B -> A) -> A -> Stream<B> -> Stream<A> {
-	return { z in { s in Stream(st: (z, scanl(f)(f(z)(s.st().head))(s.st().tail))) } }
+	return { z in { s in Stream((z, scanl(f)(f(z)(s.step().head))(s.step().tail))) } }
 }
 
 /// Returns a Stream of successive reduced values.
 public func scanl1<A>(f : A -> A -> A) -> Stream<A> -> Stream<A> {
-	return { s in scanl(f)(s.st().head)(s.st().tail) }
+	return { s in scanl(f)(s.step().head)(s.step().tail) }
 }
 
 /// Transposes the "Rows and Columns" of an infinite Stream.
 public func transpose<T>(ss : Stream<Stream<T>>) -> Stream<Stream<T>> {
-	let xs = ss.st().head
-	let yss = ss.st().tail
-	return Stream(st: (Stream(st: (xs.st().head, map(head)(yss))), transpose(Stream(st: (xs.st().tail, map(tail)(yss)))))) 
+	let xs = ss.step().head
+	let yss = ss.step().tail
+	return Stream((Stream((xs.step().head, map(head)(yss))), transpose(Stream((xs.step().tail, map(tail)(yss)))))) 
 }
 
 /// Returns the first n elements of a Stream.
@@ -115,7 +119,7 @@ public func take<T>(n : UInt) -> Stream<T> -> [T] {
 		if n == 0 {
 			return []
 		}
-		return s.st().head <| take(n - 1)(s.st().tail)
+		return s.step().head <| take(n - 1)(s.step().tail)
 	}
 }
 
@@ -125,7 +129,7 @@ public func drop<T>(n : UInt) -> Stream<T> -> Stream<T> {
 		if n == 0 {
 			return s
 		}
-		return drop(n - 1)(tail(s.st().tail))
+		return drop(n - 1)(tail(s.step().tail))
 	}
 }
 
@@ -143,8 +147,8 @@ public func splitAt<T>(n : UInt) -> Stream<T> -> ([T], Stream<T>) {
 /// Returns the longest prefix of values in a Stream for which a predicate holds.
 public func takeWhile<T>(p : T -> Bool) -> Stream<T> -> [T] {
 	return { s in 
-		if p(s.st().head) {
-			return s.st().head <| takeWhile(p)(s.st().tail)
+		if p(s.step().head) {
+			return s.step().head <| takeWhile(p)(s.step().tail)
 		}
 		return []
 	}
@@ -153,8 +157,8 @@ public func takeWhile<T>(p : T -> Bool) -> Stream<T> -> [T] {
 /// Returns the longest suffix remaining after a predicate holds.
 public func dropWhile<T>(p : T -> Bool) -> Stream<T> -> Stream<T> {
 	return { s in 
-		if p(s.st().head) {
-			return dropWhile(p)(s.st().tail)
+		if p(s.step().head) {
+			return dropWhile(p)(s.step().tail)
 		}
 		return s
 	}
@@ -165,21 +169,21 @@ public func dropWhile<T>(p : T -> Bool) -> Stream<T> -> Stream<T> {
 /// If there are no elements that satisfy this predicate this function will diverge.
 public func filter<T>(p : T -> Bool) -> Stream<T> -> Stream<T> {
 	return { s in 
-		if p(s.st().head) {
-			return Stream(st: (s.st().head, filter(p)(s.st().tail)))
+		if p(s.step().head) {
+			return Stream((s.step().head, filter(p)(s.step().tail)))
 		}
-		return filter(p)(s.st().tail)
+		return filter(p)(s.step().tail)
 	}
 }
 
 /// Zips two Streams into a Stream of pairs.
 public func zip<A, B>(s1 : Stream<A>) -> Stream<B> -> Stream<(A, B)> {
-	return { s2 in Stream(st: ((s1.st().head, s2.st().head), zip(s1.st().tail)(s2.st().tail))) }
+	return { s2 in Stream(((s1.step().head, s2.step().head), zip(s1.step().tail)(s2.step().tail))) }
 }
 
 /// Zips two Streams into a third Stream using a combining function.
 public func zipWith<A, B, C>(f : A -> B -> C) -> Stream<A> -> Stream<B> -> Stream<C> {
-	return { s1 in { s2 in Stream(st: (f(s1.st().head)(s2.st().head), zipWith(f)(s1.st().tail)(s2.st().tail))) } }
+	return { s1 in { s2 in Stream((f(s1.step().head)(s2.step().head), zipWith(f)(s1.step().tail)(s2.step().tail))) } }
 }
 
 /// Unzips a Stream of pairs into a pair of Streams.
@@ -230,8 +234,8 @@ public func <*<A, B>(a : Stream<A>, b : Stream<B>) -> Stream<A> {
 extension Stream : Monad {
 	public func bind<B>(f : A -> Stream<B>) -> Stream<B> {
 		return unfold({ ss in 
-			let bs = ss.st().head
-			let bss = ss.st().tail
+			let bs = ss.step().head
+			let bss = ss.step().tail
 			return (head(bs), map(tail)(bss))
 		})(map(f)(self))
 	}
@@ -261,7 +265,7 @@ extension Stream : Comonad {
 	
 	public static func extend<B>(f : Stream<A> -> B) -> Stream<A> -> Stream<B> {
 		return { b in 
-			return Stream<B>(st: (f(b), Stream.extend(f)(tail(b))))
+			return Stream<B>((f(b), Stream.extend(f)(tail(b))))
 		}
 	}
 }
@@ -269,11 +273,11 @@ extension Stream : Comonad {
 extension Stream : ComonadApply {}
 
 public func >*<<A, B>(fab : Stream<A -> B> , xs : Stream<A>) -> Stream<B> {
-	let f = fab.st().head
-	let fs = fab.st().tail
-	let x = xs.st().head
-	let xss = xs.st().tail 
-	return Stream(st: (f(x), (fs >*< xss)))
+	let f = fab.step().head
+	let fs = fab.step().tail
+	let x = xs.step().head
+	let xss = xs.step().tail 
+	return Stream((f(x), (fs >*< xss)))
 }
 
 public func *<<A, B>(_ : Stream<A>, b : Stream<B>) -> Stream<B> {
