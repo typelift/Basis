@@ -34,6 +34,10 @@
 		847E99DE1A48B38A00B5B8CE /* FoldsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847E99DD1A48B38A00B5B8CE /* FoldsSpec.swift */; };
 		84896B431A469179006F3EA9 /* Trampoline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84896B421A469179006F3EA9 /* Trampoline.swift */; };
 		84896B451A475841006F3EA9 /* TrampolineSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84896B441A475841006F3EA9 /* TrampolineSpec.swift */; };
+		847E99DC1A48B1CD00B5B8CE /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847E99DB1A48B1CD00B5B8CE /* Stream.swift */; };
+		847E99DE1A48B38A00B5B8CE /* FoldsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847E99DD1A48B38A00B5B8CE /* FoldsSpec.swift */; };
+		84896B431A469179006F3EA9 /* Trampoline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84896B421A469179006F3EA9 /* Trampoline.swift */; };
+		84896B451A475841006F3EA9 /* TrampolineSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84896B441A475841006F3EA9 /* TrampolineSpec.swift */; };
 		84922D4719D237E000AE9A7C /* Applicative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D1519D237E000AE9A7C /* Applicative.swift */; };
 		84922D4819D237E000AE9A7C /* Arrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D1619D237E000AE9A7C /* Arrow.swift */; };
 		84922D4919D237E000AE9A7C /* BASERealWorld.h in Headers */ = {isa = PBXBuildFile; fileRef = 84922D1719D237E000AE9A7C /* BASERealWorld.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -136,6 +140,10 @@
 		8441AAAB1A0C531A008D5701 /* LazySpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LazySpec.swift; sourceTree = "<group>"; };
 		84423DE71A033BA700361829 /* ZipSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZipSpec.swift; sourceTree = "<group>"; };
 		84522CDB19E10EE200E4423A /* Optional.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Optional.swift; sourceTree = "<group>"; };
+		847E99DB1A48B1CD00B5B8CE /* Stream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stream.swift; sourceTree = "<group>"; };
+		847E99DD1A48B38A00B5B8CE /* FoldsSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoldsSpec.swift; sourceTree = "<group>"; };
+		84896B421A469179006F3EA9 /* Trampoline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trampoline.swift; sourceTree = "<group>"; };
+		84896B441A475841006F3EA9 /* TrampolineSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrampolineSpec.swift; sourceTree = "<group>"; };
 		847E99DB1A48B1CD00B5B8CE /* Stream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stream.swift; sourceTree = "<group>"; };
 		847E99DD1A48B38A00B5B8CE /* FoldsSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoldsSpec.swift; sourceTree = "<group>"; };
 		84896B421A469179006F3EA9 /* Trampoline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trampoline.swift; sourceTree = "<group>"; };
