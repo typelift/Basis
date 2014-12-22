@@ -107,25 +107,3 @@ public func >><A, B>(x : Lazy<A>, y : Lazy<B>) -> Lazy<B> {
 		return y
 	})
 }
-
-
-public struct LazySequenceOf<S : SequenceType, A where S.Generator.Element == A> : SequenceType {
-	let seq : S
-	public init(_ seq : S) {
-		self.seq = seq
-	}
-	
-	public func generate() -> GeneratorOf<A> {
-		return GeneratorOf(seq.generate())
-	}
-	
-	public subscript(i : Int) -> A {
-		var gen = self.generate()
-		var res : A? = gen.next()
-		for x in 0..<i {
-			res = gen.next()
-
-		}
-		return res!
-	}
-}

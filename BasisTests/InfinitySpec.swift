@@ -12,7 +12,7 @@ import XCTest
 
 class InfinitySpec : XCTestCase {
 	func testIterate() {
-		let arr = iterate({ 1 + $0 })(x: 0)
+		let arr = iterate({ 1 + $0 })(0)
 		
 		XCTAssertTrue(arr[0] == 0, "")
 		XCTAssertTrue(arr[1] == 1, "")
@@ -31,16 +31,6 @@ class InfinitySpec : XCTestCase {
 		XCTAssertTrue(arr[3] == "rada", "")
 		XCTAssertTrue(arr[4] == "rada", "")
 		XCTAssertTrue(arr[5] == "rada", "")
-	}
-	
-	func testReplicate() {
-		let arr = replicate(5)(x: "Hello")
-		
-		XCTAssertTrue(arr[0] == "Hello", "")
-		XCTAssertTrue(arr[1] == "Hello", "")
-		XCTAssertTrue(arr[2] == "Hello", "")
-		XCTAssertTrue(arr[3] == "Hello", "")
-		XCTAssertTrue(arr[4] == "Hello", "")
 	}
 	
 	func testCycle() {

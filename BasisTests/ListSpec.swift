@@ -31,6 +31,16 @@ class ListSpec : XCTestCase {
 		XCTAssertTrue(sort(x) == y, "")
 	}
 	
+	func testReplicate() {
+		let arr = replicate(5)("Hello")
+		
+		XCTAssertTrue(arr[0] == "Hello", "")
+		XCTAssertTrue(arr[1] == "Hello", "")
+		XCTAssertTrue(arr[2] == "Hello", "")
+		XCTAssertTrue(arr[3] == "Hello", "")
+		XCTAssertTrue(arr[4] == "Hello", "")
+	}
+	
 	func testIsPrefixOf() {
 		let x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 		
