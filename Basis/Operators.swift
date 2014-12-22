@@ -125,6 +125,14 @@ infix operator >% {
 	associativity left
 }
 
+/// MARK: Data.Stream
+
+/// Cons | Constructs an infinite stream.
+infix operator |>> {
+	precedence 100
+	associativity right
+}
+
 /// MARK: Control.Applicative
 
 /// Ap | Promotes function application.
