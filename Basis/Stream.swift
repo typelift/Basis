@@ -186,3 +186,101 @@ public func zipWith<A, B, C>(f : A -> B -> C) -> Stream<A> -> Stream<B> -> Strea
 public func unzip<A, B>(sp : Stream<(A, B)>) -> (Stream<A>, Stream<B>) {
 	return (map(fst)(sp), map(snd)(sp))
 }
+
+extension Stream : Functor {
+	typealias A = T
+	typealias B = Swift.Any
+	
+	typealias FB = Stream<B>
+	
+	public static func fmap<B>(f : A -> B) -> Stream<A> -> Stream<B> {
+		return map(f)
+	}
+}
+
+public func <%><A, B>(f : A -> B, b : Stream<A>) -> Stream<B> {
+	return Stream.fmap(f)(b)
+}
+
+public func <%<A, B>(a : A, _ : Stream<B>) -> Stream<A> {
+	return repeat(a)
+}
+
+extension Stream : Applicative {
+	typealias FAB = Stream<A -> B>
+	
+	public static func pure(x : A) -> Stream<A> {
+		return repeat(x)
+	}
+}
+
+public func <*><A, B>(f : Stream<A -> B> , o : Stream<A>) -> Stream<B> {
+	return f >*< o
+}
+
+
+public func *><A, B>(a : Stream<A>, b : Stream<B>) -> Stream<B> {
+	return a *< b
+}
+
+public func <*<A, B>(a : Stream<A>, b : Stream<B>) -> Stream<A> {
+	return a >* b
+}
+
+extension Stream : Monad {
+	public func bind<B>(f : A -> Stream<B>) -> Stream<B> {
+		return unfold({ ss in 
+			let bs = ss.st().head
+			let bss = ss.st().tail
+			return (head(bs), map(tail)(bss))
+		})(map(f)(self))
+	}
+}
+
+public func >>-<A, B>(x : Stream<A>, f : A -> Stream<B>) -> Stream<B> {
+	return x.bind(f)
+}
+
+public func >><A, B>(_ : Stream<A>, bs : Stream<B>) -> Stream<B> {
+	return bs
+}
+
+extension Stream : Copointed {
+	public func extract() -> A {
+		return head(self)
+	}
+}
+
+extension Stream : Comonad {
+	typealias FFA = Stream<Stream<A>>
+	
+	public static func duplicate(b : Stream<A>) -> Stream<Stream<A>> {
+		return tails(b)
+	}
+	
+	
+	public static func extend<B>(f : Stream<A> -> B) -> Stream<A> -> Stream<B> {
+		return { b in 
+			return Stream<B>(st: (f(b), Stream.extend(f)(tail(b))))
+		}
+	}
+}
+
+extension Stream : ComonadApply {}
+
+public func >*<<A, B>(fab : Stream<A -> B> , xs : Stream<A>) -> Stream<B> {
+	let f = fab.st().head
+	let fs = fab.st().tail
+	let x = xs.st().head
+	let xss = xs.st().tail 
+	return Stream(st: (f(x), (fs >*< xss)))
+}
+
+public func *<<A, B>(_ : Stream<A>, b : Stream<B>) -> Stream<B> {
+	return b
+}
+
+public func >*<A, B>(a : Stream<A>, _ : Stream<B>) -> Stream<A> {
+	return a
+}
+
