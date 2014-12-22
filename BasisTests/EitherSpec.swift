@@ -10,7 +10,6 @@
 import Basis
 import XCTest
 
-
 class EitherSpec : XCTestCase {
 	func testEither() {
 		let l = { $0 + 25 }

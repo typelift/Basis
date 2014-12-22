@@ -131,6 +131,22 @@ public func foldr1<A>(f: (A, A) -> A) -> [A] -> A {
 	}
 }
 
+/// Takes a function and an initial seed value and constructs a list.
+///
+/// unfoldr is the dual to foldr.  Where foldr reduces a list given a function and an initial value, 
+/// unfoldr uses the initial value and the function to iteratively build a list.  If list building
+/// should continue the function should return .Some(x, y), else it should return .None.
+public func unfoldr<A, B>(f : B -> Optional<(A, B)>) -> B -> [A] {
+	return { b in 
+		switch f(b) {
+			case .Some(let (a, b2)):
+				return a <| unfoldr(f)(b2)
+			case .None:
+				return []
+		}
+	}
+}
+
 /// Returns the conjunction of a Boolean list.
 public func and(l : [Bool]) -> Bool {
 	return foldr({$0 && $1})(true)(l)
