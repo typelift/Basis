@@ -20,19 +20,19 @@ class TrampolineSpec : XCTestCase {
 	/// Evaluates to a ludicrous value but without smashing the stack.
 	func noSmashFac(x : Double, _ acc : Double = 1.0) -> Trampoline<Double> {
 		if x <= 1 {
-			return pure(acc)
+			return now(acc)
 		}
-		return suspend(noSmashFac(x - 1, acc * x))
+		return later(noSmashFac(x - 1, acc * x))
 	}
 	
 	func noSmashAckermann(m : Int, _ n : Int) -> Trampoline<Int> {
 		if m == 0 {
-			return pure(n + 1)
+			return now(n + 1)
 		}
 		if n == 0 {
-			return suspend(noSmashAckermann(m - 1, 1))
+			return later(noSmashAckermann(m - 1, 1))
 		}
-		return suspend(noSmashAckermann(m - 1, suspend(noSmashAckermann(m, n - 1)).run()))
+		return later(noSmashAckermann(m - 1, later(noSmashAckermann(m, n - 1)).run()))
 	}
 	
 	func testFactorial() {

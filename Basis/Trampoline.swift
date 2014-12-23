@@ -28,14 +28,14 @@ public struct Trampoline<T> {
 /// Lifts a pure value into a trampoline.
 ///
 /// Add a leaf to the computation tree of a Trampoline.
-public func pure<T>(x : T) -> Trampoline<T> {
+public func now<T>(x : T) -> Trampoline<T> {
 	return Trampoline(Pure(x: x))
 }
 
 /// Suspends a sub-computation that yields another Trampoline for evaluation later.
 ///
 /// Adds a branch to the computation tree of a Trampoline.
-public func suspend<T>(x : @autoclosure() -> Trampoline<T>) -> Trampoline<T> {
+public func later<T>(x : @autoclosure() -> Trampoline<T>) -> Trampoline<T> {
 	return Trampoline(Suspend(s: Box(x)))
 }
 
@@ -192,7 +192,7 @@ private class Codensity<T> : FreeId<T> {
 	}
 	
 	private override func flatMap<B>(f: T -> FreeId<B>) -> FreeId<B> {
-		return liftCodense(sub, { o in suspend(Trampoline(self.k(o).flatMap(f))).t })
+		return liftCodense(sub, { o in later(Trampoline(self.k(o).flatMap(f))).t })
 	}
 		
 	private override func resume() -> Either<Box<() -> Trampoline<T>>, T> {
