@@ -14,9 +14,9 @@
 /// Monads" by Rúnar Óli Bjarnason ~( http://blog.higher-order.com/assets/trampolines.pdf ) with the
 /// added benefit of Trampoline itself becoming a Monad.
 public struct Trampoline<T> {
-	private let t : Free<T>
+	private let t : FreeId<T>
 	
-	private init(_ t : Free<T>) {
+	private init(_ t : FreeId<T>) {
 		self.t = t
 	}
 	
@@ -97,7 +97,7 @@ public func >><A, B>(x : Trampoline<A>, y : Trampoline<B>) -> Trampoline<B> {
 ///
 /// Codense implementation with catamorphisms inspired by FunctionalJava
 /// https://github.com/functionaljava/functionaljava
-private class Free<T> {
+private class FreeId<T> {
 	func resume() -> Either<Box<() -> Trampoline<T>>, T> {
 		return undefined()
 	}
@@ -114,7 +114,7 @@ private class Free<T> {
 		}
 	}
 	
-	func fold<R>(norm : Free<T> -> R, codense : Codensity<T> -> R) -> R {
+	func fold<R>(norm : FreeId<T> -> R, codense : Codensity<T> -> R) -> R {
 		return undefined()
 	}
 	
@@ -122,19 +122,19 @@ private class Free<T> {
 		return undefined()
 	}
 	
-	func flatMap<B>(f : T -> Free<B>) -> Free<B> {
+	func flatMap<B>(f : T -> FreeId<B>) -> FreeId<B> {
 		return liftCodense(self, f)
 	}
 }
 
-private class Pure<T> : Free<T> {
+private class Pure<T> : FreeId<T> {
 	let val : T
 	
 	init(x : T) {
 		self.val = x
 	}
 	
-	private override func fold<R>(norm: Free<T> -> R, codense : Codensity<T> -> R) -> R {
+	private override func fold<R>(norm: FreeId<T> -> R, codense : Codensity<T> -> R) -> R {
 		return norm(self)
 	}
 	
@@ -147,14 +147,14 @@ private class Pure<T> : Free<T> {
 	}
 }
 
-private class Suspend<T> : Free<T> {
+private class Suspend<T> : FreeId<T> {
 	let suspension : Box<() -> Trampoline<T>>
 	
 	init(s : Box<() -> Trampoline<T>>) {
 		self.suspension = s
 	}
 	
-	private override func fold<R>(norm : Free<T> -> R, codense : Codensity<T> -> R) -> R {
+	private override func fold<R>(norm : FreeId<T> -> R, codense : Codensity<T> -> R) -> R {
 		return norm(self)
 	}
 	
@@ -168,24 +168,24 @@ private class Suspend<T> : Free<T> {
 }
 
 /// There's got to be a better way to do this...
-private func liftCodense<A, B>(a : Free<A>, k : A -> Free<B>) -> Codensity<B> {
+private func liftCodense<A, B>(a : FreeId<A>, k : A -> FreeId<B>) -> Codensity<B> {
 	return Codensity<B>(sub: unsafeCoerce(a), unsafeCoerce(k))
 }
 
-private class Codensity<T> : Free<T> {
-	let sub : Free<T>
-	let k : T -> Free<T>
+private class Codensity<T> : FreeId<T> {
+	let sub : FreeId<T>
+	let k : T -> FreeId<T>
 	
-	private override func fold<R>(norm : Free<T> -> R, codense : Codensity<T> -> R) -> R {
+	private override func fold<R>(norm : FreeId<T> -> R, codense : Codensity<T> -> R) -> R {
 		return codense(self)
 	}
 	
-	init(sub : Free<T>, k : T -> Free<T>) {
+	init(sub : FreeId<T>, k : T -> FreeId<T>) {
 		self.sub = sub
 		self.k = k
 	}
 	
-	private override func flatMap<B>(f: T -> Free<B>) -> Free<B> {
+	private override func flatMap<B>(f: T -> FreeId<B>) -> FreeId<B> {
 		return liftCodense(sub, { o in suspend(Trampoline(self.k(o).flatMap(f))).t })
 	}
 		
