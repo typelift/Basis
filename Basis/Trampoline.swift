@@ -25,10 +25,16 @@ public struct Trampoline<T> {
 	}
 }
 
+/// Lifts a pure value into a trampoline.
+///
+/// Add a leaf to the computation tree of a Trampoline.
 public func pure<T>(x : T) -> Trampoline<T> {
 	return Trampoline(Pure(x: x))
 }
 
+/// Suspends a sub-computation that yields another Trampoline for evaluation later.
+///
+/// Adds a branch to the computation tree of a Trampoline.
 public func suspend<T>(x : @autoclosure() -> Trampoline<T>) -> Trampoline<T> {
 	return Trampoline(Suspend(s: Box(x)))
 }
