@@ -10,7 +10,6 @@
 import Basis
 import XCTest
 
-
 class TupleSpec : XCTestCase {
 	func testTuples() {
 		let t = (10, "String")

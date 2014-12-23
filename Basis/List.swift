@@ -40,6 +40,11 @@ public func <|<T>(lhs : T, var rhs : [T]) -> [T] {
 	return rhs
 }
 
+/// Returns a list with n values of x in it.
+public func replicate<A>(n : Int) -> A -> [A] {
+	return { x in Array(count: n, repeatedValue: x) }
+}
+
 public enum ArrayD<A> {
 	case Empty
 	case Cons(A, [A])

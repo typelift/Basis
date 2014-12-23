@@ -30,6 +30,7 @@
 		8441AAAC1A0C531A008D5701 /* LazySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8441AAAB1A0C531A008D5701 /* LazySpec.swift */; };
 		84423DE81A033BA700361829 /* ZipSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84423DE71A033BA700361829 /* ZipSpec.swift */; };
 		84522CDC19E10EE200E4423A /* Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84522CDB19E10EE200E4423A /* Optional.swift */; };
+		847E99DC1A48B1CD00B5B8CE /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847E99DB1A48B1CD00B5B8CE /* Stream.swift */; };
 		847E99DE1A48B38A00B5B8CE /* FoldsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847E99DD1A48B38A00B5B8CE /* FoldsSpec.swift */; };
 		84922D4719D237E000AE9A7C /* Applicative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D1519D237E000AE9A7C /* Applicative.swift */; };
 		84922D4819D237E000AE9A7C /* Arrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D1619D237E000AE9A7C /* Arrow.swift */; };
@@ -49,7 +50,6 @@
 		84922D5719D237E000AE9A7C /* Exit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D2519D237E000AE9A7C /* Exit.swift */; };
 		84922D5A19D237E000AE9A7C /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D2819D237E000AE9A7C /* Function.swift */; };
 		84922D5B19D237E000AE9A7C /* Functor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D2919D237E000AE9A7C /* Functor.swift */; };
-		84922D5C19D237E000AE9A7C /* Infinity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D2A19D237E000AE9A7C /* Infinity.swift */; };
 		84922D5E19D237E000AE9A7C /* IO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D2C19D237E000AE9A7C /* IO.swift */; };
 		84922D5F19D237E000AE9A7C /* IORef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D2D19D237E000AE9A7C /* IORef.swift */; };
 		84922D6019D237E000AE9A7C /* Kinds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D2E19D237E000AE9A7C /* Kinds.swift */; };
@@ -134,6 +134,7 @@
 		8441AAAB1A0C531A008D5701 /* LazySpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LazySpec.swift; sourceTree = "<group>"; };
 		84423DE71A033BA700361829 /* ZipSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZipSpec.swift; sourceTree = "<group>"; };
 		84522CDB19E10EE200E4423A /* Optional.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Optional.swift; sourceTree = "<group>"; };
+		847E99DB1A48B1CD00B5B8CE /* Stream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stream.swift; sourceTree = "<group>"; };
 		847E99DD1A48B38A00B5B8CE /* FoldsSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoldsSpec.swift; sourceTree = "<group>"; };
 		84922D1519D237E000AE9A7C /* Applicative.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Applicative.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		84922D1619D237E000AE9A7C /* Arrow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Arrow.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -153,7 +154,6 @@
 		84922D2519D237E000AE9A7C /* Exit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Exit.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		84922D2819D237E000AE9A7C /* Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Function.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		84922D2919D237E000AE9A7C /* Functor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Functor.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		84922D2A19D237E000AE9A7C /* Infinity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Infinity.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		84922D2B19D237E000AE9A7C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84922D2C19D237E000AE9A7C /* IO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = IO.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		84922D2D19D237E000AE9A7C /* IORef.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = IORef.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -216,10 +216,8 @@
 			isa = PBXGroup;
 			children = (
 				841FE03419DB7E7C0068636A /* List.swift */,
-				841FE03319DB7E7C0068636A /* Lazy.swift */,
 				841FE04A19DB7EEC0068636A /* Compare.swift */,
 				841FE04B19DB7EEC0068636A /* Folds.swift */,
-				84922D2A19D237E000AE9A7C /* Infinity.swift */,
 				841FE03519DB7E7C0068636A /* Scans.swift */,
 				841FE03619DB7E7C0068636A /* Search.swift */,
 				841FE03719DB7E7C0068636A /* String.swift */,
@@ -309,6 +307,7 @@
 				84922D2819D237E000AE9A7C /* Function.swift */,
 				84D4D8E11A16E376001F5E4D /* Functor */,
 				84922D2D19D237E000AE9A7C /* IORef.swift */,
+				841FE03319DB7E7C0068636A /* Lazy.swift */,
 				841FE03C19DB7E7C0068636A /* List */,
 				84922D7F19D2388500AE9A7C /* Map */,
 				84922D3419D237E000AE9A7C /* Maybe.swift */,
@@ -319,6 +318,7 @@
 				842963B119DF7A3A003FCBE8 /* Set.swift */,
 				84922D3D19D237E000AE9A7C /* ST.swift */,
 				84922D3E19D237E000AE9A7C /* STRef.swift */,
+				847E99DB1A48B1CD00B5B8CE /* Stream.swift */,
 				84922D4419D237E000AE9A7C /* Tuple.swift */,
 				84922D4519D237E000AE9A7C /* Unique.swift */,
 				8434F96C19E8BA0A008D9909 /* Version.swift */,
@@ -560,10 +560,10 @@
 				84922D6519D237E000AE9A7C /* Map.swift in Sources */,
 				842963B219DF7A3A003FCBE8 /* Set.swift in Sources */,
 				84922D7619D237E000AE9A7C /* Tuple.swift in Sources */,
-				84922D5C19D237E000AE9A7C /* Infinity.swift in Sources */,
 				84922D4A19D237E000AE9A7C /* BASERealWorld.m in Sources */,
 				84922D6019D237E000AE9A7C /* Kinds.swift in Sources */,
 				84922D5719D237E000AE9A7C /* Exit.swift in Sources */,
+				847E99DC1A48B1CD00B5B8CE /* Stream.swift in Sources */,
 				84522CDC19E10EE200E4423A /* Optional.swift in Sources */,
 				84922EB119D3869B00AE9A7C /* Result.swift in Sources */,
 				84922D4819D237E000AE9A7C /* Arrow.swift in Sources */,
