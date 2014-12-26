@@ -42,6 +42,11 @@ private func prependToAll<A>(sep : A) -> [A] -> [A] {
 	}
 }
 
+/// Inserts a list in between the elements of a 2-dimensional array and concatenates the result.
+public func intercalate<A>(list: [A], nested:[[A]]) -> [A] {
+	return concat(intersperse(list)(nested))
+}
+
 /// Transposes the rows and columns of a list.
 ///
 ///     transpose([[1,2,3],[4,5,6]]) == [[1,4],[2,5],[3,6]]
