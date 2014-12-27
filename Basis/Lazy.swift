@@ -67,21 +67,30 @@ public func <%<A, B>(x : A, l : Lazy<B>) -> Lazy<A> {
 	return Lazy.fmap(const(x))(l)
 }
 
-extension Lazy : Applicative {
-	typealias FAB = Lazy<A -> B>
-	
+extension Lazy : Pointed {
 	public static func pure<A>(a: A) -> Lazy<A> {
 		return Lazy<A>(newSTRef(.Now(Box(a))).runST())
 	}
 }
 
-public func <*><A, B>(stfn: Lazy<A -> B>, st: Lazy<A>) -> Lazy<B> {
-	switch readSTRef(stfn.state).runST() {
-		case .Eventually(let d):
-			return delay({ d()(force(st)) })
-		case .Now(let bx):
-			return Lazy.fmap(bx.unBox())(st)
+extension Lazy : Applicative {
+	typealias FAB = Lazy<A -> B>
+	
+	public static func ap<A, B>(stfn: Lazy<A -> B>) -> Lazy<A> -> Lazy<B> {
+		return { st in
+			switch readSTRef(stfn.state).runST() {
+				case .Eventually(let d):
+					return delay({ d()(force(st)) })
+				case .Now(let bx):
+					return Lazy<A>.fmap(bx.unBox())(st)
+			}
+		}
 	}
+}
+
+
+public func <*><A, B>(stfn: Lazy<A -> B>, st: Lazy<A>) -> Lazy<B> {
+	return Lazy<A>.ap(stfn)(st)
 }
 
 public func *><A, B>(a : Lazy<A>, b : Lazy<B>) -> Lazy<B> {

@@ -14,35 +14,35 @@ public enum EitherD<A, B> {
 
 /// Either represents a computation that either produces a result (left) or fails with an error
 /// (right).
-public struct Either<A, B>  {
-	let lVal : A?
-	let rVal : B?
+public struct Either<L, R>  {
+	let lVal : L?
+	let rVal : R?
 	
-	init(left : A) {
+	init(left : L) {
 		self.lVal = left
 	}
 	
-	init(right : B) {
+	init(right : R) {
 		self.rVal = right
 	}
 
-	public static func left(x : A) -> Either<A, B> {
+	public static func left(x : L) -> Either<L, R> {
 		return Either(left: x)
 	}
 	
-	public static func right(x : B) -> Either<A, B> {
+	public static func right(x : R) -> Either<L, R> {
 		return Either(right: x)
 	}
 	
-	public static func left(x : Box<A>) -> Either<A, B> {
+	public static func left(x : Box<L>) -> Either<L, R> {
 		return Either(left: x.unBox())
 	}
 	
-	public static func right(x : Box<B>) -> Either<A, B> {
+	public static func right(x : Box<R>) -> Either<L, R> {
 		return Either(right: x.unBox())
 	}
 	
-	public func destruct() -> EitherD<A, B> {
+	public func destruct() -> EitherD<L, R> {
 		if lVal != nil {
 			return .Left(Box(lVal!))
 		}
@@ -132,16 +132,18 @@ public func !=<A : Equatable, B : Equatable>(lhs: Either<A, B>, rhs: Either<A, B
 // MARK: Functor
 
 extension Either : Functor {
+	typealias A = R
+	typealias B = Any
 	typealias C = Any
-	typealias FB = Either<A, C>
+	typealias FB = Either<L, C>
 
-	public static func fmap<C>(f : B -> C) -> Either<A, B> -> Either<A, C> {
+	public static func fmap<C>(f : R -> C) -> Either<L, R> -> Either<L, C> {
 		return { 
 			switch $0.destruct() {
 				case .Left(let b):
-					return Either<A, C>.left(b)
+					return Either<L, C>.left(b)
 				case .Right(let b):
-					return Either<A, C>.right(f(b.unBox()))
+					return Either<L, C>.right(f(b.unBox()))
 			}
 		}
 	}
@@ -156,21 +158,29 @@ public func <% <A, B, C>(x : B, either : Either<A, C>) -> Either<A, B> {
 	return Either.fmap(const(x))(either)
 }
 
+extension Either : Pointed {
+	public static func pure(x : R) -> Either<L, R> {
+		return Either<L, R>.right(x)
+	}
+}
+
 extension Either : Applicative {
-	typealias FAB = Either<A, B -> C>
+	typealias FAB = Either<L, R -> C>
 	
-	public static func pure(x : Either<A, B>.A) -> Either<A, B> {
-		return Either.right(x)
+	public static func ap<C>(f : Either<L, R -> C>) -> Either<L, R> -> Either<L, C> {
+		return { e in 
+			switch f.destruct() {
+				case .Left(let e):
+					return Either<L, C>.left(e)
+				case .Right(let f):
+					return Either<L, R>.fmap(f.unBox())(e)
+			}
+		}
 	}
 }
 
 public func <*><A, B, C>(f : Either<A, B -> C> , r : Either<A, B>) ->  Either<A, C> {
-	switch f.destruct() {
-		case .Left(let e):
-			return Either.left(e)
-		case .Right(let f):
-			return Either.fmap(f.unBox())(r)
-	}
+	return Either<A, B>.ap(f)(r)
 }
 
 public func *><A, B, C>(a : Either<A, B>, b : Either<A, C>) -> Either<A, C> {
@@ -182,10 +192,10 @@ public func <*<A, B, C>(a : Either<A, B>, b : Either<A, C>) -> Either<A, B> {
 }
 
 extension Either : Monad {
-	public func bind<C>(f : Either<A, B>.A -> Either<A, C>) -> Either<A, C> {
+	public func bind<C>(f : R -> Either<L, C>) -> Either<L, C> {
 		switch self.destruct() {
 			case .Left(let l):
-				return Either<A, C>.left(l)
+				return Either<L, C>.left(l)
 			case .Right(let r):
 				return f(r.unBox())
 		}
@@ -202,8 +212,8 @@ public func >><A, B, C>(x : Either<A, B>, y : Either<A, C>) -> Either<A, C> {
 }
 
 extension Either : MonadFix {
-	public static func mfix(f : B -> Either<A, B>) -> Either<A, B> {
-		func fromRight(e : Either<A, B>) -> B {
+	public static func mfix(f : R -> Either<L, R>) -> Either<L, R> {
+		func fromRight(e : Either<L, R>) -> R {
 			switch e.destruct() {
 				case .Right(let br):
 					return br.unBox()

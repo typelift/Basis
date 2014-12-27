@@ -84,6 +84,7 @@
 		84D4D8F71A18095F001F5E4D /* ComonadFix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D8F31A18095F001F5E4D /* ComonadFix.swift */; };
 		84D4D8FA1A181649001F5E4D /* ComonadApply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D8F91A181649001F5E4D /* ComonadApply.swift */; };
 		84D77DF91A3CF9F4000F5683 /* ListSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D77DF81A3CF9F4000F5683 /* ListSpec.swift */; };
+		84D77DF31A3BDCB6000F5683 /* Pointed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D77DF21A3BDCB6000F5683 /* Pointed.swift */; };
 		84F9062E19D638BD0035D429 /* ArrowSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F9062D19D638BD0035D429 /* ArrowSpec.swift */; };
 /* End PBXBuildFile section */
 
@@ -190,6 +191,7 @@
 		84D4D8F31A18095F001F5E4D /* ComonadFix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComonadFix.swift; sourceTree = "<group>"; };
 		84D4D8F91A181649001F5E4D /* ComonadApply.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComonadApply.swift; sourceTree = "<group>"; };
 		84D77DF81A3CF9F4000F5683 /* ListSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListSpec.swift; sourceTree = "<group>"; };
+		84D77DF21A3BDCB6000F5683 /* Pointed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pointed.swift; sourceTree = "<group>"; };
 		84F9062D19D638BD0035D429 /* ArrowSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ArrowSpec.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 /* End PBXFileReference section */
 
@@ -232,7 +234,6 @@
 			isa = PBXGroup;
 			children = (
 				84922D1519D237E000AE9A7C /* Applicative.swift */,
-				84D4D8F01A180959001F5E4D /* Copointed.swift */,
 				84922D7A19D2381800AE9A7C /* Arrow */,
 				84922D1E19D237E000AE9A7C /* Category.swift */,
 				84D4D8F51A18095F001F5E4D /* Comonad */,
@@ -315,6 +316,7 @@
 				84522CDB19E10EE200E4423A /* Optional.swift */,
 				84922D3819D237E000AE9A7C /* Monoid.swift */,
 				84922EB019D3869B00AE9A7C /* Result.swift */,
+				84D77DF41A3BDCBA000F5683 /* Pointed */,
 				842963B119DF7A3A003FCBE8 /* Set.swift */,
 				84922D3D19D237E000AE9A7C /* ST.swift */,
 				84922D3E19D237E000AE9A7C /* STRef.swift */,
@@ -408,6 +410,15 @@
 				84D4D8F91A181649001F5E4D /* ComonadApply.swift */,
 			);
 			name = Comonad;
+			sourceTree = "<group>";
+		};
+		84D77DF41A3BDCBA000F5683 /* Pointed */ = {
+			isa = PBXGroup;
+			children = (
+				84D4D8F01A180959001F5E4D /* Copointed.swift */,
+				84D77DF21A3BDCB6000F5683 /* Pointed.swift */,
+			);
+			name = Pointed;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -571,6 +582,7 @@
 				84095F0B1A28EA9E00956141 /* Member.swift in Sources */,
 				84922D5B19D237E000AE9A7C /* Functor.swift in Sources */,
 				84922D6619D237E000AE9A7C /* Maybe.swift in Sources */,
+				84D77DF31A3BDCB6000F5683 /* Pointed.swift in Sources */,
 				84922D5F19D237E000AE9A7C /* IORef.swift in Sources */,
 				84922D5019D237E000AE9A7C /* Category.swift in Sources */,
 				841FE04019DB7E7C0068636A /* Search.swift in Sources */,

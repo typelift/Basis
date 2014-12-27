@@ -62,6 +62,18 @@ public func <><A : Monoid>(l : Dual<A>, r : Dual<A>) -> Dual<A> {
 	return Dual.mappend(l)(r)
 }
 
+extension Dual : Pointed {
+	public static func pure(x : A.M) -> Dual<A> {
+		return Dual(x)
+	}
+}
+
+extension Dual : Copointed {
+	public func extract() -> A.M {
+		return self.getDual
+	}
+}
+
 /// The monoid of endomorphisms under composition.
 public struct Endo<A> {
 	public let appEndo : A -> A
@@ -85,6 +97,12 @@ extension Endo : Monoid {
 
 public func <><A>(l : Endo<A>, r : Endo<A>) -> Endo<A> {
 	return Endo.mappend(l)(r)
+}
+
+extension Endo : Pointed {
+	public static func pure(x : A -> A) -> Endo<A> {
+		return Endo(x)
+	}
 }
 
 /// The monoid of booleans under conjunction
@@ -162,6 +180,18 @@ public func <><A : protocol<IntegerArithmeticType, IntegerLiteralConvertible>>(l
 	return Sum.mappend(l)(r)
 }
 
+extension Sum : Pointed {
+	public static func pure(x : A) -> Sum<A> {
+		return Sum(x)
+	}
+}
+
+extension Sum : Copointed {
+	public func extract() -> A {
+		return self.getSum
+	}
+}
+
 /// The monoid of arithmetic types under multiplication.
 public struct Product<A : protocol<IntegerArithmeticType, IntegerLiteralConvertible>> {
 	public let getProduct : A
@@ -185,6 +215,18 @@ extension Product : Monoid {
 	
 public func <><A : protocol<IntegerArithmeticType, IntegerLiteralConvertible>>(l : Product<A>, r : Product<A>) -> Product<A> {
 	return Product.mappend(l)(r)
+}
+
+extension Product : Pointed {
+	public static func pure(x : A) -> Product<A> {
+		return Product(x)
+	}
+}
+
+extension Product : Copointed {
+	public func extract() -> A {
+		return self.getProduct
+	}
 }
 
 /// The left-biased maybe monoid.
@@ -212,6 +254,18 @@ public func <><A>(l : First<A>, r : First<A>) -> First<A> {
 	return First.mappend(l)(r)
 }
 
+extension First : Pointed {
+	public static func pure(x : A) -> First<A> {
+		return First(Maybe(x))
+	}
+}
+
+//extension First : Copointed {
+//	public func extract() -> Maybe<A> {
+//		return self.getFirst
+//	}
+//}
+
 /// The right-biased maybe monoid.
 public struct Last<A> {
 	public let getLast : Maybe<A>
@@ -236,6 +290,18 @@ extension Last : Monoid {
 public func <><A>(l : Last<A>, r : Last<A>) -> Last<A> {
 	return Last.mappend(l)(r)
 }
+
+extension Last : Pointed {
+	public static func pure(x : A) -> Last<A> {
+		return Last(Maybe(x))
+	}
+}
+
+//extension Last : Copointed {
+//	public func extract() -> Maybe<A> {
+//		return self.getLast
+//	}
+//}
 
 /// The monoid of ordered values under max.
 public struct Max<A : protocol<Comparable, Bounded>> {
@@ -262,6 +328,18 @@ public func <><A : protocol<Comparable, Bounded>>(l : Max<A>, r : Max<A>) -> Max
 	return Max.mappend(l)(r)
 }
 
+extension Max : Pointed {
+	public static func pure(x : A) -> Max<A> {
+		return Max(x)
+	}
+}
+
+extension Max : Copointed {
+	public func extract() -> A {
+		return self.getMax
+	}
+}
+
 /// The monoid of ordered values under min.
 public struct Min<A : protocol<Comparable, Bounded>> {
 	public let getMin : A
@@ -285,6 +363,18 @@ extension Min : Monoid {
 
 public func <><A : protocol<Comparable, Bounded>>(l : Min<A>, r : Min<A>) -> Min<A> {
 	return Min.mappend(l)(r)
+}
+
+extension Min : Pointed {
+	public static func pure(x : A) -> Min<A> {
+		return Min(x)
+	}
+}
+
+extension Min : Copointed {
+	public func extract() -> A {
+		return self.getMin
+	}
 }
 
 /// MARK: Equatable

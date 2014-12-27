@@ -46,9 +46,7 @@ public func <%<S, A, B>(x : A, l : ST<S, B>) -> ST<S, A> {
 	return ST.fmap(const(x))(l)
 }
 
-extension ST : Applicative {
-	typealias FAB = ST<S, A -> B>
-
+extension ST : Pointed {
 	public static func pure<S, A>(a: A) -> ST<S, A> {
 		return ST<S, A>(apply: { s in
 			return (s, a)
@@ -56,11 +54,19 @@ extension ST : Applicative {
 	}
 }
 
+extension ST : Applicative {
+	typealias FAB = ST<S, A -> B>
+	
+	public static func ap<S, A, B>(stfn: ST<S, A -> B>) -> ST<S, A> -> ST<S, B> {
+		return { st in ST<S, B>(apply: { s in
+			let (nw, f) = stfn.apply(s: s)
+			return (nw, f(st.runST()))
+		}) }
+	}
+}
+
 public func <*><S, A, B>(stfn: ST<S, A -> B>, st: ST<S, A>) -> ST<S, B> {
-	return ST<S, B>(apply: { s in
-		let (nw, f) = stfn.apply(s: s)
-		return (nw, f(st.runST()))
-	})
+	return ST<S, A>.ap(stfn)(st)
 }
 
 public func *><S, A, B>(a : ST<S, A>, b : ST<S, B>) -> ST<S, B> {

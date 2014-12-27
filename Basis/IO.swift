@@ -98,19 +98,24 @@ public func <% <A, B>(x : A, io : IO<B>) -> IO<A> {
 	return IO.fmap(const(x))(io)
 }
 
-extension IO : Applicative {
+extension IO : Pointed {
 	public static func pure(a: A) -> IO<A> {
 		return IO<A>({ rw in (rw, a) })
 	}
+}
 
+extension IO : Applicative { 
+	public static func ap<B>(fn: IO<A -> B>) -> IO<A> -> IO<B> {
+		return { m in return IO<B>({ rw in
+			let f = fn.unsafePerformIO()
+			let (nw, x) = m.apply(rw)
+			return (nw, f(x))
+		}) }
+	}
 }
 
 public func <*><A, B>(fn: IO<A -> B>, m: IO<A>) -> IO<B> {
-	return IO<B>({ rw in
-		let f = fn.unsafePerformIO()
-		let (nw, x) = m.apply(rw)
-		return (nw, f(x))
-	})
+	return IO<A>.ap(fn)(m)
 }
 
 public func *> <A, B>(a : IO<A>, b : IO<B>) -> IO<B> {
