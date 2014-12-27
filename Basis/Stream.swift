@@ -216,6 +216,10 @@ extension Stream : Applicative {
 	public static func pure(x : A) -> Stream<A> {
 		return repeat(x)
 	}
+
+	public static func ap<B>(f : Stream<A -> B>) -> Stream<A> -> Stream<B> {
+		return { o in f >*< o }
+	}
 }
 
 public func <*><A, B>(f : Stream<A -> B> , o : Stream<A>) -> Stream<B> {
