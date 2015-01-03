@@ -377,6 +377,23 @@ extension Min : Copointed {
 	}
 }
 
+/// A Monoid over Strings.
+extension String : Monoid {
+	typealias M = String
+
+	public static func mempty() -> String {
+		return ""
+	}
+
+	public static func mappend(l : String) -> String -> String {
+		return { r in l + r }
+	}
+}
+
+public func <>(l : String, r : String) -> String {
+	return l + r
+}
+
 /// MARK: Equatable
 
 public func ==<A : Monoid where A.M : Equatable>(lhs : Dual<A>, rhs : Dual<A>) -> Bool {

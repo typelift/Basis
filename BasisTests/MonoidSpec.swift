@@ -163,6 +163,21 @@ class MonoidSpec : XCTestCase {
 		let y = Max(10)
 		let z = Max(15)
 		XCTAssertTrue(((x <> y) <> z) == (x <> (y <> z)), "")
-	}	
+	}
+
+	func testStringLeftIdentity() {
+		XCTAssertTrue((String.mempty() <> "String") == "String", "")
+	}
+
+	func testStringRightIdentity() {
+		XCTAssertTrue(("String" <> String.mempty()) == "String", "")
+	}
+
+	func testStringMappend() {
+		let x = "Abra"
+		let y = "Cadabra"
+		let z = "Alacazam"
+		XCTAssertTrue(((x <> y) <> z) == (x <> (y <> z)), "")
+	}
 }
 
