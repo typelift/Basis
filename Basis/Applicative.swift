@@ -64,3 +64,13 @@ public protocol Alternative : Applicative {
 	func many(Self) -> FLA
 }
 
+public protocol ApplicativeOps : Applicative {
+	typealias C
+	typealias FC = K1<C>
+	typealias D
+	typealias FD = K1<D>
+
+	class func liftA(f : A -> B) -> Self -> FB
+	class func liftA2(f : A -> B -> C) -> Self -> FB -> FC
+	class func liftA3(f : A -> B -> C -> D) -> Self -> FB -> FC -> FD
+}
