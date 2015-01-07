@@ -138,3 +138,17 @@ func noSmashFactorial(x : Double, _ acc : Double = 1.0) -> Trampoline<Double> {
 let inf = noSmashFactorial(50000).run()
 ```
 
+We're no strangers to the Real World either.  Swift is a profoundly imperative
+language at heart, but that doesn't mean we can't do something about it.  Enter
+the IO Monad.  Our IO Monad is the incarnation of an effect that has yet to
+happen.
+
+```Swift
+/// An effect that, when executed, will pause for input from the terminal, then
+/// shout it back at you.
+let eff = interact(pack • map({ $0.toUpper() }) • unpack)
+/// ...
+/// Executes the effect with the current state of the world.
+eff.unsafePerformIO()
+```
+
