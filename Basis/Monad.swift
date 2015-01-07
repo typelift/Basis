@@ -45,15 +45,26 @@ public protocol MonadPlus : Monad {
 	class func mplus(Self) -> Self -> Self
 }
 
-public func guard<M : MonadPlus where M.A == Void>(b : Bool) -> M {
-	return b ? M.pure(()) : M.mzero()
-}
+public protocol MonadOps : Monad {
+	typealias C
+	typealias FC = K1<C>
 
-public func when<M : Monad where M.A == Void>(b : Bool) -> M -> M {
-	return { m in b ? m : M.pure(()) }
-}
+	typealias MLA = K1<[A]>
+	typealias MLB = K1<[B]>
+	typealias MU = K1<()>
 
-public func unless<M : Monad where M.A == Void>(b : Bool) -> M -> M {
-	return { m in b ? M.pure(()) : m }
-}
+	class func mapM(A -> FB) -> [A] -> MLB
+	class func mapM_(A -> FB) -> [A] -> MU
 
+	class func forM([A]) -> (A -> FB) -> MLB
+	class func forM_([A]) -> (A -> FB) -> MU
+
+	class func sequence([Self]) -> MLA
+	class func sequence_([Self]) -> MU
+
+	func -<<(A -> FB, Self) -> FB
+	func >->(A -> FB,  B -> FC) -> A -> FC
+	func <-<(B -> FC, A -> FB) -> A -> FC
+
+	class func forever(Self) -> FB
+}

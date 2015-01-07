@@ -173,6 +173,18 @@ infix operator -<< {
 	associativity right
 }
 
+/// Left-to-Right Kleisli |
+infix operator >-> {
+	precedence 110
+	associativity right
+}
+
+/// Right-to-Left Kleisli |
+infix operator <-< {
+	precedence 110
+	associativity right
+}
+
 /// MARK: System.IO
 
 /// Extract | Extracts a value from a monadic computation.
