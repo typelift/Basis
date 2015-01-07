@@ -77,6 +77,25 @@ public func <*<S, A, B>(a : ST<S, A>, b : ST<S, B>) -> ST<S, A> {
 	return const <%> a <*> b
 }
 
+extension ST : ApplicativeOps {
+	typealias C = Any
+	typealias FC = ST<S, C>
+	typealias D = Any
+	typealias FD = ST<S, D>
+
+	public static func liftA<B>(f : A -> B) -> ST<S, A> -> ST<S, B> {
+		return { a in ST<S, A -> B>.pure(f) <*> a }
+	}
+
+	public static func liftA2<B, C>(f : A -> B -> C) -> ST<S, A> -> ST<S, B> -> ST<S, C> {
+		return { a in { b in f <%> a <*> b  } }
+	}
+
+	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> ST<S, A> -> ST<S, B> -> ST<S, C> -> ST<S, D> {
+		return { a in { b in { c in f <%> a <*> b <*> c } } }
+	}
+}
+
 extension ST : Monad {
 	public func bind<B>(f: A -> ST<S, B>) -> ST<S, B> {
 		return f(runST())

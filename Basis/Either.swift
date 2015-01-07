@@ -134,8 +134,7 @@ public func !=<A : Equatable, B : Equatable>(lhs: Either<A, B>, rhs: Either<A, B
 extension Either : Functor {
 	typealias A = R
 	typealias B = Any
-	typealias C = Any
-	typealias FB = Either<L, C>
+	typealias FB = Either<L, B>
 
 	public static func fmap<C>(f : R -> C) -> Either<L, R> -> Either<L, C> {
 		return { 
@@ -150,7 +149,7 @@ extension Either : Functor {
 
 }
 
-public func <%><A, B, C>(f: B -> C, either : Either<A, B>) -> Either<A, C> {
+public func <%><A, B, C>(f : B -> C, either : Either<A, B>) -> Either<A, C> {
 	return Either.fmap(f)(either)
 }
 
@@ -189,6 +188,25 @@ public func *><A, B, C>(a : Either<A, B>, b : Either<A, C>) -> Either<A, C> {
 
 public func <*<A, B, C>(a : Either<A, B>, b : Either<A, C>) -> Either<A, B> {
 	return const <%> a <*> b
+}
+
+extension Either : ApplicativeOps {
+	typealias C = Any
+	typealias FC = Either<L, C>
+	typealias D = Any
+	typealias FD = Either<L, D>
+
+	public static func liftA<B>(f : A -> B) -> Either<L, A> -> Either<L, B> {
+		return { a in Either<L, A -> B>.pure(f) <*> a }
+	}
+
+	public static func liftA2<B, C>(f : A -> B -> C) -> Either<L, A> -> Either<L, B> -> Either<L, C> {
+		return { a in { b in f <%> a <*> b  } }
+	}
+
+	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> Either<L, A> -> Either<L, B> -> Either<L, C> -> Either<L, D> {
+		return { a in { b in { c in f <%> a <*> b <*> c } } }
+	}
 }
 
 extension Either : Monad {

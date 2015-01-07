@@ -88,6 +88,25 @@ public func <*<A, B>(a : Trampoline<A>, b : Trampoline<B>) -> Trampoline<A> {
 	return const <%> a <*> b
 }
 
+extension Trampoline : ApplicativeOps {
+	typealias C = Any
+	typealias FC = Trampoline<C>
+	typealias D = Any
+	typealias FD = Trampoline<D>
+
+	public static func liftA<B>(f : A -> B) -> Trampoline<A> -> Trampoline<B> {
+		return { a in Trampoline<A -> B>.pure(f) <*> a }
+	}
+
+	public static func liftA2<B, C>(f : A -> B -> C) -> Trampoline<A> -> Trampoline<B> -> Trampoline<C> {
+		return { a in { b in f <%> a <*> b  } }
+	}
+
+	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> Trampoline<A> -> Trampoline<B> -> Trampoline<C> -> Trampoline<D> {
+		return { a in { b in { c in f <%> a <*> b <*> c } } }
+	}
+}
+
 extension Trampoline : Monad {
 	public func bind<B>(f: A -> Trampoline<B>) -> Trampoline<B> {
 		return Trampoline<B>(self.t.flatMap({ x in f(x).t }))

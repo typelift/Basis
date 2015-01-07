@@ -180,6 +180,25 @@ public func <*<A, B>(a : Result<A>, b : Result<B>) -> Result<A> {
 	return const <%> a <*> b
 }
 
+extension Result : ApplicativeOps {
+	typealias C = Any
+	typealias FC = Result<C>
+	typealias D = Any
+	typealias FD = Result<D>
+
+	public static func liftA<B>(f : A -> B) -> Result<A> -> Result<B> {
+		return { a in Result<A -> B>.pure(f) <*> a }
+	}
+
+	public static func liftA2<B, C>(f : A -> B -> C) -> Result<A> -> Result<B> -> Result<C> {
+		return { a in { b in f <%> a <*> b  } }
+	}
+
+	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> Result<A> -> Result<B> -> Result<C> -> Result<D> {
+		return { a in { b in { c in f <%> a <*> b <*> c } } }
+	}
+}
+
 extension Result : Monad {
 	public func bind<B>(f : A -> Result<B>) -> Result<B> {
 		switch self.destruct() {

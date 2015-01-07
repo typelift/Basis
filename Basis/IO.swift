@@ -126,6 +126,25 @@ public func <* <A, B>(a : IO<A>, b : IO<B>) -> IO<A> {
 	return const <%> a <*> b
 }
 
+extension IO : ApplicativeOps {
+	typealias C = Any
+	typealias FC = IO<C>
+	typealias D = Any
+	typealias FD = IO<D>
+
+	public static func liftA<B>(f : A -> B) -> IO<A> -> IO<B> {
+		return { a in IO<A -> B>.pure(f) <*> a }
+	}
+
+	public static func liftA2<B, C>(f : A -> B -> C) -> IO<A> -> IO<B> -> IO<C> {
+		return { a in { b in f <%> a <*> b  } }
+	}
+
+	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> IO<A> -> IO<B> -> IO<C> -> IO<D> {
+		return { a in { b in { c in f <%> a <*> b <*> c } } }
+	}
+}
+
 extension IO : Monad {
 	public func bind<B>(f: A -> IO<B>) -> IO<B> {
 		return IO<B>({ rw in

@@ -226,13 +226,31 @@ public func <*><A, B>(f : Stream<A -> B> , o : Stream<A>) -> Stream<B> {
 	return f >*< o
 }
 
-
 public func *><A, B>(a : Stream<A>, b : Stream<B>) -> Stream<B> {
 	return a *< b
 }
 
 public func <*<A, B>(a : Stream<A>, b : Stream<B>) -> Stream<A> {
 	return a >* b
+}
+
+extension Stream : ApplicativeOps {
+	typealias C = Any
+	typealias FC = Stream<C>
+	typealias D = Any
+	typealias FD = Stream<D>
+
+	public static func liftA<B>(f : A -> B) -> Stream<A> -> Stream<B> {
+		return { a in Stream<A -> B>.pure(f) <*> a }
+	}
+
+	public static func liftA2<B, C>(f : A -> B -> C) -> Stream<A> -> Stream<B> -> Stream<C> {
+		return { a in { b in f <%> a <*> b  } }
+	}
+
+	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> Stream<A> -> Stream<B> -> Stream<C> -> Stream<D> {
+		return { a in { b in { c in f <%> a <*> b <*> c } } }
+	}
 }
 
 extension Stream : Monad {

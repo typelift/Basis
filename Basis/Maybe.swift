@@ -231,6 +231,25 @@ public func <*<A, B>(a : Maybe<A>, b : Maybe<B>) -> Maybe<A> {
 	return const <%> a <*> b
 }
 
+extension Maybe : ApplicativeOps {
+	typealias C = Any
+	typealias FC = Maybe<C>
+	typealias D = Any
+	typealias FD = Maybe<D>
+
+	public static func liftA<B>(f : A -> B) -> Maybe<A> -> Maybe<B> {
+		return { a in Maybe<A -> B>.pure(f) <*> a }
+	}
+
+	public static func liftA2<B, C>(f : A -> B -> C) -> Maybe<A> -> Maybe<B> -> Maybe<C> {
+		return { a in { b in f <%> a <*> b  } }
+	}
+
+	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> Maybe<A> -> Maybe<B> -> Maybe<C> -> Maybe<D> {
+		return { a in { b in { c in f <%> a <*> b <*> c } } }
+	}
+}
+
 extension Maybe : Alternative {
 	typealias FLA = Maybe<[A]>
 	

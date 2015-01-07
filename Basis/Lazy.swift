@@ -88,7 +88,6 @@ extension Lazy : Applicative {
 	}
 }
 
-
 public func <*><A, B>(stfn: Lazy<A -> B>, st: Lazy<A>) -> Lazy<B> {
 	return Lazy<A>.ap(stfn)(st)
 }
@@ -99,6 +98,25 @@ public func *><A, B>(a : Lazy<A>, b : Lazy<B>) -> Lazy<B> {
 
 public func <*<A, B>(a : Lazy<A>, b : Lazy<B>) -> Lazy<A> {
 	return const <%> a <*> b
+}
+
+extension Lazy : ApplicativeOps {
+	typealias C = Any
+	typealias FC = Lazy<C>
+	typealias D = Any
+	typealias FD = Lazy<D>
+
+	public static func liftA<B>(f : A -> B) -> Lazy<A> -> Lazy<B> {
+		return { a in Lazy<A -> B>.pure(f) <*> a }
+	}
+
+	public static func liftA2<B, C>(f : A -> B -> C) -> Lazy<A> -> Lazy<B> -> Lazy<C> {
+		return { a in { b in f <%> a <*> b  } }
+	}
+
+	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> Lazy<A> -> Lazy<B> -> Lazy<C> -> Lazy<D> {
+		return { a in { b in { c in f <%> a <*> b <*> c } } }
+	}
 }
 
 extension Lazy : Monad {
