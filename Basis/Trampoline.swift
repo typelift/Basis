@@ -64,14 +64,20 @@ extension Trampoline : Applicative {
 	public static func pure<A>(a : A) -> Trampoline<A> {
 		return Trampoline<A>(Pure(x: a))
 	}
+
+	public static func ap<B>(stfn: Trampoline<A -> B>) -> Trampoline<A> -> Trampoline<B> {
+		return { st in
+			return Trampoline<B>(stfn.t.flatMap({ f in
+				return st.t.flatMap({ a in
+					return Pure(x: f(a))
+				})
+			}))
+		}
+	}
 }
 
 public func <*><A, B>(stfn: Trampoline<A -> B>, st: Trampoline<A>) -> Trampoline<B> {
-	return Trampoline(stfn.t.flatMap({ f in
-		return st.t.flatMap({ a in
-			return Pure(x: f(a))
-		})
-	}))
+	return Trampoline.ap(stfn)(st)
 }
 
 public func *><A, B>(a : Trampoline<A>, b : Trampoline<B>) -> Trampoline<B> {
