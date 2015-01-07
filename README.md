@@ -76,6 +76,11 @@ func liftA<A, B>(f : A -> B) -> Maybe<A> -> Maybe<B> {
 func liftA2<A, B, C>(f : A -> B -> C) -> Maybe<A> -> Maybe<B> -> Maybe<C> {
     return { a in { b in Maybe.pure(f) <*> a <*> b } }
 }
+
+/// Lift any 3-ary function to a function over 3 Maybes.
+func liftA3<A, B, C, D>(f : A -> B -> C -> D) -> Maybe<A> -> Maybe<B> -> Maybe<C> -> Maybe <D> {
+    return { a in { b in { c in Maybe.pure(f) <*> a <*> b <*> c } } }
+}
 ```
 
 With such an architecture in place, we can replace the classic `if-let` pattern
