@@ -37,6 +37,11 @@ public protocol Monad : Applicative {
 	/// Bind is famous because it allows one to build arbitrary pipes of computations with no effort
 	/// at all.  You may have seen it notated >>-
 	func bind(f : A -> FB) -> FB
+	func >>-(Self, A -> FB) -> FB
+
+	/// Sequence | Sequentially composes two monadic actions along the way discarding any value
+	/// produced by the first action.
+	func >><A, B>(Self, FB) -> FB
 }
 
 /// A monoid for monads.
@@ -65,6 +70,4 @@ public protocol MonadOps : Monad {
 	func -<<(A -> FB, Self) -> FB
 	func >->(A -> FB,  B -> FC) -> A -> FC
 	func <-<(B -> FC, A -> FB) -> A -> FC
-
-	class func forever(Self) -> FB
 }

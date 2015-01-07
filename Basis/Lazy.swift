@@ -134,3 +134,45 @@ public func >><A, B>(x : Lazy<A>, y : Lazy<B>) -> Lazy<B> {
 		return y
 	})
 }
+
+extension Lazy : MonadOps {
+	typealias MLA = Lazy<[A]>
+	typealias MLB = Lazy<[B]>
+	typealias MU = Lazy<()>
+
+	public static func mapM<B>(f : A -> Lazy<B>) -> [A] -> Lazy<[B]> {
+		return { xs in Lazy<B>.sequence(map(f)(xs)) }
+	}
+
+	public static func mapM_<B>(f : A -> Lazy<B>) -> [A] -> Lazy<()> {
+		return { xs in Lazy<B>.sequence_(map(f)(xs)) }
+	}
+
+	public static func forM<B>(xs : [A]) -> (A -> Lazy<B>) -> Lazy<[B]> {
+		return flip(Lazy.mapM)(xs)
+	}
+
+	public static func forM_<B>(xs : [A]) -> (A -> Lazy<B>) -> Lazy<()> {
+		return flip(Lazy.mapM_)(xs)
+	}
+
+	public static func sequence(ls : [Lazy<A>]) -> Lazy<[A]> {
+		return foldr({ m, m2 in m >>- { x in m2 >>- { xs in Lazy<[A]>.pure(cons(x)(xs)) } } })(Lazy<[A]>.pure([]))(ls)
+	}
+
+	public static func sequence_(ls : [Lazy<A>]) -> Lazy<()> {
+		return foldr(>>)(Lazy<()>.pure(()))(ls)
+	}
+}
+
+public func -<<<A, B>(f : A -> Lazy<B>, xs : Lazy<A>) -> Lazy<B> {
+	return xs.bind(f)
+}
+
+public func >-><A, B, C>(f : A -> Lazy<B>, g : B -> Lazy<C>) -> A -> Lazy<C> {
+	return { x in f(x) >>- g }
+}
+
+public func <-<<A, B, C>(g : B -> Lazy<C>, f : A -> Lazy<B>) -> A -> Lazy<C> {
+	return { x in f(x) >>- g }
+}

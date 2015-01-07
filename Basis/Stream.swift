@@ -271,6 +271,48 @@ public func >><A, B>(_ : Stream<A>, bs : Stream<B>) -> Stream<B> {
 	return bs
 }
 
+extension Stream : MonadOps {
+	typealias MLA = Stream<[A]>
+	typealias MLB = Stream<[B]>
+	typealias MU = Stream<()>
+
+	public static func mapM<B>(f : A -> Stream<B>) -> [A] -> Stream<[B]> {
+		return { xs in Stream<B>.sequence(map(f)(xs)) }
+	}
+
+	public static func mapM_<B>(f : A -> Stream<B>) -> [A] -> Stream<()> {
+		return { xs in Stream<B>.sequence_(map(f)(xs)) }
+	}
+
+	public static func forM<B>(xs : [A]) -> (A -> Stream<B>) -> Stream<[B]> {
+		return flip(Stream.mapM)(xs)
+	}
+
+	public static func forM_<B>(xs : [A]) -> (A -> Stream<B>) -> Stream<()> {
+		return flip(Stream.mapM_)(xs)
+	}
+
+	public static func sequence(ls : [Stream<A>]) -> Stream<[A]> {
+		return foldr({ m, m2 in m >>- { x in m2 >>- { xs in Stream<[A]>.pure(cons(x)(xs)) } } })(Stream<[A]>.pure([]))(ls)
+	}
+
+	public static func sequence_(ls : [Stream<A>]) -> Stream<()> {
+		return foldr(>>)(Stream<()>.pure(()))(ls)
+	}
+}
+
+public func -<<<A, B>(f : A -> Stream<B>, xs : Stream<A>) -> Stream<B> {
+	return xs.bind(f)
+}
+
+public func >-><A, B, C>(f : A -> Stream<B>, g : B -> Stream<C>) -> A -> Stream<C> {
+	return { x in f(x) >>- g }
+}
+
+public func <-<<A, B, C>(g : B -> Stream<C>, f : A -> Stream<B>) -> A -> Stream<C> {
+	return { x in f(x) >>- g }
+}
+
 extension Stream : Copointed {
 	public func extract() -> A {
 		return head(self)

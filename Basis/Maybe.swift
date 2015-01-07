@@ -290,6 +290,12 @@ public func >>-<A, B>(x : Maybe<A>, f : A -> Maybe<B>) -> Maybe<B> {
 	return x.bind(f)
 }
 
+public func >><A, B>(x : Maybe<A>, y : Maybe<B>) -> Maybe<B> {
+	return x.bind({ (_) in
+		return y
+	})
+}
+
 extension Maybe : MonadPlus {
 	public static func mzero() -> Maybe<A> {
 		return Maybe.nothing()

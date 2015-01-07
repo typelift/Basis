@@ -210,16 +210,17 @@ extension Either : ApplicativeOps {
 }
 
 extension Either : Monad {
-	public func bind<C>(f : R -> Either<L, C>) -> Either<L, C> {
+	public func bind<B>(f : A -> Either<L, B>) -> Either<L, B> {
 		switch self.destruct() {
 			case .Left(let l):
-				return Either<L, C>.left(l)
+				return Either<L, B>.left(l)
 			case .Right(let r):
 				return f(r.unBox())
 		}
 	}
 }
-public func >>-<A, B, C>(xs : Either<A, B>, f : Either<A, B>.A -> Either<A, C>) -> Either<A, C> {
+
+public func >>-<L, A, B>(xs : Either<L, A>, f : A -> Either<L, B>) -> Either<L, B> {
 	return xs.bind(f)
 }
 
@@ -227,6 +228,48 @@ public func >><A, B, C>(x : Either<A, B>, y : Either<A, C>) -> Either<A, C> {
 	return x >>- { (_) in
 		return y
 	}
+}
+
+extension Either : MonadOps {
+	typealias MLA = Either<L, [A]>
+	typealias MLB = Either<L, [B]>
+	typealias MU = Either<L, ()>
+
+	public static func mapM<B>(f : A -> Either<L, B>) -> [A] -> Either<L, [B]> {
+		return { xs in Either<L, B>.sequence(map(f)(xs)) }
+	}
+
+	public static func mapM_<B>(f : A -> Either<L, B>) -> [A] -> Either<L, ()> {
+		return { xs in Either<L, B>.sequence_(map(f)(xs)) }
+	}
+
+	public static func forM<B>(xs : [A]) -> (A -> Either<L, B>) -> Either<L, [B]> {
+		return flip(Either.mapM)(xs)
+	}
+
+	public static func forM_<B>(xs : [A]) -> (A -> Either<L, B>) -> Either<L, ()> {
+		return flip(Either.mapM_)(xs)
+	}
+
+	public static func sequence(ls : [Either<L, A>]) -> Either<L, [A]> {
+		return foldr({ m, m2 in m >>- { x in m2 >>- { xs in Either<L, [A]>.pure(cons(x)(xs)) } } })(Either<L, [A]>.pure([]))(ls)
+	}
+
+	public static func sequence_(ls : [Either<L, A>]) -> Either<L, ()> {
+		return foldr(>>)(Either<L, ()>.pure(()))(ls)
+	}
+}
+
+public func -<<<L, A, B>(f : A -> Either<L, B>, xs : Either<L, A>) -> Either<L, B> {
+	return xs.bind(f)
+}
+
+public func >-><L, A, B, C>(f : A -> Either<L, B>, g : B -> Either<L, C>) -> A -> Either<L, C> {
+	return { x in f(x) >>- g }
+}
+
+public func <-<<L, A, B, C>(g : B -> Either<L, C>, f : A -> Either<L, B>) -> A -> Either<L, C> {
+	return { x in f(x) >>- g }
 }
 
 extension Either : MonadFix {

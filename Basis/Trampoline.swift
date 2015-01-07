@@ -123,6 +123,48 @@ public func >><A, B>(x : Trampoline<A>, y : Trampoline<B>) -> Trampoline<B> {
 	})
 }
 
+extension Trampoline : MonadOps {
+	typealias MLA = Trampoline<[A]>
+	typealias MLB = Trampoline<[B]>
+	typealias MU = Trampoline<()>
+
+	public static func mapM<B>(f : A -> Trampoline<B>) -> [A] -> Trampoline<[B]> {
+		return { xs in Trampoline<B>.sequence(map(f)(xs)) }
+	}
+
+	public static func mapM_<B>(f : A -> Trampoline<B>) -> [A] -> Trampoline<()> {
+		return { xs in Trampoline<B>.sequence_(map(f)(xs)) }
+	}
+
+	public static func forM<B>(xs : [A]) -> (A -> Trampoline<B>) -> Trampoline<[B]> {
+		return flip(Trampoline.mapM)(xs)
+	}
+
+	public static func forM_<B>(xs : [A]) -> (A -> Trampoline<B>) -> Trampoline<()> {
+		return flip(Trampoline.mapM_)(xs)
+	}
+
+	public static func sequence(ls : [Trampoline<A>]) -> Trampoline<[A]> {
+		return foldr({ m, m2 in m >>- { x in m2 >>- { xs in Trampoline<[A]>.pure(cons(x)(xs)) } } })(Trampoline<[A]>.pure([]))(ls)
+	}
+
+	public static func sequence_(ls : [Trampoline<A>]) -> Trampoline<()> {
+		return foldr(>>)(Trampoline<()>.pure(()))(ls)
+	}
+}
+
+public func -<<<A, B>(f : A -> Trampoline<B>, xs : Trampoline<A>) -> Trampoline<B> {
+	return xs.bind(f)
+}
+
+public func >-><A, B, C>(f : A -> Trampoline<B>, g : B -> Trampoline<C>) -> A -> Trampoline<C> {
+	return { x in f(x) >>- g }
+}
+
+public func <-<<A, B, C>(g : B -> Trampoline<C>, f : A -> Trampoline<B>) -> A -> Trampoline<C> {
+	return { x in f(x) >>- g }
+}
+
 /// Based on "Stackless Scala With Free Monads" by Rúnar Óli Bjarnason 
 /// http://blog.higher-order.com/assets/trampolines.pdf
 ///
