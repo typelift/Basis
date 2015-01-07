@@ -23,6 +23,8 @@
 		841FE04519DB7E7C0068636A /* Zip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841FE03B19DB7E7C0068636A /* Zip.swift */; };
 		841FE04C19DB7EEC0068636A /* Compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841FE04A19DB7EEC0068636A /* Compare.swift */; };
 		841FE04D19DB7EEC0068636A /* Folds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841FE04B19DB7EEC0068636A /* Folds.swift */; };
+		842773781A5CD87400CF1E67 /* Char.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842773771A5CD87400CF1E67 /* Char.swift */; };
+		8427737C1A5CDB6F00CF1E67 /* CharSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8427737B1A5CDB6F00CF1E67 /* CharSpec.swift */; };
 		842963B219DF7A3A003FCBE8 /* Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842963B119DF7A3A003FCBE8 /* Set.swift */; };
 		8434F96D19E8BA0A008D9909 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8434F96C19E8BA0A008D9909 /* Version.swift */; };
 		8434F97119E8BE43008D9909 /* VersionSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8434F97019E8BE43008D9909 /* VersionSpec.swift */; };
@@ -85,8 +87,8 @@
 		84D4D8F61A18095F001F5E4D /* Comonad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D8F21A18095F001F5E4D /* Comonad.swift */; };
 		84D4D8F71A18095F001F5E4D /* ComonadFix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D8F31A18095F001F5E4D /* ComonadFix.swift */; };
 		84D4D8FA1A181649001F5E4D /* ComonadApply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D8F91A181649001F5E4D /* ComonadApply.swift */; };
-		84D77DF91A3CF9F4000F5683 /* ListSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D77DF81A3CF9F4000F5683 /* ListSpec.swift */; };
 		84D77DF31A3BDCB6000F5683 /* Pointed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D77DF21A3BDCB6000F5683 /* Pointed.swift */; };
+		84D77DF91A3CF9F4000F5683 /* ListSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D77DF81A3CF9F4000F5683 /* ListSpec.swift */; };
 		84F9062E19D638BD0035D429 /* ArrowSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F9062D19D638BD0035D429 /* ArrowSpec.swift */; };
 /* End PBXBuildFile section */
 
@@ -130,6 +132,8 @@
 		841FE03B19DB7E7C0068636A /* Zip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Zip.swift; sourceTree = "<group>"; };
 		841FE04A19DB7EEC0068636A /* Compare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Compare.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		841FE04B19DB7EEC0068636A /* Folds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Folds.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		842773771A5CD87400CF1E67 /* Char.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Char.swift; sourceTree = "<group>"; };
+		8427737B1A5CDB6F00CF1E67 /* CharSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharSpec.swift; sourceTree = "<group>"; };
 		842963B119DF7A3A003FCBE8 /* Set.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Set.swift; sourceTree = "<group>"; };
 		8434F96C19E8BA0A008D9909 /* Version.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
 		8434F97019E8BE43008D9909 /* VersionSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VersionSpec.swift; sourceTree = "<group>"; };
@@ -194,8 +198,8 @@
 		84D4D8F21A18095F001F5E4D /* Comonad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comonad.swift; sourceTree = "<group>"; };
 		84D4D8F31A18095F001F5E4D /* ComonadFix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComonadFix.swift; sourceTree = "<group>"; };
 		84D4D8F91A181649001F5E4D /* ComonadApply.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComonadApply.swift; sourceTree = "<group>"; };
-		84D77DF81A3CF9F4000F5683 /* ListSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListSpec.swift; sourceTree = "<group>"; };
 		84D77DF21A3BDCB6000F5683 /* Pointed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pointed.swift; sourceTree = "<group>"; };
+		84D77DF81A3CF9F4000F5683 /* ListSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListSpec.swift; sourceTree = "<group>"; };
 		84F9062D19D638BD0035D429 /* ArrowSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ArrowSpec.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 /* End PBXFileReference section */
 
@@ -241,7 +245,6 @@
 				84922D7A19D2381800AE9A7C /* Arrow */,
 				84922D1E19D237E000AE9A7C /* Category.swift */,
 				84D4D8F51A18095F001F5E4D /* Comonad */,
-				84D4D8F01A180959001F5E4D /* Copointed.swift */,
 				84922D7B19D2382000AE9A7C /* Monad */,
 				84896B421A469179006F3EA9 /* Trampoline.swift */,
 			);
@@ -307,6 +310,7 @@
 				84922D1B19D237E000AE9A7C /* Bottom.swift */,
 				84922D1C19D237E000AE9A7C /* Bounded.swift */,
 				84922D1D19D237E000AE9A7C /* Box.swift */,
+				842773771A5CD87400CF1E67 /* Char.swift */,
 				84D4D8E51A16E6B4001F5E4D /* Const.swift */,
 				84922D1F19D237E000AE9A7C /* Coerce.swift */,
 				84922D2019D237E000AE9A7C /* Combinator.swift */,
@@ -370,6 +374,7 @@
 			isa = PBXGroup;
 			children = (
 				84F9062D19D638BD0035D429 /* ArrowSpec.swift */,
+				8427737B1A5CDB6F00CF1E67 /* CharSpec.swift */,
 				8434F97219E8C2FC008D9909 /* CompareSpec.swift */,
 				8418FC5119CFB3480010923E /* EitherSpec.swift */,
 				847E99DD1A48B38A00B5B8CE /* FoldsSpec.swift */,
@@ -567,6 +572,7 @@
 				84922D6219D237E000AE9A7C /* Lift.swift in Sources */,
 				84D4D8E61A16E6B4001F5E4D /* Const.swift in Sources */,
 				841FE03E19DB7E7C0068636A /* List.swift in Sources */,
+				842773781A5CD87400CF1E67 /* Char.swift in Sources */,
 				84D4D8FA1A181649001F5E4D /* ComonadApply.swift in Sources */,
 				84922D6B19D237E000AE9A7C /* Operators.swift in Sources */,
 				84922D6F19D237E000AE9A7C /* ST.swift in Sources */,
@@ -613,6 +619,7 @@
 				84C9970519CE8A970046906D /* InfinitySpec.swift in Sources */,
 				8434F97119E8BE43008D9909 /* VersionSpec.swift in Sources */,
 				84C9970419CE8A970046906D /* FunctionsSpec.swift in Sources */,
+				8427737C1A5CDB6F00CF1E67 /* CharSpec.swift in Sources */,
 				8418FC5219CFB3480010923E /* EitherSpec.swift in Sources */,
 				84423DE81A033BA700361829 /* ZipSpec.swift in Sources */,
 				84A802E019D3BD3D00E71F93 /* MonoidSpec.swift in Sources */,
