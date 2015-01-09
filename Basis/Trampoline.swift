@@ -3,7 +3,8 @@
 //  Basis
 //
 //  Created by Robert Widmann on 12/20/14.
-//  Copyright (c) 2014 Robert Widmann. All rights reserved.
+//  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
 
 /// Represents a computation that either produces a value (pure) or branches (suspend).  Trampolines

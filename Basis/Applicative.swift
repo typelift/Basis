@@ -60,7 +60,7 @@ public protocol Alternative : Applicative {
 	///
 	/// The least solution to the equation:
 	///
-	///		some(v) <|> FLA.pure([])
+	///		some(v) <|> pure([])
 	func many(Self) -> FLA
 }
 

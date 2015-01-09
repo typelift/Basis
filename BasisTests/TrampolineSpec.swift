@@ -3,7 +3,8 @@
 //  Basis
 //
 //  Created by Robert Widmann on 12/21/14.
-//  Copyright (c) 2014 Robert Widmann. All rights reserved.
+//  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
 
 import Basis
