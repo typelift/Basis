@@ -134,8 +134,7 @@ public func !=<A : Equatable, B : Equatable>(lhs: Either<A, B>, rhs: Either<A, B
 extension Either : Functor {
 	typealias A = R
 	typealias B = Any
-	typealias C = Any
-	typealias FB = Either<L, C>
+	typealias FB = Either<L, B>
 
 	public static func fmap<C>(f : R -> C) -> Either<L, R> -> Either<L, C> {
 		return { 
@@ -150,7 +149,7 @@ extension Either : Functor {
 
 }
 
-public func <%><A, B, C>(f: B -> C, either : Either<A, B>) -> Either<A, C> {
+public func <%><A, B, C>(f : B -> C, either : Either<A, B>) -> Either<A, C> {
 	return Either.fmap(f)(either)
 }
 
@@ -191,17 +190,37 @@ public func <*<A, B, C>(a : Either<A, B>, b : Either<A, C>) -> Either<A, B> {
 	return const <%> a <*> b
 }
 
+extension Either : ApplicativeOps {
+	typealias C = Any
+	typealias FC = Either<L, C>
+	typealias D = Any
+	typealias FD = Either<L, D>
+
+	public static func liftA<B>(f : A -> B) -> Either<L, A> -> Either<L, B> {
+		return { a in Either<L, A -> B>.pure(f) <*> a }
+	}
+
+	public static func liftA2<B, C>(f : A -> B -> C) -> Either<L, A> -> Either<L, B> -> Either<L, C> {
+		return { a in { b in f <%> a <*> b  } }
+	}
+
+	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> Either<L, A> -> Either<L, B> -> Either<L, C> -> Either<L, D> {
+		return { a in { b in { c in f <%> a <*> b <*> c } } }
+	}
+}
+
 extension Either : Monad {
-	public func bind<C>(f : R -> Either<L, C>) -> Either<L, C> {
+	public func bind<B>(f : A -> Either<L, B>) -> Either<L, B> {
 		switch self.destruct() {
 			case .Left(let l):
-				return Either<L, C>.left(l)
+				return Either<L, B>.left(l)
 			case .Right(let r):
 				return f(r.unBox())
 		}
 	}
 }
-public func >>-<A, B, C>(xs : Either<A, B>, f : Either<A, B>.A -> Either<A, C>) -> Either<A, C> {
+
+public func >>-<L, A, B>(xs : Either<L, A>, f : A -> Either<L, B>) -> Either<L, B> {
 	return xs.bind(f)
 }
 
@@ -209,6 +228,48 @@ public func >><A, B, C>(x : Either<A, B>, y : Either<A, C>) -> Either<A, C> {
 	return x >>- { (_) in
 		return y
 	}
+}
+
+extension Either : MonadOps {
+	typealias MLA = Either<L, [A]>
+	typealias MLB = Either<L, [B]>
+	typealias MU = Either<L, ()>
+
+	public static func mapM<B>(f : A -> Either<L, B>) -> [A] -> Either<L, [B]> {
+		return { xs in Either<L, B>.sequence(map(f)(xs)) }
+	}
+
+	public static func mapM_<B>(f : A -> Either<L, B>) -> [A] -> Either<L, ()> {
+		return { xs in Either<L, B>.sequence_(map(f)(xs)) }
+	}
+
+	public static func forM<B>(xs : [A]) -> (A -> Either<L, B>) -> Either<L, [B]> {
+		return flip(Either.mapM)(xs)
+	}
+
+	public static func forM_<B>(xs : [A]) -> (A -> Either<L, B>) -> Either<L, ()> {
+		return flip(Either.mapM_)(xs)
+	}
+
+	public static func sequence(ls : [Either<L, A>]) -> Either<L, [A]> {
+		return foldr({ m, m2 in m >>- { x in m2 >>- { xs in Either<L, [A]>.pure(cons(x)(xs)) } } })(Either<L, [A]>.pure([]))(ls)
+	}
+
+	public static func sequence_(ls : [Either<L, A>]) -> Either<L, ()> {
+		return foldr(>>)(Either<L, ()>.pure(()))(ls)
+	}
+}
+
+public func -<<<L, A, B>(f : A -> Either<L, B>, xs : Either<L, A>) -> Either<L, B> {
+	return xs.bind(f)
+}
+
+public func >-><L, A, B, C>(f : A -> Either<L, B>, g : B -> Either<L, C>) -> A -> Either<L, C> {
+	return { x in f(x) >>- g }
+}
+
+public func <-<<L, A, B, C>(g : B -> Either<L, C>, f : A -> Either<L, B>) -> A -> Either<L, C> {
+	return { x in f(x) >>- g }
 }
 
 extension Either : MonadFix {

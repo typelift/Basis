@@ -60,7 +60,23 @@ public protocol Alternative : Applicative {
 	///
 	/// The least solution to the equation:
 	///
-	///		some(v) <|> FLA.pure([])
+	///		some(v) <|> pure([])
 	func many(Self) -> FLA
 }
 
+/// Additional functions to be implemented by those types conforming to the Applicative protocol.
+public protocol ApplicativeOps : Applicative {
+	typealias C
+	typealias FC = K1<C>
+	typealias D
+	typealias FD = K1<D>
+
+	/// Lift a function to a Functorial action.
+	class func liftA(f : A -> B) -> Self -> FB
+
+	/// Lift a binary function to a Functorial action.
+	class func liftA2(f : A -> B -> C) -> Self -> FB -> FC
+
+	/// Lift a ternary function to a Functorial action.
+	class func liftA3(f : A -> B -> C -> D) -> Self -> FB -> FC -> FD
+}

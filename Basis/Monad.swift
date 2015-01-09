@@ -37,6 +37,11 @@ public protocol Monad : Applicative {
 	/// Bind is famous because it allows one to build arbitrary pipes of computations with no effort
 	/// at all.  You may have seen it notated >>-
 	func bind(f : A -> FB) -> FB
+	func >>-(Self, A -> FB) -> FB
+
+	/// Sequence | Sequentially composes two monadic actions along the way discarding any value
+	/// produced by the first action.
+	func >><A, B>(Self, FB) -> FB
 }
 
 /// A monoid for monads.
@@ -45,15 +50,69 @@ public protocol MonadPlus : Monad {
 	class func mplus(Self) -> Self -> Self
 }
 
-public func guard<M : MonadPlus where M.A == Void>(b : Bool) -> M {
-	return b ? M.pure(()) : M.mzero()
-}
+/// Additional functions to be implemented by those types conforming to the Monad protocol.
+public protocol MonadOps : Monad {
+	typealias C
+	typealias FC = K1<C>
 
-public func when<M : Monad where M.A == Void>(b : Bool) -> M -> M {
-	return { m in b ? m : M.pure(()) }
-}
+	typealias MLA = K1<[A]>
+	typealias MLB = K1<[B]>
+	typealias MU = K1<()>
 
-public func unless<M : Monad where M.A == Void>(b : Bool) -> M -> M {
-	return { m in b ? M.pure(()) : m }
-}
+	/// Maps a function taking values to Monadic actions, then evaluates each action in the 
+	/// resulting list from left to right.  The results of each evaluated action are collected in
+	/// another Monadic action.
+	///
+	/// Default Definition:
+	///
+	///     sequence(map(f)(xs))
+	class func mapM(A -> FB) -> [A] -> MLB
 
+	/// Maps a function taking values to Monadic actions, then evaluates each action in the
+	/// resulting list from left to right.  The results of each evaluated action are discarded.
+	///
+	/// Default Definition:
+	///
+	///     sequence_(map(f)(xs))
+	class func mapM_(A -> FB) -> [A] -> MU
+
+	/// mapM with its arguments flipped.
+	///
+	/// Default Definition:
+	///
+	///     flip(mapM)(xs)
+	class func forM([A]) -> (A -> FB) -> MLB
+
+	/// mapM_ with its arguments flipped.
+	///
+	/// Default Definition:
+	///
+	///     flip(mapM_)(xs)
+	class func forM_([A]) -> (A -> FB) -> MU
+
+	/// Evaluates each Monadic action in sequence from left to right and collects the results in
+	/// another Monadic action.
+	///
+	/// Default Definition:
+	///
+	///     foldr({ m, m2 in m >>- { x in m2 >>- { xs in pure(cons(x)(xs)) } } })(pure([]))(xs)
+	class func sequence([Self]) -> MLA
+
+	/// Evaluates each Monadic action in sequence from left to right discarding any intermediate
+	/// results.
+	///
+	/// Default Definition:
+	///
+	///     foldr(>>)(pure(()))(xs)
+	class func sequence_([Self]) -> MU
+
+
+	/// Bind | Like bind but with its arguments flipped.
+	func -<<(A -> FB, Self) -> FB
+
+	/// Kleisli Forward | Kleisli composes two Monadic actions from the left to the right.
+	func >->(A -> FB,  B -> FC) -> A -> FC
+
+	/// Kleisli Backward | Kleisli composes two Monadic actions from the right to the left.
+	func <-<(B -> FC, A -> FB) -> A -> FC
+}

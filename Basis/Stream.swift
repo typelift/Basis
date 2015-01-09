@@ -3,7 +3,8 @@
 //  Basis
 //
 //  Created by Robert Widmann on 12/22/14.
-//  Copyright (c) 2014 Robert Widmann. All rights reserved.
+//  Copyright (c) 2014 TypeLift. All rights reserved.
+//  Released under the MIT license.
 //
 
 /// A lazy infinite sequence of values.
@@ -226,13 +227,31 @@ public func <*><A, B>(f : Stream<A -> B> , o : Stream<A>) -> Stream<B> {
 	return f >*< o
 }
 
-
 public func *><A, B>(a : Stream<A>, b : Stream<B>) -> Stream<B> {
 	return a *< b
 }
 
 public func <*<A, B>(a : Stream<A>, b : Stream<B>) -> Stream<A> {
 	return a >* b
+}
+
+extension Stream : ApplicativeOps {
+	typealias C = Any
+	typealias FC = Stream<C>
+	typealias D = Any
+	typealias FD = Stream<D>
+
+	public static func liftA<B>(f : A -> B) -> Stream<A> -> Stream<B> {
+		return { a in Stream<A -> B>.pure(f) <*> a }
+	}
+
+	public static func liftA2<B, C>(f : A -> B -> C) -> Stream<A> -> Stream<B> -> Stream<C> {
+		return { a in { b in f <%> a <*> b  } }
+	}
+
+	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> Stream<A> -> Stream<B> -> Stream<C> -> Stream<D> {
+		return { a in { b in { c in f <%> a <*> b <*> c } } }
+	}
 }
 
 extension Stream : Monad {
@@ -251,6 +270,48 @@ public func >>-<A, B>(x : Stream<A>, f : A -> Stream<B>) -> Stream<B> {
 
 public func >><A, B>(_ : Stream<A>, bs : Stream<B>) -> Stream<B> {
 	return bs
+}
+
+extension Stream : MonadOps {
+	typealias MLA = Stream<[A]>
+	typealias MLB = Stream<[B]>
+	typealias MU = Stream<()>
+
+	public static func mapM<B>(f : A -> Stream<B>) -> [A] -> Stream<[B]> {
+		return { xs in Stream<B>.sequence(map(f)(xs)) }
+	}
+
+	public static func mapM_<B>(f : A -> Stream<B>) -> [A] -> Stream<()> {
+		return { xs in Stream<B>.sequence_(map(f)(xs)) }
+	}
+
+	public static func forM<B>(xs : [A]) -> (A -> Stream<B>) -> Stream<[B]> {
+		return flip(Stream.mapM)(xs)
+	}
+
+	public static func forM_<B>(xs : [A]) -> (A -> Stream<B>) -> Stream<()> {
+		return flip(Stream.mapM_)(xs)
+	}
+
+	public static func sequence(ls : [Stream<A>]) -> Stream<[A]> {
+		return foldr({ m, m2 in m >>- { x in m2 >>- { xs in Stream<[A]>.pure(cons(x)(xs)) } } })(Stream<[A]>.pure([]))(ls)
+	}
+
+	public static func sequence_(ls : [Stream<A>]) -> Stream<()> {
+		return foldr(>>)(Stream<()>.pure(()))(ls)
+	}
+}
+
+public func -<<<A, B>(f : A -> Stream<B>, xs : Stream<A>) -> Stream<B> {
+	return xs.bind(f)
+}
+
+public func >-><A, B, C>(f : A -> Stream<B>, g : B -> Stream<C>) -> A -> Stream<C> {
+	return { x in f(x) >>- g }
+}
+
+public func <-<<A, B, C>(g : B -> Stream<C>, f : A -> Stream<B>) -> A -> Stream<C> {
+	return { x in f(x) >>- g }
 }
 
 extension Stream : Copointed {

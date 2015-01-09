@@ -180,6 +180,25 @@ public func <*<A, B>(a : Result<A>, b : Result<B>) -> Result<A> {
 	return const <%> a <*> b
 }
 
+extension Result : ApplicativeOps {
+	typealias C = Any
+	typealias FC = Result<C>
+	typealias D = Any
+	typealias FD = Result<D>
+
+	public static func liftA<B>(f : A -> B) -> Result<A> -> Result<B> {
+		return { a in Result<A -> B>.pure(f) <*> a }
+	}
+
+	public static func liftA2<B, C>(f : A -> B -> C) -> Result<A> -> Result<B> -> Result<C> {
+		return { a in { b in f <%> a <*> b  } }
+	}
+
+	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> Result<A> -> Result<B> -> Result<C> -> Result<D> {
+		return { a in { b in { c in f <%> a <*> b <*> c } } }
+	}
+}
+
 extension Result : Monad {
 	public func bind<B>(f : A -> Result<B>) -> Result<B> {
 		switch self.destruct() {
@@ -189,6 +208,58 @@ extension Result : Monad {
 				return f(r.unBox())
 		}
 	}
+}
+
+public func >>-<A, B>(x : Result<A>, f : A -> Result<B>) -> Result<B> {
+	return x.bind(f)
+}
+
+public func >><A, B>(x : Result<A>, y : Result<B>) -> Result<B> {
+	return x.bind({ (_) in
+		return y
+	})
+}
+
+extension Result : MonadOps {
+	typealias MLA = Result<[A]>
+	typealias MLB = Result<[B]>
+	typealias MU = Result<()>
+
+	public static func mapM<B>(f : A -> Result<B>) -> [A] -> Result<[B]> {
+		return { xs in Result<B>.sequence(map(f)(xs)) }
+	}
+
+	public static func mapM_<B>(f : A -> Result<B>) -> [A] -> Result<()> {
+		return { xs in Result<B>.sequence_(map(f)(xs)) }
+	}
+
+	public static func forM<B>(xs : [A]) -> (A -> Result<B>) -> Result<[B]> {
+		return flip(Result.mapM)(xs)
+	}
+
+	public static func forM_<B>(xs : [A]) -> (A -> Result<B>) -> Result<()> {
+		return flip(Result.mapM_)(xs)
+	}
+
+	public static func sequence(ls : [Result<A>]) -> Result<[A]> {
+		return foldr({ m, m2 in m >>- { x in m2 >>- { xs in Result<[A]>.pure(cons(x)(xs)) } } })(Result<[A]>.pure([]))(ls)
+	}
+
+	public static func sequence_(ls : [Result<A>]) -> Result<()> {
+		return foldr(>>)(Result<()>.pure(()))(ls)
+	}
+}
+
+public func -<<<A, B>(f : A -> Result<B>, xs : Result<A>) -> Result<B> {
+	return xs.bind(f)
+}
+
+public func >-><A, B, C>(f : A -> Result<B>, g : B -> Result<C>) -> A -> Result<C> {
+	return { x in f(x) >>- g }
+}
+
+public func <-<<A, B, C>(g : B -> Result<C>, f : A -> Result<B>) -> A -> Result<C> {
+	return { x in f(x) >>- g }
 }
 
 public enum ResultD<A> {

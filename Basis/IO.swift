@@ -25,6 +25,37 @@ public struct IO<A> {
 	}
 }
 
+/// Wraps up a closure in a lazy IO action.
+///
+/// Do-notation is a special syntax taken from Haskell.  In Haskell, one uses do-notation as a
+/// shorthand for chains of Monadic operators, and for more "imperative-looking" code.  While Swift
+/// does not allow us to define a DSL that specific, we can use the implicit sequencing of its
+/// imperative statements and call execution of those statements our "desugaring".
+///
+/// Generally, do-notation in the Basis is used around side-effecting code.  Do-blocks in Swift are
+/// therefore more useful as a means of delimiting pure and side-effecting code from one another,
+/// while also retaining the benefits of the lazy IO monad.
+///
+/// It is important to note that IO actions returned are lazy.  This means the provided block will
+/// not be executed until the values inside are requested, either with an extract (`<-`) or a call
+/// to `unsafePerformIO()`
+public func do_<A>(fn: () -> IO<A>) -> IO<A> {
+	return IO<A>({ rw in (rw, !fn()) })
+}
+
+/// Wraps up a closure returning a value in a lazy IO action.
+///
+/// This variant of do-blocks allows one to write more natural looking code.  The return keyword
+/// becomes monadic return.
+public func do_<A>(fn: () -> A) -> IO<A> {
+	return IO<A>({ rw in (rw, fn()) })
+}
+
+/// An more convenient form of unsafePerformIO.
+public prefix func !<A>(m: IO<A>) -> A {
+	return m.unsafePerformIO()
+}
+
 /// Writes a character to standard output.
 public func putChar(c : Character) -> IO<Void> {
 	return IO.pure(print(c))
@@ -126,6 +157,25 @@ public func <* <A, B>(a : IO<A>, b : IO<B>) -> IO<A> {
 	return const <%> a <*> b
 }
 
+extension IO : ApplicativeOps {
+	typealias C = Any
+	typealias FC = IO<C>
+	typealias D = Any
+	typealias FD = IO<D>
+
+	public static func liftA<B>(f : A -> B) -> IO<A> -> IO<B> {
+		return { a in IO<A -> B>.pure(f) <*> a }
+	}
+
+	public static func liftA2<B, C>(f : A -> B -> C) -> IO<A> -> IO<B> -> IO<C> {
+		return { a in { b in f <%> a <*> b  } }
+	}
+
+	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> IO<A> -> IO<B> -> IO<C> -> IO<D> {
+		return { a in { b in { c in f <%> a <*> b <*> c } } }
+	}
+}
+
 extension IO : Monad {
 	public func bind<B>(f: A -> IO<B>) -> IO<B> {
 		return IO<B>({ rw in
@@ -145,73 +195,46 @@ public func >><A, B>(x: IO<A>, y: IO<B>) -> IO<B> {
 	})
 }
 
-public prefix func !<A>(m: IO<A>) -> A {
-	return m.unsafePerformIO()
+extension IO : MonadOps {
+	typealias MLA = IO<[A]>
+	typealias MLB = IO<[B]>
+	typealias MU = IO<()>
+
+	public static func mapM<B>(f : A -> IO<B>) -> [A] -> IO<[B]> {
+		return { xs in IO<B>.sequence(map(f)(xs)) }
+	}
+
+	public static func mapM_<B>(f : A -> IO<B>) -> [A] -> IO<()> {
+		return { xs in IO<B>.sequence_(map(f)(xs)) }
+	}
+
+	public static func forM<B>(xs : [A]) -> (A -> IO<B>) -> IO<[B]> {
+		return flip(IO.mapM)(xs)
+	}
+
+	public static func forM_<B>(xs : [A]) -> (A -> IO<B>) -> IO<()> {
+		return flip(IO.mapM_)(xs)
+	}
+
+	public static func sequence(ls : [IO<A>]) -> IO<[A]> {
+		return foldr({ m, m2 in m >>- { x in m2 >>- { xs in IO<[A]>.pure(cons(x)(xs)) } } })(IO<[A]>.pure([]))(ls)
+	}
+
+	public static func sequence_(ls : [IO<A>]) -> IO<()> {
+		return foldr(>>)(IO<()>.pure(()))(ls)
+	}
 }
 
-/// Wraps up a closure in a lazy IO action.
-///
-/// Do-notation is a special syntax taken from Haskell.  In Haskell, one uses do-notation as a 
-/// shorthand for chains of Monadic operators, and for more "imperative-looking" code.  While Swift
-/// does not allow us to define a DSL that specific, we can use the implicit sequencing of its 
-/// imperative statements and call execution of those statements our "desugaring".
-///
-/// Generally, do-notation in the Basis is used around side-effecting code.  Do-blocks in Swift are
-/// therefore more useful as a means of delimiting pure and side-effecting code from one another, 
-/// while also retaining the benefits of the lazy IO monad.
-///
-/// It is important to note that IO actions returned are lazy.  This means the provided block will
-/// not be executed until the values inside are requested, either with an extract (`<-`) or a call
-/// to `unsafePerformIO()`
-public func do_<A>(fn: () -> IO<A>) -> IO<A> {
-	return IO<A>({ rw in (rw, !fn()) })
+public func -<<<A, B>(f : A -> IO<B>, xs : IO<A>) -> IO<B> {
+	return xs.bind(f)
 }
 
-/// Wraps up a closure returning a value in a lazy IO action.
-///
-/// This variant of do-blocks allows one to write more natural looking code.  The return keyword
-/// becomes monadic return.
-public func do_<A>(fn: () -> A) -> IO<A> {
-	return IO<A>({ rw in (rw, fn()) })
+public func >-><A, B, C>(f : A -> IO<B>, g : B -> IO<C>) -> A -> IO<C> {
+	return { x in f(x) >>- g }
 }
 
-/// Executes a list of IO actions sequentially, accumulating their results in a list in another IO
-/// action
-public func sequence<A>(ms : [IO<A>]) -> IO<[A]> {
-	return foldr({ m in { n in
-		do_ { () -> [A] in
-			let x : A = !m
-			let xs : [A] = !n
-			return [x] + xs
-		}
-	}})(IO.pure([]))(ms)
-}
-
-/// Executes a list of IO actions sequentially, discarding the result of each along the way.
-public func sequence_<A>(ms : [IO<A>]) -> IO<Void> {
-	return foldr({ x, y in x.bind({ _ in y }) })(IO<Void>.pure(Void()))(ms)
-}
-
-/// Maps a function over a list, then sequences the resulting IO actions together, accumulating 
-/// their results in a list in another IO action.
-public func mapM<A, B>(f : A -> IO<B>) -> [A] -> IO<[B]> {
-	return { ms in sequence(ms.map(f)) }
-}
-
-/// Maps a function over a list, then sequences the resulting IO actions together, discarding the
-/// result of each along the way.
-public func mapM_<A, B>(f : A -> IO<B>) -> [A] -> IO<Void> {
-	return { ms in sequence_(ms.map(f)) }
-}
-
-/// mapM with its arguments flipped around.
-public func forM<A, B>(l: [A])(f : A -> IO<B>) -> IO<[B]> {
-	return mapM(f)(l)
-}
-
-/// mapM_ with its arguments flipped around.
-public func forM_<A, B>(l: [A])(f : A -> IO<B>) -> IO<Void> {
-	return mapM_(f)(l)
+public func <-<<A, B, C>(g : B -> IO<C>, f : A -> IO<B>) -> A -> IO<C> {
+	return { x in f(x) >>- g }
 }
 
 extension IO : MonadFix {
