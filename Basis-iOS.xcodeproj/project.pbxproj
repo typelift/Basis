@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		84095F0D1A28EAE000956141 /* Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84095F0C1A28EAE000956141 /* Member.swift */; };
 		84095F111A28EAF400956141 /* MemberSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84095F101A28EAF400956141 /* MemberSpec.swift */; };
+		840D57841A631EF200EFFF53 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840D57831A631EF200EFFF53 /* Array.swift */; };
 		8415CED719E4B4560037742B /* Coerce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922CBB19D237DA00AE9A7C /* Coerce.swift */; };
 		841FE02919DB7E390068636A /* Lazy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841FE02019DB7E390068636A /* Lazy.swift */; };
 		841FE02A19DB7E390068636A /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841FE02119DB7E390068636A /* List.swift */; };
@@ -107,6 +108,7 @@
 /* Begin PBXFileReference section */
 		84095F0C1A28EAE000956141 /* Member.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Member.swift; sourceTree = "<group>"; };
 		84095F101A28EAF400956141 /* MemberSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemberSpec.swift; sourceTree = "<group>"; };
+		840D57831A631EF200EFFF53 /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		841FE02019DB7E390068636A /* Lazy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Lazy.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		841FE02119DB7E390068636A /* List.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = List.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		841FE02219DB7E390068636A /* Scans.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Scans.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -213,6 +215,8 @@
 		841FE03219DB7E440068636A /* List */ = {
 			isa = PBXGroup;
 			children = (
+				840D57831A631EF200EFFF53 /* Array.swift */,
+				841FE02119DB7E390068636A /* List.swift */,
 				841FE04619DB7EE80068636A /* Compare.swift */,
 				841FE04719DB7EE80068636A /* Folds.swift */,
 				841FE02019DB7E390068636A /* Lazy.swift */,
@@ -373,7 +377,6 @@
 				84922CC419D237DA00AE9A7C /* Function.swift */,
 				84D4D8E21A16E38C001F5E4D /* Functor */,
 				84922CC919D237DA00AE9A7C /* IORef.swift */,
-				841FE02119DB7E390068636A /* List.swift */,
 				841FE03219DB7E440068636A /* List */,
 				84922D8619D2391300AE9A7C /* Map */,
 				84922CD019D237DA00AE9A7C /* Maybe.swift */,
@@ -551,6 +554,7 @@
 				841FE02919DB7E390068636A /* Lazy.swift in Sources */,
 				84922CEE19D237DA00AE9A7C /* Combinator.swift in Sources */,
 				84922CEB19D237DA00AE9A7C /* Box.swift in Sources */,
+				840D57841A631EF200EFFF53 /* Array.swift in Sources */,
 				84922CF219D237DA00AE9A7C /* Exception.swift in Sources */,
 				84922D0619D237DA00AE9A7C /* Monoid.swift in Sources */,
 				84922CF019D237DA00AE9A7C /* Either.swift in Sources */,
