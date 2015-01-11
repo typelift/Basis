@@ -7,9 +7,9 @@
 //  Released under the MIT license.
 //
 
-/// Takes a binary function, an initial value, and a list and scans the function across each element
-/// of a list accumulating the results of successive function calls applied to reduced values from 
-/// the left to the right.
+/// Takes a binary function, an initial value, and an array and scans the function across each 
+/// element of the array accumulating the results of successive function calls applied to reduced 
+/// values from the left to the right.
 /// 
 ///     scanl(f)(z)([x1, x2, ...]) == [z, f(z, x1), f(f(z, x1), x2), ...]
 public func scanl<B, A>(f : B -> A -> B) -> B -> [A] -> [B] {
@@ -23,9 +23,9 @@ public func scanl<B, A>(f : B -> A -> B) -> B -> [A] -> [B] {
 	} }
 }
 
-/// Takes a binary operator, an initial value, and a list and scans the function across each element
-/// of a list accumulating the results of successive function calls applied to reduced values from 
-/// the left to the right.
+/// Takes a binary operator, an initial value, and an array and scans the function across each 
+/// element of the array accumulating the results of successive function calls applied to reduced
+/// values from the left to the right.
 /// 
 ///     scanl(f)(z)([x1, x2, ...]) == [z, f(z, x1), f(f(z, x1), x2), ...]
 public func scanl<B, A>(f : (B, A) -> B) -> B -> [A] -> [B] {
@@ -71,7 +71,7 @@ public func scanl<B, A>(f : (B, A) -> B) -> B -> List<A> -> List<B> {
 	} }
 }
 
-/// Takes a binary function and a list and scans the function across each element of the list
+/// Takes a binary function and an array and scans the function across each element of the array
 /// accumulating the results of successive function calls applied to the reduced values from the 
 /// left to the right.
 public func scanl1<A>(f : A -> A -> A) -> [A] -> [A] {
@@ -85,7 +85,7 @@ public func scanl1<A>(f : A -> A -> A) -> [A] -> [A] {
 	}
 }
 
-/// Takes a binary operator and a list and scans the function across each element of the list 
+/// Takes a binary operator and an array and scans the function across each element of the array
 /// accumulating the results of successive function calls applied to the reduced values from the 
 /// left to the right.
 public func scanl1<A>(f : (A, A) -> A) -> [A] -> [A] {
@@ -127,9 +127,9 @@ public func scanl1<A>(f : (A, A) -> A) -> List<A> -> List<A> {
 	}
 }
 
-/// Takes a binary function, an initial value, and a list and scans the function across each element
-/// of a list accumulating the results of successive function calls applied to reduced values from 
-/// the right to the left.
+/// Takes a binary function, an initial value, and an array and scans the function across each 
+/// element of the array accumulating the results of successive function calls applied to reduced 
+/// values from the right to the left.
 /// 
 ///     scanr(f)(z)([x1, x2, ...]) == [..., f(f(z, x1), x2), f(z, x1), z]
 public func scanr<B, A>(f : A -> B -> B) -> B -> [A] -> [B] {
@@ -143,9 +143,9 @@ public func scanr<B, A>(f : A -> B -> B) -> B -> [A] -> [B] {
 	} }
 }
 
-/// Takes a binary operator, an initial value, and a list and scans the function across each element
-/// of a list accumulating the results of successive function calls applied to reduced values from 
-/// the right to the left.
+/// Takes a binary operator, an initial value, and an array and scans the function across each 
+/// element of the array accumulating the results of successive function calls applied to reduced 
+/// values from the right to the left.
 /// 
 ///     scanr(f)(z)([x1, x2, ...]) == [..., f(f(z, x1), x2), f(z, x1), z]
 public func scanr<B, A>(f : (A, B) -> B) -> B -> [A] -> [B] {
@@ -191,7 +191,7 @@ public func scanr<B, A>(f : (A, B) -> B) -> B -> List<A> -> List<B> {
 	} }
 }
 
-/// Takes a binary function and a list and scans the function across each element of the list
+/// Takes a binary function and an array and scans the function across each element of the array
 /// accumulating the results of successive function calls applied to the reduced values from the 
 /// right to the left.
 public func scanr1<A>(f : A -> A -> A) -> [A] -> [A] {
@@ -213,7 +213,7 @@ public func scanr1<A>(f : A -> A -> A) -> [A] -> [A] {
 	}
 }
 
-/// Takes a binary operator and a list and scans the function across each element of the list 
+/// Takes a binary operator and an array and scans the function across each element of the array 
 /// accumulating the results of successive function calls applied to the reduced values from the 
 /// right to the left.
 public func scanr1<A>(f : (A, A) -> A) -> [A] -> [A] {

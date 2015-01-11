@@ -150,7 +150,7 @@ public func comparing<A : Comparable, B>(p : B -> A) -> B -> B -> Bool {
 	return { x in { y in p(x) < p(y) } }
 }
 
-/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
+/// Takes an array and groups its elements into sublists of duplicate elements found next to each
 /// other according to an equality predicate.
 public func groupBy<A>(cmp : A -> A -> Bool) -> [A] -> [[A]] {
 	return { l in
@@ -164,7 +164,7 @@ public func groupBy<A>(cmp : A -> A -> Bool) -> [A] -> [[A]] {
 	}
 }
 
-/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
+/// Takes an array and groups its elements into sublists of duplicate elements found next to each
 /// other according to an equality operator.
 public func groupBy<A>(cmp : (A, A) -> Bool) -> [A] -> [[A]] {
 	return { l in
@@ -178,7 +178,7 @@ public func groupBy<A>(cmp : (A, A) -> Bool) -> [A] -> [[A]] {
 	}
 }
 
-/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
+/// Takes a list and groups its elements into sublists of duplicate elements found next to each
 /// other according to an equality predicate.
 public func groupBy<A>(cmp : A -> A -> Bool) -> List<A> -> List<List<A>>  {
 	return { l in
@@ -192,7 +192,7 @@ public func groupBy<A>(cmp : A -> A -> Bool) -> List<A> -> List<List<A>>  {
 	}
 }
 
-/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
+/// Takes a list and groups its elements into sublists of duplicate elements found next to each
 /// other according to an equality operator.
 public func groupBy<A>(cmp : (A, A) -> Bool) -> List<A> -> List<List<A>> {
 	return { l in
@@ -206,7 +206,7 @@ public func groupBy<A>(cmp : (A, A) -> Bool) -> List<A> -> List<List<A>> {
 	}
 }
 
-/// Removes duplicates from a list according to an equality predicate.
+/// Removes duplicates from an array according to an equality predicate.
 public func nubBy<A>(eq : A -> A -> Bool) -> [A] -> [A] {
 	return { lst in
 		switch match(lst) {
@@ -220,7 +220,7 @@ public func nubBy<A>(eq : A -> A -> Bool) -> [A] -> [A] {
 	}
 }
 
-/// Removes duplicates from a list according to an equality operator.
+/// Removes duplicates from an array according to an equality operator.
 public func nubBy<A>(eq : (A, A) -> Bool) -> [A] -> [A] {
 	return { lst in
 		switch match(lst) {
@@ -262,12 +262,12 @@ public func nubBy<A>(eq : (A, A) -> Bool) -> List<A> -> List<A> {
 	}
 }
 
-/// Sorts a list according to a ordering predicate.
+/// Sorts an array according to a ordering predicate.
 public func sortBy<A>(cmp : A -> A -> Bool) -> [A] -> [A] {
 	return { l in foldr(insertBy(cmp))([])(l) }
 }
 
-/// Sorts a list according to an ordering operator.
+/// Sorts an array according to an ordering operator.
 public func sortBy<A>(cmp : (A, A) -> Bool) -> [A] -> [A] {
 	return { l in foldr(insertBy(cmp))([])(l) }
 }
@@ -283,7 +283,7 @@ public func sortBy<A>(cmp : (A, A) -> Bool) -> List<A> -> List<A> {
 }
 
 
-/// Inserts an element into a list according to an ordering predicate.
+/// Inserts an element into an array according to an ordering predicate.
 public func insertBy<A>(cmp: A -> A -> Bool) -> A -> [A] -> [A] {
 	return { x in { l in
 		switch match(l) {
@@ -295,7 +295,7 @@ public func insertBy<A>(cmp: A -> A -> Bool) -> A -> [A] -> [A] {
 	} }
 }
 
-/// Inserts an element into a list according to an ordering operator.
+/// Inserts an element into an array according to an ordering operator.
 public func insertBy<A>(cmp: (A, A) -> Bool) -> A -> [A] -> [A] {
 	return { x in { l in
 		switch match(l) {
@@ -331,7 +331,7 @@ public func insertBy<A>(cmp: (A, A) -> Bool) -> A -> List<A> -> List<A> {
 	} }
 }
 
-/// Returns the maximum element of a list according to an ordering predicate.
+/// Returns the maximum element of an array according to an ordering predicate.
 public func maximumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 	return { l in
 		switch match(l) {
@@ -345,7 +345,7 @@ public func maximumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 	}
 }
 
-/// Returns the maximum element of a list according to an ordering operator.
+/// Returns the maximum element of an array according to an ordering operator.
 public func maximumBy<A>(cmp : (A, A) -> Bool) -> [A] -> A {
 	return { l in
 		switch match(l) {
@@ -387,7 +387,7 @@ public func maximumBy<A>(cmp : (A, A) -> Bool) -> List<A> -> A {
 	}
 }
 
-/// Returns the minimum element of a list according to an ordering predicate.
+/// Returns the minimum element of an array according to an ordering predicate.
 public func minimumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 	return { l in
 		switch match(l) {
@@ -401,7 +401,7 @@ public func minimumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 	}
 }
 
-/// Returns the minimum element of a list according to an ordering operator.
+/// Returns the minimum element of an array according to an ordering operator.
 public func minimumBy<A>(cmp : (A, A) -> Bool) -> [A] -> A {
 	return { l in
 		switch match(l) {

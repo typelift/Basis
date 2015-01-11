@@ -7,7 +7,7 @@
 //  Released under the MIT license.
 //
 
-/// Zips two lists into an array of pairs.
+/// Zips two arrays into an array of pairs.
 public func zip<A, B>(l : [A]) -> [B] -> [(A, B)] {
 	return { l2 in
 		switch (match(l), match(l2)) {
@@ -19,7 +19,7 @@ public func zip<A, B>(l : [A]) -> [B] -> [(A, B)] {
 	}
 }
 
-/// Zips three lists into an array of triples.
+/// Zips three arrays into an array of triples.
 public func zip3<A, B, C>(l : [A]) -> [B] -> [C] -> [(A, B, C)] {
 	return { l2 in { l3 in
 		switch (match(l), match(l2), match(l3)) {
@@ -31,7 +31,7 @@ public func zip3<A, B, C>(l : [A]) -> [B] -> [C] -> [(A, B, C)] {
 	} }
 }
 
-/// Zips together the elements of two lists according to a combining function.
+/// Zips together the elements of two arrays according to a combining function.
 public func zipWith<A, B, C>(f : A -> B -> C) -> [A] -> [B] -> [C] {
 	return { l in { l2 in
 		switch (match(l), match(l2)) {
@@ -43,7 +43,7 @@ public func zipWith<A, B, C>(f : A -> B -> C) -> [A] -> [B] -> [C] {
 	} }
 }
 
-/// Zips together the elements of two lists according to a combining operator.
+/// Zips together the elements of two arrays according to a combining operator.
 public func zipWith<A, B, C>(f : (A, B) -> C) -> [A] -> [B] -> [C] {
 	return { l in { l2 in
 		switch (match(l), match(l2)) {
@@ -55,7 +55,7 @@ public func zipWith<A, B, C>(f : (A, B) -> C) -> [A] -> [B] -> [C] {
 	} }
 }
 
-/// Zips together the elements of three lists according to a combining function.
+/// Zips together the elements of three arrays according to a combining function.
 public func zipWith3<A, B, C, D>(f : A -> B -> C -> D) -> [A] -> [B] -> [C] -> [D] {
 	return { l in { l2 in { l3 in
 		switch (match(l), match(l2), match(l3)) {
@@ -149,7 +149,7 @@ public func zipWith3<A, B, C, D>(f : A -> B -> C -> D) -> List<A> -> List<B> -> 
 	} } }
 }
 
-/// Unzips an array of tuples into a tuple of arrays.
+/// Unzips a list of tuples into a tuple of lists.
 public func unzip<A, B>(l : List<(A, B)>) -> (List<A>, List<B>) {
 	switch l.match() {
 		case .Nil:
@@ -160,7 +160,7 @@ public func unzip<A, B>(l : List<(A, B)>) -> (List<A>, List<B>) {
 	}
 }
 
-/// Unzips an array of triples into a triple of arrays.
+/// Unzips a list of triples into a triple of lists.
 public func unzip3<A, B, C>(l : List<(A, B, C)>) -> (List<A>, List<B>, List<C>) {
 	switch l.match() {
 		case .Nil:

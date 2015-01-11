@@ -7,7 +7,7 @@
 //  Released under the MIT license.
 //
 
-/// Takes, at most, a specified number of elements from a list and returns that sublist.
+/// Takes, at most, a specified number of elements from an array and returns that sublist.
 ///
 ///     take(5)("Hello World!") == "Hello"
 ///     take(3([1,2]) == [1,2]
@@ -28,7 +28,7 @@ public func take<A>(n : Int) -> [A] -> [A] {
 	}
 }
 
-/// Drops, at most, a specified number of elements from a list and returns that sublist.
+/// Drops, at most, a specified number of elements from an array and returns that sublist.
 ///
 ///     drop 6 "Hello World!" == "World!"
 ///     drop 3 [1,2] == []
@@ -92,19 +92,19 @@ public func drop<A>(n : Int) -> List<A> -> List<A> {
 }
 
 
-/// Returns a tuple containing the first n elements of a list first and the remaining elements
+/// Returns a tuple containing the first n elements of an array first and the remaining elements
 /// second.
 public func splitAt<A>(n : Int) -> [A] -> ([A], [A]) {
 	return { l in (take(n)(l), drop(n)(l)) }
 }
 
-/// Returns a tuple containing the first n elements of a list first and the remaining elements
+/// Returns a tuple containing the first n elements of an array first and the remaining elements
 /// second.
 public func splitAt<A>(n : Int) -> List<A> -> (List<A>, List<A>) {
 	return { l in (take(n)(l), drop(n)(l)) }
 }
 
-/// Returns a list of the first elements that satisfy a predicate until that predicate returns 
+/// Returns an array of the first elements that satisfy a predicate until that predicate returns
 /// false.
 public func takeWhile<A>(p : A -> Bool) -> [A] -> [A] {
 	return { l in
@@ -120,7 +120,7 @@ public func takeWhile<A>(p : A -> Bool) -> [A] -> [A] {
 	}
 }
 
-/// Returns a list of the first elements that do not satisfy a predicate until that predicate 
+/// Returns an array of the first elements that do not satisfy a predicate until that predicate
 /// returns false.
 public func dropWhile<A>(p : A -> Bool) -> [A] -> [A] {
 	return { l in
@@ -214,7 +214,7 @@ public func extreme<A>(p : A -> Bool) -> List<A> -> (List<A>, List<A>) {
 	return { l in span({ ((!) • p)($0) })(l) }
 }
 
-/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
+/// Takes an array and groups its arguments into sublists of duplicate elements found next to each
 /// other.
 public func group<A : Equatable>(xs : [A]) -> [[A]] {
 	return groupBy({ $0 == $1 })(xs)
@@ -226,7 +226,7 @@ public func group<A : Equatable>(xs : List<A>) -> List<List<A>> {
 	return groupBy({ $0 == $1 })(xs)
 }
 
-/// Sorts a list in ascending order.
+/// Sorts an array in ascending order.
 public func sort<A : Comparable>(xs : [A]) -> [A] {
 	return sortBy({ $0 < $1 })(xs)
 }
@@ -239,7 +239,7 @@ public func sort<A : Comparable>(xs : List<A>) -> List<A> {
 /// Takes an element and inserts it into the first position where it is less than or equal to the
 /// next element.
 ///
-/// If a value is inserted into a sorted list, the resulting list is also sorted.
+/// If a value is inserted into a sorted array, the resulting array is also sorted.
 public func insert<A : Comparable>(x : A) -> [A] -> [A] {
 	return { l in insertBy({ $0 <= $1 })(x)(l) }
 }
@@ -252,7 +252,7 @@ public func insert<A : Comparable>(x : A) -> List<A> -> List<A> {
 	return { l in insertBy({ $0 <= $1 })(x)(l) }
 }
 
-/// Removes duplicates from a list.
+/// Removes duplicates from an array.
 public func nub<A : Equatable>(xs : [A]) -> [A] {
 	return nubBy({ $0 == $1 })(xs)
 }
@@ -262,14 +262,14 @@ public func nub<A : Equatable>(xs : List<A>) -> List<A> {
 	return nubBy({ $0 == $1 })(xs)
 }
 
-/// Returns all initial segments of a list.
+/// Returns all initial segments of an array.
 public func inits<A>(l : [A]) -> [[A]] {	
 	return foldr({ x, xss in
 		return [] <| map({ x <| $0 })(xss)
 	})([[]])(l)
 }
 
-/// Returns all final segments of a list.
+/// Returns all final segments of an array.
 public func tails<A>(l : [A]) -> [[A]] {
 	return foldr({ x, y in
 		return (x <| head(y)) <| y

@@ -7,12 +7,12 @@
 //  Released under the MIT license.
 //
 
-/// Returns whether an element is a member of a list.
+/// Returns whether an element is a member of an array.
 public func elem<A : Equatable>(e : A) -> [A] -> Bool {
 	return { l in any({ $0 == e })(l) }
 }
 
-/// Returns whether an element is not a member of a list.
+/// Returns whether an element is not a member of an array.
 public func notElem<A : Equatable>(e : A) -> [A] -> Bool {
 	return { l in all({ $0 != e })(l) }
 }

@@ -7,7 +7,7 @@
 //  Released under the MIT license.
 //
 
-/// Maps a function over a list and returns a new list containing the mapped values.
+/// Maps a function over an array and returns a new array containing the mapped values.
 public func map<A, B>(f : A -> B) -> [A] -> [B] {
 	return { l in l.map(f) }
 }
@@ -17,7 +17,7 @@ public func map<A, B>(f : A -> B) -> List<A> -> List<B> {
 	return { l in l.map(f) }
 }
 
-/// Replace all occurrences of a value in a list by another value.
+/// Replace all occurrences of a value in an array by another value.
 public func replace<A : Equatable>(x : A) -> A -> [A] -> [A] {
 	return { y in { xs in xs.map({ z in z == x ? y : z }) } }
 }
@@ -27,7 +27,7 @@ public func replace<A : Equatable>(x : A) -> A -> List<A> -> List<A> {
 	return { y in { xs in xs.map({ z in z == x ? y : z }) } }
 }
 
-/// Takes a separator and a list and intersperses that element throughout the list.
+/// Takes a separator and an array and intersperses that element throughout the array.
 ///
 ///     intersperse(1)([1, 2, 3]) == [1, 1, 2, 1, 3, 1]
 public func intersperse<A>(sep : A) -> [A] -> [A] {
@@ -77,17 +77,17 @@ private func prependToAll<A>(sep : A) -> List<A> -> List<A> {
 	}
 }
 
-/// Inserts a list in between the elements of a 2-dimensional array and concatenates the result.
+/// Inserts an array in between the elements of a 2-dimensional array and concatenates the result.
 public func intercalate<A>(xs : [A]) -> [[A]] -> [A] {
 	return { xss in concat(intersperse(xs)(xss)) }
 }
 
-/// Inserts a list in between the elements of a 2-dimensional array and concatenates the result.
+/// Inserts a list in between the elements of a 2-dimensional list and concatenates the result.
 public func intercalate<A>(xs : List<A>) -> List<List<A>> -> List<A> {
 	return { xss in concat(intersperse(xs)(xss)) }
 }
 
-/// Transposes the rows and columns of a list.
+/// Transposes the rows and columns of a 2-dimensional array.
 ///
 ///     transpose([[1,2,3],[4,5,6]]) == [[1,4],[2,5],[3,6]]
 public func transpose<A>(xss : [[A]]) -> [[A]] {
@@ -104,7 +104,7 @@ public func transpose<A>(xss : [[A]]) -> [[A]] {
 	}
 }
 
-/// Transposes the rows and columns of a list.
+/// Transposes the rows and columns of a 2-dimensional list.
 ///
 ///     transpose([[1,2,3],[4,5,6]]) == [[1,4],[2,5],[3,6]]
 public func transpose<A>(xss : List<List<A>>) -> List<List<A>> {
@@ -121,7 +121,7 @@ public func transpose<A>(xss : List<List<A>>) -> List<List<A>> {
 	}
 }
 
-/// Partitions the elements of a list according to a predicate.
+/// Partitions the elements of an array according to a predicate.
 ///
 /// partition({ $0 < 3 })([1, 2, 3, 4, 5]) == ([1, 2],[3, 4, 5])
 public func partition<A>(p : A -> Bool) -> [A] -> ([A], [A]) {
@@ -144,7 +144,7 @@ private func select<A>(p : A -> Bool) -> A -> (List<A>, List<A>) -> (List<A>, Li
 	return { x in { t in p(x) ? (x <| fst(t), snd(t)) : (fst(t), x <| snd(t)) } }
 }
 
-/// Returns a list of all subsequences of a list.
+/// Returns an array of all subsequences of an array.
 ///
 ///     subsequences([1, 2, 3]) == [[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]]
 public func subsequences<A>(xs : [A]) -> [[A]] {
