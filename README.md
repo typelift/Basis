@@ -51,7 +51,7 @@ To take a famous example from Haskell:
 
 ```Swift
 /// Sorts a list by recursively partitioning its elements into sublists around a
-/// pivot element.i
+/// pivot element.
 func quickSort<T : Comparable>(l : [T]) -> [T] {
     switch destruct(l) {
         case .Empty:
@@ -146,9 +146,26 @@ happen.
 ```Swift
 /// An effect that, when executed, will pause for input from the terminal, then
 /// shout it back at you.
-let eff = interact(pack • map({ $0.toUpper() }) • unpack)
+let eff = interact(pack • map({ $0.toUpper() }) • unpack)
 /// ...
 /// Executes the effect with the current state of the world.
 eff.unsafePerformIO()
 ```
+
+System Requirements
+===================
+
+The Basis supports OS X 10.9+ and iOS 7.0+
+
+License
+=======
+
+The Basis is released under the MIT license.
+
+Further Reading
+===============
+
+- [SML](http://en.wikipedia.org/wiki/Standard_ML)
+- [Haskell](http://haskell.org/)
+- [TTFP](https://www.cs.kent.ac.uk/people/staff/sjt/TTFP/)
 
