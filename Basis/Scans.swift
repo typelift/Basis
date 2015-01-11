@@ -47,10 +47,10 @@ public func scanl<B, A>(f : (B, A) -> B) -> B -> [A] -> [B] {
 public func scanl<B, A>(f : B -> A -> B) -> B -> List<A> -> List<B> {
 	return { q in { ls in
 		switch ls.match() {
-		case .Nil:
-			return q <| List()
-		case .Cons(let x, let xs):
-			return q <| scanl(f)(f(q)(x))(xs)
+			case .Nil:
+				return q <| List()
+			case .Cons(let x, let xs):
+				return q <| scanl(f)(f(q)(x))(xs)
 		}
 	} }
 }
@@ -63,10 +63,10 @@ public func scanl<B, A>(f : B -> A -> B) -> B -> List<A> -> List<B> {
 public func scanl<B, A>(f : (B, A) -> B) -> B -> List<A> -> List<B> {
 	return { q in { ls in
 		switch ls.match() {
-		case .Nil:
-			return q <| List()
-		case .Cons(let x, let xs):
-			return q <| scanl(f)(f(q, x))(xs)
+			case .Nil:
+				return q <| List()
+			case .Cons(let x, let xs):
+				return q <| scanl(f)(f(q, x))(xs)
 		}
 	} }
 }
@@ -105,10 +105,10 @@ public func scanl1<A>(f : (A, A) -> A) -> [A] -> [A] {
 public func scanl1<A>(f : A -> A -> A) -> List<A> -> List<A> {
 	return { l in
 		switch l.match() {
-		case .Nil:
-			return List()
-		case .Cons(let x, let xs):
-			return scanl(f)(x)(xs)
+			case .Nil:
+				return List()
+			case .Cons(let x, let xs):
+				return scanl(f)(x)(xs)
 		}
 	}
 }
@@ -119,10 +119,10 @@ public func scanl1<A>(f : A -> A -> A) -> List<A> -> List<A> {
 public func scanl1<A>(f : (A, A) -> A) -> List<A> -> List<A> {
 	return { l in
 		switch l.match() {
-		case .Nil:
-			return List()
-		case .Cons(let x, let xs):
-			return scanl(f)(x)(xs)
+			case .Nil:
+				return List()
+			case .Cons(let x, let xs):
+				return scanl(f)(x)(xs)
 		}
 	}
 }
@@ -167,10 +167,10 @@ public func scanr<B, A>(f : (A, B) -> B) -> B -> [A] -> [B] {
 public func scanr<B, A>(f : A -> B -> B) -> B -> List<A> -> List<B> {
 	return { q in { ls in
 		switch ls.match() {
-		case .Nil:
-			return List(q)
-		case .Cons(let x, let xs):
-			return f(x)(q) <| scanr(f)(q)(xs)
+			case .Nil:
+				return List(q)
+			case .Cons(let x, let xs):
+				return f(x)(q) <| scanr(f)(q)(xs)
 		}
 	} }
 }
@@ -183,10 +183,10 @@ public func scanr<B, A>(f : A -> B -> B) -> B -> List<A> -> List<B> {
 public func scanr<B, A>(f : (A, B) -> B) -> B -> List<A> -> List<B> {
 	return { q in { ls in
 		switch ls.match() {
-		case .Nil:
-			return List(q)
-		case .Cons(let x, let xs):
-			return f(x, q) <| scanr(f)(q)(xs)
+			case .Nil:
+				return List(q)
+			case .Cons(let x, let xs):
+				return f(x, q) <| scanr(f)(q)(xs)
 		}
 	} }
 }
@@ -241,18 +241,18 @@ public func scanr1<A>(f : (A, A) -> A) -> [A] -> [A] {
 public func scanr1<A>(f : A -> A -> A) -> List<A> -> List<A> {
 	return { l in
 		switch l.match() {
-		case .Nil:
-			return List()
-		case .Cons(let x, let xs) where xs.count == 0:
-			return List(x)
-		case .Cons(let x, let xs):
-			let qs = scanr1(f)(xs)
-			switch qs.match() {
 			case .Nil:
-				assert(false, "Cannot scanr1 across an empty list.")
-			case .Cons(let q, _):
-				return f(x)(q) <| qs
-			}
+				return List()
+			case .Cons(let x, let xs) where xs.count == 0:
+				return List(x)
+			case .Cons(let x, let xs):
+				let qs = scanr1(f)(xs)
+				switch qs.match() {
+					case .Nil:
+						assert(false, "Cannot scanr1 across an empty list.")
+					case .Cons(let q, _):
+						return f(x)(q) <| qs
+				}
 		}
 	}
 }
@@ -263,18 +263,18 @@ public func scanr1<A>(f : A -> A -> A) -> List<A> -> List<A> {
 public func scanr1<A>(f : (A, A) -> A) -> List<A> -> List<A> {
 	return { l in
 		switch l.match() {
-		case .Nil:
-			return List()
-		case .Cons(let x, let xs) where xs.count == 0:
-			return List(x)
-		case .Cons(let x, let xs):
-			let qs = scanr1(f)(xs)
-			switch qs.match() {
 			case .Nil:
-				assert(false, "Cannot scanr1 across an empty list.")
-			case .Cons(let q, _):
-				return f(x, q) <| qs
-			}
+				return List()
+			case .Cons(let x, let xs) where xs.count == 0:
+				return List(x)
+			case .Cons(let x, let xs):
+				let qs = scanr1(f)(xs)
+				switch qs.match() {
+					case .Nil:
+						assert(false, "Cannot scanr1 across an empty list.")
+					case .Cons(let q, _):
+						return f(x, q) <| qs
+				}
 		}
 	}
 }

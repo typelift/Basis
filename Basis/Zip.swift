@@ -11,10 +11,10 @@
 public func zip<A, B>(l : [A]) -> [B] -> [(A, B)] {
 	return { l2 in
 		switch (match(l), match(l2)) {
-		case (.Cons(let a, let as_), .Cons(let b, let bs)):
-			return (a, b) <| zip(as_)(bs)
-		default:
-			return []
+			case (.Cons(let a, let as_), .Cons(let b, let bs)):
+				return (a, b) <| zip(as_)(bs)
+			default:
+				return []
 		}
 	}
 }
@@ -23,69 +23,69 @@ public func zip<A, B>(l : [A]) -> [B] -> [(A, B)] {
 public func zip3<A, B, C>(l : [A]) -> [B] -> [C] -> [(A, B, C)] {
 	return { l2 in { l3 in
 		switch (match(l), match(l2), match(l3)) {
-		case (.Cons(let a, let as_), .Cons(let b, let bs), .Cons(let c, let cs)):
-			return (a, b, c) <| zip3(as_)(bs)(cs)
-		default:
-			return []
+			case (.Cons(let a, let as_), .Cons(let b, let bs), .Cons(let c, let cs)):
+				return (a, b, c) <| zip3(as_)(bs)(cs)
+			default:
+				return []
 		}
-		} }
+	} }
 }
 
 /// Zips together the elements of two lists according to a combining function.
 public func zipWith<A, B, C>(f : A -> B -> C) -> [A] -> [B] -> [C] {
 	return { l in { l2 in
 		switch (match(l), match(l2)) {
-		case (.Cons(let a, let as_), .Cons(let b, let bs)):
-			return f(a)(b) <| zipWith(f)(as_)(bs)
-		default:
-			return []
+			case (.Cons(let a, let as_), .Cons(let b, let bs)):
+				return f(a)(b) <| zipWith(f)(as_)(bs)
+			default:
+				return []
 		}
-		} }
+	} }
 }
 
 /// Zips together the elements of two lists according to a combining operator.
 public func zipWith<A, B, C>(f : (A, B) -> C) -> [A] -> [B] -> [C] {
 	return { l in { l2 in
 		switch (match(l), match(l2)) {
-		case (.Cons(let a, let as_), .Cons(let b, let bs)):
-			return f(a, b) <| zipWith(f)(as_)(bs)
-		default:
-			return []
+			case (.Cons(let a, let as_), .Cons(let b, let bs)):
+				return f(a, b) <| zipWith(f)(as_)(bs)
+			default:
+				return []
 		}
-		} }
+	} }
 }
 
 /// Zips together the elements of three lists according to a combining function.
 public func zipWith3<A, B, C, D>(f : A -> B -> C -> D) -> [A] -> [B] -> [C] -> [D] {
 	return { l in { l2 in { l3 in
 		switch (match(l), match(l2), match(l3)) {
-		case (.Cons(let a, let as_), .Cons(let b, let bs), .Cons(let c, let cs)):
-			return f(a)(b)(c) <| zipWith3(f)(as_)(bs)(cs)
-		default:
-			return []
+			case (.Cons(let a, let as_), .Cons(let b, let bs), .Cons(let c, let cs)):
+				return f(a)(b)(c) <| zipWith3(f)(as_)(bs)(cs)
+			default:
+				return []
 		}
-		} } }
+	} } }
 }
 
 /// Unzips an array of tuples into a tuple of arrays.
 public func unzip<A, B>(l : [(A, B)]) -> ([A], [B]) {
 	switch match(l) {
-	case .Nil:
-		return ([], [])
-	case .Cons(let (a, b), let tl):
-		let (t1, t2) : ([A], [B]) = unzip(tl)
-		return (a <| t1, b <| t2)
+		case .Nil:
+			return ([], [])
+		case .Cons(let (a, b), let tl):
+			let (t1, t2) : ([A], [B]) = unzip(tl)
+			return (a <| t1, b <| t2)
 	}
 }
 
 /// Unzips an array of triples into a triple of arrays.
 public func unzip3<A, B, C>(l : [(A, B, C)]) -> ([A], [B], [C]) {
 	switch match(l) {
-	case .Nil:
-		return ([], [], [])
-	case .Cons(let (a, b, c), let tl):
-		let (t1, t2, t3) : ([A], [B], [C]) = unzip3(tl)
-		return (a <| t1, b <| t2, c <| t3)
+		case .Nil:
+			return ([], [], [])
+		case .Cons(let (a, b, c), let tl):
+			let (t1, t2, t3) : ([A], [B], [C]) = unzip3(tl)
+			return (a <| t1, b <| t2, c <| t3)
 	}
 }
 

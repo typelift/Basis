@@ -38,10 +38,10 @@ public func foldl<A, B>(f: (B, A) -> B) -> B -> [A] -> B {
 public func foldl<A, B>(f: B -> A -> B) -> B -> List<A> -> B {
 	return { z in { l in
 		switch l.match() {
-		case .Nil:
-			return z
-		case .Cons(let x, let xs):
-			return foldl(f)(f(z)(x))(xs)
+			case .Nil:
+				return z
+			case .Cons(let x, let xs):
+				return foldl(f)(f(z)(x))(xs)
 		}
 	} }
 }
@@ -51,10 +51,10 @@ public func foldl<A, B>(f: B -> A -> B) -> B -> List<A> -> B {
 public func foldl<A, B>(f: (B, A) -> B) -> B -> List<A> -> B {
 	return { z in { l in
 		switch l.match() {
-		case .Nil:
-			return z
-		case .Cons(let x, let xs):
-			return foldl(f)(f(z, x))(xs)
+			case .Nil:
+				return z
+			case .Cons(let x, let xs):
+				return foldl(f)(f(z, x))(xs)
 		}
 	} }
 }
@@ -103,12 +103,12 @@ public func foldl1<A>(f: (A, A) -> A) -> [A] -> A {
 public func foldl1<A>(f: A -> A -> A) -> List<A> -> A {
 	return { l in
 		switch l.match() {
-		case .Cons(let x, let xs) where xs.count == 0:
-			return x
-		case .Cons(let x, let xs):
-			return foldl(f)(x)(xs)
-		case .Nil:
-			assert(false, "Cannot invoke foldl1 with an empty list.")
+			case .Cons(let x, let xs) where xs.count == 0:
+				return x
+			case .Cons(let x, let xs):
+				return foldl(f)(x)(xs)
+			case .Nil:
+				assert(false, "Cannot invoke foldl1 with an empty list.")
 		}
 	}
 }
@@ -121,12 +121,12 @@ public func foldl1<A>(f: A -> A -> A) -> List<A> -> A {
 public func foldl1<A>(f: (A, A) -> A) -> List<A> -> A {
 	return { l in
 		switch l.match() {
-		case .Cons(let x, let xs) where xs.count == 0:
-			return x
-		case .Cons(let x, let xs):
-			return foldl(f)(x)(xs)
-		case .Nil:
-			assert(false, "Cannot invoke foldl1 with an empty list.")
+			case .Cons(let x, let xs) where xs.count == 0:
+				return x
+			case .Cons(let x, let xs):
+				return foldl(f)(x)(xs)
+			case .Nil:
+				assert(false, "Cannot invoke foldl1 with an empty list.")
 		}
 	}
 }
@@ -162,10 +162,10 @@ public func foldr<A, B>(k: (A, B) -> B) -> B -> [A] -> B {
 public func foldr<A, B>(k: A -> B -> B) -> B -> List<A> -> B {
 	return { z in { l in
 		switch l.match() {
-		case .Nil:
-			return z
-		case .Cons(let x, let xs):
-			return k(x)(foldr(k)(z)(xs))
+			case .Nil:
+				return z
+			case .Cons(let x, let xs):
+				return k(x)(foldr(k)(z)(xs))
 		}
 	} }
 }
@@ -175,10 +175,10 @@ public func foldr<A, B>(k: A -> B -> B) -> B -> List<A> -> B {
 public func foldr<A, B>(k: (A, B) -> B) -> B -> List<A> -> B {
 	return { z in { l in
 		switch l.match() {
-		case .Nil:
-			return z
-		case .Cons(let x, let xs):
-			return k(x, foldr(k)(z)(xs))
+			case .Nil:
+				return z
+			case .Cons(let x, let xs):
+				return k(x, foldr(k)(z)(xs))
 		}
 	} }
 }
@@ -245,12 +245,12 @@ public func foldr1<A>(f: A -> A -> A) -> List<A> -> A {
 public func foldr1<A>(f: (A, A) -> A) -> List<A> -> A {
 	return { l in
 		switch l.match() {
-		case .Cons(let x, let xs) where xs.count == 0:
-			return x
-		case .Cons(let x, let xs):
-			return f(x, foldr1(f)(xs))
-		case .Nil:
-			assert(false, "Cannot invoke foldr1 with an empty list.")
+			case .Cons(let x, let xs) where xs.count == 0:
+				return x
+			case .Cons(let x, let xs):
+				return f(x, foldr1(f)(xs))
+			case .Nil:
+				assert(false, "Cannot invoke foldr1 with an empty list.")
 		}
 	}
 }
@@ -279,10 +279,10 @@ public func unfoldr<A, B>(f : B -> Optional<(A, B)>) -> B -> [A] {
 public func unfoldr<A, B>(f : B -> Optional<(A, B)>) -> B -> List<A> {
 	return { b in
 		switch f(b) {
-		case .Some(let (a, b2)):
-			return a <| unfoldr(f)(b2)
-		case .None:
-			return List()
+			case .Some(let (a, b2)):
+				return a <| unfoldr(f)(b2)
+			case .None:
+				return List()
 		}
 	}
 }

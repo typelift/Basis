@@ -58,10 +58,10 @@ private func prependToAll<A>(sep : A) -> [A] -> [A] {
 public func intersperse<A>(sep : A) -> List<A> -> List<A> {
 	return { l in
 		switch l.match() {
-		case .Nil:
-			return List()
-		case .Cons(let x, let xs):
-			return x <| prependToAll(sep)(xs)
+			case .Nil:
+				return List()
+			case .Cons(let x, let xs):
+				return x <| prependToAll(sep)(xs)
 		}
 	}
 }
@@ -69,10 +69,10 @@ public func intersperse<A>(sep : A) -> List<A> -> List<A> {
 private func prependToAll<A>(sep : A) -> List<A> -> List<A> {
 	return { l in
 		switch l.match() {
-		case .Nil:
-			return List()
-		case .Cons(let x, let xs):
-			return sep <| x <| prependToAll(sep)(xs)
+			case .Nil:
+				return List()
+			case .Cons(let x, let xs):
+				return sep <| x <| prependToAll(sep)(xs)
 		}
 	}
 }
@@ -113,10 +113,10 @@ public func transpose<A>(xss : List<List<A>>) -> List<List<A>> {
 		return List()
 	case .Cons(let x, let xss):
 		switch x.match() {
-		case .Nil:
-			return transpose(xss)
-		case .Cons(let x, let xs):
-			return (x <| concatMap({ List(head($0)) })(xss)) <| transpose(xs <| concatMap({ List(tail($0)) })(xss))
+			case .Nil:
+				return transpose(xss)
+			case .Cons(let x, let xs):
+				return (x <| concatMap({ List(head($0)) })(xss)) <| transpose(xs <| concatMap({ List(tail($0)) })(xss))
 		}
 	}
 }
@@ -171,12 +171,12 @@ public func subsequences<A>(xs : List<A>) -> List<List<A>> {
 
 public func nonEmptySubsequences<A>(xs : List<A>) -> List<List<A>> {
 	switch xs.match() {
-	case .Nil:
-		return List()
-	case .Cons(let x, let xs):
-		return List(x) <| foldr({ ys, r in
-			return ys <| (x <| ys) <| r
-		})(List())(nonEmptySubsequences(xs))
+		case .Nil:
+			return List()
+		case .Cons(let x, let xs):
+			return List(x) <| foldr({ ys, r in
+				return ys <| (x <| ys) <| r
+			})(List())(nonEmptySubsequences(xs))
 	}
 }
 

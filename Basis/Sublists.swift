@@ -62,10 +62,10 @@ public func take<A>(n : Int) -> List<A> -> List<A> {
 		}
 
 		switch l.match() {
-		case .Nil:
-			return List()
-		case .Cons(let x, let xs):
-			return x <| take(n - 1)(xs)
+			case .Nil:
+				return List()
+			case .Cons(let x, let xs):
+				return x <| take(n - 1)(xs)
 		}
 	}
 }
@@ -83,10 +83,10 @@ public func drop<A>(n : Int) -> List<A> -> List<A> {
 		}
 
 		switch l.match() {
-		case .Nil:
-			return List()
-		case .Cons(let x, let xs):
-			return drop(n - 1)(xs)
+			case .Nil:
+				return List()
+			case .Cons(let x, let xs):
+				return drop(n - 1)(xs)
 		}
 	}
 }
@@ -141,13 +141,13 @@ public func dropWhile<A>(p : A -> Bool) -> [A] -> [A] {
 public func takeWhile<A>(p : A -> Bool) -> List<A> -> List<A> {
 	return { l in
 		switch l.match() {
-		case .Nil:
-			return List()
-		case .Cons(let x, let xs):
-			if p(x) {
-				return x <| takeWhile(p)(xs)
-			}
-			return List()
+			case .Nil:
+				return List()
+			case .Cons(let x, let xs):
+				if p(x) {
+					return x <| takeWhile(p)(xs)
+				}
+				return List()
 		}
 	}
 }
@@ -157,13 +157,13 @@ public func takeWhile<A>(p : A -> Bool) -> List<A> -> List<A> {
 public func dropWhile<A>(p : A -> Bool) -> List<A> -> List<A> {
 	return { l in
 		switch l.match() {
-		case .Nil:
-			return List()
-		case .Cons(let x, let xs):
-			if p(x) {
-				return dropWhile(p)(xs)
-			}
-			return l
+			case .Nil:
+				return List()
+			case .Cons(let x, let xs):
+				if p(x) {
+					return dropWhile(p)(xs)
+				}
+				return l
 		}
 	}
 }
@@ -196,14 +196,14 @@ public func extreme<A>(p : A -> Bool) -> [A] -> ([A], [A]) {
 public func span<A>(p : A -> Bool) -> List<A> -> (List<A>, List<A>) {
 	return { l in
 		switch l.match() {
-		case .Nil:
-			return (List(), List())
-		case .Cons(let x, let xs):
-			if p(x) {
-				let (ys, zs) = span(p)(xs)
-				return (x <| ys, zs)
-			}
-			return (List(), l)
+			case .Nil:
+				return (List(), List())
+			case .Cons(let x, let xs):
+				if p(x) {
+					let (ys, zs) = span(p)(xs)
+					return (x <| ys, zs)
+				}
+				return (List(), l)
 		}
 	}
 }
