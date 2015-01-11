@@ -11,27 +11,27 @@ public enum ArrayMatcher<A> {
 	case Cons(A, [A])
 }
 
-/// Returns the first element of a non-empty list.
+/// Returns the first element of a non-empty array.
 ///
-/// If the provided list is empty, this function throws an exception.
+/// If the provided array is empty, this function throws an exception.
 public func head<A>(l : [A]) -> A {
 	switch match(l) {
-	case .Empty:
-		assert(false, "Cannot take the head of an empty list.")
-	case .Cons(let x, _):
-		return x
+		case .Empty:
+			assert(false, "Cannot take the head of an empty list.")
+		case .Cons(let x, _):
+			return x
 	}
 }
 
-/// Returns an array of all elements but the first in a non-empty list.
+/// Returns an array of all elements but the first in a non-empty array.
 ///
-/// If the provided list if empty, this function throws an exception.
+/// If the provided array if empty, this function throws an exception.
 public func tail<A>(l : [A]) -> [A] {
 	switch match(l) {
-	case .Empty:
-		assert(false, "Cannot take the tail of an empty list.")
-	case .Cons(_, let xs):
-		return xs
+		case .Empty:
+			assert(false, "Cannot take the tail of an empty list.")
+		case .Cons(_, let xs):
+			return xs
 	}
 }
 
@@ -68,12 +68,12 @@ public func match<T>(l : [T]) -> ArrayMatcher<T> {
 public func isPrefixOf<A : Equatable>(l : [A]) -> [A] -> Bool {
 	return { r in
 		switch (match(l), match(r)) {
-		case (.Cons(let x, let xs), .Cons(let y, let ys)) where (x == y):
-			return isPrefixOf(xs)(ys)
-		case (.Empty, _):
-			return true
-		default:
-			return false
+			case (.Cons(let x, let xs), .Cons(let y, let ys)) where (x == y):
+				return isPrefixOf(xs)(ys)
+			case (.Empty, _):
+				return true
+			default:
+				return false
 		}
 	}
 }
@@ -94,12 +94,12 @@ public func isInfixOf<A : Equatable>(l : [A]) -> [A] -> Bool {
 public func stripPrefix<A : Equatable>(l : [A]) -> [A] -> Maybe<[A]> {
 	return { r in
 		switch (match(l), match(r)) {
-		case (.Empty, _):
-			return Maybe.just(r)
-		case (.Cons(let x, let xs), .Cons(let y, let ys)) where x == y:
-			return stripPrefix(xs)(ys)
-		default:
-			return Maybe.nothing()
+			case (.Empty, _):
+				return Maybe.just(r)
+			case (.Cons(let x, let xs), .Cons(let y, let ys)) where x == y:
+				return stripPrefix(xs)(ys)
+			default:
+				return Maybe.nothing()
 		}
 	}
 }
