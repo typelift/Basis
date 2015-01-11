@@ -73,6 +73,72 @@ public func ><T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
 	}
 }
 
+/// Returns whether the two lists are in ascending order or are equal.
+///
+/// Lists are equal when they contain the same elements in the same order.  A list is always
+/// larger than the empty list.  If the arrays cannot be determined to have different sizes of
+/// elements, the heads of subsequent sub-lists are compared wtih this ordering predicate until a
+/// match is found.
+public func <=<T : Comparable>(lhs: List<T>, rhs: List<T>) -> Bool {
+	switch (lhs.match(), rhs.match()) {
+		case (.Nil, .Nil):
+			return true
+		case (.Nil, .Cons(_, _)):
+			return true
+		case (.Cons(_, _), .Nil):
+			return false
+		case (.Cons(let x, let xs), .Cons(let y, let ys)):
+			return (x == y) ? (xs <= ys) : x <= y
+	}
+}
+
+/// Returns whether the two arrays are in descending order or are equal.
+///
+/// Lists are equal when they contain the same elements in the same order.  A list is always
+/// larger than the empty list.  If the arrays cannot be determined to have different sizes of
+/// elements, the heads of subsequent sub-lists are compared wtih this ordering predicate until a
+/// match is found.
+public func >=<T : Comparable>(lhs: List<T>, rhs: List<T>) -> Bool {
+	switch (lhs.match(), rhs.match()) {
+		case (.Nil, .Nil):
+			return true
+		case (.Nil, .Cons(_, _)):
+			return false
+		case (.Cons(_, _), .Nil):
+			return true
+		case (.Cons(let x, let xs), .Cons(let y, let ys)):
+			return (x == y) ? (xs >= ys) : x >= y
+	}
+}
+
+/// Returns whether the two lists are in ascending order.
+public func <<T : Comparable>(lhs: List<T>, rhs: List<T>) -> Bool {
+	switch (lhs.match(), rhs.match()) {
+		case (.Nil, .Nil):
+			return false
+		case (.Nil, .Cons(_, _)):
+			return true
+		case (.Cons(_, _), .Nil):
+			return false
+		case (.Cons(let x, let xs), .Cons(let y, let ys)):
+			return (x == y) ? (xs < ys) : x < y
+	}
+}
+
+/// Returns whether the two lists are in descending order.
+public func ><T : Comparable>(lhs: List<T>, rhs: List<T>) -> Bool {
+	switch (lhs.match(), rhs.match()) {
+		case (.Nil, .Nil):
+			return false
+		case (.Nil, .Cons(_, _)):
+			return false
+		case (.Cons(_, _), .Nil):
+			return true
+		case (.Cons(let x, let xs), .Cons(let y, let ys)):
+			return (x == y) ? (xs > ys) : x > y
+	}
+}
+
 /// Maps an argument into a comparable form for use with the xxxBy functions.
 ///
 ///
@@ -112,6 +178,34 @@ public func groupBy<A>(cmp : (A, A) -> Bool) -> [A] -> [[A]] {
 	}
 }
 
+/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
+/// other according to an equality predicate.
+public func groupBy<A>(cmp : A -> A -> Bool) -> List<A> -> List<List<A>>  {
+	return { l in
+		switch l.match() {
+			case .Nil:
+				return []
+			case .Cons(let x, let xs):
+				let (ys, zs) = span(cmp(x))(xs)
+				return (x <| ys) <| groupBy(cmp)(zs)
+		}
+	}
+}
+
+/// Takes a list and groups its arguments into sublists of duplicate elements found next to each
+/// other according to an equality operator.
+public func groupBy<A>(cmp : (A, A) -> Bool) -> List<A> -> List<List<A>> {
+	return { l in
+		switch l.match() {
+			case .Nil:
+				return []
+			case .Cons(let x, let xs):
+				let (ys, zs) = span({ cmp(x, $0) })(xs)
+				return (x <| ys) <| groupBy(cmp)(zs)
+		}
+	}
+}
+
 /// Removes duplicates from a list according to an equality predicate.
 public func nubBy<A>(eq : A -> A -> Bool) -> [A] -> [A] {
 	return { lst in
@@ -140,6 +234,34 @@ public func nubBy<A>(eq : (A, A) -> Bool) -> [A] -> [A] {
 	}
 }
 
+/// Removes duplicates from a list according to an equality predicate.
+public func nubBy<A>(eq : A -> A -> Bool) -> List<A> -> List<A> {
+	return { lst in
+		switch lst.match() {
+			case .Nil():
+				return List()
+			case .Cons(let x, let xs):
+				return List(x) + nubBy(eq)(xs.filter({ y in
+					return !(eq(x)(y))
+				}))
+		}
+	}
+}
+
+/// Removes duplicates from a list according to an equality operator.
+public func nubBy<A>(eq : (A, A) -> Bool) -> List<A> -> List<A> {
+	return { lst in
+		switch lst.match() {
+			case .Nil():
+				return List()
+			case .Cons(let x, let xs):
+				return List(x) + nubBy(eq)(xs.filter({ y in
+					return !(eq(x, y))
+				}))
+		}
+	}
+}
+
 /// Sorts a list according to a ordering predicate.
 public func sortBy<A>(cmp : A -> A -> Bool) -> [A] -> [A] {
 	return { l in foldr(insertBy(cmp))([])(l) }
@@ -149,6 +271,17 @@ public func sortBy<A>(cmp : A -> A -> Bool) -> [A] -> [A] {
 public func sortBy<A>(cmp : (A, A) -> Bool) -> [A] -> [A] {
 	return { l in foldr(insertBy(cmp))([])(l) }
 }
+
+/// Sorts a list according to a ordering predicate.
+public func sortBy<A>(cmp : A -> A -> Bool) -> List<A> -> List<A> {
+	return { l in foldr(insertBy(cmp))([])(l) }
+}
+
+/// Sorts a list according to an ordering operator.
+public func sortBy<A>(cmp : (A, A) -> Bool) -> List<A> -> List<A> {
+	return { l in foldr(insertBy(cmp))([])(l) }
+}
+
 
 /// Inserts an element into a list according to an ordering predicate.
 public func insertBy<A>(cmp: A -> A -> Bool) -> A -> [A] -> [A] {
@@ -168,6 +301,30 @@ public func insertBy<A>(cmp: (A, A) -> Bool) -> A -> [A] -> [A] {
 		switch match(l) {
 			case .Empty:
 				return [x]
+			case .Cons(let y, let ys):
+				return cmp(x, y) ?  x <| l : y <| insertBy(cmp)(x)(ys)
+		}
+	} }
+}
+
+/// Inserts an element into a list according to an ordering predicate.
+public func insertBy<A>(cmp: A -> A -> Bool) -> A -> List<A> -> List<A> {
+	return { x in { l in
+		switch l.match() {
+			case .Nil:
+				return List(x)
+			case .Cons(let y, let ys):
+				return cmp(x)(y) ? x <| l : y <| insertBy(cmp)(x)(ys)
+		}
+	} }
+}
+
+/// Inserts an element into a list according to an ordering operator.
+public func insertBy<A>(cmp: (A, A) -> Bool) -> A -> List<A> -> List<A> {
+	return { x in { l in
+		switch l.match() {
+			case .Nil:
+				return List(x)
 			case .Cons(let y, let ys):
 				return cmp(x, y) ?  x <| l : y <| insertBy(cmp)(x)(ys)
 		}
@@ -202,6 +359,34 @@ public func maximumBy<A>(cmp : (A, A) -> Bool) -> [A] -> A {
 	}
 }
 
+/// Returns the maximum element of a list according to an ordering predicate.
+public func maximumBy<A>(cmp : A -> A -> Bool) -> List<A> -> A {
+	return { l in
+		switch l.match() {
+			case .Nil:
+				assert(false, "Cannot find the maximum element of an empty list.")
+			case .Cons(_, _):
+				return foldl1({ (let t) -> A in
+					return cmp(fst(t))(snd(t)) ? fst(t) : snd(t)
+				})(l)
+		}
+	}
+}
+
+/// Returns the maximum element of a list according to an ordering operator.
+public func maximumBy<A>(cmp : (A, A) -> Bool) -> List<A> -> A {
+	return { l in
+		switch l.match() {
+			case .Nil:
+				assert(false, "Cannot find the maximum element of an empty list.")
+			case .Cons(_, _):
+				return foldl1({ (let t) -> A in
+					return cmp(fst(t), snd(t)) ? fst(t) : snd(t)
+				})(l)
+		}
+	}
+}
+
 /// Returns the minimum element of a list according to an ordering predicate.
 public func minimumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 	return { l in
@@ -221,6 +406,34 @@ public func minimumBy<A>(cmp : (A, A) -> Bool) -> [A] -> A {
 	return { l in
 		switch match(l) {
 			case .Empty:
+				assert(false, "Cannot find the minimum element of an empty list.")
+			case .Cons(_, _):
+				return foldl1({ (let t) -> A in
+					return cmp(fst(t), snd(t)) ? snd(t) : fst(t)
+				})(l)
+		}
+	}
+}
+
+/// Returns the minimum element of a list according to an ordering predicate.
+public func minimumBy<A>(cmp : A -> A -> Bool) -> List<A> -> A {
+	return { l in
+		switch l.match() {
+			case .Nil:
+				assert(false, "Cannot find the minimum element of an empty list.")
+			case .Cons(_, _):
+				return foldl1({ (let t) -> A in
+					return cmp(fst(t))(snd(t)) ? snd(t) :  fst(t)
+				})(l)
+		}
+	}
+}
+
+/// Returns the minimum element of a list according to an ordering operator.
+public func minimumBy<A>(cmp : (A, A) -> Bool) -> List<A> -> A {
+	return { l in
+		switch l.match() {
+			case .Nil:
 				assert(false, "Cannot find the minimum element of an empty list.")
 			case .Cons(_, _):
 				return foldl1({ (let t) -> A in
