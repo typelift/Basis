@@ -32,12 +32,12 @@ public enum ListMatcher<A> {
 /// list will force evaluation of the entire list.  For infinite lists this can lead to a program
 /// diverging.
 public struct List<A> {
-	let len : Int
+	let count : Int
 	let next : () -> (head : A, tail : List<A>)
 
 	/// Constructs a potentially infinite list.
 	init(_ next : @autoclosure () -> (head : A, tail : List<A>), isEmpty : Bool = false) {
-		self.len = isEmpty ? 0 : -1
+		self.count = isEmpty ? 0 : -1
 		self.next = next
 	}
 
@@ -50,10 +50,10 @@ public struct List<A> {
 
 	/// Construct a list with a given head and tail.
 	public init(_ head : A, _ tail : List<A> = List<A>()) {
-		if tail.len == -1 {
-			self.len = -1
+		if tail.count == -1 {
+			self.count = -1
 		} else {
-			self.len = tail.len.successor()
+			self.count = tail.count.successor()
 		}
 		self.next = { (head, tail) }
 	}
@@ -66,7 +66,7 @@ public struct List<A> {
 	/// Destructures a list.  If the list is empty, the result is Nil.  If the list contains a value
 	/// the result is Cons(head, tail).
 	public func match() -> ListMatcher<A> {
-		if self.len == 0 {
+		if self.count == 0 {
 			return .Nil
 		}
 		let (hd, tl) = self.next()
@@ -89,7 +89,7 @@ public struct List<A> {
 
 	/// Returns whether or not the receiver is the empty list.
 	public func isEmpty() -> Bool {
-		return self.len == 0
+		return self.count == 0
 	}
 
 	/// Returns whether or not the receiver has a countable number of elements.
@@ -97,17 +97,17 @@ public struct List<A> {
 	/// It may be dangerous to attempt to iterate over an infinite list of values because the loop
 	/// will never terminate.
 	public func isFinite() -> Bool {
-		return self.len != -1
+		return self.count != -1
 	}
 
 	/// Returns the length of the list.
 	///
 	/// For infinite lists this function will throw an exception.
 	public func length() -> UInt {
-		if self.len == -1 {
+		if self.count == -1 {
 			return error("Cannot take the length of an infinite list.")
 		}
-		return UInt(self.len)
+		return UInt(self.count)
 	}
 
 	/// Yields a new list by applying a function to each element of the receiver.

@@ -70,7 +70,7 @@ public func zipWith3<A, B, C, D>(f : A -> B -> C -> D) -> [A] -> [B] -> [C] -> [
 /// Unzips an array of tuples into a tuple of arrays.
 public func unzip<A, B>(l : [(A, B)]) -> ([A], [B]) {
 	switch match(l) {
-		case .Empty:
+		case .Nil:
 			return ([], [])
 		case .Cons(let (a, b), let tl):
 			let (t1, t2) : ([A], [B]) = unzip(tl)
@@ -81,7 +81,7 @@ public func unzip<A, B>(l : [(A, B)]) -> ([A], [B]) {
 /// Unzips an array of triples into a triple of arrays.
 public func unzip3<A, B, C>(l : [(A, B, C)]) -> ([A], [B], [C]) {
 	switch match(l) {
-		case .Empty:
+		case .Nil:
 			return ([], [], [])
 		case .Cons(let (a, b, c), let tl):
 			let (t1, t2, t3) : ([A], [B], [C]) = unzip3(tl)

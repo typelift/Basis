@@ -17,7 +17,7 @@ class ListSpec : XCTestCase {
 		let l = [1, 2, 3, 4]
 		
 		switch match(l) {
-			case .Empty:
+			case .Nil:
 				assert(false, "")
 			case .Cons(let hd, let tl):
 				XCTAssertTrue(hd == 1, "")

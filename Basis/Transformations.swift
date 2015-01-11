@@ -23,7 +23,7 @@ public func replace<A : Equatable>(x : A) -> A -> [A] -> [A] {
 public func intersperse<A>(sep : A) -> [A] -> [A] {
 	return { l in
 		switch match(l) {
-			case .Empty:
+			case .Nil:
 				return []
 			case .Cons(let x, let xs):
 				return x <| prependToAll(sep)(xs)
@@ -34,7 +34,7 @@ public func intersperse<A>(sep : A) -> [A] -> [A] {
 private func prependToAll<A>(sep : A) -> [A] -> [A] {
 	return { l in
 		switch match(l) {
-			case .Empty:
+			case .Nil:
 				return []
 			case .Cons(let x, let xs):
 				return sep <| x <| prependToAll(sep)(xs)
@@ -52,11 +52,11 @@ public func intercalate<A>(xs : [A]) -> [[A]] -> [A] {
 ///     transpose([[1,2,3],[4,5,6]]) == [[1,4],[2,5],[3,6]]
 public func transpose<A>(xss : [[A]]) -> [[A]] {
 	switch match(xss) {
-		case .Empty:
+		case .Nil:
 			return []
 		case .Cons(let x, let xss):
 			switch match(x) {
-				case .Empty:
+				case .Nil:
 					return transpose(xss)
 				case .Cons(let x, let xs):
 					return (x <| concatMap({ [head($0)] })(xss)) <| transpose(xs <| concatMap({ [tail($0)]} )(xss))
@@ -84,7 +84,7 @@ public func subsequences<A>(xs : [A]) -> [[A]] {
 
 public func nonEmptySubsequences<A>(xs : [A]) -> [[A]] {
 	switch match(xs) {
-		case .Empty:
+		case .Nil:
 			return []
 		case .Cons(let x, let xs):
 			return [x] <| foldr({ (let ys : [A]) in

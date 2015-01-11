@@ -7,7 +7,7 @@
 //
 
 public enum ArrayMatcher<A> {
-	case Empty
+	case Nil
 	case Cons(A, [A])
 }
 
@@ -16,7 +16,7 @@ public enum ArrayMatcher<A> {
 /// If the provided array is empty, this function throws an exception.
 public func head<A>(l : [A]) -> A {
 	switch match(l) {
-		case .Empty:
+		case .Nil:
 			assert(false, "Cannot take the head of an empty list.")
 		case .Cons(let x, _):
 			return x
@@ -28,7 +28,7 @@ public func head<A>(l : [A]) -> A {
 /// If the provided array if empty, this function throws an exception.
 public func tail<A>(l : [A]) -> [A] {
 	switch match(l) {
-		case .Empty:
+		case .Nil:
 			assert(false, "Cannot take the tail of an empty list.")
 		case .Cons(_, let xs):
 			return xs
@@ -55,7 +55,7 @@ public func replicate<A>(n : Int) -> A -> [A] {
 /// function returns .Cons(hd, tl)
 public func match<T>(l : [T]) -> ArrayMatcher<T> {
 	if l.count == 0 {
-		return .Empty
+		return .Nil
 	} else if l.count == 1 {
 		return .Cons(l[0], [])
 	}
@@ -70,7 +70,7 @@ public func isPrefixOf<A : Equatable>(l : [A]) -> [A] -> Bool {
 		switch (match(l), match(r)) {
 			case (.Cons(let x, let xs), .Cons(let y, let ys)) where (x == y):
 				return isPrefixOf(xs)(ys)
-			case (.Empty, _):
+			case (.Nil, _):
 				return true
 			default:
 				return false
@@ -94,7 +94,7 @@ public func isInfixOf<A : Equatable>(l : [A]) -> [A] -> Bool {
 public func stripPrefix<A : Equatable>(l : [A]) -> [A] -> Maybe<[A]> {
 	return { r in
 		switch (match(l), match(r)) {
-			case (.Empty, _):
+			case (.Nil, _):
 				return Maybe.just(r)
 			case (.Cons(let x, let xs), .Cons(let y, let ys)) where x == y:
 				return stripPrefix(xs)(ys)

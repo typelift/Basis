@@ -15,11 +15,11 @@
 /// match is found.
 public func <=<T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
 	switch (match(lhs), match(rhs)) {
-		case (.Empty, .Empty):
+		case (.Nil, .Nil):
 			return true
-		case (.Empty, .Cons(_, _)):
+		case (.Nil, .Cons(_, _)):
 			return true
-		case (.Cons(_, _), .Empty):
+		case (.Cons(_, _), .Nil):
 			return false
 		case (.Cons(let x, let xs), .Cons(let y, let ys)):
 			return (x == y) ? (xs <= ys) : x <= y
@@ -34,11 +34,11 @@ public func <=<T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
 /// match is found.
 public func >=<T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
 	switch (match(lhs), match(rhs)) {
-		case (.Empty, .Empty):
+		case (.Nil, .Nil):
 			return true
-		case (.Empty, .Cons(_, _)):
+		case (.Nil, .Cons(_, _)):
 			return false
-		case (.Cons(_, _), .Empty):
+		case (.Cons(_, _), .Nil):
 			return true
 		case (.Cons(let x, let xs), .Cons(let y, let ys)):
 			return (x == y) ? (xs >= ys) : x >= y
@@ -48,11 +48,11 @@ public func >=<T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
 /// Returns whether the two arrays are in ascending order.
 public func <<T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
 	switch (match(lhs), match(rhs)) {
-		case (.Empty, .Empty):
+		case (.Nil, .Nil):
 			return false
-		case (.Empty, .Cons(_, _)):
+		case (.Nil, .Cons(_, _)):
 			return true
-		case (.Cons(_, _), .Empty):
+		case (.Cons(_, _), .Nil):
 			return false
 		case (.Cons(let x, let xs), .Cons(let y, let ys)):
 			return (x == y) ? (xs < ys) : x < y
@@ -62,11 +62,11 @@ public func <<T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
 /// Returns whether the two arrays are in descending order.
 public func ><T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
 	switch (match(lhs), match(rhs)) {
-		case (.Empty, .Empty):
+		case (.Nil, .Nil):
 			return false
-		case (.Empty, .Cons(_, _)):
+		case (.Nil, .Cons(_, _)):
 			return false
-		case (.Cons(_, _), .Empty):
+		case (.Cons(_, _), .Nil):
 			return true
 		case (.Cons(let x, let xs), .Cons(let y, let ys)):
 			return (x == y) ? (xs > ys) : x > y
@@ -155,7 +155,7 @@ public func comparing<A : Comparable, B>(p : B -> A) -> B -> B -> Bool {
 public func groupBy<A>(cmp : A -> A -> Bool) -> [A] -> [[A]] {
 	return { l in
 		switch match(l) {
-			case .Empty:
+			case .Nil:
 				return []
 			case .Cons(let x, let xs):
 				let (ys, zs) = span(cmp(x))(xs)
@@ -169,7 +169,7 @@ public func groupBy<A>(cmp : A -> A -> Bool) -> [A] -> [[A]] {
 public func groupBy<A>(cmp : (A, A) -> Bool) -> [A] -> [[A]] {
 	return { l in
 		switch match(l) {
-			case .Empty:
+			case .Nil:
 				return []
 			case .Cons(let x, let xs):
 				let (ys, zs) = span({ cmp(x, $0) })(xs)
@@ -184,7 +184,7 @@ public func groupBy<A>(cmp : A -> A -> Bool) -> List<A> -> List<List<A>>  {
 	return { l in
 		switch l.match() {
 			case .Nil:
-				return []
+				return List()
 			case .Cons(let x, let xs):
 				let (ys, zs) = span(cmp(x))(xs)
 				return (x <| ys) <| groupBy(cmp)(zs)
@@ -198,7 +198,7 @@ public func groupBy<A>(cmp : (A, A) -> Bool) -> List<A> -> List<List<A>> {
 	return { l in
 		switch l.match() {
 			case .Nil:
-				return []
+				return List()
 			case .Cons(let x, let xs):
 				let (ys, zs) = span({ cmp(x, $0) })(xs)
 				return (x <| ys) <| groupBy(cmp)(zs)
@@ -210,7 +210,7 @@ public func groupBy<A>(cmp : (A, A) -> Bool) -> List<A> -> List<List<A>> {
 public func nubBy<A>(eq : A -> A -> Bool) -> [A] -> [A] {
 	return { lst in
 		switch match(lst) {
-			case .Empty():
+			case .Nil:
 				return []
 			case .Cons(let x, let xs):
 				return [x] + nubBy(eq)(xs.filter({ y in
@@ -224,7 +224,7 @@ public func nubBy<A>(eq : A -> A -> Bool) -> [A] -> [A] {
 public func nubBy<A>(eq : (A, A) -> Bool) -> [A] -> [A] {
 	return { lst in
 		switch match(lst) {
-			case .Empty():
+			case .Nil:
 				return []
 			case .Cons(let x, let xs):
 				return [x] + nubBy(eq)(xs.filter({ y in
@@ -238,7 +238,7 @@ public func nubBy<A>(eq : (A, A) -> Bool) -> [A] -> [A] {
 public func nubBy<A>(eq : A -> A -> Bool) -> List<A> -> List<A> {
 	return { lst in
 		switch lst.match() {
-			case .Nil():
+			case .Nil:
 				return List()
 			case .Cons(let x, let xs):
 				return List(x) + nubBy(eq)(xs.filter({ y in
@@ -252,7 +252,7 @@ public func nubBy<A>(eq : A -> A -> Bool) -> List<A> -> List<A> {
 public func nubBy<A>(eq : (A, A) -> Bool) -> List<A> -> List<A> {
 	return { lst in
 		switch lst.match() {
-			case .Nil():
+			case .Nil:
 				return List()
 			case .Cons(let x, let xs):
 				return List(x) + nubBy(eq)(xs.filter({ y in
@@ -287,7 +287,7 @@ public func sortBy<A>(cmp : (A, A) -> Bool) -> List<A> -> List<A> {
 public func insertBy<A>(cmp: A -> A -> Bool) -> A -> [A] -> [A] {
 	return { x in { l in
 		switch match(l) {
-			case .Empty:
+			case .Nil:
 				return [x]
 			case .Cons(let y, let ys):
 				return cmp(x)(y) ? x <| l : y <| insertBy(cmp)(x)(ys)
@@ -299,7 +299,7 @@ public func insertBy<A>(cmp: A -> A -> Bool) -> A -> [A] -> [A] {
 public func insertBy<A>(cmp: (A, A) -> Bool) -> A -> [A] -> [A] {
 	return { x in { l in
 		switch match(l) {
-			case .Empty:
+			case .Nil:
 				return [x]
 			case .Cons(let y, let ys):
 				return cmp(x, y) ?  x <| l : y <| insertBy(cmp)(x)(ys)
@@ -335,7 +335,7 @@ public func insertBy<A>(cmp: (A, A) -> Bool) -> A -> List<A> -> List<A> {
 public func maximumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 	return { l in
 		switch match(l) {
-			case .Empty:
+			case .Nil:
 				assert(false, "Cannot find the maximum element of an empty list.")
 			case .Cons(_, _):
 				return foldl1({ (let t) -> A in
@@ -349,7 +349,7 @@ public func maximumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 public func maximumBy<A>(cmp : (A, A) -> Bool) -> [A] -> A {
 	return { l in
 		switch match(l) {
-			case .Empty:
+			case .Nil:
 				assert(false, "Cannot find the maximum element of an empty list.")
 			case .Cons(_, _):
 				return foldl1({ (let t) -> A in
@@ -391,7 +391,7 @@ public func maximumBy<A>(cmp : (A, A) -> Bool) -> List<A> -> A {
 public func minimumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 	return { l in
 		switch match(l) {
-			case .Empty:
+			case .Nil:
 				assert(false, "Cannot find the minimum element of an empty list.")
 			case .Cons(_, _):
 				return foldl1({ (let t) -> A in
@@ -405,7 +405,7 @@ public func minimumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 public func minimumBy<A>(cmp : (A, A) -> Bool) -> [A] -> A {
 	return { l in
 		switch match(l) {
-			case .Empty:
+			case .Nil:
 				assert(false, "Cannot find the minimum element of an empty list.")
 			case .Cons(_, _):
 				return foldl1({ (let t) -> A in

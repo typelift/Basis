@@ -111,7 +111,7 @@ public func maybeToList<A>(o : Maybe<A>) -> [A] {
 /// Given a list, returns Nothing if the list is empty, or Just containing the head of the list.
 public func listToMaybe<A>(l : [A]) -> Maybe<A> {
 	switch match(l) {
-		case .Empty:
+		case .Nil:
 			return Maybe.nothing()
 		case .Cons(let x, _):
 			return Maybe.just(x)
@@ -127,7 +127,7 @@ public func catMaybes<A>(l : [Maybe<A>]) -> [A] {
 /// in the resulting list.
 public func mapMaybes<A, B>(f : A -> Maybe<B>)(l : [A]) -> [B] {
 	switch match(l) {
-		case .Empty:
+		case .Nil:
 			return []
 		case let .Cons(x, xs):
 			let rs = mapMaybes(f)(l: xs)

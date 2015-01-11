@@ -15,7 +15,7 @@
 public func scanl<B, A>(f : B -> A -> B) -> B -> [A] -> [B] {
 	return { q in { ls in
 		switch match(ls) {
-			case .Empty:
+			case .Nil:
 				return q <| []
 			case .Cons(let x, let xs):
 				return q <| scanl(f)(f(q)(x))(xs)
@@ -31,7 +31,7 @@ public func scanl<B, A>(f : B -> A -> B) -> B -> [A] -> [B] {
 public func scanl<B, A>(f : (B, A) -> B) -> B -> [A] -> [B] {
 	return { q in { ls in
 		switch match(ls) {
-			case .Empty:
+			case .Nil:
 				return q <| []
 			case .Cons(let x, let xs):
 				return q <| scanl(f)(f(q, x))(xs)
@@ -45,7 +45,7 @@ public func scanl<B, A>(f : (B, A) -> B) -> B -> [A] -> [B] {
 public func scanl1<A>(f : A -> A -> A) -> [A] -> [A] {
 	return { l in
 		switch match(l) {
-			case .Empty:
+			case .Nil:
 				return []
 			case .Cons(let x, let xs):
 				return scanl(f)(x)(xs)
@@ -59,7 +59,7 @@ public func scanl1<A>(f : A -> A -> A) -> [A] -> [A] {
 public func scanl1<A>(f : (A, A) -> A) -> [A] -> [A] {
 	return { l in
 		switch match(l) {
-			case .Empty:
+			case .Nil:
 				return []
 			case .Cons(let x, let xs):
 				return scanl(f)(x)(xs)
@@ -75,7 +75,7 @@ public func scanl1<A>(f : (A, A) -> A) -> [A] -> [A] {
 public func scanr<B, A>(f : A -> B -> B) -> B -> [A] -> [B] {
 	return { q in { ls in
 		switch match(ls) {
-			case .Empty:
+			case .Nil:
 				return [q]
 			case .Cons(let x, let xs):
 				return f(x)(q) <| scanr(f)(q)(xs)
@@ -91,7 +91,7 @@ public func scanr<B, A>(f : A -> B -> B) -> B -> [A] -> [B] {
 public func scanr<B, A>(f : (A, B) -> B) -> B -> [A] -> [B] {
 	return { q in { ls in
 		switch match(ls) {
-			case .Empty:
+			case .Nil:
 				return [q]
 			case .Cons(let x, let xs):
 				return f(x, q) <| scanr(f)(q)(xs)
@@ -105,14 +105,14 @@ public func scanr<B, A>(f : (A, B) -> B) -> B -> [A] -> [B] {
 public func scanr1<A>(f : A -> A -> A) -> [A] -> [A] {
 	return { l in
 		switch match(l) {
-			case .Empty:
+			case .Nil:
 				return []
 			case .Cons(let x, let xs) where xs.count == 0:
 				return [x]
 			case .Cons(let x, let xs):
 				let qs = scanr1(f)(xs)
 				switch match(qs) {
-					case .Empty:
+					case .Nil:
 						assert(false, "Cannot scanr1 across an empty list.")
 					case .Cons(let q, _):
 						return f(x)(q) <| qs
@@ -127,14 +127,14 @@ public func scanr1<A>(f : A -> A -> A) -> [A] -> [A] {
 public func scanr1<A>(f : (A, A) -> A) -> [A] -> [A] {
 	return { l in
 		switch match(l) {
-			case .Empty:
+			case .Nil:
 				return []
 			case .Cons(let x, let xs) where xs.count == 0:
 				return [x]
 			case .Cons(let x, let xs):
 				let qs = scanr1(f)(xs)
 				switch match(qs) {
-					case .Empty:
+					case .Nil:
 						assert(false, "Cannot scanr1 across an empty list.")
 					case .Cons(let q, _):
 						return f(x, q) <| qs
