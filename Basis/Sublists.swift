@@ -19,7 +19,7 @@ public func take<A>(n : Int) -> [A] -> [A] {
 			return []
 		}
 		
-		switch destruct(l) {
+		switch match(l) {
 			case .Empty:
 				return []
 			case .Cons(let x, let xs):
@@ -40,7 +40,7 @@ public func drop<A>(n : Int) -> [A] -> [A] {
 			return l
 		}
 		
-		switch destruct(l) {
+		switch match(l) {
 			case .Empty:
 				return []
 			case .Cons(let x, let xs):
@@ -59,7 +59,7 @@ public func splitAt<A>(n : Int) -> [A] -> ([A], [A]) {
 /// false.
 public func takeWhile<A>(p : A -> Bool) -> [A] -> [A] {
 	return { l in
-		switch destruct(l) {
+		switch match(l) {
 			case .Empty:
 				return []
 			case .Cons(let x, let xs):
@@ -75,7 +75,7 @@ public func takeWhile<A>(p : A -> Bool) -> [A] -> [A] {
 /// returns false.
 public func dropWhile<A>(p : A -> Bool) -> [A] -> [A] {
 	return { l in
-		switch destruct(l) {
+		switch match(l) {
 			case .Empty:
 				return []
 			case .Cons(let x, let xs):
@@ -91,7 +91,7 @@ public func dropWhile<A>(p : A -> Bool) -> [A] -> [A] {
 /// false first, and a the rest of the elements second.
 public func span<A>(p : A -> Bool) -> [A] -> ([A], [A]) {
 	return { l in
-		switch destruct(l) {
+		switch match(l) {
 			case .Empty:
 				return ([], [])
 			case .Cons(let x, let xs):

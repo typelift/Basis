@@ -28,7 +28,7 @@ public final class Map<K, A> : K2<K, A> {
 		self.r = r
 	}
 
-	public func destruct() -> MapD<K, A> {
+	public func match() -> MapD<K, A> {
 		if self.size == 0 || k == nil || a == nil {
 			return .Empty
 		}
@@ -71,7 +71,7 @@ public func toArray<K, A>(m : Map<K, A>) -> [(K, A)] {
 /// value if the two keys are the same.
 public func insert<K : Comparable, A>(key : K) -> A -> Map<K, A> -> Map<K, A> {
 	return { val in { m in
-		switch m.destruct() {
+		switch m.match() {
 			case .Empty:
 				return singleton(key)(val)
 			case .Destructure(let sz, let ky, let y, let l, let r):
@@ -107,7 +107,7 @@ public func insertWith<K : Comparable, A>(f : A -> A -> A) -> K -> A -> Map<K, A
 /// function call is inserted.
 public func insertWithKey<K : Comparable, A>(f : K -> A -> A -> A) -> K -> A -> Map<K, A> -> Map<K, A> {
 	return { key in { val in { m in
-		switch m.destruct() {
+		switch m.match() {
 			case .Empty:
 				return singleton(key)(val)
 			case .Destructure(let sy, let ky, let y, let l, let r):
@@ -126,7 +126,7 @@ public func insertWithKey<K : Comparable, A>(f : K -> A -> A -> A) -> K -> A -> 
 /// If the key does not exist in the map, it is returned unmodified.
 public func delete<K : Comparable, A>(k : K) -> Map<K, A> -> Map<K, A> {
 	return { m in
-		switch m.destruct() {
+		switch m.match() {
 			case .Empty:
 				return empty()
 			case .Destructure(_, let kx, let x, let l, let r):
@@ -144,11 +144,11 @@ public func delete<K : Comparable, A>(k : K) -> Map<K, A> -> Map<K, A> {
 ///
 /// This function is partial with respect to empty maps.
 public func deleteFindMin<K, A>(m : Map<K, A>) -> ((K, A), Map<K, A>) {
-	switch m.destruct() {
+	switch m.match() {
 		case .Empty:
 			return error("Cannot delete the minimal element of an empty map.")
 		case .Destructure(_, let k, let x, let l, let r):
-			switch l.destruct() {
+			switch l.match() {
 				case .Empty:
 					return ((k, x), r)
 				case .Destructure(_, _, _, _, _):
@@ -162,11 +162,11 @@ public func deleteFindMin<K, A>(m : Map<K, A>) -> ((K, A), Map<K, A>) {
 ///
 /// This function is partial with respect to empty maps.
 public func deleteFindMax<K, A>(m : Map<K, A>) -> ((K, A), Map<K, A>) {
-	switch m.destruct() {
+	switch m.match() {
 		case .Empty:
 			return error("Cannot delete the maximal element of an empty map.")
 		case .Destructure(_, let k, let x, let l, let r):
-			switch l.destruct() {
+			switch l.match() {
 				case .Empty:
 					return ((k, x), r)
 				case .Destructure(_, _, _, _, _):
@@ -192,7 +192,7 @@ private func balance<K, A>(k : K)(x : A)(l : Map<K, A>)(r : Map<K, A>) -> Map<K,
 }
 
 private func rotateL<K, A>(k : K)(x : A)(l : Map<K, A>)(r : Map<K, A>) -> Map<K, A> {
-	switch r.destruct() {
+	switch r.match() {
 	case .Empty:
 		return error("")
 	case .Destructure(_, _, _, let ly, let ry):
@@ -204,7 +204,7 @@ private func rotateL<K, A>(k : K)(x : A)(l : Map<K, A>)(r : Map<K, A>) -> Map<K,
 }
 
 private func rotateR<K, A>(k : K)(x : A)(l : Map<K, A>)(r : Map<K, A>) -> Map<K, A> {
-	switch l.destruct() {
+	switch l.match() {
 	case .Empty:
 		return error("")
 	case .Destructure(_, _, _, let ly, let ry):
@@ -216,9 +216,9 @@ private func rotateR<K, A>(k : K)(x : A)(l : Map<K, A>)(r : Map<K, A>) -> Map<K,
 }
 
 private func single<K, A>(k1 : K)(x1 : A)(t1 : Map<K, A>)(t2 : Map<K, A>) -> Map<K, A> {
-	switch t2.destruct() {
+	switch t2.match() {
 	case .Empty:
-		switch t1.destruct() {
+		switch t1.match() {
 		case .Empty:
 			return error("")
 		case .Destructure(_, let k2, let x2, let t1, let t3):
@@ -230,13 +230,13 @@ private func single<K, A>(k1 : K)(x1 : A)(t1 : Map<K, A>)(t2 : Map<K, A>) -> Map
 }
 
 private func double<K, A>(k1 : K)(x1 : A)(t1 : Map<K, A>)(t2 : Map<K, A>) -> Map<K, A> {
-	switch t2.destruct() {
+	switch t2.match() {
 	case .Empty:
-		switch t1.destruct() {
+		switch t1.match() {
 		case .Empty:
 			return error("")
 		case .Destructure(_, let k2, let x2, let b, let t4):
-			switch b.destruct() {
+			switch b.match() {
 			case .Empty:
 				return error("")
 			case .Destructure(_, let k3, let x3, let t2, let t3):
@@ -244,7 +244,7 @@ private func double<K, A>(k1 : K)(x1 : A)(t1 : Map<K, A>)(t2 : Map<K, A>) -> Map
 			}
 		}
 	case .Destructure(_, let k2, let x2, let b, let t4):
-		switch b.destruct() {
+		switch b.match() {
 		case .Empty:
 			return error("")
 		case .Destructure(_, let k3, let x3, let t2, let t3):

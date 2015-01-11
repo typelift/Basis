@@ -14,7 +14,7 @@
 /// elements, the heads of subsequent sub-arrays are compared wtih this ordering predicate until a
 /// match is found.
 public func <=<T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
-	switch (destruct(lhs), destruct(rhs)) {
+	switch (match(lhs), match(rhs)) {
 		case (.Empty, .Empty):
 			return true
 		case (.Empty, .Cons(_, _)):
@@ -33,7 +33,7 @@ public func <=<T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
 /// elements, the heads of subsequent sub-arrays are compared wtih this ordering predicate until a
 /// match is found.
 public func >=<T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
-	switch (destruct(lhs), destruct(rhs)) {
+	switch (match(lhs), match(rhs)) {
 		case (.Empty, .Empty):
 			return true
 		case (.Empty, .Cons(_, _)):
@@ -47,7 +47,7 @@ public func >=<T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
 
 /// Returns whether the two arrays are in ascending order.
 public func <<T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
-	switch (destruct(lhs), destruct(rhs)) {
+	switch (match(lhs), match(rhs)) {
 		case (.Empty, .Empty):
 			return false
 		case (.Empty, .Cons(_, _)):
@@ -61,7 +61,7 @@ public func <<T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
 
 /// Returns whether the two arrays are in descending order.
 public func ><T : Comparable>(lhs: [T], rhs: [T]) -> Bool {
-	switch (destruct(lhs), destruct(rhs)) {
+	switch (match(lhs), match(rhs)) {
 		case (.Empty, .Empty):
 			return false
 		case (.Empty, .Cons(_, _)):
@@ -88,7 +88,7 @@ public func comparing<A : Comparable, B>(p : B -> A) -> B -> B -> Bool {
 /// other according to an equality predicate.
 public func groupBy<A>(cmp : A -> A -> Bool) -> [A] -> [[A]] {
 	return { l in
-		switch destruct(l) {
+		switch match(l) {
 			case .Empty:
 				return []
 			case .Cons(let x, let xs):
@@ -102,7 +102,7 @@ public func groupBy<A>(cmp : A -> A -> Bool) -> [A] -> [[A]] {
 /// other according to an equality operator.
 public func groupBy<A>(cmp : (A, A) -> Bool) -> [A] -> [[A]] {
 	return { l in
-		switch destruct(l) {
+		switch match(l) {
 			case .Empty:
 				return []
 			case .Cons(let x, let xs):
@@ -115,7 +115,7 @@ public func groupBy<A>(cmp : (A, A) -> Bool) -> [A] -> [[A]] {
 /// Removes duplicates from a list according to an equality predicate.
 public func nubBy<A>(eq : A -> A -> Bool) -> [A] -> [A] {
 	return { lst in
-		switch destruct(lst) {
+		switch match(lst) {
 			case .Empty():
 				return []
 			case .Cons(let x, let xs):
@@ -129,7 +129,7 @@ public func nubBy<A>(eq : A -> A -> Bool) -> [A] -> [A] {
 /// Removes duplicates from a list according to an equality operator.
 public func nubBy<A>(eq : (A, A) -> Bool) -> [A] -> [A] {
 	return { lst in
-		switch destruct(lst) {
+		switch match(lst) {
 			case .Empty():
 				return []
 			case .Cons(let x, let xs):
@@ -153,7 +153,7 @@ public func sortBy<A>(cmp : (A, A) -> Bool) -> [A] -> [A] {
 /// Inserts an element into a list according to an ordering predicate.
 public func insertBy<A>(cmp: A -> A -> Bool) -> A -> [A] -> [A] {
 	return { x in { l in
-		switch destruct(l) {
+		switch match(l) {
 			case .Empty:
 				return [x]
 			case .Cons(let y, let ys):
@@ -165,7 +165,7 @@ public func insertBy<A>(cmp: A -> A -> Bool) -> A -> [A] -> [A] {
 /// Inserts an element into a list according to an ordering operator.
 public func insertBy<A>(cmp: (A, A) -> Bool) -> A -> [A] -> [A] {
 	return { x in { l in
-		switch destruct(l) {
+		switch match(l) {
 			case .Empty:
 				return [x]
 			case .Cons(let y, let ys):
@@ -177,7 +177,7 @@ public func insertBy<A>(cmp: (A, A) -> Bool) -> A -> [A] -> [A] {
 /// Returns the maximum element of a list according to an ordering predicate.
 public func maximumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 	return { l in
-		switch destruct(l) {
+		switch match(l) {
 			case .Empty:
 				assert(false, "Cannot find the maximum element of an empty list.")
 			case .Cons(_, _):
@@ -191,7 +191,7 @@ public func maximumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 /// Returns the maximum element of a list according to an ordering operator.
 public func maximumBy<A>(cmp : (A, A) -> Bool) -> [A] -> A {
 	return { l in
-		switch destruct(l) {
+		switch match(l) {
 			case .Empty:
 				assert(false, "Cannot find the maximum element of an empty list.")
 			case .Cons(_, _):
@@ -205,7 +205,7 @@ public func maximumBy<A>(cmp : (A, A) -> Bool) -> [A] -> A {
 /// Returns the minimum element of a list according to an ordering predicate.
 public func minimumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 	return { l in
-		switch destruct(l) {
+		switch match(l) {
 			case .Empty:
 				assert(false, "Cannot find the minimum element of an empty list.")
 			case .Cons(_, _):
@@ -219,7 +219,7 @@ public func minimumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 /// Returns the minimum element of a list according to an ordering operator.
 public func minimumBy<A>(cmp : (A, A) -> Bool) -> [A] -> A {
 	return { l in
-		switch destruct(l) {
+		switch match(l) {
 			case .Empty:
 				assert(false, "Cannot find the minimum element of an empty list.")
 			case .Cons(_, _):

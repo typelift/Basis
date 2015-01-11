@@ -22,7 +22,7 @@ public func replace<A : Equatable>(x : A) -> A -> [A] -> [A] {
 ///     intersperse(1)([1, 2, 3]) == [1, 1, 2, 1, 3, 1]
 public func intersperse<A>(sep : A) -> [A] -> [A] {
 	return { l in
-		switch destruct(l) {
+		switch match(l) {
 			case .Empty:
 				return []
 			case .Cons(let x, let xs):
@@ -33,7 +33,7 @@ public func intersperse<A>(sep : A) -> [A] -> [A] {
 
 private func prependToAll<A>(sep : A) -> [A] -> [A] {
 	return { l in
-		switch destruct(l) {
+		switch match(l) {
 			case .Empty:
 				return []
 			case .Cons(let x, let xs):
@@ -51,11 +51,11 @@ public func intercalate<A>(xs : [A]) -> [[A]] -> [A] {
 ///
 ///     transpose([[1,2,3],[4,5,6]]) == [[1,4],[2,5],[3,6]]
 public func transpose<A>(xss : [[A]]) -> [[A]] {
-	switch destruct(xss) {
+	switch match(xss) {
 		case .Empty:
 			return []
 		case .Cons(let x, let xss):
-			switch destruct(x) {
+			switch match(x) {
 				case .Empty:
 					return transpose(xss)
 				case .Cons(let x, let xs):
@@ -83,7 +83,7 @@ public func subsequences<A>(xs : [A]) -> [[A]] {
 }
 
 public func nonEmptySubsequences<A>(xs : [A]) -> [[A]] {
-	switch destruct(xs) {
+	switch match(xs) {
 		case .Empty:
 			return []
 		case .Cons(let x, let xs):

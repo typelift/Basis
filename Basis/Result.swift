@@ -33,7 +33,7 @@ public struct Result<A> {
 		return Result(right: x.unBox())
 	}
 
-	public func destruct() -> ResultD<A> {
+	public func match() -> ResultD<A> {
 		if lVal != nil {
 			return .Error(lVal!)
 		}
@@ -45,7 +45,7 @@ public struct Result<A> {
 /// either is right, applies the right function to that value.
 public func either<A, B>(left : NSError -> B) -> (A -> B) -> Result<A> -> B {
 	return { right in { e in
-		switch e.destruct() {
+		switch e.match() {
 			case .Error(let x):
 				return left(x)
 			case .Value(let y):
@@ -57,7 +57,7 @@ public func either<A, B>(left : NSError -> B) -> (A -> B) -> Result<A> -> B {
 /// Extracts all eithers that have errors in order.
 public func errors<A, B>(l : [Result<A>]) -> [NSError] {
 	return concatMap({
-		switch $0.destruct() {
+		switch $0.match() {
 			case .Error(let a):
 				return [a]
 			default:
@@ -69,7 +69,7 @@ public func errors<A, B>(l : [Result<A>]) -> [NSError] {
 /// Extracts all eithers that have values in order.
 public func values<A>(l : [Result<A>]) -> [A] {
 	return concatMap({
-		switch $0.destruct() {
+		switch $0.match() {
 			case .Value(let b):
 				return [b.unBox()]
 			default:
@@ -80,7 +80,7 @@ public func values<A>(l : [Result<A>]) -> [A] {
 
 /// Returns whether a result holds a value.
 public func isRight<A, B>(e : Result<A>) -> Bool {
-	switch e.destruct() {
+	switch e.match() {
 		case .Value(_):
 			return true
 		default:
@@ -90,7 +90,7 @@ public func isRight<A, B>(e : Result<A>) -> Bool {
 
 /// Returns whether a result holds an error.
 public func isLeft<A, B>(e : Result<A>) -> Bool {
-	switch e.destruct() {
+	switch e.match() {
 		case .Error(_):
 			return true
 		default:
@@ -106,7 +106,7 @@ public func asEither<A>(e : Result<A>) -> Either<NSError, A> {
 // MARK: Equatable
 
 public func ==<V : Equatable>(lhs: Result<V>, rhs: Result<V>) -> Bool {
-	switch (lhs.destruct(), rhs.destruct()) {
+	switch (lhs.match(), rhs.match()) {
 		case let (.Error(l), .Error(r)) where l == r:
 			return true
 		case let (.Value(l), .Value(r)) where l.unBox() == r.unBox():
@@ -128,7 +128,7 @@ extension Result : Functor {
 
 	public static func fmap<B>(f : A -> B) -> Result<A> -> Result<B> {
 		return {
-			switch $0.destruct() {
+			switch $0.match() {
 				case .Error(let b):
 					return Result<B>.error(b)
 				case .Value(let b):
@@ -158,7 +158,7 @@ extension Result : Applicative {
 	
 	public static func ap<A, B>(f : Result<A -> B>) -> Result<A> ->  Result<B> {
 		return { r in
-			switch f.destruct() {
+			switch f.match() {
 				case .Error(let e):
 					return Result<B>.error(e)
 				case .Value(let f):
@@ -201,7 +201,7 @@ extension Result : ApplicativeOps {
 
 extension Result : Monad {
 	public func bind<B>(f : A -> Result<B>) -> Result<B> {
-		switch self.destruct() {
+		switch self.match() {
 			case .Error(let l):
 				return Result<B>.error(l)
 			case .Value(let r):

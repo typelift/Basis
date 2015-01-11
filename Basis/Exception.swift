@@ -78,11 +78,11 @@ public func tryJust<A, B>(p : Exception -> Maybe<B>) -> IO<A> -> IO<Either<B, A>
 	return { io in
 		do_ {
 			let r = !try(io)
-			switch r.destruct() {
+			switch r.match() {
 				case .Right(let bv):
 					return IO.pure(Either.right(bv.unBox()))
 				case .Left(let be):
-					switch p(be.unBox()).destruct() {
+					switch p(be.unBox()).match() {
 						case .Nothing:
 							return throwIO(be.unBox())
 						case .Just(let b):

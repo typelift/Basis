@@ -76,7 +76,7 @@ public func optionalToList<A>(o : Optional<A>) -> [A] {
 
 /// Given a list, returns None if the list is empty, or Some containing the head of the list.
 public func listToOptional<A>(l : [A]) -> Optional<A> {
-	switch destruct(l) {
+	switch match(l) {
 		case .Empty:
 			return .None
 		case .Cons(let x, _):
@@ -92,7 +92,7 @@ public func catOptionals<A>(l : [Optional<A>]) -> [A] {
 /// Maps a function over a list.  If the result of the function is None, the value is not included
 /// in the resulting list.
 public func mapOptional<A, B>(f : A -> Optional<B>)(l : [A]) -> [B] {
-	switch destruct(l) {
+	switch match(l) {
 		case .Empty:
 			return []
 		case .Cons(let x, let xs):

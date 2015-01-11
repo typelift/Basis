@@ -35,7 +35,7 @@ public func lookup<A : Equatable, B>(e : A) -> [A:B] -> Optional<B> {
 /// Looks up a key in a dictionary.
 public func lookup<A : Equatable, B>(e : A) -> [(A, B)] -> Optional<B> {
 	return { d in
-		switch destruct(d) {
+		switch match(d) {
 			case .Empty:
 				return .None
 			case .Cons(let (x, y), let xys):

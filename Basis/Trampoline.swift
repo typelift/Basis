@@ -179,7 +179,7 @@ private class FreeId<T> {
 	func run() -> T {
 		var current = self
 		while true {
-			switch current.resume().destruct() {
+			switch current.resume().match() {
 				case .Left(let ba):
 					current = ba.unBox().unBox()().t
 				case .Right(let bb):

@@ -1,21 +1,25 @@
 //
-//  List.swift
+//  Array.swift
 //  Basis
 //
-//  Created by Robert Widmann on 9/7/14.
-//  Copyright (c) 2014 TypeLift. All rights reserved.
-//  Released under the MIT license.
+//  Created by Robert Widmann on 1/11/15.
+//  Copyright (c) 2015 Robert Widmann. All rights reserved.
 //
+
+public enum ArrayMatcher<A> {
+	case Empty
+	case Cons(A, [A])
+}
 
 /// Returns the first element of a non-empty list.
 ///
 /// If the provided list is empty, this function throws an exception.
 public func head<A>(l : [A]) -> A {
-	switch destruct(l) {
-		case .Empty:
-			assert(false, "Cannot take the head of an empty list.")
-		case .Cons(let x, _):
-			return x
+	switch match(l) {
+	case .Empty:
+		assert(false, "Cannot take the head of an empty list.")
+	case .Cons(let x, _):
+		return x
 	}
 }
 
@@ -23,11 +27,11 @@ public func head<A>(l : [A]) -> A {
 ///
 /// If the provided list if empty, this function throws an exception.
 public func tail<A>(l : [A]) -> [A] {
-	switch destruct(l) {
-		case .Empty:
-			assert(false, "Cannot take the tail of an empty list.")
-		case .Cons(_, let xs):
-			return xs
+	switch match(l) {
+	case .Empty:
+		assert(false, "Cannot take the tail of an empty list.")
+	case .Cons(_, let xs):
+		return xs
 	}
 }
 
@@ -45,16 +49,11 @@ public func replicate<A>(n : Int) -> A -> [A] {
 	return { x in Array(count: n, repeatedValue: x) }
 }
 
-public enum ArrayD<A> {
-	case Empty
-	case Cons(A, [A])
-}
-
 /// Destructures a list into its constituent parts.
 ///
 /// If the given list is empty, this function returns .Empty.  If the list is non-empty, this
 /// function returns .Cons(hd, tl)
-public func destruct<T>(l : [T]) -> ArrayD<T> {
+public func match<T>(l : [T]) -> ArrayMatcher<T> {
 	if l.count == 0 {
 		return .Empty
 	} else if l.count == 1 {
@@ -68,13 +67,13 @@ public func destruct<T>(l : [T]) -> ArrayD<T> {
 /// Takes two lists and returns true if the first list is a prefix of the second list.
 public func isPrefixOf<A : Equatable>(l : [A]) -> [A] -> Bool {
 	return { r in
-		switch (destruct(l), destruct(r)) {
-			case (.Cons(let x, let xs), .Cons(let y, let ys)) where (x == y):
-				return isPrefixOf(xs)(ys)
-			case (.Empty, _):
-				return true
-			default:
-				return false
+		switch (match(l), match(r)) {
+		case (.Cons(let x, let xs), .Cons(let y, let ys)) where (x == y):
+			return isPrefixOf(xs)(ys)
+		case (.Empty, _):
+			return true
+		default:
+			return false
 		}
 	}
 }
@@ -94,18 +93,18 @@ public func isInfixOf<A : Equatable>(l : [A]) -> [A] -> Bool {
 /// of the second list this function returns Nothing.
 public func stripPrefix<A : Equatable>(l : [A]) -> [A] -> Maybe<[A]> {
 	return { r in
-		switch (destruct(l), destruct(r)) {
-			case (.Empty, _):
-				return Maybe.just(r)
-			case (.Cons(let x, let xs), .Cons(let y, let ys)) where x == y:
-				return stripPrefix(xs)(ys)
-			default:
-				return Maybe.nothing()
+		switch (match(l), match(r)) {
+		case (.Empty, _):
+			return Maybe.just(r)
+		case (.Cons(let x, let xs), .Cons(let y, let ys)) where x == y:
+			return stripPrefix(xs)(ys)
+		default:
+			return Maybe.nothing()
 		}
 	}
 }
 
-/// Takes two lists and drops items in the first from the end of the second.  If the first list is 
+/// Takes two lists and drops items in the first from the end of the second.  If the first list is
 /// not a suffix of the second list this function returns nothing.
 public func stripSuffix<A : Equatable>(l : [A]) -> [A] -> Maybe<[A]> {
 	return { r in Maybe.fmap(reverse) <| stripPrefix(l.reverse())(r.reverse()) }
@@ -115,7 +114,7 @@ public func stripSuffix<A : Equatable>(l : [A]) -> [A] -> Maybe<[A]> {
 //	typealias A = T
 //	typealias B = Any
 //	typealias FB = Array<B>
-//	
+//
 //	public static func fmap<B>(f: A -> B) -> Array<A> -> Array<B> {
 //		return { $0.map(f) }
 //	}
@@ -151,15 +150,15 @@ public func stripSuffix<A : Equatable>(l : [A]) -> [A] -> Maybe<[A]> {
 //
 //extension Array : Alternative {
 //	typealias FLA = Array<[A]>
-//	
+//
 //	public func empty() -> Array<A> {
 //		return []
 //	}
-//	
+//
 //	public func some(v : Array<A>) -> Array<[A]> {
 //		return curry((+>)) <%> v <*> many(v)
 //	}
-//	
+//
 //	public func many(v : Array<A>) -> Array<[A]> {
 //		return some(v) <|> Array<[A]>.pure([])
 //	}
@@ -169,7 +168,7 @@ public func stripSuffix<A : Equatable>(l : [A]) -> [A] -> Maybe<[A]> {
 //	return l ++ r
 //}
 //
-//extension Array : Monad {	
+//extension Array : Monad {
 //	public func bind<B>(f : A -> Array<B>) -> Array<B> {
 //		return concatMap(f)(l: self)
 //	}
@@ -179,7 +178,7 @@ public func stripSuffix<A : Equatable>(l : [A]) -> [A] -> Maybe<[A]> {
 //	public static func mzero() -> Array<T> {
 //		return []
 //	}
-//	
+//
 //	public static func mplus(l : Array<T>) -> Array<T> -> Array<T> {
 //		return { l ++ $0 }
 //	}
@@ -188,17 +187,17 @@ public func stripSuffix<A : Equatable>(l : [A]) -> [A] -> Maybe<[A]> {
 //extension Array : MonadZip {
 //	typealias C = Any
 //	typealias FC = Array<C>
-//	
+//
 //	typealias FTAB = Array<(A, B)>
-//	
+//
 //	public func mzip<B>(ma : Array<A>) -> Array<B> -> Array<(A, B)> {
 //		return zip(ma)
 //	}
-//	
+//
 //	public func mzipWith<B, C>(f : A -> B -> C) -> Array<A> -> Array<B> -> Array<C> {
 //		return zipWith(f)
 //	}
-//	
+//
 //	public func munzip<B>(ftab : Array<(A, B)>) -> (Array<A>, Array<B>) {
 //		return unzip(ftab)
 //	}

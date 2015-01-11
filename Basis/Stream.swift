@@ -64,7 +64,7 @@ public func iterate<T>(f : T -> T) -> T -> Stream<T> {
 ///
 /// This function is partial with respect to the empty list.
 public func cycle<T>(xs : [T]) -> Stream<T> {
-	switch destruct(xs) {
+	switch match(xs) {
 		case .Empty:
 			return error("Cannot cycle an empty list.")
 		case .Cons(let x, let xs):
