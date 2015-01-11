@@ -17,6 +17,16 @@ public func notElem<A : Equatable>(e : A) -> [A] -> Bool {
 	return { l in all({ $0 != e })(l) }
 }
 
+/// Returns whether an element is a member of a list.
+public func elem<A : Equatable>(e : A) -> List<A> -> Bool {
+	return { l in any({ $0 == e })(l) }
+}
+
+/// Returns whether an element is not a member of a list.
+public func notElem<A : Equatable>(e : A) -> List<A> -> Bool {
+	return { l in all({ $0 != e })(l) }
+}
+
 /// Looks up a key in a list of key-value pairs.
 public func lookup<A : Equatable, B>(e : A) -> [A:B] -> Optional<B> {
 	return { d in
@@ -36,7 +46,22 @@ public func lookup<A : Equatable, B>(e : A) -> [A:B] -> Optional<B> {
 public func lookup<A : Equatable, B>(e : A) -> [(A, B)] -> Optional<B> {
 	return { d in
 		switch match(d) {
-			case .Empty:
+			case .Nil:
+				return .None
+			case .Cons(let (x, y), let xys):
+				if e == x {
+					return .Some(y)
+				}
+				return lookup(e)(xys)
+		}
+	}
+}
+
+/// Looks up a key in a dictionary.
+public func lookup<A : Equatable, B>(e : A) -> List<(A, B)> -> Optional<B> {
+	return { d in
+		switch d.match() {
+			case .Nil:
 				return .None
 			case .Cons(let (x, y), let xys):
 				if e == x {
