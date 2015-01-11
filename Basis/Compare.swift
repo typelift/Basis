@@ -274,12 +274,12 @@ public func sortBy<A>(cmp : (A, A) -> Bool) -> [A] -> [A] {
 
 /// Sorts a list according to a ordering predicate.
 public func sortBy<A>(cmp : A -> A -> Bool) -> List<A> -> List<A> {
-	return { l in foldr(insertBy(cmp))([])(l) }
+	return { l in foldr(insertBy(cmp))(List())(l) }
 }
 
 /// Sorts a list according to an ordering operator.
 public func sortBy<A>(cmp : (A, A) -> Bool) -> List<A> -> List<A> {
-	return { l in foldr(insertBy(cmp))([])(l) }
+	return { l in foldr(insertBy(cmp))(List())(l) }
 }
 
 
