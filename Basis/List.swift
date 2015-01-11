@@ -58,11 +58,6 @@ public struct List<A> {
 		self.next = { (head, tail) }
 	}
 
-	/// Appends an element onto the front of a list.
-	public static func cons(head : A, tail : List<A>) -> List<A> {
-		return List(head, tail)
-	}
-
 	/// Destructures a list.  If the list is empty, the result is Nil.  If the list contains a value
 	/// the result is Cons(head, tail).
 	public func match() -> ListMatcher<A> {
@@ -110,6 +105,13 @@ public struct List<A> {
 		return UInt(self.count)
 	}
 
+	/// Returns the elements of the receiver in reverse order.
+	///
+	/// For infinite lists this function will diverge.
+	public func reverse() -> List<A> {
+		return foldl(flip(cons))(List())(self)
+	}
+
 	/// Yields a new list by applying a function to each element of the receiver.
 	public func map<B>(f : A -> B) -> List<B> {
 		switch self.match() {
@@ -128,7 +130,7 @@ public struct List<A> {
 		case .Nil:
 			return rhs
 		case let .Cons(x, xs):
-			return List.cons(x, tail: xs.append(rhs))
+			return x <| xs.append(rhs)
 		}
 	}
 
@@ -148,10 +150,10 @@ public struct List<A> {
 /// If the provided list is empty, this function throws an exception.
 public func head<A>(l : List<A>) -> A {
 	switch l.match() {
-	case .Nil:
-		assert(false, "Cannot take the head of an empty list.")
-	case .Cons(let x, _):
-		return x
+		case .Nil:
+			assert(false, "Cannot take the head of an empty list.")
+		case .Cons(let x, _):
+			return x
 	}
 }
 
@@ -160,10 +162,10 @@ public func head<A>(l : List<A>) -> A {
 /// If the provided list if empty, this function throws an exception.
 public func tail<A>(l : List<A>) -> List<A> {
 	switch l.match() {
-	case .Nil:
-		assert(false, "Cannot take the tail of an empty list.")
-	case .Cons(_, let xs):
-		return xs
+		case .Nil:
+			assert(false, "Cannot take the tail of an empty list.")
+		case .Cons(_, let xs):
+			return xs
 	}
 }
 
@@ -171,14 +173,61 @@ public func cons<T>(x : T) -> List<T> -> List<T> {
 	return { xs in x <| xs }
 }
 
-public func <|<T>(lhs : T, rhs : List<T>) -> List<T> {
-	return cons(lhs)(rhs)
+public func <|<T>(head : T, tail : List<T>) -> List<T> {
+	return List(head, tail)
 }
 
 /// Appends two lists together.
 public func +<A>(lhs : List<A>, rhs : List<A>) -> List<A> {
 	return lhs.append(rhs)
 }
+
+/// Takes two lists and returns true if the first list is a prefix of the second list.
+public func isPrefixOf<A : Equatable>(l : List<A>) -> List<A> -> Bool {
+	return { r in
+		switch (l.match(), r.match()) {
+			case (.Cons(let x, let xs), .Cons(let y, let ys)) where (x == y):
+				return isPrefixOf(xs)(ys)
+			case (.Nil, _):
+				return true
+			default:
+				return false
+		}
+	}
+}
+
+/// Takes two lists and returns true if the first list is a suffix of the second list.
+public func isSuffixOf<A : Equatable>(l : List<A>) -> List<A> -> Bool {
+	return { r in isPrefixOf(l.reverse())(r.reverse()) }
+}
+
+/// Takes two lists and returns true if the first list is contained entirely anywhere in the second
+/// list.
+public func isInfixOf<A : Equatable>(l : List<A>) -> List<A> -> Bool {
+	return { r in any(isPrefixOf(l))(tails(r)) }
+}
+
+/// Takes two lists and drops items in the first from the second.  If the first list is not a prefix
+/// of the second list this function returns Nothing.
+public func stripPrefix<A : Equatable>(l : List<A>) -> List<A> -> Maybe<List<A>> {
+	return { r in
+		switch (l.match(), r.match()) {
+		case (.Nil, _):
+			return Maybe.just(r)
+		case (.Cons(let x, let xs), .Cons(let y, let ys)) where x == y:
+			return stripPrefix(xs)(ys)
+		default:
+			return Maybe.nothing()
+		}
+	}
+}
+
+/// Takes two lists and drops items in the first from the end of the second.  If the first list is
+/// not a suffix of the second list this function returns nothing.
+public func stripSuffix<A : Equatable>(l : List<A>) -> List<A> -> Maybe<List<A>> {
+	return { r in Maybe.fmap(dismember(List.reverse)) <| stripPrefix(l.reverse())(r.reverse()) }
+}
+
 
 /// MARK: Equatable
 
@@ -193,4 +242,113 @@ public func ==<A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
 	}
 }
 
+/// MARK: Control.*
+
+extension List : Functor {
+	typealias B = Any
+	typealias FB = List<B>
+
+	public static func fmap<B>(f: A -> B) -> List<A> -> List<B> {
+		return { $0.map(f) }
+	}
+}
+
+public func <%<A, B>(x : A, l : List<B>) -> List<A> {
+	return List.fmap(const(x))(l)
+}
+
+extension List : Pointed {
+	public static func pure(x : A) -> List<A> {
+		return List(x)
+	}
+}
+
+extension List : Applicative {
+	typealias FAB = List<A -> B>
+
+	public static func ap<B>(a : List<A -> B>) -> List<A> -> List<B> {
+		return { l in concat(a.map({ l.map($0) })) }
+	}
+}
+
+public func <%><A, B>(f: A -> B, ar : List<A>) -> List<B> {
+	return List.fmap(f)(ar)
+}
+
+public func <*><A, B>(a : List<A -> B> , l : List<A>) -> List<B> {
+	return List.ap(a)(l)
+}
+
+public func *><A, B>(a : List<A>, b : List<B>) -> List<B> {
+	return const(id) <%> a <*> b
+}
+
+public func <*<A, B>(a : List<A>, b : List<B>) -> List<A> {
+	return const <%> a <*> b
+}
+
+extension List : Alternative {
+	typealias FLA = List<[A]>
+
+	public func empty() -> List<A> {
+		return List()
+	}
+
+	public func some(v : List<A>) -> List<[A]> {
+		return curry(<|) <%> v <*> many(v)
+	}
+
+	public func many(v : List<A>) -> List<[A]> {
+		return some(v) <|> List<[A]>.pure([])
+	}
+}
+
+public func <|><A>(l : List<A>, r : List<A>) -> List<A> {
+	return l + r
+}
+
+extension List : Monad {
+	public func bind<B>(f : A -> List<B>) -> List<B> {
+		return concatMap(f)(self)
+	}
+}
+
+public func >>-<A, B>(l : List<A>, f : A -> List<B>) -> List<B> {
+	return l.bind(f)
+}
+
+public func >><A, B>(x : List<A>, y : List<B>) -> List<B> {
+	return x.bind({ (_) in
+		return y
+	})
+}
+
+extension List : MonadPlus {
+	public static func mzero() -> List<A> {
+		return List()
+	}
+
+	public static func mplus(l : List<A>) -> List<A> -> List<A> {
+		return { l + $0 }
+	}
+}
+
+extension List : MonadZip {
+	typealias C = Any
+	typealias FC = List<C>
+
+	typealias FTAB = List<(A, B)>
+
+	public func mzip<B>(ma : List<A>) -> List<B> -> List<(A, B)> {
+		return zip(ma)
+	}
+
+	public func mzipWith<B, C>(f : A -> B -> C) -> List<A> -> List<B> -> List<C> {
+		return zipWith(f)
+	}
+
+	public func munzip<B>(ftab : List<(A, B)>) -> (List<A>, List<B>) {
+		return unzip(ftab)
+	}
+}
 

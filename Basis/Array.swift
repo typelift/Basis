@@ -156,7 +156,7 @@ public func stripSuffix<A : Equatable>(l : [A]) -> [A] -> Maybe<[A]> {
 //	}
 //
 //	public func some(v : Array<A>) -> Array<[A]> {
-//		return curry((+>)) <%> v <*> many(v)
+//		return curry(<|) <%> v <*> many(v)
 //	}
 //
 //	public func many(v : Array<A>) -> Array<[A]> {
