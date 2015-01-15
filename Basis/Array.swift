@@ -107,7 +107,7 @@ public func stripPrefix<A : Equatable>(l : [A]) -> [A] -> Maybe<[A]> {
 /// Takes two lists and drops items in the first from the end of the second.  If the first list is
 /// not a suffix of the second list this function returns nothing.
 public func stripSuffix<A : Equatable>(l : [A]) -> [A] -> Maybe<[A]> {
-	return { r in Maybe.fmap(reverse) <| stripPrefix(l.reverse())(r.reverse()) }
+	return { r in Maybe.fmap(reverse) <<| stripPrefix(l.reverse())(r.reverse()) }
 }
 
 //extension Array : Functor {

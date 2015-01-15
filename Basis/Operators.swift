@@ -30,7 +30,7 @@ infix operator ∏ {}
 ///		f <| g <| h x  =  f (g (h x))
 ///
 /// Haskellers will know this as the ($) combinator.
-infix operator <| {
+infix operator <<| {
 	precedence 100
 	associativity right
 }
@@ -44,12 +44,18 @@ infix operator <| {
 ///		
 /// can also be written as:
 ///
-///		nubBy(==)(x) |> zip(y)
-///					 |> map(==)
-///					 |> and
-infix operator |> {
+///		nubBy(==)(x) |>> zip(y)
+///					 |>> map(==)
+///					 |>> and
+infix operator |>> {
 	precedence 100
 	associativity left
+}
+
+/// Cons | Constructs a list given an element and the tail of the list.
+infix operator <| {
+	precedence 100
+	associativity right
 }
 
 /// On | Given a "combining" function and a function that converts arguments to the target of the
