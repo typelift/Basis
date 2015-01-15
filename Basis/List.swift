@@ -177,6 +177,14 @@ public func <|<T>(head : T, tail : List<T>) -> List<T> {
 	return List(head, tail)
 }
 
+public func snoc<T>(xs : List<T>) -> T -> List<T> {
+	return { x in xs |> x }
+}
+
+public func |><T>(xs : List<T>, x : T) -> List<T> {
+	return xs + List(x)
+}
+
 /// Appends two lists together.
 public func +<A>(lhs : List<A>, rhs : List<A>) -> List<A> {
 	return lhs.append(rhs)

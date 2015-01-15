@@ -52,10 +52,16 @@ infix operator |>> {
 	associativity left
 }
 
-/// Cons | Constructs a list given an element and the tail of the list.
+/// Cons | Constructs a list by appending a given element to the front of a list.
 infix operator <| {
 	precedence 100
 	associativity right
+}
+
+/// Snoc | Constructs a list by appending a given element to the end of a list.
+infix operator |> {
+	precedence 100
+	associativity left
 }
 
 /// On | Given a "combining" function and a function that converts arguments to the target of the
