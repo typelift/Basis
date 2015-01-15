@@ -27,7 +27,7 @@ public func notElem<A : Equatable>(e : A) -> List<A> -> Bool {
 	return { l in all({ $0 != e })(l) }
 }
 
-/// Looks up a key in a list of key-value pairs.
+/// Looks up a key in a dictionary.
 public func lookup<A : Equatable, B>(e : A) -> [A:B] -> Optional<B> {
 	return { d in
 		switch destructure(d) {
@@ -42,7 +42,7 @@ public func lookup<A : Equatable, B>(e : A) -> [A:B] -> Optional<B> {
 	}
 }
 
-/// Looks up a key in a dictionary.
+/// Looks up a key in an array of key-value pairs.
 public func lookup<A : Equatable, B>(e : A) -> [(A, B)] -> Optional<B> {
 	return { d in
 		switch match(d) {
@@ -57,7 +57,7 @@ public func lookup<A : Equatable, B>(e : A) -> [(A, B)] -> Optional<B> {
 	}
 }
 
-/// Looks up a key in a dictionary.
+/// Looks up a key in a list of key-value pairs.
 public func lookup<A : Equatable, B>(e : A) -> List<(A, B)> -> Optional<B> {
 	return { d in
 		switch d.match() {
