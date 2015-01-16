@@ -31,7 +31,7 @@ infix operator ∏ {}
 ///
 /// Haskellers will know this as the ($) combinator.
 infix operator <<| {
-	precedence 100
+	precedence 0
 	associativity right
 }
 
@@ -48,7 +48,7 @@ infix operator <<| {
 ///					 |>> map(==)
 ///					 |>> and
 infix operator |>> {
-	precedence 100
+	precedence 0
 	associativity left
 }
 
