@@ -26,7 +26,7 @@ public final class Set<A> : K1<A> {
 		self.r = r
 	}
 
-	public func destruct() -> SetD<A> {
+	public func match() -> SetD<A> {
 		if self.size == 0 || a == nil {
 			return .Empty
 		}
@@ -46,7 +46,7 @@ public func singleton<A>(val : A) -> Set<A> {
 
 /// Returns whether a set is empty in constant time.
 public func null<A>(m : Set<A>) -> Bool {
-	switch m.destruct() {
+	switch m.match() {
 		case .Empty:
 			return true
 		case .Destructure(_, _, _, _):
@@ -56,7 +56,7 @@ public func null<A>(m : Set<A>) -> Bool {
 
 /// Returns the size of a set in constant time.
 public func size<A>(m : Set<A>) -> UInt {
-	switch m.destruct() {
+	switch m.match() {
 		case .Empty:
 			return 0
 		case .Destructure(let sz, _, _, _):
@@ -67,7 +67,7 @@ public func size<A>(m : Set<A>) -> UInt {
 /// Returns whether a given key is a member of the set.
 public func member<A : Comparable>(val : A) -> Set<A> -> Bool {
 	return { m in
-		switch m.destruct() {
+		switch m.match() {
 			case .Empty:
 				return false
 			case let .Destructure(_, x, l, r):
@@ -92,7 +92,7 @@ public func notMember<A : Comparable>(val : A) -> Set<A> -> Bool {
 /// value if the two keys are the same.
 public func insert<A : Comparable>(val : A) -> Set<A> -> Set<A> {
 	return { s in
-		switch s.destruct() {
+		switch s.match() {
 			case .Empty:
 				return singleton(val)
 			case .Destructure(let sz, let y, let l, let r):
@@ -111,7 +111,7 @@ public func insert<A : Comparable>(val : A) -> Set<A> -> Set<A> {
 /// If the value does not exist in the set, it is returned unmodified.
 public func delete<A : Comparable>(k : A) -> Set<A> -> Set<A> {
 	return { s in
-		switch s.destruct() {
+		switch s.match() {
 			case .Empty:
 				return empty()
 			case .Destructure(_, let x, let l, let r):
@@ -128,7 +128,7 @@ public func delete<A : Comparable>(k : A) -> Set<A> -> Set<A> {
 /// Post-order fold of a function over the map.
 public func foldr<A, B>(f : A -> B -> B) -> B -> Set<A> -> B {
 	return  { z in { m in
-		switch m.destruct() {
+		switch m.match() {
 			case .Empty:
 				return z
 			case .Destructure(_, let x, let l, let r):
@@ -140,7 +140,7 @@ public func foldr<A, B>(f : A -> B -> B) -> B -> Set<A> -> B {
 /// Post-order fold of an operator over the map.
 public func foldr<A, B>(f : (A , B) -> B) -> B -> Set<A> -> B {
 	return  { z in { m in
-		switch m.destruct() {
+		switch m.match() {
 			case .Empty:
 				return z
 			case .Destructure(_, let x, let l, let r):
@@ -152,7 +152,7 @@ public func foldr<A, B>(f : (A , B) -> B) -> B -> Set<A> -> B {
 /// Pre-order fold of a function over the map.
 public func foldl<A, B>(f: B -> A -> B) -> B -> Set<A> -> B {
 	return  { z in { m in
-		switch m.destruct() {
+		switch m.match() {
 			case .Empty:
 				return z
 			case .Destructure(_, let x, let l, let r):
@@ -164,7 +164,7 @@ public func foldl<A, B>(f: B -> A -> B) -> B -> Set<A> -> B {
 /// Pre-order fold of an operator over the map.
 public func foldl<A, B>(f: (B, A) -> B) -> B -> Set<A> -> B {
 	return  { z in { m in
-		switch m.destruct() {
+		switch m.match() {
 			case .Empty:
 				return z
 			case .Destructure(_, let x, let l, let r):
@@ -182,11 +182,11 @@ public func elems<A>(m : Set<A>) -> [A] {
 ///
 /// This function is partial with respect to empty sets.
 public func deleteFindMin<A>(s : Set<A>) -> (A, Set<A>) {
-	switch s.destruct() {
+	switch s.match() {
 		case .Empty:
 			return error("Cannot delete the minimal element of an empty set.")
 		case .Destructure(_, let x, let l, let r):
-			switch l.destruct() {
+			switch l.match() {
 				case .Empty:
 					return (x, r)
 				case .Destructure(_, _, _, _):
@@ -200,11 +200,11 @@ public func deleteFindMin<A>(s : Set<A>) -> (A, Set<A>) {
 ///
 /// This function is partial with respect to empty sets.
 public func deleteFindMax<A>(s : Set<A>) -> (A, Set<A>) {
-	switch s.destruct() {
+	switch s.match() {
 		case .Empty:
 			return error("Cannot delete the maximal element of an empty set.")
 		case .Destructure(_, let x, let l, let r):
-			switch l.destruct() {
+			switch l.match() {
 				case .Empty:
 					return (x, r)
 				case .Destructure(_, _, _, _):
@@ -217,11 +217,11 @@ public func deleteFindMax<A>(s : Set<A>) -> (A, Set<A>) {
 /// Returns the difference of two sets.
 public func difference<A : Comparable>(s1 : Set<A>) -> Set<A> -> Set<A> {
 	return { s2 in
-		switch s1.destruct() {
+		switch s1.match() {
 			case .Empty:
 				return empty()
 			case .Destructure(_, _, _, _):
-				switch s2.destruct() {
+				switch s2.match() {
 					case .Empty:
 						return s1
 					case .Destructure(_, _, _, _):
@@ -234,11 +234,11 @@ public func difference<A : Comparable>(s1 : Set<A>) -> Set<A> -> Set<A> {
 /// Returns the union of two sets.
 public func union<A : Comparable>(s1 : Set<A>) -> Set<A> -> Set<A> {
 	return { s2 in
-		switch s1.destruct() {
+		switch s1.match() {
 			case .Empty:
 				return s1
 			case .Destructure(_, _, _, _):
-				switch s2.destruct() {
+				switch s2.match() {
 					case .Empty:
 						return s1
 					case .Destructure(_, _, _, _):
@@ -300,7 +300,7 @@ private func trim<A : Comparable>(m1 : Optional<A>, m2 : Optional<A>, s : Set<A>
 }
 
 private func greater<A : Comparable>(lo : A, s : Set<A>) -> Set<A> {
-	switch s.destruct() {
+	switch s.match() {
 		case let .Destructure(_, x, _, r) where x <= lo:
 			return greater(lo, r)
 		default:
@@ -309,7 +309,7 @@ private func greater<A : Comparable>(lo : A, s : Set<A>) -> Set<A> {
 }
 
 private func lesser<A : Comparable>(hi : A, s : Set<A>) -> Set<A> {
-	switch s.destruct() {
+	switch s.match() {
 		case let .Destructure(_, x, l, _) where x >= hi:
 			return lesser(hi, l)
 		default:
@@ -318,7 +318,7 @@ private func lesser<A : Comparable>(hi : A, s : Set<A>) -> Set<A> {
 }
 
 private func middle<A : Comparable>(lo : A, hi : A, s : Set<A>) -> Set<A> {
-	switch s.destruct() {
+	switch s.match() {
 		case let .Destructure(_, x, _, r) where x <= lo:
 			return middle(lo, hi, r)
 		case let .Destructure(_, x, l, _) where x >= hi:
@@ -338,7 +338,7 @@ private func filterGt<A : Comparable>(m : Optional<A>, s : Set<A>) -> Set<A> {
 }
 
 private func filterG<A : Comparable>(b : A, s : Set<A>) -> Set<A> {
-	switch s.destruct() {
+	switch s.match() {
 		case .Empty:
 			assert(false, "")
 		case let .Destructure(_, x, l, r):
@@ -361,7 +361,7 @@ private func filterLt<A : Comparable>(m : Optional<A>, s : Set<A>) -> Set<A> {
 }
 
 private func filterL<A : Comparable>(b : A, s : Set<A>) -> Set<A> {
-	switch s.destruct() {
+	switch s.match() {
 		case .Empty:
 			assert(false, "")
 		case let .Destructure(_, x, l, r):
@@ -390,7 +390,7 @@ private func balance<A>(x : A)(l : Set<A>)(r : Set<A>) -> Set<A> {
 }
 
 private func rotateL<A>(x : A)(l : Set<A>)(r : Set<A>) -> Set<A> {
-	switch r.destruct() {
+	switch r.match() {
 		case .Empty:
 			return error("")
 		case .Destructure(_, _, let ly, let ry):
@@ -402,7 +402,7 @@ private func rotateL<A>(x : A)(l : Set<A>)(r : Set<A>) -> Set<A> {
 }
 
 private func rotateR<A>(x : A)(l : Set<A>)(r : Set<A>) -> Set<A> {
-	switch l.destruct() {
+	switch l.match() {
 		case .Empty:
 			return error("")
 		case .Destructure(_, _, let ly, let ry):
@@ -414,9 +414,9 @@ private func rotateR<A>(x : A)(l : Set<A>)(r : Set<A>) -> Set<A> {
 }
 
 private func single<A>(x1 : A)(t1 : Set<A>)(t2 : Set<A>) -> Set<A> {
-	switch t2.destruct() {
+	switch t2.match() {
 		case .Empty:
-			switch t1.destruct() {
+			switch t1.match() {
 				case .Empty:
 					return error("")
 				case .Destructure(_, let x2, let t1, let t3):
@@ -428,13 +428,13 @@ private func single<A>(x1 : A)(t1 : Set<A>)(t2 : Set<A>) -> Set<A> {
 }
 
 private func double<A>(x1 : A)(t1 : Set<A>)(t2 : Set<A>) -> Set<A> {
-	switch t2.destruct() {
+	switch t2.match() {
 		case .Empty:
-			switch t1.destruct() {
+			switch t1.match() {
 				case .Empty:
 					return error("")
 				case .Destructure(_, let x2, let b, let t4):
-					switch b.destruct() {
+					switch b.match() {
 						case .Empty:
 							return error("")
 						case .Destructure(_, let x3, let t2, let t3):
@@ -442,7 +442,7 @@ private func double<A>(x1 : A)(t1 : Set<A>)(t2 : Set<A>) -> Set<A> {
 					}
 			}
 		case .Destructure(_, let x2, let b, let t4):
-			switch b.destruct() {
+			switch b.match() {
 				case .Empty:
 					return error("")
 				case .Destructure(_, let x3, let t2, let t3):
@@ -452,11 +452,11 @@ private func double<A>(x1 : A)(t1 : Set<A>)(t2 : Set<A>) -> Set<A> {
 }
 
 private func link<A>(x : A, l : Set<A>, r : Set<A>) -> Set<A> {
-	switch l.destruct() {
+	switch l.match() {
 		case .Empty:
 			return insertMin(x, r)
 		case let .Destructure(sizel, y, ly, ry):
-			switch r.destruct() {
+			switch r.match() {
 				case .Empty:
 					return insertMax(x, l)
 				case let .Destructure(sizer, z, lz, rz):
@@ -471,7 +471,7 @@ private func link<A>(x : A, l : Set<A>, r : Set<A>) -> Set<A> {
 }
 
 private func insertMax<A>(x : A, s : Set<A>) -> Set<A> {
-	switch s.destruct() {
+	switch s.match() {
 		case .Empty:
 			return singleton(x)
 		case let .Destructure(_, y, l, r):
@@ -480,7 +480,7 @@ private func insertMax<A>(x : A, s : Set<A>) -> Set<A> {
 }
 
 private func insertMin<A>(x : A, s : Set<A>) -> Set<A> {
-	switch s.destruct() {
+	switch s.match() {
 		case .Empty:
 			return singleton(x)
 		case let .Destructure(_, y, l, r):
@@ -489,11 +489,11 @@ private func insertMin<A>(x : A, s : Set<A>) -> Set<A> {
 }
 
 private func merge<A>(l : Set<A>, r : Set<A>) -> Set<A> {
-	switch l.destruct() {
+	switch l.match() {
 		case .Empty:
 			return r
 		case let .Destructure(sizel, x, lx, rx):
-			switch r.destruct() {
+			switch r.match() {
 				case .Empty:
 					return l
 				case let .Destructure(sizer, y, ly, ry):

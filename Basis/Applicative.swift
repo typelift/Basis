@@ -53,7 +53,7 @@ public protocol Alternative : Applicative {
 	///
 	/// The least solution to the equation:
 	///
-	///		curry((+>)) <%> v <*> many(v)
+	///		curry(<|) <%> v <*> many(v)
 	func some(Self) -> FLA
 
 	/// Zero or more

@@ -45,7 +45,7 @@ class FunctionsSpec : XCTestCase {
 			return x + 100
 		}
 		
-		XCTAssertTrue((f <| g <| h(20)) == 110, "")
+		XCTAssertTrue((f <<| g <<| h(20)) == 110, "")
 	}
 	
 	func testForwardAp() {
@@ -61,7 +61,7 @@ class FunctionsSpec : XCTestCase {
 			return x + 100
 		}
 		
-		XCTAssertTrue((h(20) |> g |> f) == 110, "")
+		XCTAssertTrue((h(20) |>> g |>> f) == 110, "")
 	}
 	
 	func testMaybe() {

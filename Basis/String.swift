@@ -12,8 +12,8 @@ extension String {
 		return Array(self)
 	}
 	
-	public func destructure() -> ArrayD<Character> {
-		return destruct(unpack())
+	public func destructure() -> ArrayMatcher<Character> {
+		return match(unpack())
 	}
 }
 

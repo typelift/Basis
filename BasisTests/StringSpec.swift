@@ -12,7 +12,7 @@ import XCTest
 
 
 class StringSpec : XCTestCase {
-	func testDestruct() {
+	func testmatch() {
 		let str = "abcdefghijklmnopqrstuvwxyz"
 		
 		XCTAssertTrue(all({ $0 == 1 })(map({ $0.count })(group(str.unpack()))), "")

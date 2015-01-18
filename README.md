@@ -105,14 +105,14 @@ We can also exploit the tools Swift has given us for laziness and use them to
 build up infinite data structures despite having only a finite amount of memory.
 
 ```Swift
-/// Returns a stream of every Natural Number.  Because Streams a are built up 
-/// iteratively only on demand, we needn't load every member of the at once, 
+/// Returns a stream of every Natural Number.  Because Streams are built up 
+/// iteratively only on demand, we needn't load every element at once, 
 /// just one at a time as they are requested. 
 ///
 /// arr[0] == 0, arr[1] == 1, arr[2] == 2, ..., arr[n] == n
 let naturalNumbers = iterate({ 1 + $0 })(0)
 
-/// Returns an stream consisting of only the items in a given list.
+/// Returns a stream consisting of only the items in a given list.
 ///
 /// arr[0] == "You", arr[1] == "Say", arr[2] == "Goodbye", arr[4] == "You", ...
 let butISayHello = cycle(["You", "Say", "Goodbye"])
@@ -168,4 +168,3 @@ Further Reading
 - [SML](http://en.wikipedia.org/wiki/Standard_ML)
 - [Haskell](http://haskell.org/)
 - [TTFP](https://www.cs.kent.ac.uk/people/staff/sjt/TTFP/)
-

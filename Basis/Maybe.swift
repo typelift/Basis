@@ -26,7 +26,7 @@ public struct Maybe<A> {
 		self.val = val
 	}
 
-	public func destruct() -> MaybeD<A> {
+	public func match() -> MaybeD<A> {
 		return (val == nil) ? .Nothing : .Just(val!)
 	}
 
@@ -43,7 +43,7 @@ public struct Maybe<A> {
 /// is returned.  If the maybe is Just, the function is applied to the value inside.
 public func maybe<A, B>(def : B) -> (A -> B) -> Maybe<A> -> B {
 	return { f in { m in
-		switch m.destruct() {
+		switch m.match() {
 			case .Nothing:
 				return def
 			case .Just(let x):
@@ -54,7 +54,7 @@ public func maybe<A, B>(def : B) -> (A -> B) -> Maybe<A> -> B {
 
 /// Returns whether a given maybe contains a value.
 public func isJust<A>(o : Maybe<A>) -> Bool {
-	switch o.destruct() {
+	switch o.match() {
 		case .Nothing:
 			return false
 		default:
@@ -64,7 +64,7 @@ public func isJust<A>(o : Maybe<A>) -> Bool {
 
 /// Returns whether a given maybe is empty.
 public func isNothing<A>(o : Maybe<A>) -> Bool {
-	switch o.destruct() {
+	switch o.match() {
 		case .Nothing:
 			return true
 		default:
@@ -76,7 +76,7 @@ public func isNothing<A>(o : Maybe<A>) -> Bool {
 ///
 /// If the given maybe is Nothing, this function throws an exception.
 public func fromJust<A>(m : Maybe<A>) -> A {
-	switch m.destruct() {
+	switch m.match() {
 		case .Nothing:
 			return error("Cannot extract value from Nothing")
 		case .Just(let x):
@@ -89,7 +89,7 @@ public func fromJust<A>(m : Maybe<A>) -> A {
 ///
 /// This function is a safer form of !-unwrapping for optionals.
 public func fromMaybe<A>(def : A)(m : Maybe<A>) -> A {
-	switch m.destruct() {
+	switch m.match() {
 		case .Nothing:
 			return def
 		case .Just(let x):
@@ -100,7 +100,7 @@ public func fromMaybe<A>(def : A)(m : Maybe<A>) -> A {
 /// Given a maybe, returns an empty list if it is Nothing, or a singleton list containing the
 /// contents of a Just.
 public func maybeToList<A>(o : Maybe<A>) -> [A] {
-	switch o.destruct() {
+	switch o.match() {
 		case .Nothing:
 			return []
 		case .Just(let x):
@@ -110,8 +110,8 @@ public func maybeToList<A>(o : Maybe<A>) -> [A] {
 
 /// Given a list, returns Nothing if the list is empty, or Just containing the head of the list.
 public func listToMaybe<A>(l : [A]) -> Maybe<A> {
-	switch destruct(l) {
-		case .Empty:
+	switch match(l) {
+		case .Nil:
 			return Maybe.nothing()
 		case .Cons(let x, _):
 			return Maybe.just(x)
@@ -126,12 +126,12 @@ public func catMaybes<A>(l : [Maybe<A>]) -> [A] {
 /// Maps a function over a list.  If the result of the function is Nothing, the value is not included
 /// in the resulting list.
 public func mapMaybes<A, B>(f : A -> Maybe<B>)(l : [A]) -> [B] {
-	switch destruct(l) {
-		case .Empty:
+	switch match(l) {
+		case .Nil:
 			return []
 		case let .Cons(x, xs):
 			let rs = mapMaybes(f)(l: xs)
-			switch f(x).destruct() {
+			switch f(x).match() {
 				case .Nothing:
 					return rs
 				case .Just(let r):
@@ -142,7 +142,7 @@ public func mapMaybes<A, B>(f : A -> Maybe<B>)(l : [A]) -> [B] {
 
 // MARK: Equatable
 public func ==<V : Equatable>(lhs: Maybe<V>, rhs: Maybe<V>) -> Bool {
-	switch (lhs.destruct(), rhs.destruct()) {
+	switch (lhs.match(), rhs.match()) {
 		case (.Nothing, .Nothing):
 			return true
 		case let (.Just(l), .Just(r)) where l == r:
@@ -158,7 +158,7 @@ public func !=<V: Equatable>(lhs: Maybe<V>, rhs: Maybe<V>) -> Bool {
 
 // Fallback equality: All nothings are isomorphic.
 public func ==<T, V>(lhs: Maybe<T>, rhs: Maybe<V>) -> Bool {
-	switch (lhs.destruct(), rhs.destruct()) {
+	switch (lhs.match(), rhs.match()) {
 		case (.Nothing, .Nothing):
 			return true
 		default:
@@ -180,7 +180,7 @@ extension Maybe : Functor {
 
 	public static func fmap<B>(f : A -> B) -> Maybe<A> -> Maybe<B> {
 		return { m in
-			switch m.destruct() {
+			switch m.match() {
 				case .Nothing:
 					return Maybe<B>.nothing()
 				case .Just(let x):
@@ -209,7 +209,7 @@ extension Maybe : Applicative {
 
 	public static func ap<A, B>(f : Maybe<A -> B>) -> Maybe<A> -> Maybe<B> {
 		return { o in
-			switch f.destruct() {
+			switch f.match() {
 				case .Nothing:
 					return Maybe<B>.nothing()
 				case .Just(let f):
@@ -267,7 +267,7 @@ extension Maybe : Alternative {
 }
 
 public func <|><A>(l : Maybe<A>, r : Maybe<A>) -> Maybe<A> {
-	switch l.destruct() {
+	switch l.match() {
 		case .Nothing:
 			return r
 		case .Just(_):
@@ -277,7 +277,7 @@ public func <|><A>(l : Maybe<A>, r : Maybe<A>) -> Maybe<A> {
 
 extension Maybe : Monad {
 	public func bind<B>(f : A -> Maybe<B>) -> Maybe<B> {
-		switch self.destruct() {
+		switch self.match() {
 			case .Nothing:
 				return Maybe<B>.nothing()
 			case .Just(let x):
@@ -303,7 +303,7 @@ extension Maybe : MonadPlus {
 	
 	public static func mplus(l : Maybe<A>) -> Maybe<A> -> Maybe<A> {
 		return { r in
-			switch l.destruct() {
+			switch l.match() {
 				case .Nothing:
 					return r
 				default:
