@@ -36,11 +36,11 @@
 ///             c - [ g ] -> d - •
 ///
 ///
-///                 • - [ f ] -> b - •
-///                 |                 \
-/// - &&&       a - o                  o - -> (b, c)
-///                 |                 /
-///                 • - [ g ] -> c - •
+///                 • a - [ f ] -> b - •
+///                 |                   \
+/// - &&&       a - o                    o - -> (b, c)
+///                 |                   /
+///                 • a - [ g ] -> c - •
 ///
 /// Arrows inherit from Category so we can get Composition For Free™.
 public protocol Arrow : Category {
@@ -165,7 +165,7 @@ public protocol ArrowChoice : Arrow {
 ///
 /// - app    (f : a -> b) - •
 ///                          \
-///                           o - a [ f ] -> b
+///                           o - a - [ f ] -> b
 ///                          /
 ///          a -------> a - •
 ///
@@ -183,7 +183,7 @@ public protocol ArrowApply : Arrow {
 ///           |       |
 /// - loop    a - - [ f ] - -> b
 ///           |       |
-///           d ------•
+///           d-------•
 ///
 public protocol ArrowLoop : Arrow {
 	typealias LOOP = K2<(A, D), (B, D)>
