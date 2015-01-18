@@ -42,7 +42,7 @@ public struct Either<L, R>  {
 		return Either(right: x.unBox())
 	}
 	
-	public func destruct() -> EitherD<L, R> {
+	public func match() -> EitherD<L, R> {
 		if lVal != nil {
 			return .Left(Box(lVal!))
 		}
@@ -54,7 +54,7 @@ public struct Either<L, R>  {
 /// either is right, applies the right function to that value.
 public func either<A, B, C>(left : A -> C) -> (B -> C) -> Either<A, B> -> C {
 	return { right in { e in
-		switch e.destruct() {
+		switch e.match() {
 			case .Left(let x):
 				return left(x.unBox())
 			case .Right(let y):
@@ -66,7 +66,7 @@ public func either<A, B, C>(left : A -> C) -> (B -> C) -> Either<A, B> -> C {
 /// Extracts all eithers that have left values in order.
 public func lefts<A, B>(l : [Either<A, B>]) -> [A] {
 	return concatMap({
-		switch $0.destruct() {
+		switch $0.match() {
 			case .Left(let a):
 				return [a.unBox()]
 			default:
@@ -78,7 +78,7 @@ public func lefts<A, B>(l : [Either<A, B>]) -> [A] {
 /// Extracts all eithers that have right values in order.
 public func rights<A, B>(l : [Either<A, B>]) -> [B] {
 	return concatMap({
-		switch $0.destruct() {
+		switch $0.match() {
 			case .Right(let b):
 				return [b.unBox()]
 			default:
@@ -89,7 +89,7 @@ public func rights<A, B>(l : [Either<A, B>]) -> [B] {
 
 /// Returns whether an either holds a right value.
 public func isRight<A, B>(e : Either<A, B>) -> Bool {
-	switch e.destruct() {
+	switch e.match() {
 		case .Right(_):
 			return true
 		default:
@@ -99,7 +99,7 @@ public func isRight<A, B>(e : Either<A, B>) -> Bool {
 
 /// Returns whether an either holds a left value.
 public func isLeft<A, B>(e : Either<A, B>) -> Bool {
-	switch e.destruct() {
+	switch e.match() {
 		case .Left(_):
 			return true
 		default:
@@ -115,7 +115,7 @@ public func asResult<A, B>(e : Either<A, B>) -> (A -> NSError) -> Result<B> {
 // MARK: Equatable
 
 public func ==<A : Equatable, B : Equatable>(lhs: Either<A, B>, rhs: Either<A, B>) -> Bool {
-	switch (lhs.destruct(), rhs.destruct()) {
+	switch (lhs.match(), rhs.match()) {
 		case let (.Right(x), .Right(y)) where x.unBox() == y.unBox():
 			return true
 		case let (.Left(x), .Left(y)) where x.unBox() == y.unBox():
@@ -138,7 +138,7 @@ extension Either : Functor {
 
 	public static func fmap<C>(f : R -> C) -> Either<L, R> -> Either<L, C> {
 		return { 
-			switch $0.destruct() {
+			switch $0.match() {
 				case .Left(let b):
 					return Either<L, C>.left(b)
 				case .Right(let b):
@@ -168,7 +168,7 @@ extension Either : Applicative {
 	
 	public static func ap<C>(f : Either<L, R -> C>) -> Either<L, R> -> Either<L, C> {
 		return { e in 
-			switch f.destruct() {
+			switch f.match() {
 				case .Left(let e):
 					return Either<L, C>.left(e)
 				case .Right(let f):
@@ -211,7 +211,7 @@ extension Either : ApplicativeOps {
 
 extension Either : Monad {
 	public func bind<B>(f : A -> Either<L, B>) -> Either<L, B> {
-		switch self.destruct() {
+		switch self.match() {
 			case .Left(let l):
 				return Either<L, B>.left(l)
 			case .Right(let r):
@@ -275,7 +275,7 @@ public func <-<<L, A, B, C>(g : B -> Either<L, C>, f : A -> Either<L, B>) -> A -
 extension Either : MonadFix {
 	public static func mfix(f : R -> Either<L, R>) -> Either<L, R> {
 		func fromRight(e : Either<L, R>) -> R {
-			switch e.destruct() {
+			switch e.match() {
 				case .Right(let br):
 					return br.unBox()
 				case .Left(let bl):

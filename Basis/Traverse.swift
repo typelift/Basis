@@ -10,7 +10,7 @@
 /// Map a function over all values in the map.
 public func map<K, A, B>(f : A -> B) -> Map<K, A> -> Map<K, B> {
 	return { m in
-		switch m.destruct() {
+		switch m.match() {
 			case .Empty:
 				return empty()
 			case .Destructure(let c, let key, let x, let l, let r):
@@ -22,7 +22,7 @@ public func map<K, A, B>(f : A -> B) -> Map<K, A> -> Map<K, B> {
 /// Map a function over all keys and values in the map.
 public func mapWithKey<K, A, B>(f : K -> A -> B) -> Map<K, A> -> Map<K, B> {
 	return { m in
-		switch m.destruct() {
+		switch m.match() {
 			case .Empty:
 				return empty()
 			case .Destructure(let c, let key, let x, let l, let r):
@@ -34,7 +34,7 @@ public func mapWithKey<K, A, B>(f : K -> A -> B) -> Map<K, A> -> Map<K, B> {
 /// Post-order fold of a function over the map.
 public func foldr<K, A, B>(f : A -> B -> B) -> B -> Map<K, A> -> B {
 	return  { z in { m in
-		switch m.destruct() {
+		switch m.match() {
 			case .Empty:
 				return z
 			case .Destructure(_, _, let x, let l, let r):
@@ -46,7 +46,7 @@ public func foldr<K, A, B>(f : A -> B -> B) -> B -> Map<K, A> -> B {
 /// Post-order fold of an operator over the map.
 public func foldr<K, A, B>(f : (A , B) -> B) -> B -> Map<K, A> -> B {
 	return  { z in { m in
-		switch m.destruct() {
+		switch m.match() {
 			case .Empty:
 				return z
 			case .Destructure(_, _, let x, let l, let r):
@@ -58,7 +58,7 @@ public func foldr<K, A, B>(f : (A , B) -> B) -> B -> Map<K, A> -> B {
 /// Pre-order fold of a function over the map.
 public func foldl<K, A, B>(f: B -> A -> B) -> B -> Map<K, A> -> B {
 	return  { z in { m in
-		switch m.destruct() {
+		switch m.match() {
 			case .Empty:
 				return z
 			case .Destructure(_, _, let x, let l, let r):
@@ -70,7 +70,7 @@ public func foldl<K, A, B>(f: B -> A -> B) -> B -> Map<K, A> -> B {
 /// Pre-order fold of an operator over the map.
 public func foldl<K, A, B>(f: (B, A) -> B) -> B -> Map<K, A> -> B {
 	return  { z in { m in
-		switch m.destruct() {
+		switch m.match() {
 			case .Empty:
 				return z
 			case .Destructure(_, _, let x, let l, let r):
@@ -82,7 +82,7 @@ public func foldl<K, A, B>(f: (B, A) -> B) -> B -> Map<K, A> -> B {
 /// Post-order fold of a function over the keys a values of a map.
 public func foldrWithKey<K, A, B>(f : K -> A -> B -> B) -> B -> Map<K, A> -> B {
 	return  { z in { m in
-		switch m.destruct() {
+		switch m.match() {
 			case .Empty:
 				return z
 			case .Destructure(_, let k, let x, let l, let r):
@@ -94,7 +94,7 @@ public func foldrWithKey<K, A, B>(f : K -> A -> B -> B) -> B -> Map<K, A> -> B {
 /// Pre-order fold of a function over the keys a values of a map.
 public func foldlWithKey<K, A, B>(f: A -> K -> B -> A) -> A -> Map<K, B> -> A {
 	return  { z in { m in
-		switch m.destruct() {
+		switch m.match() {
 			case .Empty:
 				return z
 			case .Destructure(_, let k, let x, let l, let r):

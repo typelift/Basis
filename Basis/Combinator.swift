@@ -25,10 +25,10 @@ public func const<A, B>(x : A) -> B -> A {
 /// large amounts of parenthesis.  Because this operator has a low precedence and is right-
 /// associative, it can often be used to elide parenthesis such that the following holds:
 ///
-///     f <| g <| h x  =  f (g (h x))
+///     f <<| g <<| h x  =  f (g (h (x)))
 ///
 /// Haskellers will know this as the ($) combinator.
-public func <|<A, B>(f : A -> B, x : A) -> B {
+public func <<|<A, B>(f : A -> B, x : A) -> B {
 	return f(x)
 }
 
@@ -41,10 +41,10 @@ public func <|<A, B>(f : A -> B, x : A) -> B {
 ///		
 /// can also be written as:
 ///
-///     let result = nubBy(==)(x) |> zip(y)
-///                               |> map(==)
-///                               |> and
-public func |><A, B>(x : A, f : A -> B) -> B {
+///     let result = nubBy(==)(x) |>> zip(y)
+///                               |>> map(==)
+///                               |>> and
+public func |>><A, B>(x : A, f : A -> B) -> B {
 	return f(x)
 }
 

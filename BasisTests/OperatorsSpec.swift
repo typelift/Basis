@@ -26,7 +26,7 @@ class OperatorsSpec : XCTestCase {
 		let h = { $0 + 20 }
 		let x = 5
 
-		XCTAssertTrue((f <| g <| h(x)) == f(g(h(x))) , "")
+		XCTAssertTrue((f <<| g <<| h(x)) == f(g(h(x))) , "")
 	}
 
 	func testPipeForwards() {
@@ -35,7 +35,7 @@ class OperatorsSpec : XCTestCase {
 		let h = { $0 + 20 }
 		let x = 5
 
-		XCTAssertTrue((h(x) |> g |> f) == f(g(h(x))) , "")
+		XCTAssertTrue((h(x) |>> g |>> f) == f(g(h(x))) , "")
 	}
 
 	func testPairFormation() {

@@ -16,8 +16,8 @@ class ListSpec : XCTestCase {
 	func testDestructure() {
 		let l = [1, 2, 3, 4]
 		
-		switch destruct(l) {
-			case .Empty:
+		switch match(l) {
+			case .Nil:
 				assert(false, "")
 			case .Cons(let hd, let tl):
 				XCTAssertTrue(hd == 1, "")
