@@ -115,7 +115,7 @@ public protocol ArrowPlus : ArrowZero {
 ///
 /// - right                    d - - - - - - - > d
 ///                            |
-///             a - [f] -> b - o-----EITHER-----
+///             a - [f] -> b - o------EITHER------
 ///                            |
 ///                            a - - [ f ] - - > b
 ///
@@ -163,7 +163,11 @@ public protocol ArrowChoice : Arrow {
 /// Arrows that allow application of arrow inputs to other inputs.  Such arrows are equivalent to 
 /// monads.
 ///
-/// - app    (a - [ f ] -> b, a) - [ f ] -> b
+/// - app    (f : a -> b) - •
+///                          \
+///                           o - a [ f ] -> b
+///                          /
+///          a -------> a - •
 ///
 public protocol ArrowApply : Arrow {
 	typealias APP = K2<(Self, A), B>
