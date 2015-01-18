@@ -25,8 +25,6 @@ public protocol Category {
 
 	/// The identity category
 	typealias CAA = K2<A, A>
-	/// Our Category
-	typealias CAB = K2<A, B>
 	/// A Category we can compose with.
 	typealias CBC = K2<B, C>
 	/// The composition of this Category with the Category above.
@@ -38,15 +36,13 @@ public protocol Category {
 	/// Composition of categories.
 	///
 	/// If you peek behind the types, it's just plain old composition.
-	func •(c : CBC, c2 : CAB) -> CAC
+	func •(c : CBC, c2 : Self) -> CAC
 
-	/// Forward composition.
-	/// 
-	/// Usually an alias for •
-	func >>> (CAB, CBC) -> CAC
+	/// Right-to-left composition.
+	func >>> (Self, CBC) -> CAC
 
-	/// Backwards composition.
+	/// Left-to-right composition.
 	///
-	/// Forward composition with the parameters flipped.
-	func <<< (CBC, CAB) -> CAC
+	/// Usually an alias for •
+	func <<< (CBC, Self) -> CAC
 }

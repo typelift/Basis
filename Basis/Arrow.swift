@@ -46,37 +46,29 @@
 /// reuse the typealiases from Category, so you must redefine AB and AC as the source and target 
 /// for the Arrow.
 public protocol Arrow : Category {
-	/// Source
-	typealias AB
-	/// Target
-	typealias AC
-	
 	/// Some arbitrary target our arrow can compose with.
 	typealias D
 	/// Some arbitrary target our arrow can compose with.
 	typealias E
 	
-	/// An arrow from A -> B.  Colloquially, the "zero arrow".
-	typealias ABC = K2<AB, AC>
-	
 	/// Type of the result of first().
-	typealias FIRST = K2<(AB, D), (AC, D)>
+	typealias FIRST = K2<(A, D), (B, D)>
 	/// Type of the result of second().
-	typealias SECOND = K2<(D, AB), (D, AC)>
+	typealias SECOND = K2<(D, A), (D, B)>
 	
 	/// Some arrow with an arbitrary target and source.  Used in split().
 	typealias ADE = K2<D, E>
 	/// Type of the result of ***.
-	typealias SPLIT = K2<(AB, D), (AC, E)>
+	typealias SPLIT = K2<(A, D), (B, E)>
 	
 	/// Some arrow from our target to some other arbitrary target.  Used in fanout().
-	typealias ABD = K2<AB, D>
+	typealias ABD = K2<A, D>
 	
 	/// Type of the result of &&&.
-	typealias FANOUT = K2<B, (AC, D)>
+	typealias FANOUT = K2<B, (B, D)>
 	
 	/// Lift a function to an arrow.
-	class func arr(AB -> AC) -> ABC
+	class func arr(A -> B) -> Self
 	
 	/// Splits the arrow into two tuples that model a computation that applies our Arrow to an
 	/// argument on the "left side" and sends the "right side" through unchanged.
@@ -92,16 +84,19 @@ public protocol Arrow : Category {
 	
 	/// Split | Splits two computations and combines the result into one Arrow yielding a tuple of
 	/// the result of each side.
-	func ***(ABC, ADE) -> SPLIT
+	func ***(Self, ADE) -> SPLIT
 	
 	/// Fanout | Given two functions with the same source but different targets, this function
 	/// splits the computation and combines the result of each Arrow into a tuple of the result of
 	/// each side.
-	func &&&(ABC, ABD) -> FANOUT
+	func &&&(Self, ABD) -> FANOUT
 }
 
 /// Arrows that can produce an identity arrow.
 public protocol ArrowZero : Arrow {
+	/// An arrow from A -> B.  Colloquially, the "zero arrow".
+	typealias ABC = K2<A, B>
+
 	/// The identity arrow.
 	class func zeroArrow() -> ABC
 }
@@ -114,28 +109,28 @@ public protocol ArrowPlus : ArrowZero {
 
 public protocol ArrowChoice : Arrow {
 	/// The result of left
-	typealias LEFT = K2<Either<AB, D>, Either<AC, D>>
+	typealias LEFT = K2<Either<A, D>, Either<B, D>>
 	/// The result of right
-	typealias RIGHT = K2<Either<D, AB>, Either<D, AC>>
+	typealias RIGHT = K2<Either<D, A>, Either<D, B>>
 
 	/// The result of +++
-	typealias SPLAT = K2<Either<AB, D>, Either<AC, E>>
+	typealias SPLAT = K2<Either<A, D>, Either<B, E>>
 
 	/// Some arrow from a different source and target for fanin.
-	typealias ACD = K2<AC, D>
+	typealias ACD = K2<B, D>
 	/// The result of |||
-	typealias FANIN = K2<Either<AB, AC>, D>
+	typealias FANIN = K2<Either<A, B>, D>
 
 	/// Feed marked inputs through the argument arrow, passing the rest through unchanged to the 
 	/// output.
-	func left(ABC) -> LEFT
+	class func left(Self) -> LEFT
 	
 	/// The mirror image of left.
-	func right(ABC) -> RIGHT
+	class func right(Self) -> RIGHT
 
 	/// Splat | Split the input between both argument arrows, then retag and merge their outputs 
 	/// into Eithers.
-	func +++(ABC, ADE) -> SPLAT
+	func +++(Self, ADE) -> SPLAT
 	
 	/// Fanin | Split the input between two argument arrows and merge their ouputs.
 	func |||(ABD, ACD) -> FANIN
@@ -143,13 +138,13 @@ public protocol ArrowChoice : Arrow {
 
 /// Arrows that allow application of arrow inputs to other inputs.
 public protocol ArrowApply : Arrow {
-	typealias APP = K2<(ABC, AB), AC>
-	func app() -> APP
+	typealias APP = K2<(Self, A), B>
+	class func app() -> APP
 }
 
 /// Arrows that admit right-tightening recursion.
 public protocol ArrowLoop : Arrow {
-	typealias LOOP = K2<(AB, D), (AC, D)>
+	typealias LOOP = K2<(A, D), (B, D)>
 	
-	class func loop(LOOP) -> ABC
+	class func loop(LOOP) -> Self
 }
