@@ -107,27 +107,27 @@ public protocol ArrowPlus : ArrowZero {
 
 /// Arrows that permit "choice" or selecting which side of the input to apply themselves to.
 ///
-/// - left                     a - - [f] - -> b
+/// - left                     a - - [f] - - > b
 ///                            |
-///             a - [f] -> b - o---------------
+///             a - [f] -> b - o-----EITHER-----
 ///                            |
-///                            d - - - - - -> d
+///                            d - - - - - - > d
 ///
-/// - right                    d - - [f] - -> d
+/// - right                    d - - [f] - - > d
 ///                            |
-///             a - [f] -> b - o---------------
+///             a - [f] -> b - o-----EITHER-----
 ///                            |
-///                            a - - - - - -> b
+///                            a - - - - - - > b
 ///
 /// - +++       a - [ f ] -> b - •        • a - [ f ] -> b
 ///                               \       |
-///                                o - -> o---------------
+///                                o - -> o-----EITHER-----
 ///                               /       |
 ///             d - [ g ] -> e - •        • d - [ g ] -> e
 ///
 /// - |||       a - [ f ] -> c - •        • a - [ f ] -> c •
 ///                               \       |                 \
-///                                o - -> o------------------o - -> c
+///                                o - -> o-----EITHER-------o - -> c
 ///                               /       |                 /
 ///             b - [ g ] -> c - •        • b - [ g ] -> c •
 ///
