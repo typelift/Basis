@@ -34,7 +34,7 @@ extension Function : Category {
 	}
 }
 
-public func •<A, B, C>(c : Function<B, C>, c2 : Function<A, B>) -> Function<A, C> {
+public func • <A, B, C>(c : Function<B, C>, c2 : Function<A, B>) -> Function<A, C> {
 	return ^{ c.apply(c2.apply($0)) }
 }
 

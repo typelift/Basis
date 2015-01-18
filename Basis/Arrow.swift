@@ -17,34 +17,32 @@
 /// Arrows can be modelled with circuit-esque diagrams, and indeed that can often be a better way to
 /// envision the various arrow operators.
 ///
-/// - <<<       b -> [ f ] -> c -> [ g ] -> d
-/// - >>>       b -> [ f ] -> c -> [ g ] -> d
+/// - >>>       a -> [ f ] -> b -> [ g ] -> c
+/// - <<<       a -> [ g ] -> b -> [ f ] -> c
 ///
-/// - arr       b -> [ f ] -> c
+/// - arr       a -> [ f ] -> b
 ///
-/// - first     b -> [ f ] -> c
-///             d - - - - -> d
+/// - first     a -> [ f ]  -> b
+///             c - - - - - -> c
 ///
-/// - second    d - - - - -> d
-///             b -> [ f ] -> c
+/// - second    c - - - - - -> c
+///             a -> [ f ]  -> b
 ///
 ///
-/// - ***       b - [ f ] -> c - •
+/// - ***       a - [ f ] -> b - •
 ///                               \
-///                                o - -> (c, e)
+///                                o - -> (b, d)
 ///                               /
-///             d - [ g ] -> e - •
+///             c - [ g ] -> d - •
 ///
 ///
-///                 • - [ f ] -> c - •
+///                 • - [ f ] -> b - •
 ///                 |                 \
-/// - &&&       b - o                  o - -> (c, d)
+/// - &&&       a - o                  o - -> (b, c)
 ///                 |                 /
-///                 • - [ g ] -> d - •
+///                 • - [ g ] -> c - •
 ///
-/// Arrows inherit from Category so we can get Composition For Free™.  Unfortunately, we cannot 
-/// reuse the typealiases from Category, so you must redefine AB and AC as the source and target 
-/// for the Arrow.
+/// Arrows inherit from Category so we can get Composition For Free™.
 public protocol Arrow : Category {
 	/// Some arbitrary target our arrow can compose with.
 	typealias D
@@ -107,6 +105,32 @@ public protocol ArrowPlus : ArrowZero {
 	func <+>(ABC, ABC) -> ABC
 }
 
+/// Arrows that permit "choice" or selecting which side of the input to apply themselves to.
+///
+/// - left                     a - - [f] - -> b
+///                            |
+///             a - [f] -> b - o---------------
+///                            |
+///                            d - - - - - -> d
+///
+/// - right                    d - - [f] - -> d
+///                            |
+///             a - [f] -> b - o---------------
+///                            |
+///                            a - - - - - -> b
+///
+/// - +++       a - [ f ] -> b - •        • a - [ f ] -> b
+///                               \       |
+///                                o - -> o---------------
+///                               /       |
+///             d - [ g ] -> e - •        • d - [ g ] -> e
+///
+/// - |||       a - [ f ] -> c - •        • a - [ f ] -> c •
+///                               \       |                 \
+///                                o - -> o------------------o - -> c
+///                               /       |                 /
+///             b - [ g ] -> c - •        • b - [ g ] -> c •
+///
 public protocol ArrowChoice : Arrow {
 	/// The result of left
 	typealias LEFT = K2<Either<A, D>, Either<B, D>>
