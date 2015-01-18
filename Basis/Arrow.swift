@@ -160,13 +160,27 @@ public protocol ArrowChoice : Arrow {
 	func |||(ABD, ACD) -> FANIN
 }
 
-/// Arrows that allow application of arrow inputs to other inputs.
+/// Arrows that allow application of arrow inputs to other inputs.  Such arrows are equivalent to 
+/// monads.
+///
+/// - app    (a - [ f ] -> b, a) - [ f ] -> b
+///
 public protocol ArrowApply : Arrow {
 	typealias APP = K2<(Self, A), B>
 	class func app() -> APP
 }
 
 /// Arrows that admit right-tightening recursion.
+///
+/// The 'loop' operator expresses computations in which an output value is fed back as input,
+/// although the computation occurs only once.
+///
+///           •-------•
+///           |       |
+/// - loop    a - - [ f ] - -> b
+///           |       |
+///           d ------•
+///
 public protocol ArrowLoop : Arrow {
 	typealias LOOP = K2<(A, D), (B, D)>
 	
