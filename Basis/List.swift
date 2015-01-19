@@ -173,7 +173,7 @@ public func cons<T>(x : T) -> List<T> -> List<T> {
 	return { xs in x <| xs }
 }
 
-public func <|<T>(head : T, tail : List<T>) -> List<T> {
+public func <| <T>(head : T, tail : List<T>) -> List<T> {
 	return List(head, tail)
 }
 
@@ -181,12 +181,12 @@ public func snoc<T>(xs : List<T>) -> T -> List<T> {
 	return { x in xs |> x }
 }
 
-public func |><T>(xs : List<T>, x : T) -> List<T> {
+public func |> <T>(xs : List<T>, x : T) -> List<T> {
 	return xs + List(x)
 }
 
 /// Appends two lists together.
-public func +<A>(lhs : List<A>, rhs : List<A>) -> List<A> {
+public func + <A>(lhs : List<A>, rhs : List<A>) -> List<A> {
 	return lhs.append(rhs)
 }
 
@@ -239,7 +239,7 @@ public func stripSuffix<A : Equatable>(l : List<A>) -> List<A> -> Maybe<List<A>>
 
 /// MARK: Equatable
 
-public func ==<A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
+public func == <A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
 	switch (lhs.match(), rhs.match()) {
 		case (.Nil, .Nil):
 			return true
@@ -261,7 +261,7 @@ extension List : Functor {
 	}
 }
 
-public func <%<A, B>(x : A, l : List<B>) -> List<A> {
+public func <% <A, B>(x : A, l : List<B>) -> List<A> {
 	return List.fmap(const(x))(l)
 }
 
@@ -279,19 +279,19 @@ extension List : Applicative {
 	}
 }
 
-public func <%><A, B>(f: A -> B, ar : List<A>) -> List<B> {
+public func <%> <A, B>(f: A -> B, ar : List<A>) -> List<B> {
 	return List.fmap(f)(ar)
 }
 
-public func <*><A, B>(a : List<A -> B> , l : List<A>) -> List<B> {
+public func <*> <A, B>(a : List<A -> B> , l : List<A>) -> List<B> {
 	return List.ap(a)(l)
 }
 
-public func *><A, B>(a : List<A>, b : List<B>) -> List<B> {
+public func *> <A, B>(a : List<A>, b : List<B>) -> List<B> {
 	return const(id) <%> a <*> b
 }
 
-public func <*<A, B>(a : List<A>, b : List<B>) -> List<A> {
+public func <* <A, B>(a : List<A>, b : List<B>) -> List<A> {
 	return const <%> a <*> b
 }
 
@@ -311,7 +311,7 @@ extension List : Alternative {
 	}
 }
 
-public func <|><A>(l : List<A>, r : List<A>) -> List<A> {
+public func <|> <A>(l : List<A>, r : List<A>) -> List<A> {
 	return l + r
 }
 
@@ -321,11 +321,11 @@ extension List : Monad {
 	}
 }
 
-public func >>-<A, B>(l : List<A>, f : A -> List<B>) -> List<B> {
+public func >>- <A, B>(l : List<A>, f : A -> List<B>) -> List<B> {
 	return l.bind(f)
 }
 
-public func >><A, B>(x : List<A>, y : List<B>) -> List<B> {
+public func >> <A, B>(x : List<A>, y : List<B>) -> List<B> {
 	return x.bind({ (_) in
 		return y
 	})

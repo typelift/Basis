@@ -203,11 +203,11 @@ extension Stream : Functor {
 	}
 }
 
-public func <%><A, B>(f : A -> B, b : Stream<A>) -> Stream<B> {
+public func <%> <A, B>(f : A -> B, b : Stream<A>) -> Stream<B> {
 	return Stream.fmap(f)(b)
 }
 
-public func <%<A, B>(a : A, _ : Stream<B>) -> Stream<A> {
+public func <% <A, B>(a : A, _ : Stream<B>) -> Stream<A> {
 	return repeat(a)
 }
 
@@ -223,15 +223,15 @@ extension Stream : Applicative {
 	}
 }
 
-public func <*><A, B>(f : Stream<A -> B> , o : Stream<A>) -> Stream<B> {
+public func <*> <A, B>(f : Stream<A -> B> , o : Stream<A>) -> Stream<B> {
 	return f >*< o
 }
 
-public func *><A, B>(a : Stream<A>, b : Stream<B>) -> Stream<B> {
+public func *> <A, B>(a : Stream<A>, b : Stream<B>) -> Stream<B> {
 	return a *< b
 }
 
-public func <*<A, B>(a : Stream<A>, b : Stream<B>) -> Stream<A> {
+public func <* <A, B>(a : Stream<A>, b : Stream<B>) -> Stream<A> {
 	return a >* b
 }
 
@@ -264,11 +264,11 @@ extension Stream : Monad {
 	}
 }
 
-public func >>-<A, B>(x : Stream<A>, f : A -> Stream<B>) -> Stream<B> {
+public func >>- <A, B>(x : Stream<A>, f : A -> Stream<B>) -> Stream<B> {
 	return x.bind(f)
 }
 
-public func >><A, B>(_ : Stream<A>, bs : Stream<B>) -> Stream<B> {
+public func >> <A, B>(_ : Stream<A>, bs : Stream<B>) -> Stream<B> {
 	return bs
 }
 
@@ -302,15 +302,15 @@ extension Stream : MonadOps {
 	}
 }
 
-public func -<<<A, B>(f : A -> Stream<B>, xs : Stream<A>) -> Stream<B> {
+public func -<< <A, B>(f : A -> Stream<B>, xs : Stream<A>) -> Stream<B> {
 	return xs.bind(f)
 }
 
-public func >-><A, B, C>(f : A -> Stream<B>, g : B -> Stream<C>) -> A -> Stream<C> {
+public func >-> <A, B, C>(f : A -> Stream<B>, g : B -> Stream<C>) -> A -> Stream<C> {
 	return { x in f(x) >>- g }
 }
 
-public func <-<<A, B, C>(g : B -> Stream<C>, f : A -> Stream<B>) -> A -> Stream<C> {
+public func <-< <A, B, C>(g : B -> Stream<C>, f : A -> Stream<B>) -> A -> Stream<C> {
 	return { x in f(x) >>- g }
 }
 
@@ -337,7 +337,7 @@ extension Stream : Comonad {
 
 extension Stream : ComonadApply {}
 
-public func >*<<A, B>(fab : Stream<A -> B> , xs : Stream<A>) -> Stream<B> {
+public func >*< <A, B>(fab : Stream<A -> B> , xs : Stream<A>) -> Stream<B> {
 	let f = fab.step().head
 	let fs = fab.step().tail
 	let x = xs.step().head
@@ -345,11 +345,11 @@ public func >*<<A, B>(fab : Stream<A -> B> , xs : Stream<A>) -> Stream<B> {
 	return Stream((f(x), (fs >*< xss)))
 }
 
-public func *<<A, B>(_ : Stream<A>, b : Stream<B>) -> Stream<B> {
+public func *< <A, B>(_ : Stream<A>, b : Stream<B>) -> Stream<B> {
 	return b
 }
 
-public func >*<A, B>(a : Stream<A>, _ : Stream<B>) -> Stream<A> {
+public func >* <A, B>(a : Stream<A>, _ : Stream<B>) -> Stream<A> {
 	return a
 }
 

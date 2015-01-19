@@ -114,7 +114,7 @@ public func asResult<A, B>(e : Either<A, B>) -> (A -> NSError) -> Result<B> {
 
 // MARK: Equatable
 
-public func ==<A : Equatable, B : Equatable>(lhs: Either<A, B>, rhs: Either<A, B>) -> Bool {
+public func == <A : Equatable, B : Equatable>(lhs: Either<A, B>, rhs: Either<A, B>) -> Bool {
 	switch (lhs.match(), rhs.match()) {
 		case let (.Right(x), .Right(y)) where x.unBox() == y.unBox():
 			return true
@@ -125,7 +125,7 @@ public func ==<A : Equatable, B : Equatable>(lhs: Either<A, B>, rhs: Either<A, B
 	}
 }
 
-public func !=<A : Equatable, B : Equatable>(lhs: Either<A, B>, rhs: Either<A, B>) -> Bool {
+public func != <A : Equatable, B : Equatable>(lhs: Either<A, B>, rhs: Either<A, B>) -> Bool {
 	return !(lhs == rhs)
 }
 
@@ -149,7 +149,7 @@ extension Either : Functor {
 
 }
 
-public func <%><A, B, C>(f : B -> C, either : Either<A, B>) -> Either<A, C> {
+public func <%> <A, B, C>(f : B -> C, either : Either<A, B>) -> Either<A, C> {
 	return Either.fmap(f)(either)
 }
 
@@ -178,15 +178,15 @@ extension Either : Applicative {
 	}
 }
 
-public func <*><A, B, C>(f : Either<A, B -> C> , r : Either<A, B>) ->  Either<A, C> {
+public func <*> <A, B, C>(f : Either<A, B -> C> , r : Either<A, B>) ->  Either<A, C> {
 	return Either<A, B>.ap(f)(r)
 }
 
-public func *><A, B, C>(a : Either<A, B>, b : Either<A, C>) -> Either<A, C> {
+public func *> <A, B, C>(a : Either<A, B>, b : Either<A, C>) -> Either<A, C> {
 	return const(id) <%> a <*> b
 }
 
-public func <*<A, B, C>(a : Either<A, B>, b : Either<A, C>) -> Either<A, B> {
+public func <* <A, B, C>(a : Either<A, B>, b : Either<A, C>) -> Either<A, B> {
 	return const <%> a <*> b
 }
 
@@ -220,11 +220,11 @@ extension Either : Monad {
 	}
 }
 
-public func >>-<L, A, B>(xs : Either<L, A>, f : A -> Either<L, B>) -> Either<L, B> {
+public func >>- <L, A, B>(xs : Either<L, A>, f : A -> Either<L, B>) -> Either<L, B> {
 	return xs.bind(f)
 }
 
-public func >><A, B, C>(x : Either<A, B>, y : Either<A, C>) -> Either<A, C> {
+public func >> <A, B, C>(x : Either<A, B>, y : Either<A, C>) -> Either<A, C> {
 	return x >>- { (_) in
 		return y
 	}
@@ -260,15 +260,15 @@ extension Either : MonadOps {
 	}
 }
 
-public func -<<<L, A, B>(f : A -> Either<L, B>, xs : Either<L, A>) -> Either<L, B> {
+public func -<< <L, A, B>(f : A -> Either<L, B>, xs : Either<L, A>) -> Either<L, B> {
 	return xs.bind(f)
 }
 
-public func >-><L, A, B, C>(f : A -> Either<L, B>, g : B -> Either<L, C>) -> A -> Either<L, C> {
+public func >-> <L, A, B, C>(f : A -> Either<L, B>, g : B -> Either<L, C>) -> A -> Either<L, C> {
 	return { x in f(x) >>- g }
 }
 
-public func <-<<L, A, B, C>(g : B -> Either<L, C>, f : A -> Either<L, B>) -> A -> Either<L, C> {
+public func <-< <L, A, B, C>(g : B -> Either<L, C>, f : A -> Either<L, B>) -> A -> Either<L, C> {
 	return { x in f(x) >>- g }
 }
 

@@ -7,15 +7,15 @@
 //  Released under the MIT license.
 //
 
-public postfix func ^<A, B>(f : Function<A, B>) -> A -> B {
+public postfix func ^ <A, B>(f : Function<A, B>) -> A -> B {
 	return { f.apply($0) }
 }
 
-public postfix func ^<A, B, C>(f : Function<A, Function<B, C>>) -> A -> B -> C {
+public postfix func ^ <A, B, C>(f : Function<A, Function<B, C>>) -> A -> B -> C {
 	return { f.apply($0) |>> { g in { g.apply($0) } } }
 }
 
-public postfix func ^<A, B, C, D>(f : Function<A, Function<B, Function<C, D>>>) -> A -> B -> C -> D {
+public postfix func ^ <A, B, C, D>(f : Function<A, Function<B, Function<C, D>>>) -> A -> B -> C -> D {
 	return { x in
 		return { y in
 			return { z in 
@@ -25,7 +25,7 @@ public postfix func ^<A, B, C, D>(f : Function<A, Function<B, Function<C, D>>>) 
 	}
 }
 
-public postfix func ^<A, B, C, D, E>(f : Function<A, Function<B, Function<C, Function<D, E>>>>) -> A -> B -> C -> D -> E {
+public postfix func ^ <A, B, C, D, E>(f : Function<A, Function<B, Function<C, Function<D, E>>>>) -> A -> B -> C -> D -> E {
 	return { w in
 		return { x in
 			return { y in
@@ -37,7 +37,7 @@ public postfix func ^<A, B, C, D, E>(f : Function<A, Function<B, Function<C, Fun
 	}
 }
 
-public postfix func ^<A, B, C, D, E, F>(f : Function<A, Function<B, Function<C, Function<D, Function<E, F>>>>>) -> A -> B -> C -> D -> E -> F {
+public postfix func ^ <A, B, C, D, E, F>(f : Function<A, Function<B, Function<C, Function<D, Function<E, F>>>>>) -> A -> B -> C -> D -> E -> F {
 	return { w in
 		return { x in
 			return { y in
@@ -51,7 +51,7 @@ public postfix func ^<A, B, C, D, E, F>(f : Function<A, Function<B, Function<C, 
 	}
 }
 
-public postfix func ^<A, B, C, D, E, F, G>(f : Function<A, Function<B, Function<C, Function<D, Function<E, Function<F, G>>>>>>) -> A -> B -> C -> D -> E -> F -> G {
+public postfix func ^ <A, B, C, D, E, F, G>(f : Function<A, Function<B, Function<C, Function<D, Function<E, Function<F, G>>>>>>) -> A -> B -> C -> D -> E -> F -> G {
 	return { w in
 		return { x in
 			return { y in
@@ -67,7 +67,7 @@ public postfix func ^<A, B, C, D, E, F, G>(f : Function<A, Function<B, Function<
 	}
 }
 
-public postfix func ^<A, B, C, D, E, F, G, H>(f : Function<A, Function<B, Function<C, Function<D, Function<E, Function<F, Function<G, H>>>>>>>) -> A -> B -> C -> D -> E -> F -> G -> H {
+public postfix func ^ <A, B, C, D, E, F, G, H>(f : Function<A, Function<B, Function<C, Function<D, Function<E, Function<F, Function<G, H>>>>>>>) -> A -> B -> C -> D -> E -> F -> G -> H {
 	return { w in
 		return { x in
 			return { y in
@@ -85,7 +85,7 @@ public postfix func ^<A, B, C, D, E, F, G, H>(f : Function<A, Function<B, Functi
 	}
 }
 
-public postfix func ^<A, B, C, D, E, F, G, H, I>(f : Function<A, Function<B, Function<C, Function<D, Function<E, Function<F, Function<G, Function<H, I>>>>>>>>) -> A -> B -> C -> D -> E -> F -> G -> H -> I {
+public postfix func ^ <A, B, C, D, E, F, G, H, I>(f : Function<A, Function<B, Function<C, Function<D, Function<E, Function<F, Function<G, Function<H, I>>>>>>>>) -> A -> B -> C -> D -> E -> F -> G -> H -> I {
 	return { w in
 		return { x in
 			return { y in
@@ -105,7 +105,7 @@ public postfix func ^<A, B, C, D, E, F, G, H, I>(f : Function<A, Function<B, Fun
 	}
 }
 
-public postfix func ^<A, B, C, D, E, F, G, H, I, J>(f : Function<A, Function<B, Function<C, Function<D, Function<E, Function<F, Function<G, Function<H, Function<I, J>>>>>>>>>) -> A -> B -> C -> D -> E -> F -> G -> H -> I -> J {
+public postfix func ^ <A, B, C, D, E, F, G, H, I, J>(f : Function<A, Function<B, Function<C, Function<D, Function<E, Function<F, Function<G, Function<H, Function<I, J>>>>>>>>>) -> A -> B -> C -> D -> E -> F -> G -> H -> I -> J {
 	return { w in
 		return { x in
 			return { y in

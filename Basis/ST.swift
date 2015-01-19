@@ -38,11 +38,11 @@ extension ST : Functor {
 	}
 }
 
-public func <%><S, A, B>(f: A -> B, st: ST<S, A>) -> ST<S, B> {
+public func <%> <S, A, B>(f: A -> B, st: ST<S, A>) -> ST<S, B> {
 	return ST.fmap(f)(st)
 }
 
-public func <%<S, A, B>(x : A, l : ST<S, B>) -> ST<S, A> {
+public func <% <S, A, B>(x : A, l : ST<S, B>) -> ST<S, A> {
 	return ST.fmap(const(x))(l)
 }
 
@@ -65,15 +65,15 @@ extension ST : Applicative {
 	}
 }
 
-public func <*><S, A, B>(stfn: ST<S, A -> B>, st: ST<S, A>) -> ST<S, B> {
+public func <*> <S, A, B>(stfn: ST<S, A -> B>, st: ST<S, A>) -> ST<S, B> {
 	return ST<S, A>.ap(stfn)(st)
 }
 
-public func *><S, A, B>(a : ST<S, A>, b : ST<S, B>) -> ST<S, B> {
+public func *> <S, A, B>(a : ST<S, A>, b : ST<S, B>) -> ST<S, B> {
 	return const(id) <%> a <*> b
 }
 
-public func <*<S, A, B>(a : ST<S, A>, b : ST<S, B>) -> ST<S, A> {
+public func <* <S, A, B>(a : ST<S, A>, b : ST<S, B>) -> ST<S, A> {
 	return const <%> a <*> b
 }
 
@@ -102,11 +102,11 @@ extension ST : Monad {
 	}
 }
 
-public func >>-<S, A, B>(x : ST<S, A>, f : A -> ST<S, B>) -> ST<S, B> {
+public func >>- <S, A, B>(x : ST<S, A>, f : A -> ST<S, B>) -> ST<S, B> {
 	return x.bind(f)
 }
 
-public func >><S, A, B>(x : ST<S, A>, y : ST<S, B>) -> ST<S, B> {
+public func >> <S, A, B>(x : ST<S, A>, y : ST<S, B>) -> ST<S, B> {
 	return x.bind({ (_) in
 		return y
 	})

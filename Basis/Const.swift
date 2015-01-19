@@ -23,11 +23,11 @@ extension Const : Functor {
 	}
 }
 
-public func <%><A, B, C>(f : A -> C, c : Const<A, B>) -> Const<A, B> {
+public func <%> <A, B, C>(f : A -> C, c : Const<A, B>) -> Const<A, B> {
 	return Const.fmap(f)(c)
 }
 
-public func <%<A, B>(a : A, c : Const<A, B>) -> Const<A, B> {
+public func <% <A, B>(a : A, c : Const<A, B>) -> Const<A, B> {
 	return (curry(<%>) • const)(a)(c)
 }
 
@@ -37,11 +37,11 @@ extension Const : Contravariant {
 	}
 }
 
-public func >%<<A, B>(f : A -> B,c : Const<A, B>) -> Const<A, B> {
+public func >%< <A, B>(f : A -> B,c : Const<A, B>) -> Const<A, B> {
 	return Const.contramap(f)(c)
 }
 
 
-public func >%<A, B>(b : B, c : Const<A, B>) -> Const<A, B> {
+public func >% <A, B>(b : B, c : Const<A, B>) -> Const<A, B> {
 	return (curry(>%<) • const)(b)(c)
 }

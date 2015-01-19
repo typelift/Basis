@@ -28,7 +28,7 @@ public func const<A, B>(x : A) -> B -> A {
 ///     f <<| g <<| h x  =  f (g (h (x)))
 ///
 /// Haskellers will know this as the ($) combinator.
-public func <<|<A, B>(f : A -> B, x : A) -> B {
+public func <<| <A, B>(f : A -> B, x : A) -> B {
 	return f(x)
 }
 
@@ -44,7 +44,7 @@ public func <<|<A, B>(f : A -> B, x : A) -> B {
 ///     let result = nubBy(==)(x) |>> zip(y)
 ///                               |>> map(==)
 ///                               |>> and
-public func |>><A, B>(x : A, f : A -> B) -> B {
+public func |>> <A, B>(x : A, f : A -> B) -> B {
 	return f(x)
 }
 
@@ -52,7 +52,7 @@ public func |>><A, B>(x : A, f : A -> B) -> B {
 /// function to pipe the results through one larger function from left source to right target.
 ///
 /// g . f x = g(f(x))
-public func •<A, B, C>(f : B -> C, g : A -> B) -> A -> C {
+public func • <A, B, C>(f : B -> C, g : A -> B) -> A -> C {
 	return { f(g($0)) }
 }
 
@@ -73,14 +73,14 @@ public func fix<A>(f : ((A -> A) -> A -> A)) -> A -> A {
 /// On | Given a "combining" function and a function that converts arguments to the target of the
 /// combiner, returns a function that applies the right hand side to two arguments, then runs both
 /// results through the combiner.
-public func |*|<A, B, C>(o : B -> B -> C, f : A -> B) -> A -> A -> C {
+public func |*| <A, B, C>(o : B -> B -> C, f : A -> B) -> A -> A -> C {
 	return on(o)(f)
 }
 
 /// On | Given a "combining" function and a function that converts arguments to the target of the
 /// combiner, returns a function that applies the right hand side to two arguments, then runs both
 /// results through the combiner.
-public func |*|<A, B, C>(o : (B, B) -> C, f : A -> B) -> A -> A -> C {
+public func |*| <A, B, C>(o : (B, B) -> C, f : A -> B) -> A -> A -> C {
 	return on(o)(f)
 }
 
@@ -118,7 +118,7 @@ public func asTypeOf<A>(x : A) -> A -> A {
 /// function forces its first argument to resolve to the type of the second argument.  
 ///
 /// Composed because it is the face one makes when having to tell the typechecker how to do its job.
-public func >-<<A>(x : A, y : A) -> A {
+public func >-< <A>(x : A, y : A) -> A {
 	return asTypeOf(x)(y)
 }
 
