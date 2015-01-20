@@ -141,7 +141,7 @@ public func mapMaybes<A, B>(f : A -> Maybe<B>)(l : [A]) -> [B] {
 }
 
 // MARK: Equatable
-public func ==<V : Equatable>(lhs: Maybe<V>, rhs: Maybe<V>) -> Bool {
+public func == <V : Equatable>(lhs: Maybe<V>, rhs: Maybe<V>) -> Bool {
 	switch (lhs.match(), rhs.match()) {
 		case (.Nothing, .Nothing):
 			return true
@@ -152,12 +152,12 @@ public func ==<V : Equatable>(lhs: Maybe<V>, rhs: Maybe<V>) -> Bool {
 	}
 }
 
-public func !=<V: Equatable>(lhs: Maybe<V>, rhs: Maybe<V>) -> Bool {
+public func != <V: Equatable>(lhs: Maybe<V>, rhs: Maybe<V>) -> Bool {
 	return !(lhs == rhs)
 }
 
 // Fallback equality: All nothings are isomorphic.
-public func ==<T, V>(lhs: Maybe<T>, rhs: Maybe<V>) -> Bool {
+public func == <T, V>(lhs: Maybe<T>, rhs: Maybe<V>) -> Bool {
 	switch (lhs.match(), rhs.match()) {
 		case (.Nothing, .Nothing):
 			return true
@@ -166,7 +166,7 @@ public func ==<T, V>(lhs: Maybe<T>, rhs: Maybe<V>) -> Bool {
 	}
 }
 
-public func !=<T, V>(lhs: Maybe<T>, rhs: Maybe<V>) -> Bool {
+public func != <T, V>(lhs: Maybe<T>, rhs: Maybe<V>) -> Bool {
 	return !(lhs == rhs)
 }
 
@@ -190,11 +190,11 @@ extension Maybe : Functor {
 	}
 }
 
-public func <%><A, B>(f : A -> B, o : Maybe<A>) -> Maybe<B> {
+public func <%> <A, B>(f : A -> B, o : Maybe<A>) -> Maybe<B> {
 	return Maybe.fmap(f)(o)
 }
 
-public func <%<A, B>(x : A, o : Maybe<B>) -> Maybe<A> {
+public func <% <A, B>(x : A, o : Maybe<B>) -> Maybe<A> {
 	return (curry(<%>) • const)(x)(o)
 }
 
@@ -219,15 +219,15 @@ extension Maybe : Applicative {
 	}
 }
 
-public func <*><A, B>(f : Maybe<A -> B> , o : Maybe<A>) -> Maybe<B> {
+public func <*> <A, B>(f : Maybe<A -> B> , o : Maybe<A>) -> Maybe<B> {
 	return Maybe<A>.ap(f)(o)
 }
 
-public func *><A, B>(a : Maybe<A>, b : Maybe<B>) -> Maybe<B> {
+public func *> <A, B>(a : Maybe<A>, b : Maybe<B>) -> Maybe<B> {
 	return const(id) <%> a <*> b
 }
 
-public func <*<A, B>(a : Maybe<A>, b : Maybe<B>) -> Maybe<A> {
+public func <* <A, B>(a : Maybe<A>, b : Maybe<B>) -> Maybe<A> {
 	return const <%> a <*> b
 }
 
@@ -266,7 +266,7 @@ extension Maybe : Alternative {
 	}
 }
 
-public func <|><A>(l : Maybe<A>, r : Maybe<A>) -> Maybe<A> {
+public func <|> <A>(l : Maybe<A>, r : Maybe<A>) -> Maybe<A> {
 	switch l.match() {
 		case .Nothing:
 			return r
@@ -286,11 +286,11 @@ extension Maybe : Monad {
 	}
 }
 
-public func >>-<A, B>(x : Maybe<A>, f : A -> Maybe<B>) -> Maybe<B> {
+public func >>- <A, B>(x : Maybe<A>, f : A -> Maybe<B>) -> Maybe<B> {
 	return x.bind(f)
 }
 
-public func >><A, B>(x : Maybe<A>, y : Maybe<B>) -> Maybe<B> {
+public func >> <A, B>(x : Maybe<A>, y : Maybe<B>) -> Maybe<B> {
 	return x.bind({ (_) in
 		return y
 	})

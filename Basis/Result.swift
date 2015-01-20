@@ -105,7 +105,7 @@ public func asEither<A>(e : Result<A>) -> Either<NSError, A> {
 
 // MARK: Equatable
 
-public func ==<V : Equatable>(lhs: Result<V>, rhs: Result<V>) -> Bool {
+public func == <V : Equatable>(lhs: Result<V>, rhs: Result<V>) -> Bool {
 	switch (lhs.match(), rhs.match()) {
 		case let (.Error(l), .Error(r)) where l == r:
 			return true
@@ -116,7 +116,7 @@ public func ==<V : Equatable>(lhs: Result<V>, rhs: Result<V>) -> Bool {
 	}
 }
 
-public func !=<V: Equatable>(lhs: Result<V>, rhs: Result<V>) -> Bool {
+public func != <V: Equatable>(lhs: Result<V>, rhs: Result<V>) -> Bool {
 	return !(lhs == rhs)
 }
 
@@ -139,7 +139,7 @@ extension Result : Functor {
 
 }
 
-public func <%><A, B>(f: A -> B, either : Result<A>) -> Result<B> {
+public func <%> <A, B>(f: A -> B, either : Result<A>) -> Result<B> {
 	return Result.fmap(f)(either)
 }
 
@@ -168,15 +168,15 @@ extension Result : Applicative {
 	}	
 }
 
-public func <*><A, B>(f : Result<A -> B> , r : Result<A>) ->  Result<B> {
+public func <*> <A, B>(f : Result<A -> B> , r : Result<A>) ->  Result<B> {
 	return Result<A>.ap(f)(r)
 }
 
-public func *><A, B>(a : Result<A>, b : Result<B>) -> Result<B> {
+public func *> <A, B>(a : Result<A>, b : Result<B>) -> Result<B> {
 	return const(id) <%> a <*> b
 }
 
-public func <*<A, B>(a : Result<A>, b : Result<B>) -> Result<A> {
+public func <* <A, B>(a : Result<A>, b : Result<B>) -> Result<A> {
 	return const <%> a <*> b
 }
 
@@ -210,11 +210,11 @@ extension Result : Monad {
 	}
 }
 
-public func >>-<A, B>(x : Result<A>, f : A -> Result<B>) -> Result<B> {
+public func >>- <A, B>(x : Result<A>, f : A -> Result<B>) -> Result<B> {
 	return x.bind(f)
 }
 
-public func >><A, B>(x : Result<A>, y : Result<B>) -> Result<B> {
+public func >> <A, B>(x : Result<A>, y : Result<B>) -> Result<B> {
 	return x.bind({ (_) in
 		return y
 	})
@@ -250,15 +250,15 @@ extension Result : MonadOps {
 	}
 }
 
-public func -<<<A, B>(f : A -> Result<B>, xs : Result<A>) -> Result<B> {
+public func -<< <A, B>(f : A -> Result<B>, xs : Result<A>) -> Result<B> {
 	return xs.bind(f)
 }
 
-public func >-><A, B, C>(f : A -> Result<B>, g : B -> Result<C>) -> A -> Result<C> {
+public func >-> <A, B, C>(f : A -> Result<B>, g : B -> Result<C>) -> A -> Result<C> {
 	return { x in f(x) >>- g }
 }
 
-public func <-<<A, B, C>(g : B -> Result<C>, f : A -> Result<B>) -> A -> Result<C> {
+public func <-< <A, B, C>(g : B -> Result<C>, f : A -> Result<B>) -> A -> Result<C> {
 	return { x in f(x) >>- g }
 }
 

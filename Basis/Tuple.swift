@@ -48,7 +48,7 @@ public func swap<A, B>(t : (A, B)) -> (B, A) {
 ///
 /// (,), the pair formation operator, is a reserved symbol in Swift with a meaning beyond just 
 /// tuple formation.  This means it is also not a proper function.
-public func ∏<A, B>(l : A, r : B) -> (A, B) {
+public func ∏ <A, B>(l : A, r : B) -> (A, B) {
 	return (l, r)
 }
 

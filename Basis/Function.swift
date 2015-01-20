@@ -98,11 +98,11 @@ extension Function : ArrowChoice {
 	}
 }
 
-public func +++<B, C, D, E>(f : Function<B, C>, g : Function<D, E>) -> Function<Either<B, D>, Either<C, E>> {
+public func +++ <B, C, D, E>(f : Function<B, C>, g : Function<D, E>) -> Function<Either<B, D>, Either<C, E>> {
 	return ^Either.left • f ||| ^Either.right • g
 }
 
-public func |||<B, C, D>(f : Function<B, D>, g : Function<C, D>) -> Function<Either<B, C>, D> {
+public func ||| <B, C, D>(f : Function<B, D>, g : Function<C, D>) -> Function<Either<B, C>, D> {
 	return ^either(f^)(g^)
 }
 
