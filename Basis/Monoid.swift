@@ -58,7 +58,7 @@ extension Dual : Monoid {
 	}
 }
 
-public func <><A : Monoid>(l : Dual<A>, r : Dual<A>) -> Dual<A> {
+public func <> <A : Monoid>(l : Dual<A>, r : Dual<A>) -> Dual<A> {
 	return Dual.mappend(l)(r)
 }
 
@@ -95,7 +95,7 @@ extension Endo : Monoid {
 	}
 }
 
-public func <><A>(l : Endo<A>, r : Endo<A>) -> Endo<A> {
+public func <> <A>(l : Endo<A>, r : Endo<A>) -> Endo<A> {
 	return Endo.mappend(l)(r)
 }
 
@@ -176,7 +176,7 @@ extension Sum : Monoid {
 	}
 }
 
-public func <><A : protocol<IntegerArithmeticType, IntegerLiteralConvertible>>(l : Sum<A>, r : Sum<A>) -> Sum<A> {
+public func <> <A : protocol<IntegerArithmeticType, IntegerLiteralConvertible>>(l : Sum<A>, r : Sum<A>) -> Sum<A> {
 	return Sum.mappend(l)(r)
 }
 
@@ -213,7 +213,7 @@ extension Product : Monoid {
 	}
 }
 	
-public func <><A : protocol<IntegerArithmeticType, IntegerLiteralConvertible>>(l : Product<A>, r : Product<A>) -> Product<A> {
+public func <> <A : protocol<IntegerArithmeticType, IntegerLiteralConvertible>>(l : Product<A>, r : Product<A>) -> Product<A> {
 	return Product.mappend(l)(r)
 }
 
@@ -250,7 +250,7 @@ extension First : Monoid {
 	}
 }
 
-public func <><A>(l : First<A>, r : First<A>) -> First<A> {
+public func <> <A>(l : First<A>, r : First<A>) -> First<A> {
 	return First.mappend(l)(r)
 }
 
@@ -287,7 +287,7 @@ extension Last : Monoid {
 	}
 }
 
-public func <><A>(l : Last<A>, r : Last<A>) -> Last<A> {
+public func <> <A>(l : Last<A>, r : Last<A>) -> Last<A> {
 	return Last.mappend(l)(r)
 }
 
@@ -324,7 +324,7 @@ extension Max : Monoid {
 	}
 }
 
-public func <><A : protocol<Comparable, Bounded>>(l : Max<A>, r : Max<A>) -> Max<A> {
+public func <> <A : protocol<Comparable, Bounded>>(l : Max<A>, r : Max<A>) -> Max<A> {
 	return Max.mappend(l)(r)
 }
 
@@ -361,7 +361,7 @@ extension Min : Monoid {
 	}
 }
 
-public func <><A : protocol<Comparable, Bounded>>(l : Min<A>, r : Min<A>) -> Min<A> {
+public func <> <A : protocol<Comparable, Bounded>>(l : Min<A>, r : Min<A>) -> Min<A> {
 	return Min.mappend(l)(r)
 }
 

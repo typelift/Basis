@@ -41,11 +41,11 @@ public func modifyIORef<A>(ref : IORef<A>)(vfn : (A -> A)) -> IO<Void> {
 // MARK: Equatable
 
 // Simple reference equality when we've got two objects.
-public func ==<T : AnyObject>(lhs: IORef<T>, rhs: IORef<T>) -> Bool {
+public func == <T : AnyObject>(lhs: IORef<T>, rhs: IORef<T>) -> Bool {
 	return lhs.value == rhs.value
 }
 
-public func !=<T : AnyObject>(lhs: IORef<T>, rhs: IORef<T>) -> Bool {
+public func != <T : AnyObject>(lhs: IORef<T>, rhs: IORef<T>) -> Bool {
 	return !(lhs == rhs)
 }
 

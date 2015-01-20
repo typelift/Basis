@@ -41,11 +41,11 @@ extension Box : Functor {
 	}
 }
 
-public func <%><A, B>(f : A -> B, b : Box<A>) -> Box<B> {
+public func <%> <A, B>(f : A -> B, b : Box<A>) -> Box<B> {
 	return Box.fmap(f)(b)
 }
 
-public func <%<A, B>(a : A, b : Box<B>) -> Box<A> {
+public func <% <A, B>(a : A, b : Box<B>) -> Box<A> {
 	return (curry(<%>) • const)(a)(b)
 }
 
@@ -80,14 +80,14 @@ extension Box : ComonadApply {
 	typealias FAB = Box<A -> B>
 }
 
-public func >*<<A, B>(fab : Box<A -> B> , b : Box<A>) -> Box<B> {
+public func >*< <A, B>(fab : Box<A -> B> , b : Box<A>) -> Box<B> {
 	return Box(fab.unBox()(b.unBox()))
 }
 
-public func *<<A, B>(a : Box<A>, b : Box<B>) -> Box<B> {
+public func *< <A, B>(a : Box<A>, b : Box<B>) -> Box<B> {
 	return const(id) <%> a >*< b
 }
 
-public func >*<A, B>(a : Box<A>, b : Box<B>) -> Box<A> {
+public func >* <A, B>(a : Box<A>, b : Box<B>) -> Box<A> {
 	return const <%> a >*< b
 }

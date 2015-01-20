@@ -51,11 +51,11 @@ extension Trampoline : Functor {
 	}
 }
 
-public func <%><A, B>(f : A -> B, b : Trampoline<A>) -> Trampoline<B> {
+public func <%> <A, B>(f : A -> B, b : Trampoline<A>) -> Trampoline<B> {
 	return Trampoline.fmap(f)(b)
 }
 
-public func <%<A, B>(a : A, b : Trampoline<B>) -> Trampoline<A> {
+public func <% <A, B>(a : A, b : Trampoline<B>) -> Trampoline<A> {
 	return (curry(<%>) • const)(a)(b)
 }
 
@@ -77,15 +77,15 @@ extension Trampoline : Applicative {
 	}
 }
 
-public func <*><A, B>(stfn: Trampoline<A -> B>, st: Trampoline<A>) -> Trampoline<B> {
+public func <*> <A, B>(stfn: Trampoline<A -> B>, st: Trampoline<A>) -> Trampoline<B> {
 	return Trampoline.ap(stfn)(st)
 }
 
-public func *><A, B>(a : Trampoline<A>, b : Trampoline<B>) -> Trampoline<B> {
+public func *> <A, B>(a : Trampoline<A>, b : Trampoline<B>) -> Trampoline<B> {
 	return const(id) <%> a <*> b
 }
 
-public func <*<A, B>(a : Trampoline<A>, b : Trampoline<B>) -> Trampoline<A> {
+public func <* <A, B>(a : Trampoline<A>, b : Trampoline<B>) -> Trampoline<A> {
 	return const <%> a <*> b
 }
 
@@ -114,11 +114,11 @@ extension Trampoline : Monad {
 	}
 }
 
-public func >>-<A, B>(x : Trampoline<A>, f : A -> Trampoline<B>) -> Trampoline<B> {
+public func >>- <A, B>(x : Trampoline<A>, f : A -> Trampoline<B>) -> Trampoline<B> {
 	return x.bind(f)
 }
 
-public func >><A, B>(x : Trampoline<A>, y : Trampoline<B>) -> Trampoline<B> {
+public func >> <A, B>(x : Trampoline<A>, y : Trampoline<B>) -> Trampoline<B> {
 	return x.bind({ (_) in
 		return y
 	})
@@ -154,15 +154,15 @@ extension Trampoline : MonadOps {
 	}
 }
 
-public func -<<<A, B>(f : A -> Trampoline<B>, xs : Trampoline<A>) -> Trampoline<B> {
+public func -<< <A, B>(f : A -> Trampoline<B>, xs : Trampoline<A>) -> Trampoline<B> {
 	return xs.bind(f)
 }
 
-public func >-><A, B, C>(f : A -> Trampoline<B>, g : B -> Trampoline<C>) -> A -> Trampoline<C> {
+public func >-> <A, B, C>(f : A -> Trampoline<B>, g : B -> Trampoline<C>) -> A -> Trampoline<C> {
 	return { x in f(x) >>- g }
 }
 
-public func <-<<A, B, C>(g : B -> Trampoline<C>, f : A -> Trampoline<B>) -> A -> Trampoline<C> {
+public func <-< <A, B, C>(g : B -> Trampoline<C>, f : A -> Trampoline<B>) -> A -> Trampoline<C> {
 	return { x in f(x) >>- g }
 }
 
