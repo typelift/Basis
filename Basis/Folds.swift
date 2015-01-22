@@ -72,7 +72,7 @@ public func foldl1<A>(f: A -> A -> A) -> [A] -> A {
 			case .Cons(let x, let xs):
 				return foldl(f)(x)(xs)
 			case .Nil:
-				assert(false, "Cannot invoke foldl1 with an empty list.")
+				fatalError("Cannot invoke foldl1 with an empty list.")
 		}
 	}
 }
@@ -90,7 +90,7 @@ public func foldl1<A>(f: (A, A) -> A) -> [A] -> A {
 			case .Cons(let x, let xs):
 				return foldl(f)(x)(xs)
 			case .Nil:
-				assert(false, "Cannot invoke foldl1 with an empty list.")
+				fatalError("Cannot invoke foldl1 with an empty list.")
 		}
 	}
 }
@@ -108,7 +108,7 @@ public func foldl1<A>(f: A -> A -> A) -> List<A> -> A {
 			case .Cons(let x, let xs):
 				return foldl(f)(x)(xs)
 			case .Nil:
-				assert(false, "Cannot invoke foldl1 with an empty list.")
+				fatalError("Cannot invoke foldl1 with an empty list.")
 		}
 	}
 }
@@ -126,7 +126,7 @@ public func foldl1<A>(f: (A, A) -> A) -> List<A> -> A {
 			case .Cons(let x, let xs):
 				return foldl(f)(x)(xs)
 			case .Nil:
-				assert(false, "Cannot invoke foldl1 with an empty list.")
+				fatalError("Cannot invoke foldl1 with an empty list.")
 		}
 	}
 }
@@ -196,7 +196,7 @@ public func foldr1<A>(f: A -> A -> A) -> [A] -> A {
 			case .Cons(let x, let xs):
 				return f(x)(foldr1(f)(xs))
 			case .Nil:
-				assert(false, "Cannot invoke foldr1 with an empty list.")
+				fatalError("Cannot invoke foldr1 with an empty list.")
 		}
 	}
 }
@@ -214,7 +214,7 @@ public func foldr1<A>(f: (A, A) -> A) -> [A] -> A {
 			case .Cons(let x, let xs):
 				return f(x, foldr1(f)(xs))
 			case .Nil:
-				assert(false, "Cannot invoke foldr1 with an empty list.")
+				fatalError("Cannot invoke foldr1 with an empty list.")
 		}
 	}
 }
@@ -232,7 +232,7 @@ public func foldr1<A>(f: A -> A -> A) -> List<A> -> A {
 		case .Cons(let x, let xs):
 			return f(x)(foldr1(f)(xs))
 		case .Nil:
-			assert(false, "Cannot invoke foldr1 with an empty list.")
+			fatalError("Cannot invoke foldr1 with an empty list.")
 		}
 	}
 }
@@ -250,7 +250,7 @@ public func foldr1<A>(f: (A, A) -> A) -> List<A> -> A {
 			case .Cons(let x, let xs):
 				return f(x, foldr1(f)(xs))
 			case .Nil:
-				assert(false, "Cannot invoke foldr1 with an empty list.")
+				fatalError("Cannot invoke foldr1 with an empty list.")
 		}
 	}
 }
