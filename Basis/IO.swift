@@ -7,7 +7,8 @@
 //  Released under the MIT license.
 //
 
-import Foundation
+import func Darwin.getline
+import class Foundation.NSFileHandle
 
 // The IO Monad is a means of representing a computation which, when performed, interacts with
 // the outside world (i.e. performs effects) to arrive at some result of type A.

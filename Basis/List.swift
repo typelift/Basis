@@ -151,7 +151,7 @@ public struct List<A> {
 public func head<A>(l : List<A>) -> A {
 	switch l.match() {
 		case .Nil:
-			assert(false, "Cannot take the head of an empty list.")
+			fatalError("Cannot take the head of an empty list.")
 		case .Cons(let x, _):
 			return x
 	}
@@ -163,7 +163,7 @@ public func head<A>(l : List<A>) -> A {
 public func tail<A>(l : List<A>) -> List<A> {
 	switch l.match() {
 		case .Nil:
-			assert(false, "Cannot take the tail of an empty list.")
+			fatalError("Cannot take the tail of an empty list.")
 		case .Cons(_, let xs):
 			return xs
 	}

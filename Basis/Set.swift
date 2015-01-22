@@ -340,7 +340,7 @@ private func filterGt<A : Comparable>(m : Optional<A>, s : Set<A>) -> Set<A> {
 private func filterG<A : Comparable>(b : A, s : Set<A>) -> Set<A> {
 	switch s.match() {
 		case .Empty:
-			assert(false, "")
+			fatalError("")
 		case let .Destructure(_, x, l, r):
 			if b < x {
 				return link(x, filterG(b, l), r)
@@ -363,7 +363,7 @@ private func filterLt<A : Comparable>(m : Optional<A>, s : Set<A>) -> Set<A> {
 private func filterL<A : Comparable>(b : A, s : Set<A>) -> Set<A> {
 	switch s.match() {
 		case .Empty:
-			assert(false, "")
+			fatalError("")
 		case let .Destructure(_, x, l, r):
 			if b < x {
 				return link(x, l, filterL(b, r))
