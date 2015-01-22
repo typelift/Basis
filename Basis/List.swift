@@ -13,7 +13,7 @@
 public func head<A>(l : [A]) -> A {
 	switch destruct(l) {
 		case .Empty:
-			assert(false, "Cannot take the head of an empty list.")
+			fatalError("Cannot take the head of an empty list.")
 		case .Cons(let x, _):
 			return x
 	}
@@ -25,7 +25,7 @@ public func head<A>(l : [A]) -> A {
 public func tail<A>(l : [A]) -> [A] {
 	switch destruct(l) {
 		case .Empty:
-			assert(false, "Cannot take the tail of an empty list.")
+			fatalError("Cannot take the tail of an empty list.")
 		case .Cons(_, let xs):
 			return xs
 	}

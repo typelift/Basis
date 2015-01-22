@@ -18,7 +18,7 @@ public struct SomeException : Exception {
 }
 
 public func throw<A>(e : Exception) -> A {
-	assert(false, e.description)
+	return error(e.description)
 }
 
 public func throwIO<A>(e : Exception) -> IO<A> {

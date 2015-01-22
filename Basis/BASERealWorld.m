@@ -22,4 +22,8 @@ NSString *const CFIExceptionDomain = @"CFIExceptionDomain";
 	}
 }
 
++ (void)throwException:(NSString *)description {
+	@throw [[NSException alloc] initWithName:CFIExceptionDomain reason:description userInfo:nil];
+}
+
 @end

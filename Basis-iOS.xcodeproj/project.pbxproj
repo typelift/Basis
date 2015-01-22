@@ -530,6 +530,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84922CFA19D237DA00AE9A7C /* IO.swift in Sources */,
 				84D4D8DE1A16E366001F5E4D /* Contravariant.swift in Sources */,
 				84D4D8EF1A16EBDB001F5E4D /* Copointed.swift in Sources */,
 				84922D1119D237DA00AE9A7C /* Traverse.swift in Sources */,
@@ -541,7 +542,6 @@
 				84922D0319D237DA00AE9A7C /* Monad.swift in Sources */,
 				84896B491A475854006F3EA9 /* Trampoline.swift in Sources */,
 				84922D1319D237DA00AE9A7C /* Unique.swift in Sources */,
-				84922CFA19D237DA00AE9A7C /* IO.swift in Sources */,
 				84922CEA19D237DA00AE9A7C /* Bounded.swift in Sources */,
 				841FE04819DB7EE80068636A /* Compare.swift in Sources */,
 				8434F96B19E8BA00008D9909 /* Version.swift in Sources */,

@@ -38,7 +38,7 @@ public func force<A>(l : Lazy<A>) -> A {
 			case .Now(let bx):
 				return ST<(), A>.pure(bx.unBox())
 			default:
-				assert(false)
+				fatalError("Impossible pattern match performed.")
 		}
 	}).runST()
 }

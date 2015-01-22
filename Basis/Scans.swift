@@ -113,7 +113,7 @@ public func scanr1<A>(f : A -> A -> A) -> [A] -> [A] {
 				let qs = scanr1(f)(xs)
 				switch destruct(qs) {
 					case .Empty:
-						assert(false, "Cannot scanr1 across an empty list.")
+						fatalError("Cannot scanr1 across an empty list.")
 					case .Cons(let q, _):
 						return f(x)(q) <| qs
 				}
@@ -135,7 +135,7 @@ public func scanr1<A>(f : (A, A) -> A) -> [A] -> [A] {
 				let qs = scanr1(f)(xs)
 				switch destruct(qs) {
 					case .Empty:
-						assert(false, "Cannot scanr1 across an empty list.")
+						fatalError("Cannot scanr1 across an empty list.")
 					case .Cons(let q, _):
 						return f(x, q) <| qs
 				}

@@ -184,7 +184,7 @@ public func elems<A>(m : Set<A>) -> [A] {
 public func deleteFindMin<A>(s : Set<A>) -> (A, Set<A>) {
 	switch s.destruct() {
 		case .Empty:
-			return error("Cannot delete the minimal element of an empty set.")
+			fatalError("Cannot delete the minimal element of an empty set.")
 		case .Destructure(_, let x, let l, let r):
 			switch l.destruct() {
 				case .Empty:
@@ -202,7 +202,7 @@ public func deleteFindMin<A>(s : Set<A>) -> (A, Set<A>) {
 public func deleteFindMax<A>(s : Set<A>) -> (A, Set<A>) {
 	switch s.destruct() {
 		case .Empty:
-			return error("Cannot delete the maximal element of an empty set.")
+			fatalError("Cannot delete the maximal element of an empty set.")
 		case .Destructure(_, let x, let l, let r):
 			switch l.destruct() {
 				case .Empty:
@@ -340,7 +340,7 @@ private func filterGt<A : Comparable>(m : Optional<A>, s : Set<A>) -> Set<A> {
 private func filterG<A : Comparable>(b : A, s : Set<A>) -> Set<A> {
 	switch s.destruct() {
 		case .Empty:
-			assert(false, "")
+			fatalError("")
 		case let .Destructure(_, x, l, r):
 			if b < x {
 				return link(x, filterG(b, l), r)
@@ -363,7 +363,7 @@ private func filterLt<A : Comparable>(m : Optional<A>, s : Set<A>) -> Set<A> {
 private func filterL<A : Comparable>(b : A, s : Set<A>) -> Set<A> {
 	switch s.destruct() {
 		case .Empty:
-			assert(false, "")
+			fatalError( "")
 		case let .Destructure(_, x, l, r):
 			if b < x {
 				return link(x, l, filterL(b, r))
@@ -392,7 +392,7 @@ private func balance<A>(x : A)(l : Set<A>)(r : Set<A>) -> Set<A> {
 private func rotateL<A>(x : A)(l : Set<A>)(r : Set<A>) -> Set<A> {
 	switch r.destruct() {
 		case .Empty:
-			return error("")
+			fatalError("")
 		case .Destructure(_, _, let ly, let ry):
 			if ly.size < 2 * ry.size {
 				return single(x)(t1: l)(t2: r)
@@ -404,7 +404,7 @@ private func rotateL<A>(x : A)(l : Set<A>)(r : Set<A>) -> Set<A> {
 private func rotateR<A>(x : A)(l : Set<A>)(r : Set<A>) -> Set<A> {
 	switch l.destruct() {
 		case .Empty:
-			return error("")
+			fatalError("")
 		case .Destructure(_, _, let ly, let ry):
 			if ly.size < 2 * ry.size {
 				return single(x)(t1: l)(t2: r)
@@ -418,7 +418,7 @@ private func single<A>(x1 : A)(t1 : Set<A>)(t2 : Set<A>) -> Set<A> {
 		case .Empty:
 			switch t1.destruct() {
 				case .Empty:
-					return error("")
+					fatalError("")
 				case .Destructure(_, let x2, let t1, let t3):
 					return bin(x2, t1, bin(x1, t3, t2))
 			}
@@ -432,11 +432,11 @@ private func double<A>(x1 : A)(t1 : Set<A>)(t2 : Set<A>) -> Set<A> {
 		case .Empty:
 			switch t1.destruct() {
 				case .Empty:
-					return error("")
+					fatalError("")
 				case .Destructure(_, let x2, let b, let t4):
 					switch b.destruct() {
 						case .Empty:
-							return error("")
+							fatalError("")
 						case .Destructure(_, let x3, let t2, let t3):
 							return bin(x3, bin(x2, t1, t2), bin(x1, t3, t4))
 					}
@@ -444,7 +444,7 @@ private func double<A>(x1 : A)(t1 : Set<A>)(t2 : Set<A>) -> Set<A> {
 		case .Destructure(_, let x2, let b, let t4):
 			switch b.destruct() {
 				case .Empty:
-					return error("")
+					fatalError("")
 				case .Destructure(_, let x3, let t2, let t3):
 					return bin(x3, bin(x1, t1, t2), bin(x2, t3, t4))
 			}
