@@ -9,7 +9,7 @@
 
 /// Immediately terminates the program with an error message.
 public func error<A>(x : String) -> A {
-	assert(false, x)
+	return fatalError(x) as A
 }
 
 /// A special case of error.
