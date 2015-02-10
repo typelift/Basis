@@ -167,7 +167,7 @@ public protocol ArrowChoice : Arrow {
 ///                          \
 ///                           o - a - [ f ] -> b
 ///                          /
-///          a -------> a - •
+///          a ------------ •
 ///
 public protocol ArrowApply : Arrow {
 	typealias APP = K2<(Self, A), B>

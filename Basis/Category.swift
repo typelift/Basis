@@ -12,9 +12,8 @@
 /// is the primary reason categories are such powerful abstractions.
 ///
 /// Here, a Category is some class of Kind * -> * -> * that you can think of as modelling an "arrow"
-/// from A -> B.  This means that if we provide a composition function, `•`, we can hook up 
-/// Categories from A -> B with Categories from B -> C and get Categories from A -> C.  This
-/// function is also called >>>.
+/// A -> B.  This means that if we provide a composition function, `•`, we can hook up  Categories 
+/// from A -> B with Categories from B -> C and get Categories from A -> C.
 public protocol Category {
 	/// Source
 	typealias A

@@ -7,7 +7,7 @@
 //  Released under the MIT license.
 //
 
-/// Represents a computation that either produces a value (pure) or branches (suspend).  Trampolines
+/// Represents a computation that either produces a value (now) or branches (later).  Trampolines
 /// allow computations that would otherwise use a large amount of stack space to instead trade that
 /// cost to the much larger heap and evaluate in constant stack space.
 ///
