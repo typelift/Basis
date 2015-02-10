@@ -89,7 +89,7 @@ public func fix<A>(f : ((A -> A) -> A -> A)) -> A -> A {
 /// On | Applies the function on its right to both its arguments, then applies the function on its
 /// left to the result of both prior applications.
 ///
-///    (+) `|*|` f = { x in { y in -> f(x) + f(y) } }
+///    (+) |*| f = { x in { y in -> f(x) + f(y) } }
 ///
 /// This function may be useful when a comparing two like objects using a given property, as in:
 /// 
@@ -102,7 +102,7 @@ public func |*| <A, B, C>(o : B -> B -> C, f : A -> B) -> A -> A -> C {
 /// On | Applies the function on its right to both its arguments, then applies the function on its
 /// left to the result of both prior applications.
 ///
-///    (+) `|*|` f = { x, y in -> f(x) + f(y) }
+///    (+) |*| f = { x, y in -> f(x) + f(y) }
 ///
 /// This function may be useful when a comparing two like objects using a given property, as in:
 /// 
