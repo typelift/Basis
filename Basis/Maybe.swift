@@ -252,7 +252,8 @@ extension Maybe : ApplicativeOps {
 
 extension Maybe : Alternative {
 	typealias FLA = Maybe<[A]>
-	
+	typealias FMA = Maybe<Maybe<A>>
+
 	public func empty() -> Maybe<A> {
 		return Maybe.nothing()
 	}
@@ -263,6 +264,10 @@ extension Maybe : Alternative {
 	
 	public func many(v : Maybe<A>) -> Maybe<[A]> {
 		return some(v) <|> Maybe<[A]>.pure([])
+	}
+	
+	public func optional(v : Maybe<A>) -> Maybe<Maybe<A>> {
+		return Maybe.just <%> v <|> Maybe<Maybe<A>>.pure(Maybe.nothing())
 	}
 }
 

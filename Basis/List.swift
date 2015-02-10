@@ -279,7 +279,7 @@ extension List : Applicative {
 	}
 }
 
-public func <%> <A, B>(f: A -> B, ar : List<A>) -> List<B> {
+public func <%> <A, B>(f : A -> B, ar : List<A>) -> List<B> {
 	return List.fmap(f)(ar)
 }
 
@@ -297,6 +297,7 @@ public func <* <A, B>(a : List<A>, b : List<B>) -> List<A> {
 
 extension List : Alternative {
 	typealias FLA = List<[A]>
+	typealias FMA = List<Maybe<A>>
 
 	public func empty() -> List<A> {
 		return List()
@@ -308,6 +309,10 @@ extension List : Alternative {
 
 	public func many(v : List<A>) -> List<[A]> {
 		return some(v) <|> List<[A]>.pure([])
+	}
+	
+	public func optional(v : List<A>) -> List<Maybe<A>> {
+		return Maybe.just <%> v <|> List<Maybe<A>>.pure(Maybe.nothing())
 	}
 }
 

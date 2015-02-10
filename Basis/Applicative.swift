@@ -40,7 +40,8 @@ public protocol Applicative : Pointed, Functor {
 public protocol Alternative : Applicative {
 	/// The type of the result of Alternative's mappend-esque functions.
 	typealias FLA = K1<[A]>
-	
+	typealias FMA = K1<Maybe<A>>
+
 	/// Returns the identity element.
 	func empty() -> Self
 	
@@ -62,6 +63,12 @@ public protocol Alternative : Applicative {
 	///
 	///		some(v) <|> pure([])
 	func many(Self) -> FLA
+	
+	/// One or none
+	///
+	/// Default definition:
+	///		`Maybe.just <%> v <|> pure(Maybe.nothing())`
+	func optional(Self) -> FMA
 }
 
 /// Additional functions to be implemented by those types conforming to the Applicative protocol.
