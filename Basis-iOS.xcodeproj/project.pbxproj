@@ -44,7 +44,6 @@
 		84922CE419D237DA00AE9A7C /* Arrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922CB219D237DA00AE9A7C /* Arrow.swift */; };
 		84922CE519D237DA00AE9A7C /* BASERealWorld.h in Headers */ = {isa = PBXBuildFile; fileRef = 84922CB319D237DA00AE9A7C /* BASERealWorld.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84922CE619D237DA00AE9A7C /* BASERealWorld.m in Sources */ = {isa = PBXBuildFile; fileRef = 84922CB419D237DA00AE9A7C /* BASERealWorld.m */; };
-		84922CE719D237DA00AE9A7C /* Basis-ObjCBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 84922CB519D237DA00AE9A7C /* Basis-ObjCBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84922CE819D237DA00AE9A7C /* Basis.h in Headers */ = {isa = PBXBuildFile; fileRef = 84922CB619D237DA00AE9A7C /* Basis.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84922CE919D237DA00AE9A7C /* Bottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922CB719D237DA00AE9A7C /* Bottom.swift */; };
 		84922CEA19D237DA00AE9A7C /* Bounded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922CB819D237DA00AE9A7C /* Bounded.swift */; };
@@ -145,7 +144,6 @@
 		84922CB219D237DA00AE9A7C /* Arrow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Arrow.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		84922CB319D237DA00AE9A7C /* BASERealWorld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BASERealWorld.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		84922CB419D237DA00AE9A7C /* BASERealWorld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BASERealWorld.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		84922CB519D237DA00AE9A7C /* Basis-ObjCBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "Basis-ObjCBridge.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		84922CB619D237DA00AE9A7C /* Basis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Basis.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		84922CB719D237DA00AE9A7C /* Bottom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Bottom.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		84922CB819D237DA00AE9A7C /* Bounded.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Bounded.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -302,7 +300,6 @@
 			children = (
 				84922CB319D237DA00AE9A7C /* BASERealWorld.h */,
 				84922CB419D237DA00AE9A7C /* BASERealWorld.m */,
-				84922CB519D237DA00AE9A7C /* Basis-ObjCBridge.h */,
 				84922CC719D237DA00AE9A7C /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -432,7 +429,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				84922CE819D237DA00AE9A7C /* Basis.h in Headers */,
-				84922CE719D237DA00AE9A7C /* Basis-ObjCBridge.h in Headers */,
 				84922CE519D237DA00AE9A7C /* BASERealWorld.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -723,6 +719,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -741,6 +738,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 			};
 			name = Release;

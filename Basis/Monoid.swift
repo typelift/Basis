@@ -26,10 +26,10 @@ public protocol Monoid {
 	typealias M
 
 	/// The identity element.
-	class func mempty() -> M
+	static func mempty() -> M
 	
 	/// An associative binary operator.
-	class func mappend(M) -> M -> M
+	static func mappend(M) -> M -> M
 	func <>(M, M) -> M
 }
 

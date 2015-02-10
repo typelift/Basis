@@ -66,7 +66,7 @@ public protocol Arrow : Category {
 	typealias FANOUT = K2<B, (B, D)>
 	
 	/// Lift a function to an arrow.
-	class func arr(A -> B) -> Self
+	static func arr(A -> B) -> Self
 	
 	/// Splits the arrow into two tuples that model a computation that applies our Arrow to an
 	/// argument on the "left side" and sends the "right side" through unchanged.
@@ -96,7 +96,7 @@ public protocol ArrowZero : Arrow {
 	typealias ABC = K2<A, B>
 
 	/// The identity arrow.
-	class func zeroArrow() -> ABC
+	static func zeroArrow() -> ABC
 }
 
 /// A monoid for Arrows.
@@ -147,10 +147,10 @@ public protocol ArrowChoice : Arrow {
 
 	/// Feed marked inputs through the argument arrow, passing the rest through unchanged to the 
 	/// output.
-	class func left(Self) -> LEFT
+	static func left(Self) -> LEFT
 	
 	/// The mirror image of left.
-	class func right(Self) -> RIGHT
+	static func right(Self) -> RIGHT
 
 	/// Splat | Split the input between both argument arrows, then retag and merge their outputs 
 	/// into Eithers.
@@ -171,7 +171,7 @@ public protocol ArrowChoice : Arrow {
 ///
 public protocol ArrowApply : Arrow {
 	typealias APP = K2<(Self, A), B>
-	class func app() -> APP
+	static func app() -> APP
 }
 
 /// Arrows that admit right-tightening recursion.
@@ -188,5 +188,5 @@ public protocol ArrowApply : Arrow {
 public protocol ArrowLoop : Arrow {
 	typealias LOOP = K2<(A, D), (B, D)>
 	
-	class func loop(LOOP) -> Self
+	static func loop(LOOP) -> Self
 }

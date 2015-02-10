@@ -9,5 +9,5 @@
 
 public protocol Pointed {
 	typealias A
-	class func pure(A) -> Self
+	static func pure(A) -> Self
 }

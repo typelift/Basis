@@ -16,7 +16,7 @@ public protocol Applicative : Pointed, Functor {
 	/// Type of Functors containing morphisms from our objects to a target.
 	typealias FAB = K1<A -> B>
 	
-	class func ap(FAB) -> Self -> FB
+	static func ap(FAB) -> Self -> FB
 	
 	/// Sequential Application | Applies the function "inside the Functor" to the "inside" of our 
 	/// Functor and herds up the results.
@@ -72,11 +72,11 @@ public protocol ApplicativeOps : Applicative {
 	typealias FD = K1<D>
 
 	/// Lift a function to a Functorial action.
-	class func liftA(f : A -> B) -> Self -> FB
+	static func liftA(f : A -> B) -> Self -> FB
 
 	/// Lift a binary function to a Functorial action.
-	class func liftA2(f : A -> B -> C) -> Self -> FB -> FC
+	static func liftA2(f : A -> B -> C) -> Self -> FB -> FC
 
 	/// Lift a ternary function to a Functorial action.
-	class func liftA3(f : A -> B -> C -> D) -> Self -> FB -> FC -> FD
+	static func liftA3(f : A -> B -> C -> D) -> Self -> FB -> FC -> FD
 }

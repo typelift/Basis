@@ -31,7 +31,7 @@ public func readSTRef<S, A>(ref : STRef<S, A>) -> ST<S, A> {
 }
 
 // Writes a new value into the reference.
-public func writeSTRef<S, A>(ref : STRef<S, A>)(a : A) -> ST<S, STRef<S, A>> {
+public func writeSTRef<S, A>(ref : STRef<S, A>)(_ a : A) -> ST<S, STRef<S, A>> {
 	return ST(apply: { s in
 		ref.value = a
 		return (s, ref)
@@ -39,7 +39,7 @@ public func writeSTRef<S, A>(ref : STRef<S, A>)(a : A) -> ST<S, STRef<S, A>> {
 }
 
 // Modifies the reference and returns the updated result.
-public func modifySTRef<S, A>(ref : STRef<S, A>)(f: A -> A) -> ST<S, STRef<S, A>> {
+public func modifySTRef<S, A>(ref : STRef<S, A>)(_ f : A -> A) -> ST<S, STRef<S, A>> {
 	return ST(apply: { s in
 		ref.value = f(ref.value)
 		return (s, ref)

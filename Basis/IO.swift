@@ -15,7 +15,7 @@ import class Foundation.NSFileHandle
 public struct IO<A> {
 	internal let apply: World<RealWorld> -> (World<RealWorld>, A)
 
-	init(apply: World<RealWorld> -> (World<RealWorld>, A)) {
+	init(_ apply: World<RealWorld> -> (World<RealWorld>, A)) {
 		self.apply = apply
 	}
 
@@ -96,7 +96,8 @@ public func getLine() -> IO<String> {
 
 /// Gets the entire contents of standard input.
 public func getContents() -> IO<String> {
-	return IO.pure(NSString(data: NSFileHandle.fileHandleWithStandardInput().availableData, encoding: NSUTF8StringEncoding) ?? "")
+	let s = NSString(data: NSFileHandle.fileHandleWithStandardInput().availableData, encoding: NSUTF8StringEncoding) as! String
+	return IO.pure(s ?? "")
 }
 
 /// Takes a function that is given the contents of standard input.  The result of that function is

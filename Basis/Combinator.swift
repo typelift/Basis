@@ -94,8 +94,8 @@ public func on<A, B, C>(o : B -> B -> C) -> (A -> B) -> A -> A -> C {
 /// On | Given a "combining" function and a function that converts arguments to the target of the
 /// combiner, returns a function that applies the right hand side to two arguments, then runs both
 /// results through the combiner.
-public func on<A, B, C>(o : (B, B) -> C)(f : A -> B) -> A -> A -> C {
-	return { x in { y in o(f(x), f(y)) } }
+public func on<A, B, C>(o : (B, B) -> C) -> (A -> B) -> A -> A -> C {
+	return { f in { x in { y in o(f(x), f(y)) } } }
 }
 
 /// Returns a function with the position of the arguments switched.

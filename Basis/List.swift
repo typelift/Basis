@@ -36,7 +36,7 @@ public struct List<A> {
 	let next : () -> (head : A, tail : List<A>)
 
 	/// Constructs a potentially infinite list.
-	init(_ next : @autoclosure () -> (head : A, tail : List<A>), isEmpty : Bool = false) {
+	init(_ next : () -> (head : A, tail : List<A>), isEmpty : Bool = false) {
 		self.count = isEmpty ? 0 : -1
 		self.next = next
 	}
@@ -45,7 +45,7 @@ public struct List<A> {
 	///
 	/// Attempts to access the head or tail of this list in an unsafe manner will throw an exception.
 	public init() {
-		self.init((error("Attempted to access the head of the empty list."), error("Attempted to access the tail of the empty list.")), isEmpty: true)
+		self.init({ (error("Attempted to access the head of the empty list."), error("Attempted to access the tail of the empty list.")) }, isEmpty: true)
 	}
 
 	/// Construct a list with a given head and tail.

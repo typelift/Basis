@@ -14,10 +14,12 @@ public struct Result<A> {
 	let rVal : A?
 
 	init(left : NSError) {
+		self.rVal = nil
 		self.lVal = left
 	}
 
 	init(right : A) {
+		self.lVal = nil
 		self.rVal = right
 	}
 

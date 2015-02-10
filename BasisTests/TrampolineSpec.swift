@@ -23,7 +23,7 @@ class TrampolineSpec : XCTestCase {
 		if x <= 1 {
 			return now(acc)
 		}
-		return later(noSmashFac(x - 1, acc * x))
+		return later { self.noSmashFac(x - 1, acc * x) }
 	}
 	
 	func noSmashAckermann(m : Int, _ n : Int) -> Trampoline<Int> {
@@ -31,9 +31,9 @@ class TrampolineSpec : XCTestCase {
 			return now(n + 1)
 		}
 		if n == 0 {
-			return later(noSmashAckermann(m - 1, 1))
+			return later { self.noSmashAckermann(m - 1, 1) }
 		}
-		return later(noSmashAckermann(m - 1, later(noSmashAckermann(m, n - 1)).run()))
+		return later { self.noSmashAckermann(m - 1, later { self.noSmashAckermann(m, n - 1) }.run()) }
 	}
 	
 	func testFactorial() {

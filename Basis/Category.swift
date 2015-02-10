@@ -31,7 +31,7 @@ public protocol Category {
 	typealias CAC = K2<A, C>
 
 	/// The identity morphism.
-	class func id() -> CAA
+	static func id() -> CAA
 	
 	/// Composition of categories.
 	///

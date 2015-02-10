@@ -19,10 +19,12 @@ public struct Either<L, R>  {
 	let rVal : R?
 	
 	init(left : L) {
+		self.rVal = nil
 		self.lVal = left
 	}
 	
 	init(right : R) {
+		self.lVal = nil
 		self.rVal = right
 	}
 

@@ -12,8 +12,8 @@
 /// width.  While the definition of a "limit" is flexible, generally custom types that wish to
 /// appear bounded must come with some kind of supremum or infimum.
 public protocol Bounded {
-	class func minBound() -> Self
-	class func maxBound() -> Self
+	static func minBound() -> Self
+	static func maxBound() -> Self
 }
 
 extension Bool : Bounded {
