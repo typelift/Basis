@@ -57,7 +57,7 @@ public func • <A, B, C>(f : B -> C, g : A -> B) -> A -> C {
 }
 
 /// The fixpoint combinator is a function that computes the least fixed point of an equation. That 
-/// is, the first point at which further application of x is the same x
+/// is, the first point at which further application of x to a function is the same x.
 ///
 ///     x = f(x)
 ///
