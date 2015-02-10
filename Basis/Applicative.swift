@@ -28,14 +28,14 @@ public protocol Applicative : Pointed, Functor {
 	///
 	/// Default definition: 
 	///
-	///		`const(id) <%> a <*> b`
+	///		const(id) <%> a <*> b
 	func *>(Self, FB) -> FB
 	
 	/// Sequence Left | Disregards the Functor on the Right.
 	///
 	/// Default definition: 
 	///
-	///		`const <%> a <*> b`
+	///		const <%> a <*> b
 	func <*(Self, FB) -> Self
 }
 
