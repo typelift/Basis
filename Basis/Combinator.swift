@@ -25,7 +25,7 @@ public func const<A, B>(x : A) -> B -> A {
 /// large amounts of parenthesis.  Because this operator has a low precedence and is right-
 /// associative, it can often be used to elide parenthesis such that the following holds:
 ///
-///     f <<| g <<| h x  =  f (g (h (x)))
+///     f <<| g <<| h(x)  =  f (g (h (x)))
 ///
 /// Haskellers will know this as the ($) combinator.
 public func <<| <A, B>(f : A -> B, x : A) -> B {
@@ -34,10 +34,10 @@ public func <<| <A, B>(f : A -> B, x : A) -> B {
 
 /// Pipe Forward | Applies the argument on its left to a function on its right.
 ///
-/// Sometimes, a computation looks more natural when data is computer first on the right side of
+/// Sometimes, a computation looks more natural when a value is computed on the right side of
 /// an expression and applied to a function on the left.  For example, this:
 ///
-///     and(zip(nubBy(==)(x))(y).map(==))
+///     let result = and(zip(nubBy(==)(x))(y).map(==))
 ///		
 /// can also be written as:
 ///
@@ -51,49 +51,79 @@ public func |>> <A, B>(x : A, f : A -> B) -> B {
 /// Function Composition | Composes the target of the left function with the source of the second
 /// function to pipe the results through one larger function from left source to right target.
 ///
-/// g . f x = g(f(x))
+///     g . f x = g(f(x))
 public func • <A, B, C>(f : B -> C, g : A -> B) -> A -> C {
 	return { f(g($0)) }
 }
 
-/// The fixpoint combinator is a higher-order function that computes the fixed point of an equation.
-/// That is, the point at which further application of x is the same x
+/// The fixpoint combinator is a function that computes the least fixed point of an equation. That 
+/// is, the first point at which further application of x is the same x
 ///
 ///     x = f(x)
 ///
 /// The fixpoint combinator models recursion in the untyped lambda calculus, and is notoriously
-/// difficult to define and type in ML-style systems.  Especially because Swift is strict by default
-/// we have to be incredibly careful and take an extra parameter to avoid infinite expansion of the
-/// call tree.  Recursive functions must also be careful and include an extra level of lambda
-/// abstraction (that is, take themselves as a parameter).
+/// difficult to define and type in ML-style systems because it can often lead to paradoxes. Case in
+/// point, the canonical definition of the Y combinator in Swift is as follows:
+/// 
+///     func Y() -> (A -> A) -> A {
+///         return { f in
+///             return ({ x in
+///                 return f(x(x))
+///             })({ x in
+///                 return f(x(x))
+///             })
+///         }
+///     }
+///
+/// This definition can never be typechecked by Swift because any instantiation of x must have the 
+/// infinite type A : A -> B, or `A -> B -> C -> D -> E -> F -> G -> H -> I -> ...`
+///
+/// Because Swift is also strict by default, we eta-expand the traditional definition of the 
+/// fixpoint combinator (that is, take ourselves as a parameter) to allow evaluation in constant 
+/// stack space.  Without this kind of protection, fix would compute ⊥ by smashing the stack and 
+/// crashing.
 public func fix<A>(f : ((A -> A) -> A -> A)) -> A -> A {
 	return { x in f(fix(f))(x) }
 }
 
-/// On | Given a "combining" function and a function that converts arguments to the target of the
-/// combiner, returns a function that applies the right hand side to two arguments, then runs both
-/// results through the combiner.
+/// On | Applies the function on its right to both its arguments, then applies the function on its
+/// left to the result of both prior applications.
+///
+///    (+) `|*|` f = { x in { y in -> f(x) + f(y) } }
+///
+/// This function may be useful when a comparing two like objects using a given property, as in:
+/// 
+///     let arr : [(Int, String)] = [(2, "Second"), (1, "First"), (5, "Fifth"), (3, "Third"), (4, "Fourth")]
+///     let sortedByFirstIndex = sortBy((<) |*| fst)(arr)
 public func |*| <A, B, C>(o : B -> B -> C, f : A -> B) -> A -> A -> C {
 	return on(o)(f)
 }
 
-/// On | Given a "combining" function and a function that converts arguments to the target of the
-/// combiner, returns a function that applies the right hand side to two arguments, then runs both
-/// results through the combiner.
+/// On | Applies the function on its right to both its arguments, then applies the function on its
+/// left to the result of both prior applications.
+///
+///    (+) `|*|` f = { x, y in -> f(x) + f(y) }
+///
+/// This function may be useful when a comparing two like objects using a given property, as in:
+/// 
+///     let arr : [(Int, String)] = [(2, "Second"), (1, "First"), (5, "Fifth"), (3, "Third"), (4, "Fourth")]
+///     let sortedByFirstIndex = sortBy((<) |*| fst)(arr)
 public func |*| <A, B, C>(o : (B, B) -> C, f : A -> B) -> A -> A -> C {
 	return on(o)(f)
 }
 
-/// On | Given a "combining" function and a function that converts arguments to the target of the
-/// combiner, returns a function that applies the right hand side to two arguments, then runs both
-/// results through the combiner.
+/// On | Applies the function on its right to both its arguments, then applies the function on its
+/// left to the result of both prior applications.
+///
+///    (+) `|*|` f = { x, y in -> f(x) + f(y) }
 public func on<A, B, C>(o : B -> B -> C) -> (A -> B) -> A -> A -> C {
 	return { f in { x in { y in o(f(x))(f(y)) } } }
 }
 
-/// On | Given a "combining" function and a function that converts arguments to the target of the
-/// combiner, returns a function that applies the right hand side to two arguments, then runs both
-/// results through the combiner.
+/// On | Applies the function on its right to both its arguments, then applies the function on its
+/// left to the result of both prior applications.
+///
+///    (+) `|*|` f = { x, y in -> f(x) + f(y) }
 public func on<A, B, C>(o : (B, B) -> C) -> (A -> B) -> A -> A -> C {
 	return { f in { x in { y in o(f(x), f(y)) } } }
 }
