@@ -63,7 +63,7 @@ public func • <A, B, C>(f : B -> C, g : A -> B) -> A -> C {
 ///
 /// The fixpoint combinator models recursion in the untyped lambda calculus, and is notoriously
 /// difficult to define and type in ML-style systems because it can often lead to paradoxes. Case in
-/// point, the canonical definition of the Y combinator in Swift is as follows:
+/// point, the canonical definition of the Y combinator in Swift is as follows.
 /// 
 ///     func Y() -> (A -> A) -> A {
 ///         return { f in
@@ -78,8 +78,8 @@ public func • <A, B, C>(f : B -> C, g : A -> B) -> A -> C {
 /// This definition can never be typechecked by Swift because any instantiation of x must have the 
 /// infinite type A : A -> B, or `A -> B -> C -> D -> E -> F -> G -> H -> I -> ...`
 ///
-/// Because Swift is also strict by default, we eta-expand the traditional definition of the 
-/// fixpoint combinator (that is, take ourselves as a parameter) to allow evaluation in constant 
+/// Because Swift is also strict by default, the traditional definition of the fixpoint combinator 
+/// has been eta-expanded (that is, take ourselves as a parameter) to allow evaluation in constant 
 /// stack space.  Without this kind of protection, fix would compute ⊥ by smashing the stack and 
 /// crashing.
 public func fix<A>(f : ((A -> A) -> A -> A)) -> A -> A {

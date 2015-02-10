@@ -7,7 +7,7 @@
 //  Released under the MIT license.
 //
 
-public enum EitherD<A, B> {
+public enum EitherMatcher<A, B> {
 	case Left(Box<A>)
 	case Right(Box<B>)
 }
@@ -28,27 +28,34 @@ public struct Either<L, R>  {
 		self.rVal = right
 	}
 
+	/// Constructs an Either with a value on the left.
 	public static func left(x : L) -> Either<L, R> {
 		return Either(left: x)
 	}
 	
+	/// Constructs an Either with a value on the right.
 	public static func right(x : R) -> Either<L, R> {
 		return Either(right: x)
 	}
 	
+	/// Constructs an Either with a value on the left by unwrapping the boxed value.
 	public static func left(x : Box<L>) -> Either<L, R> {
 		return Either(left: x.unBox())
 	}
 	
+	/// Constructs an Either with a value on the right by unwrapping the boxed value.
 	public static func right(x : Box<R>) -> Either<L, R> {
 		return Either(right: x.unBox())
 	}
 	
-	public func match() -> EitherD<L, R> {
-		if lVal != nil {
-			return .Left(Box(lVal!))
+	/// Creates a matcher that destructures an Either.
+	public func match() -> EitherMatcher<L, R> {
+		if let l = lVal {
+			return .Left(Box(l))
+		} else if let r = rVal {
+			return .Right(Box(r))
 		}
-		return .Right(Box(rVal!))
+		return error("Cannot match an Either with neither a left or right value.")
 	}
 }
 

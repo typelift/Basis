@@ -10,16 +10,22 @@
 /// A Monad is an (Endo)Functor (but really, that doesn't matter because all Functors in Swift are
 /// *technically* endofunctors) that respects a common-sense set of laws called the Monoid Laws:
 ///
-/// - Closure    Composing two monads produces another monad.  Actually, the same monad, but with a
-///              different value inside.  Basically, you cannot ever just compose a monad and
-///              randomly come up with something that isn't a monad.
+/// - Closure
 ///
-/// - Associativity    Composing a monad twice is the same whether you bunch your parenthesis up on
-///                    the right side, or the left side. (1 + 1) + 1 = 1 + (1 + 1)
+///     - Composing two monads produces another monad.  Actually, the same monad, but with a
+///       different value inside.  Basically, you cannot ever just compose a monad and
+///       randomly come up with something that isn't a monad.
 ///
-/// - Identity    There is some element in the set of possible parametrizations that, when composed
-///               with other elements, doesn't alter their value.  Like 0 in addition of the
-///               integers: 0 + 1 = 1 + 0 = 1
+/// - Associativity    
+///
+///     - Composing a monad twice is the same whether you bunch your parenthesis up on
+///       the right side, or the left side. (1 + 1) + 1 = 1 + (1 + 1)
+///
+/// - Identity    
+///
+///     - There is some element in the set of possible parametrizations that, when composed
+///       with other elements, doesn't alter their value.  Like 0 in addition of the
+///       integers: 0 + 1 = 1 + 0 = 1
 ///
 /// A Monad lifts these laws into an algebraic structure and adds an all-important operator for
 /// "sequencing" monads together.

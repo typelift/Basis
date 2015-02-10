@@ -11,7 +11,7 @@
 /// between those objects.  Each object includes an identity morphism, and composition of morphisms
 /// is the primary reason categories are such powerful abstractions.
 ///
-/// Here, a Category is some class of Kind * -> * -> * that you can think of as modelling an "arrow"
+/// Here, a Category is some class of Kind `* -> * -> *` that you can think of as modelling an "arrow"
 /// A -> B.  This means that if we provide a composition function, `•`, we can hook up  Categories 
 /// from A -> B with Categories from B -> C and get Categories from A -> C.
 public protocol Category {
