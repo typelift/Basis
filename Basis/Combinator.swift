@@ -7,7 +7,7 @@
 //  Released under the MIT license.
 //
 
-/// Polymorphic identity function.
+/// The polymorphic identity function always returns the argument it was given.
 public func id<A>(x : A) -> A {
 	return x
 }
@@ -49,9 +49,14 @@ public func |>> <A, B>(x : A, f : A -> B) -> B {
 }
 
 /// Function Composition | Composes the target of the left function with the source of the second
-/// function to pipe the results through one larger function from left source to right target.
+/// function to pipe the results through one larger function from right source to left target.
 ///
 ///     (g • f)(x) = g(f(x))
+///
+/// While the definition of this operator may seem backwards, it may help to read it as "after" to
+/// see why it makes sense as-is.  As in:
+///
+///     h • g • f = 'h' after 'g' after 'f' 
 public func • <A, B, C>(f : B -> C, g : A -> B) -> A -> C {
 	return { f(g($0)) }
 }
