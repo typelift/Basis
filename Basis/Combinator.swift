@@ -34,6 +34,18 @@ public func const<A, B>(x : A) -> B -> A {
 	}
 }
 
+/// Applies the second function to a value, then applies the first function to a value and the
+/// result of the previous function application.
+public func substitute<R, A, B>(f : R -> A -> B) -> (R -> A) -> R -> B {
+	return { g in { x in f(x)(g(x)) } }
+}
+
+/// Applies the second function to a value, then applies the first function to a value and the
+/// result of the previous function application.
+public func substitute<R, A, B>(f : (R, A) -> B) -> (R -> A) -> R -> B {
+	return { g in { x in f(x, g(x)) } }
+}
+
 /// Pipe Backward | Applies the function to its left to an argument on its right.
 ///
 /// Chains of regular function applications are often made unnecessarily verbose and tedius by
@@ -135,7 +147,7 @@ public func |*| <A, B, C>(o : (B, B) -> C, f : A -> B) -> A -> A -> C {
 /// On | Applies the function on its right to both its arguments, then applies the function on its
 /// left to the result of both prior applications.
 ///
-///    (+) `|*|` f = { x, y in -> f(x) + f(y) }
+///    (+) `|*|` f = { x, y in f(x) + f(y) }
 public func on<A, B, C>(o : B -> B -> C) -> (A -> B) -> A -> A -> C {
 	return { f in { x in { y in o(f(x))(f(y)) } } }
 }
