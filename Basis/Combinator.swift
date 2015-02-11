@@ -1,5 +1,5 @@
 //
-//  Functions.swift
+//  Combinator.swift
 //  Basis
 //
 //  Created by Robert Widmann on 9/7/14.
@@ -51,7 +51,7 @@ public func |>> <A, B>(x : A, f : A -> B) -> B {
 /// Function Composition | Composes the target of the left function with the source of the second
 /// function to pipe the results through one larger function from left source to right target.
 ///
-///     g . f x = g(f(x))
+///     (g • f)(x) = g(f(x))
 public func • <A, B, C>(f : B -> C, g : A -> B) -> A -> C {
 	return { f(g($0)) }
 }
@@ -89,7 +89,7 @@ public func fix<A>(f : ((A -> A) -> A -> A)) -> A -> A {
 /// On | Applies the function on its right to both its arguments, then applies the function on its
 /// left to the result of both prior applications.
 ///
-///    (+) |*| f = { x in { y in -> f(x) + f(y) } }
+///    f |*| g = { x in { y in f(g(x))(g(y)) } }
 ///
 /// This function may be useful when a comparing two like objects using a given property, as in:
 /// 
@@ -102,7 +102,7 @@ public func |*| <A, B, C>(o : B -> B -> C, f : A -> B) -> A -> A -> C {
 /// On | Applies the function on its right to both its arguments, then applies the function on its
 /// left to the result of both prior applications.
 ///
-///    (+) |*| f = { x, y in -> f(x) + f(y) }
+///    (+) |*| f = { x, y in f(x) + f(y) }
 ///
 /// This function may be useful when a comparing two like objects using a given property, as in:
 /// 
