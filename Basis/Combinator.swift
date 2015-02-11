@@ -8,6 +8,21 @@
 //
 
 /// The polymorphic identity function always returns the argument it was given.
+///
+/// Identities can be used to enforce a relationship between two types in the name of safety.  For 
+/// example, concatenation is a function on arrays of arrays, but there isn't a built-in way to 
+/// express an extension of [[T]].  Using the identity as a relation the compiler is forced to only
+/// allow this `concat` to be invoked with nested arrays:
+///
+///     extension Array {
+///         /// Concatenate an array of arrays.
+///         func concat(rel : [T] -> [[U]]) -> [U] {
+///             return foldr({ $0 + $1 })([])(rel(self))
+///         }
+///     }
+///
+///     let flat  = [[1, 2, 3], [4, 5]].concat(id) // [1, 2, 3, 4, 5]
+///     // let error = [1, 2, 3, 4, 5].concat(id) // Does not typecheck
 public func id<A>(x : A) -> A {
 	return x
 }
