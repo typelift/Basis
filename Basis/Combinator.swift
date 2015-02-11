@@ -11,8 +11,8 @@
 ///
 /// Identities can be used to enforce a relationship between two types in the name of safety.  For 
 /// example, concatenation is a function on arrays of arrays, but there isn't a built-in way to 
-/// express an extension of [[T]].  Using the identity as a relation the compiler is forced to only
-/// allow this `concat` to be invoked with nested arrays:
+/// express an extension of [[T]].  By using the identity as a relation the compiler is forced to 
+/// only allow `concat(_:)` to be invoked with nested arrays:
 ///
 ///     extension Array {
 ///         /// Concatenate an array of arrays.
