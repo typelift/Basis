@@ -7,9 +7,8 @@
 //  Released under the MIT license.
 //
 
-// The strict state-transformer monad.  ST<S, A> represents
-// a computation returning a value of type A using some internal
-// context of type S.
+// The strict state-transformer monad.  ST<S, A> represents a computation returning a value of type 
+// A using some internal context of type S.
 public struct ST<S, A> {	
 	private let apply:(s: World<RealWorld>) -> (World<RealWorld>, A)
 	
@@ -110,6 +109,48 @@ public func >> <S, A, B>(x : ST<S, A>, y : ST<S, B>) -> ST<S, B> {
 	return x.bind({ (_) in
 		return y
 	})
+}
+
+extension ST : MonadOps {
+	typealias MLA = ST<S, [A]>
+	typealias MLB = ST<S, [B]>
+	typealias MU = ST<S, ()>
+	
+	public static func mapM<B>(f : A -> ST<S, B>) -> [A] -> ST<S, [B]> {
+		return { xs in ST<S, B>.sequence(map(f)(xs)) }
+	}
+	
+	public static func mapM_<B>(f : A -> ST<S, B>) -> [A] -> ST<S, ()> {
+		return { xs in ST<S, B>.sequence_(map(f)(xs)) }
+	}
+	
+	public static func forM<B>(xs : [A]) -> (A -> ST<S, B>) -> ST<S, [B]> {
+		return flip(ST.mapM)(xs)
+	}
+	
+	public static func forM_<B>(xs : [A]) -> (A -> ST<S, B>) -> ST<S, ()> {
+		return flip(ST.mapM_)(xs)
+	}
+	
+	public static func sequence(ls : [ST<S, A>]) -> ST<S, [A]> {
+		return foldr({ m, m2 in m >>- { x in m2 >>- { xs in ST<S, [A]>.pure(cons(x)(xs)) } } })(ST<S, [A]>.pure([]))(ls)
+	}
+	
+	public static func sequence_(ls : [ST<S, A>]) -> ST<S, ()> {
+		return foldr(>>)(ST<S, ()>.pure(()))(ls)
+	}
+}
+
+public func -<< <S, A, B>(f : A -> ST<S, B>, xs : ST<S, A>) -> ST<S, B> {
+	return xs.bind(f)
+}
+
+public func >-> <S, A, B, C>(f : A -> ST<S, B>, g : B -> ST<S, C>) -> A -> ST<S, C> {
+	return { x in f(x) >>- g }
+}
+
+public func <-< <S, A, B, C>(g : B -> ST<S, C>, f : A -> ST<S, B>) -> A -> ST<S, C> {
+	return { x in f(x) >>- g }
 }
 
 extension ST : MonadFix {
