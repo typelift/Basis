@@ -9,9 +9,9 @@
 
 /// A lazy infinite sequence of values.
 public struct Stream<T> {
-	let step : @autoclosure() -> (head : T, tail : Stream<T>)
+	let step : () -> (head : T, tail : Stream<T>)
 	
-	init(_ step : @autoclosure() -> (head : T, tail : Stream<T>)) {
+	init(_ step : () -> (head : T, tail : Stream<T>)) {
 		self.step = step
 	}
 	
@@ -42,22 +42,22 @@ public func tail<T>(s : Stream<T>) -> Stream<T> {
 
 /// Returns a Stream of all initial segments of a Stream.
 public func inits<T>(s : Stream<T>) -> Stream<[T]> {
-	return Stream(([], map({ s.step().head <| $0 })(inits(s.step().tail))))
+	return Stream { ([], map({ s.step().head <| $0 })(inits(s.step().tail))) }
 }
 
 /// Returns a Stream of all final segments of a Stream.
 public func tails<T>(s : Stream<T>) -> Stream<Stream<T>> {
-	return Stream((s, tails(s.step().tail)))
+	return Stream { (s, tails(s.step().tail)) }
 }
 
 /// Repeats a value into a constant stream of that same value.
 public func repeat<T>(x : T) -> Stream<T> {
-	return Stream((x, repeat(x)))
+	return Stream { (x, repeat(x)) }
 }
 
 /// Returns a Stream of an infinite number of iteratations of applications of a function to a value.
 public func iterate<T>(f : T -> T) -> T -> Stream<T> {
-	return { x in Stream((x, iterate(f)(f(x)))) }
+	return { x in Stream { (x, iterate(f)(f(x))) } }
 }
 
 /// Cycles a non-empty list into an infinite Stream of repeating values.
@@ -68,13 +68,13 @@ public func cycle<T>(xs : [T]) -> Stream<T> {
 		case .Nil:
 			return error("Cannot cycle an empty list.")
 		case .Cons(let x, let xs):
-			return Stream((x, cycle(xs + [x])))
+			return Stream { (x, cycle(xs + [x])) }
 	}
 }
 
 /// Maps a function over a Stream and returns a new Stream of those values.
 public func map<A, B>(f : A -> B) -> Stream<A> -> Stream<B> {
-	return { s in Stream((f(s.step().head), map(f)(s.step().tail))) }
+	return { s in Stream { (f(s.step().head), map(f)(s.step().tail)) } }
 }
 
 /// Uses function to construct a Stream.
@@ -83,23 +83,23 @@ public func map<A, B>(f : A -> B) -> Stream<A> -> Stream<B> {
 public func unfold<A, B>(f : A -> (B, A)) -> A -> Stream<B> {
 	return { z in  
 		let (x, d) = f(z)
-		return Stream((x, unfold(f)(d)))
+		return Stream { (x, unfold(f)(d)) }
 	}
 }
 
 /// Returns a Stream of alternating elements from each Stream.
 public func interleave<T>(s1 : Stream<T>) -> Stream<T> -> Stream<T> {
-	return { s2 in Stream((s1.step().head, interleave(s2)(s1))) }
+	return { s2 in Stream { (s1.step().head, interleave(s2)(s1)) } }
 }
 
 /// Creates a Stream alternating an element in between the values of another Stream.
 public func intersperse<T>(x : T) -> Stream<T> -> Stream<T> {
-	return { s in Stream((s.step().head, Stream((x, intersperse(x)(s.step().tail))))) }
+	return { s in Stream { (s.step().head, Stream { (x, intersperse(x)(s.step().tail)) } ) } }
 }
 
 /// Returns a Stream of successive reduced values.
 public func scanl<A, B>(f : A -> B -> A) -> A -> Stream<B> -> Stream<A> {
-	return { z in { s in Stream((z, scanl(f)(f(z)(s.step().head))(s.step().tail))) } }
+	return { z in { s in Stream { (z, scanl(f)(f(z)(s.step().head))(s.step().tail)) } } }
 }
 
 /// Returns a Stream of successive reduced values.
@@ -111,7 +111,7 @@ public func scanl1<A>(f : A -> A -> A) -> Stream<A> -> Stream<A> {
 public func transpose<T>(ss : Stream<Stream<T>>) -> Stream<Stream<T>> {
 	let xs = ss.step().head
 	let yss = ss.step().tail
-	return Stream((Stream((xs.step().head, map(head)(yss))), transpose(Stream((xs.step().tail, map(tail)(yss)))))) 
+	return Stream { (Stream { (xs.step().head, map(head)(yss)) }, transpose(Stream { (xs.step().tail, map(tail)(yss)) } )) }
 }
 
 /// Returns the first n elements of a Stream.
@@ -171,7 +171,7 @@ public func dropWhile<T>(p : T -> Bool) -> Stream<T> -> Stream<T> {
 public func filter<T>(p : T -> Bool) -> Stream<T> -> Stream<T> {
 	return { s in 
 		if p(s.step().head) {
-			return Stream((s.step().head, filter(p)(s.step().tail)))
+			return Stream { (s.step().head, filter(p)(s.step().tail)) }
 		}
 		return filter(p)(s.step().tail)
 	}
@@ -179,12 +179,12 @@ public func filter<T>(p : T -> Bool) -> Stream<T> -> Stream<T> {
 
 /// Zips two Streams into a Stream of pairs.
 public func zip<A, B>(s1 : Stream<A>) -> Stream<B> -> Stream<(A, B)> {
-	return { s2 in Stream(((s1.step().head, s2.step().head), zip(s1.step().tail)(s2.step().tail))) }
+	return { s2 in Stream { ((s1.step().head, s2.step().head), zip(s1.step().tail)(s2.step().tail)) } }
 }
 
 /// Zips two Streams into a third Stream using a combining function.
 public func zipWith<A, B, C>(f : A -> B -> C) -> Stream<A> -> Stream<B> -> Stream<C> {
-	return { s1 in { s2 in Stream((f(s1.step().head)(s2.step().head), zipWith(f)(s1.step().tail)(s2.step().tail))) } }
+	return { s1 in { s2 in Stream { (f(s1.step().head)(s2.step().head), zipWith(f)(s1.step().tail)(s2.step().tail)) } } }
 }
 
 /// Unzips a Stream of pairs into a pair of Streams.
@@ -330,7 +330,7 @@ extension Stream : Comonad {
 	
 	public static func extend<B>(f : Stream<A> -> B) -> Stream<A> -> Stream<B> {
 		return { b in 
-			return Stream<B>((f(b), Stream.extend(f)(tail(b))))
+			return Stream<B> { (f(b), Stream.extend(f)(tail(b))) }
 		}
 	}
 }
@@ -342,7 +342,7 @@ public func >*< <A, B>(fab : Stream<A -> B> , xs : Stream<A>) -> Stream<B> {
 	let fs = fab.step().tail
 	let x = xs.step().head
 	let xss = xs.step().tail 
-	return Stream((f(x), (fs >*< xss)))
+	return Stream { (f(x), (fs >*< xss)) }
 }
 
 public func *< <A, B>(_ : Stream<A>, b : Stream<B>) -> Stream<B> {

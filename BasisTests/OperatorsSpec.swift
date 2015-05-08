@@ -49,7 +49,7 @@ class OperatorsSpec : XCTestCase {
 	func testOn() {
 		let y = 32.0
 
-		XCTAssertTrue(on(+)(f: { s in pow(s, 2.0) })(4.0)(4.0) == y, "")
+		XCTAssertTrue(on(+)({ s in pow(s, 2.0) })(4.0)(4.0) == y, "")
 	}
 
 	func testRLCompose() {

@@ -7,6 +7,7 @@
 //  Released under the MIT license.
 //
 
+/// The Constant Functor maps every argument back to its first value.
 public struct Const<A, B> {
 	public let val : A
 	

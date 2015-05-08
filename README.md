@@ -19,10 +19,13 @@ Swift provides an excellent opportunity to not just witness, but actually
 understand the formalization of many seemingly "complex" and abstract algebraic
 structures without having to learn Haskell or ML or any of the other famous FP 
 languages.  The documentation of types in this repository serves as a way to 
-de-serialize a lot of the complex terms and jargon you may come across in these 
-languages.  If, for any reason, the documentation is too dense or unreadable, it
-means this library is failing one of its unit tests!  Clarification or rewrites
-of documentation to serve the broader community are a priority and a promise.  
+deserialize a lot of the complex terms and jargon you may come across in these 
+languages.  In this way, the Basis can be regarded as an encyclopedia of common
+techniques and practices rather than a simple tutorial.  As such, if the 
+documentation is too dense or unreadable, it means this library is failing one of 
+its unit tests!  Clarification or rewrites of documentation to serve the broader 
+community are a priority and a promise.
+
 Any questions or comments should be made into issues, or pull requests if you 
 feel you can word it better.
 

@@ -36,7 +36,7 @@ public struct List<A> {
 	let next : () -> (head : A, tail : List<A>)
 
 	/// Constructs a potentially infinite list.
-	init(_ next : @autoclosure () -> (head : A, tail : List<A>), isEmpty : Bool = false) {
+	init(_ next : () -> (head : A, tail : List<A>), isEmpty : Bool = false) {
 		self.count = isEmpty ? 0 : -1
 		self.next = next
 	}
@@ -45,7 +45,7 @@ public struct List<A> {
 	///
 	/// Attempts to access the head or tail of this list in an unsafe manner will throw an exception.
 	public init() {
-		self.init((error("Attempted to access the head of the empty list."), error("Attempted to access the tail of the empty list.")), isEmpty: true)
+		self.init({ (error("Attempted to access the head of the empty list."), error("Attempted to access the tail of the empty list.")) }, isEmpty: true)
 	}
 
 	/// Construct a list with a given head and tail.
@@ -279,7 +279,7 @@ extension List : Applicative {
 	}
 }
 
-public func <%> <A, B>(f: A -> B, ar : List<A>) -> List<B> {
+public func <%> <A, B>(f : A -> B, ar : List<A>) -> List<B> {
 	return List.fmap(f)(ar)
 }
 
@@ -297,6 +297,7 @@ public func <* <A, B>(a : List<A>, b : List<B>) -> List<A> {
 
 extension List : Alternative {
 	typealias FLA = List<[A]>
+	typealias FMA = List<Maybe<A>>
 
 	public func empty() -> List<A> {
 		return List()
@@ -308,6 +309,10 @@ extension List : Alternative {
 
 	public func many(v : List<A>) -> List<[A]> {
 		return some(v) <|> List<[A]>.pure([])
+	}
+	
+	public func optional(v : List<A>) -> List<Maybe<A>> {
+		return Maybe.just <%> v <|> List<Maybe<A>>.pure(Maybe.nothing())
 	}
 }
 

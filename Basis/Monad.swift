@@ -10,16 +10,22 @@
 /// A Monad is an (Endo)Functor (but really, that doesn't matter because all Functors in Swift are
 /// *technically* endofunctors) that respects a common-sense set of laws called the Monoid Laws:
 ///
-/// - Closure    Composing two monads produces another monad.  Actually, the same monad, but with a
-///              different value inside.  Basically, you cannot ever just compose a monad and
-///              randomly come up with something that isn't a monad.
+/// - Closure
 ///
-/// - Associativity    Composing a monad twice is the same whether you bunch your parenthesis up on
-///                    the right side, or the left side. (1 + 1) + 1 = 1 + (1 + 1)
+///     - Composing two monads produces another monad.  Actually, the same monad, but with a
+///       different value inside.  Basically, you cannot ever just compose a monad and
+///       randomly come up with something that isn't a monad.
 ///
-/// - Identity    There is some element in the set of possible parametrizations that, when composed
-///               with other elements, doesn't alter their value.  Like 0 in addition of the
-///               integers: 0 + 1 = 1 + 0 = 1
+/// - Associativity    
+///
+///     - Composing a monad twice is the same whether you bunch your parenthesis up on
+///       the right side, or the left side. (1 + 1) + 1 = 1 + (1 + 1)
+///
+/// - Identity    
+///
+///     - There is some element in the set of possible parametrizations that, when composed
+///       with other elements, doesn't alter their value.  Like 0 in addition of the
+///       integers: 0 + 1 = 1 + 0 = 1
 ///
 /// A Monad lifts these laws into an algebraic structure and adds an all-important operator for
 /// "sequencing" monads together.
@@ -46,8 +52,8 @@ public protocol Monad : Applicative {
 
 /// A monoid for monads.
 public protocol MonadPlus : Monad {
-	class func mzero() -> Self
-	class func mplus(Self) -> Self -> Self
+	static func mzero() -> Self
+	static func mplus(Self) -> Self -> Self
 }
 
 /// Additional functions to be implemented by those types conforming to the Monad protocol.
@@ -66,7 +72,7 @@ public protocol MonadOps : Monad {
 	/// Default Definition:
 	///
 	///     sequence(map(f)(xs))
-	class func mapM(A -> FB) -> [A] -> MLB
+	static func mapM(A -> FB) -> [A] -> MLB
 
 	/// Maps a function taking values to Monadic actions, then evaluates each action in the
 	/// resulting list from left to right.  The results of each evaluated action are discarded.
@@ -74,21 +80,21 @@ public protocol MonadOps : Monad {
 	/// Default Definition:
 	///
 	///     sequence_(map(f)(xs))
-	class func mapM_(A -> FB) -> [A] -> MU
+	static func mapM_(A -> FB) -> [A] -> MU
 
 	/// mapM with its arguments flipped.
 	///
 	/// Default Definition:
 	///
 	///     flip(mapM)(xs)
-	class func forM([A]) -> (A -> FB) -> MLB
+	static func forM([A]) -> (A -> FB) -> MLB
 
 	/// mapM_ with its arguments flipped.
 	///
 	/// Default Definition:
 	///
 	///     flip(mapM_)(xs)
-	class func forM_([A]) -> (A -> FB) -> MU
+	static func forM_([A]) -> (A -> FB) -> MU
 
 	/// Evaluates each Monadic action in sequence from left to right and collects the results in
 	/// another Monadic action.
@@ -96,7 +102,7 @@ public protocol MonadOps : Monad {
 	/// Default Definition:
 	///
 	///     foldr({ m, m2 in m >>- { x in m2 >>- { xs in pure(cons(x)(xs)) } } })(pure([]))(xs)
-	class func sequence([Self]) -> MLA
+	static func sequence([Self]) -> MLA
 
 	/// Evaluates each Monadic action in sequence from left to right discarding any intermediate
 	/// results.
@@ -104,7 +110,7 @@ public protocol MonadOps : Monad {
 	/// Default Definition:
 	///
 	///     foldr(>>)(pure(()))(xs)
-	class func sequence_([Self]) -> MU
+	static func sequence_([Self]) -> MU
 
 
 	/// Bind | Like bind but with its arguments flipped.

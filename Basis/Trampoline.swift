@@ -7,7 +7,7 @@
 //  Released under the MIT license.
 //
 
-/// Represents a computation that either produces a value (pure) or branches (suspend).  Trampolines
+/// Represents a computation that either produces a value (now) or branches (later).  Trampolines
 /// allow computations that would otherwise use a large amount of stack space to instead trade that
 /// cost to the much larger heap and evaluate in constant stack space.
 ///
@@ -36,7 +36,7 @@ public func now<T>(x : T) -> Trampoline<T> {
 /// Suspends a sub-computation that yields another Trampoline for evaluation later.
 ///
 /// Adds a branch to the computation tree of a Trampoline.
-public func later<T>(x : @autoclosure() -> Trampoline<T>) -> Trampoline<T> {
+public func later<T>(x : () -> Trampoline<T>) -> Trampoline<T> {
 	return Trampoline(Suspend(s: Box(x)))
 }
 
@@ -243,7 +243,7 @@ private class Suspend<T> : FreeId<T> {
 
 /// There's got to be a better way to do this...
 private func liftCodense<A, B>(a : FreeId<A>, k : A -> FreeId<B>) -> Codensity<B> {
-	return Codensity<B>(sub: unsafeCoerce(a), unsafeCoerce(k))
+	return Codensity<B>(sub: unsafeCoerce(a), k: unsafeCoerce(k))
 }
 
 private class Codensity<T> : FreeId<T> {
@@ -260,16 +260,16 @@ private class Codensity<T> : FreeId<T> {
 	}
 	
 	private override func flatMap<B>(f: T -> FreeId<B>) -> FreeId<B> {
-		return liftCodense(sub, { o in later(Trampoline(self.k(o).flatMap(f))).t })
+		return liftCodense(sub, { o in later { Trampoline(self.k(o).flatMap(f)) }.t })
 	}
 		
 	private override func resume() -> Either<Box<() -> Trampoline<T>>, T> {
 		let e : Box<() -> Trampoline<T>> = either({ p in 
-			Box.fmap({ ot in 
+			return Box.fmap({ ot in 
 				ot().t.fold({ o in
-					{ o.normalFold({ obj in Trampoline(self.k(obj)) }, { t in t.unBox()() }) }
+					{ o.normalFold({ obj in Trampoline(self.k(obj)) }, suspend: { t in t.unBox()() }) }
 				}, 
-				{ c in 
+				codense: { c in 
 					{ Trampoline(liftCodense(c.sub, { o in c.k(o).flatMap(self.k) })) }
 				}) 
 			})(p) 

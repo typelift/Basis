@@ -7,16 +7,17 @@
 //  Released under the MIT license.
 //
 
-/// Applicative sits in the middle distance between a Functor and a Monad.  An Applicative Functor
-/// is a Functor equipped with a function (called point or lift) that takes a value to an instance
-/// of a functor containing that value. Applicative Functors provide the ability to operate on not
-/// just values, but values in a functorial context such as Eithers, Lists, and Optionals without
-/// needing to unwrap or map over their contents.
+/// Applicative sits in the middle distance between a Functor and a Monad.  
+///
+/// Applicative Functors, as the name implies, allow for the application of functions inside of
+/// Functors.  In this way Applicative Functors provide the  ability to operate on not just values, 
+/// but values in a functorial context such as Eithers, Lists, and Optionals without needing to 
+/// unwrap or map over their contents.
 public protocol Applicative : Pointed, Functor {
 	/// Type of Functors containing morphisms from our objects to a target.
 	typealias FAB = K1<A -> B>
 	
-	class func ap(FAB) -> Self -> FB
+	static func ap(FAB) -> Self -> FB
 	
 	/// Sequential Application | Applies the function "inside the Functor" to the "inside" of our 
 	/// Functor and herds up the results.
@@ -26,13 +27,15 @@ public protocol Applicative : Pointed, Functor {
 	/// the right.
 	///
 	/// Default definition: 
-	///		`const(id) <%> a <*> b`
+	///
+	///		const(id) <%> a <*> b
 	func *>(Self, FB) -> FB
 	
 	/// Sequence Left | Disregards the Functor on the Right.
 	///
 	/// Default definition: 
-	///		`const <%> a <*> b`
+	///
+	///		const <%> a <*> b
 	func <*(Self, FB) -> Self
 }
 
@@ -40,7 +43,8 @@ public protocol Applicative : Pointed, Functor {
 public protocol Alternative : Applicative {
 	/// The type of the result of Alternative's mappend-esque functions.
 	typealias FLA = K1<[A]>
-	
+	typealias FMA = K1<Maybe<A>>
+
 	/// Returns the identity element.
 	func empty() -> Self
 	
@@ -62,6 +66,13 @@ public protocol Alternative : Applicative {
 	///
 	///		some(v) <|> pure([])
 	func many(Self) -> FLA
+	
+	/// One or none
+	///
+	/// Default definition:
+	///
+	///		`Maybe.just <%> v <|> pure(Maybe.nothing())`
+	func optional(Self) -> FMA
 }
 
 /// Additional functions to be implemented by those types conforming to the Applicative protocol.
@@ -72,11 +83,11 @@ public protocol ApplicativeOps : Applicative {
 	typealias FD = K1<D>
 
 	/// Lift a function to a Functorial action.
-	class func liftA(f : A -> B) -> Self -> FB
+	static func liftA(f : A -> B) -> Self -> FB
 
 	/// Lift a binary function to a Functorial action.
-	class func liftA2(f : A -> B -> C) -> Self -> FB -> FC
+	static func liftA2(f : A -> B -> C) -> Self -> FB -> FC
 
 	/// Lift a ternary function to a Functorial action.
-	class func liftA3(f : A -> B -> C -> D) -> Self -> FB -> FC -> FD
+	static func liftA3(f : A -> B -> C -> D) -> Self -> FB -> FC -> FD
 }

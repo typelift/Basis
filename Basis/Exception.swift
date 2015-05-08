@@ -27,7 +27,7 @@ public func throwIO<A>(e : Exception) -> IO<A> {
 	}
 }
 
-public func catchException<A>(io : IO<A>)(handler: Exception -> IO<A>) -> IO<A> {
+public func catchException<A>(io : IO<A>)(_ handler: Exception -> IO<A>) -> IO<A> {
 	return catch(io)({ (let excn : Exception) in
 		return handler(SomeException(excn.description ?? ""))
 	})
@@ -71,7 +71,7 @@ public func finally<A, B>(a : IO<A>)(then : IO<B>) -> IO<A> {
 }
 
 public func try<A>(io : IO<A>) -> IO<Either<Exception, A>> {
-	return catch(io >>- { v in IO.pure(Either.right(v)) })(h: { e in IO.pure(Either.left(e)) })
+	return catch(io >>- { v in IO.pure(Either.right(v)) })({ e in IO.pure(Either.left(e)) })
 }
 
 public func tryJust<A, B>(p : Exception -> Maybe<B>) -> IO<A> -> IO<Either<B, A>> {
@@ -93,7 +93,7 @@ public func tryJust<A, B>(p : Exception -> Maybe<B>) -> IO<A> -> IO<Either<B, A>
 	}
 }
 
-private func catch<A>(io : IO<A>)(h : (Exception -> IO<A>)) -> IO<A> {
+private func catch<A>(io : IO<A>)(_ h : (Exception -> IO<A>)) -> IO<A> {
 	var val : A! 
 	BASERealWorld.catch({ val = io.unsafePerformIO() }, to: { val = !h(SomeException($0.description ?? "")) })
 	return IO.pure(val!)
