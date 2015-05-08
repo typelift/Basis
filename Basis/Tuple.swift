@@ -24,7 +24,7 @@ public func snd<A, B>(t : (A, B)) -> B {
 public func curry<A, B, C>(f : (A, B) -> C) ->  A -> B -> C {
 	return { a in
 		return { b in
-			return f((a, b))
+			return f(a, b)
 		}
 	}
 }

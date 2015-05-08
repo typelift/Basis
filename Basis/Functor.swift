@@ -42,7 +42,7 @@ public protocol Functor {
 	/// Map "inside" a Functor.
 	///
 	/// F on our diagram.
-	class func fmap(A -> B) -> Self -> FB
+	static func fmap(A -> B) -> Self -> FB
 	func <%>(A -> B, Self) -> FB
 
 	/// Constant Replace | Replaces all values in the target Functor with a singular constant value

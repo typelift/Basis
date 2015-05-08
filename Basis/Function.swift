@@ -112,6 +112,13 @@ extension Function : ArrowApply {
 	public static func app() -> Function<(Function<T, U>, A), B> {
 		return Function<(Function<T, U>, A), B>({ (f, x) in f.apply(x) })
 	}
+	
+	public static func leftApp<C>(f : Function<A, B>) -> Function<Either<A, C>, Either<B, C>> {
+		let l : Function<A, (Function<Void, Either<B, C>>, Void)> = ^{ (let a : A) -> (Function<Void, Either<B, C>>, Void) in (Function<Void, A>.arr({ _ in a }) >>> f >>> Function<B, Either<B, C>>.arr(Either.left), Void()) }
+		let r : Function<C, (Function<Void, Either<B, C>>, Void)> = ^{ (let c : C) -> (Function<Void, Either<B, C>>, Void) in (Function<Void, C>.arr({ _ in c }) >>> Function<C, Either<B, C>>.arr(Either.right), Void()) }
+
+		return (l ||| r) >>> Function<Void, Either<B, C>>.app()
+	}
 }
 
 extension Function : ArrowLoop {

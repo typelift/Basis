@@ -27,14 +27,14 @@ public func readIORef<A>(ref : IORef<A>) -> IO<A> {
 }
 
 /// Writes a value to the IORef
-public func writeIORef<A>(ref : IORef<A>)(v: A) -> IO<Void> {
+public func writeIORef<A>(ref : IORef<A>)(_ v : A) -> IO<Void> {
 	return stToIO(ST.fmap({ (_) in
 		return ()
-	})(writeSTRef(ref.value)(a: v)))
+	})(writeSTRef(ref.value)(v)))
 }
 
 /// Applies a function to the contents of the IORef
-public func modifyIORef<A>(ref : IORef<A>)(vfn : (A -> A)) -> IO<Void> {
+public func modifyIORef<A>(ref : IORef<A>)(_ vfn : (A -> A)) -> IO<Void> {
 	return stToIO(modifySTRef(ref.value)(vfn)) >> IO.pure(())
 }
 

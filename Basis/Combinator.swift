@@ -1,5 +1,5 @@
 //
-//  Functions.swift
+//  Combinator.swift
 //  Basis
 //
 //  Created by Robert Widmann on 9/7/14.
@@ -7,7 +7,22 @@
 //  Released under the MIT license.
 //
 
-/// Polymorphic identity function.
+/// The polymorphic identity function always returns the argument it was given.
+///
+/// Identities can be used to enforce a relationship between two types in the name of safety.  For 
+/// example, concatenation is a function on arrays of arrays, but there isn't a built-in way to 
+/// express an extension of [[T]].  By using the identity as a relation the compiler is forced to 
+/// only allow `concat(_:)` to be invoked with nested arrays:
+///
+///     extension Array {
+///         /// Concatenate an array of arrays.
+///         func concat(rel : [T] -> [[U]]) -> [U] {
+///             return foldr({ $0 + $1 })([])(rel(self))
+///         }
+///     }
+///
+///     let flat  = [[1, 2, 3], [4, 5]].concat(id) // [1, 2, 3, 4, 5]
+///     // let error = [1, 2, 3, 4, 5].concat(id) // Does not typecheck
 public func id<A>(x : A) -> A {
 	return x
 }
@@ -19,13 +34,25 @@ public func const<A, B>(x : A) -> B -> A {
 	}
 }
 
+/// Applies the second function to a value, then applies the first function to a value and the
+/// result of the previous function application.
+public func substitute<R, A, B>(f : R -> A -> B) -> (R -> A) -> R -> B {
+	return { g in { x in f(x)(g(x)) } }
+}
+
+/// Applies the second function to a value, then applies the first function to a value and the
+/// result of the previous function application.
+public func substitute<R, A, B>(f : (R, A) -> B) -> (R -> A) -> R -> B {
+	return { g in { x in f(x, g(x)) } }
+}
+
 /// Pipe Backward | Applies the function to its left to an argument on its right.
 ///
 /// Chains of regular function applications are often made unnecessarily verbose and tedius by
 /// large amounts of parenthesis.  Because this operator has a low precedence and is right-
 /// associative, it can often be used to elide parenthesis such that the following holds:
 ///
-///     f <<| g <<| h x  =  f (g (h (x)))
+///     f <<| g <<| h(x)  =  f (g (h (x)))
 ///
 /// Haskellers will know this as the ($) combinator.
 public func <<| <A, B>(f : A -> B, x : A) -> B {
@@ -34,10 +61,10 @@ public func <<| <A, B>(f : A -> B, x : A) -> B {
 
 /// Pipe Forward | Applies the argument on its left to a function on its right.
 ///
-/// Sometimes, a computation looks more natural when data is computer first on the right side of
+/// Sometimes, a computation looks more natural when a value is computed on the right side of
 /// an expression and applied to a function on the left.  For example, this:
 ///
-///     and(zip(nubBy(==)(x))(y).map(==))
+///     let result = and(zip(nubBy(==)(x))(y).map(==))
 ///		
 /// can also be written as:
 ///
@@ -49,53 +76,88 @@ public func |>> <A, B>(x : A, f : A -> B) -> B {
 }
 
 /// Function Composition | Composes the target of the left function with the source of the second
-/// function to pipe the results through one larger function from left source to right target.
+/// function to pipe the results through one larger function from right source to left target.
 ///
-/// g . f x = g(f(x))
+///     (g • f)(x) = g(f(x))
+///
+/// While the definition of this operator may seem backwards, it may help to read it as "after" to
+/// see why it makes sense as-is.  As in:
+///
+///     h • g • f = 'h' after 'g' after 'f' 
 public func • <A, B, C>(f : B -> C, g : A -> B) -> A -> C {
 	return { f(g($0)) }
 }
 
-/// The fixpoint combinator is a higher-order function that computes the fixed point of an equation.
-/// That is, the point at which further application of x is the same x
+/// The fixpoint (or Y) combinator computes the least fixed point of an equation. That is, the first
+/// point at which further application of x to a function is the same x.
 ///
 ///     x = f(x)
 ///
 /// The fixpoint combinator models recursion in the untyped lambda calculus, and is notoriously
-/// difficult to define and type in ML-style systems.  Especially because Swift is strict by default
-/// we have to be incredibly careful and take an extra parameter to avoid infinite expansion of the
-/// call tree.  Recursive functions must also be careful and include an extra level of lambda
-/// abstraction (that is, take themselves as a parameter).
+/// difficult to define and type in ML-style systems because it can often lead to paradoxes. Case in
+/// point, the canonical definition of the Y combinator in Swift is as follows:
+/// 
+///     func Y() -> (A -> A) -> A {
+///         return { f in
+///             return ({ x in
+///                 return f(x(x))
+///             })({ x in
+///                 return f(x(x))
+///             })
+///         }
+///     }
+///
+/// This definition can never be typechecked by Swift because any instantiation of x must have the 
+/// infinite type A : A -> B, or `A -> B -> C -> D -> E -> F -> G -> H -> I -> ...`
+///
+/// Because Swift is also strict by default, the traditional definition of the fixpoint combinator 
+/// has been eta-expanded (i.e. it now takes itself as a parameter) to allow evaluation in constant 
+/// stack space.  Without this kind of protection, fix would compute ⊥ by smashing the stack and 
+/// crashing.
 public func fix<A>(f : ((A -> A) -> A -> A)) -> A -> A {
 	return { x in f(fix(f))(x) }
 }
 
-/// On | Given a "combining" function and a function that converts arguments to the target of the
-/// combiner, returns a function that applies the right hand side to two arguments, then runs both
-/// results through the combiner.
+/// On | Applies the function on its right to both its arguments, then applies the function on its
+/// left to the result of both prior applications.
+///
+///    f |*| g = { x in { y in f(g(x))(g(y)) } }
+///
+/// This function may be useful when a comparing two like objects using a given property, as in:
+/// 
+///     let arr : [(Int, String)] = [(2, "Second"), (1, "First"), (5, "Fifth"), (3, "Third"), (4, "Fourth")]
+///     let sortedByFirstIndex = sortBy((<) |*| fst)(arr)
 public func |*| <A, B, C>(o : B -> B -> C, f : A -> B) -> A -> A -> C {
 	return on(o)(f)
 }
 
-/// On | Given a "combining" function and a function that converts arguments to the target of the
-/// combiner, returns a function that applies the right hand side to two arguments, then runs both
-/// results through the combiner.
+/// On | Applies the function on its right to both its arguments, then applies the function on its
+/// left to the result of both prior applications.
+///
+///    (+) |*| f = { x, y in f(x) + f(y) }
+///
+/// This function may be useful when a comparing two like objects using a given property, as in:
+/// 
+///     let arr : [(Int, String)] = [(2, "Second"), (1, "First"), (5, "Fifth"), (3, "Third"), (4, "Fourth")]
+///     let sortedByFirstIndex = sortBy((<) |*| fst)(arr)
 public func |*| <A, B, C>(o : (B, B) -> C, f : A -> B) -> A -> A -> C {
 	return on(o)(f)
 }
 
-/// On | Given a "combining" function and a function that converts arguments to the target of the
-/// combiner, returns a function that applies the right hand side to two arguments, then runs both
-/// results through the combiner.
+/// On | Applies the function on its right to both its arguments, then applies the function on its
+/// left to the result of both prior applications.
+///
+///    (+) `|*|` f = { x, y in f(x) + f(y) }
 public func on<A, B, C>(o : B -> B -> C) -> (A -> B) -> A -> A -> C {
 	return { f in { x in { y in o(f(x))(f(y)) } } }
 }
 
-/// On | Given a "combining" function and a function that converts arguments to the target of the
-/// combiner, returns a function that applies the right hand side to two arguments, then runs both
-/// results through the combiner.
-public func on<A, B, C>(o : (B, B) -> C)(f : A -> B) -> A -> A -> C {
-	return { x in { y in o(f(x), f(y)) } }
+/// On | Applies the function on its right to both its arguments, then applies the function on its
+/// left to the result of both prior applications.
+///
+///    (+) `|*|` f = { x, y in -> f(x) + f(y) }
+public func on<A, B, C>(o : (B, B) -> C) -> (A -> B) -> A -> A -> C {
+	return { f in { x in { y in o(f(x), f(y)) } } }
 }
 
 /// Returns a function with the position of the arguments switched.

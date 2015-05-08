@@ -51,7 +51,7 @@ class MaybeSpec : XCTestCase {
 	}
 
 	func testListToOptional() {
-		let l1 = []
+		let l1 = [Int]()
 		let l2 = [100]
 
 		XCTAssertTrue(listToOptional(l1) == nil, "")
