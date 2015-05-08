@@ -86,7 +86,7 @@ public func getChar() -> IO<Character> {
 public func getLine() -> IO<String> {
 	return do_ { () -> String in
 		var str : UnsafeMutablePointer<Int8> = nil
-		var numBytes : UInt = 0;
+		var numBytes : Int = 0;
 		if getline(&str, &numBytes, stdin) == -1 {
 			return ""
 		}
