@@ -255,16 +255,16 @@ public func <> <A>(l : First<A>, r : First<A>) -> First<A> {
 }
 
 extension First : Pointed {
-	public static func pure(x : A) -> First<A> {
-		return First(Maybe(x))
+	public static func pure(x : Maybe<A>) -> First<A> {
+		return First(x)
 	}
 }
 
-//extension First : Copointed {
-//	public func extract() -> Maybe<A> {
-//		return self.getFirst
-//	}
-//}
+extension First : Copointed {
+	public func extract() -> Maybe<A> {
+		return self.getFirst
+	}
+}
 
 /// The right-biased maybe monoid.
 public struct Last<A> {
@@ -292,16 +292,16 @@ public func <> <A>(l : Last<A>, r : Last<A>) -> Last<A> {
 }
 
 extension Last : Pointed {
-	public static func pure(x : A) -> Last<A> {
-		return Last(Maybe(x))
+	public static func pure(x : Maybe<A>) -> Last<A> {
+		return Last(x)
 	}
 }
 
-//extension Last : Copointed {
-//	public func extract() -> Maybe<A> {
-//		return self.getLast
-//	}
-//}
+extension Last : Copointed {
+	public func extract() -> Maybe<A> {
+		return self.getLast
+	}
+}
 
 /// The monoid of ordered values under max.
 public struct Max<A : protocol<Comparable, Bounded>> {
@@ -316,7 +316,7 @@ extension Max : Monoid {
 	typealias M = Max<A>
 	
 	public static func mempty() -> Max<A> {
-		return Max(A.minBound())
+		return Max(A.minBound)
 	}
 	
 	public static func mappend(l : Max<A>) -> Max<A> -> Max<A> {
@@ -353,7 +353,7 @@ extension Min : Monoid {
 	typealias M = Min<A>
 	
 	public static func mempty() -> Min<A> {
-		return Min(A.maxBound())
+		return Min(A.maxBound)
 	}
 	
 	public static func mappend(l : Min<A>) -> Min<A> -> Min<A> {
@@ -393,6 +393,22 @@ extension String : Monoid {
 public func <>(l : String, r : String) -> String {
 	return l + r
 }
+
+//extension Array : Monoid {
+//	typealias M = Array<T>
+//
+//	public static func mempty() -> Array<T> {
+//		return []
+//	}
+//
+//	public static func mappend(l : Array<T>) -> Array<T> -> Array<T> {
+//		return { l + $0 }
+//	}
+//}
+//
+//public func <> <T>(l : Array<T>, r : Array<T>) -> Array<T> {
+//	return l + r
+//}
 
 /// MARK: Equatable
 
@@ -468,14 +484,3 @@ public func !=<T : protocol<IntegerArithmeticType, IntegerLiteralConvertible, Eq
 	return !(lhs == rhs)
 }
 
-//extension Array : Monoid {
-//	typealias M = Array<T>
-//
-//	public static func mempty() -> Array<T> {
-//		return []
-//	}
-//	
-//	public static func mappend(l : Array<T>) -> Array<T> -> Array<T> {
-//		return { l ++ $0 }
-//	}
-//}
