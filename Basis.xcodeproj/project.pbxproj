@@ -138,6 +138,25 @@
 		84922D7719D237E000AE9A7C /* Unique.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D4519D237E000AE9A7C /* Unique.swift */; };
 		84922EB119D3869B00AE9A7C /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922EB019D3869B00AE9A7C /* Result.swift */; };
 		849AA3A21A09833A00472F08 /* Basis.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84C9967119CE89F30046906D /* Basis.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		84A53D1E1B1A8E4800E8A107 /* ArrowSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F9062D19D638BD0035D429 /* ArrowSpec.swift */; };
+		84A53D1F1B1A8E4800E8A107 /* CharSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8427737B1A5CDB6F00CF1E67 /* CharSpec.swift */; };
+		84A53D201B1A8E4800E8A107 /* CompareSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8434F97219E8C2FC008D9909 /* CompareSpec.swift */; };
+		84A53D211B1A8E4800E8A107 /* EitherSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8418FC5119CFB3480010923E /* EitherSpec.swift */; };
+		84A53D221B1A8E4800E8A107 /* FoldsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847E99DD1A48B38A00B5B8CE /* FoldsSpec.swift */; };
+		84A53D231B1A8E4800E8A107 /* FunctionsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C996FE19CE8A970046906D /* FunctionsSpec.swift */; };
+		84A53D241B1A8E4800E8A107 /* InfinitySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C996FF19CE8A970046906D /* InfinitySpec.swift */; };
+		84A53D251B1A8E4800E8A107 /* LazySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8441AAAB1A0C531A008D5701 /* LazySpec.swift */; };
+		84A53D261B1A8E4800E8A107 /* ListSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D77DF81A3CF9F4000F5683 /* ListSpec.swift */; };
+		84A53D271B1A8E4800E8A107 /* MaybeSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8418FC4E19CFAED80010923E /* MaybeSpec.swift */; };
+		84A53D281B1A8E4800E8A107 /* MemberSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84095F0E1A28EAEC00956141 /* MemberSpec.swift */; };
+		84A53D291B1A8E4800E8A107 /* MonoidSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A802DE19D3BC1200E71F93 /* MonoidSpec.swift */; };
+		84A53D2A1B1A8E4800E8A107 /* OperatorsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C9970019CE8A970046906D /* OperatorsSpec.swift */; };
+		84A53D2B1B1A8E4800E8A107 /* StringSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C9970119CE8A970046906D /* StringSpec.swift */; };
+		84A53D2C1B1A8E4800E8A107 /* TrampolineSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84896B441A475841006F3EA9 /* TrampolineSpec.swift */; };
+		84A53D2D1B1A8E4800E8A107 /* TupleSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C9970219CE8A970046906D /* TupleSpec.swift */; };
+		84A53D2E1B1A8E4800E8A107 /* UniqueSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8418FC4B19CFA9BA0010923E /* UniqueSpec.swift */; };
+		84A53D2F1B1A8E4800E8A107 /* VersionSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8434F97019E8BE43008D9909 /* VersionSpec.swift */; };
+		84A53D301B1A8E4800E8A107 /* ZipSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84423DE71A033BA700361829 /* ZipSpec.swift */; };
 		84A802E019D3BD3D00E71F93 /* MonoidSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A802DE19D3BC1200E71F93 /* MonoidSpec.swift */; };
 		84C9967D19CE89F40046906D /* Basis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C9967119CE89F30046906D /* Basis.framework */; };
 		84C9970419CE8A970046906D /* FunctionsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C996FE19CE8A970046906D /* FunctionsSpec.swift */; };
@@ -778,6 +797,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84A53D1E1B1A8E4800E8A107 /* ArrowSpec.swift in Sources */,
+				84A53D1F1B1A8E4800E8A107 /* CharSpec.swift in Sources */,
+				84A53D201B1A8E4800E8A107 /* CompareSpec.swift in Sources */,
+				84A53D211B1A8E4800E8A107 /* EitherSpec.swift in Sources */,
+				84A53D221B1A8E4800E8A107 /* FoldsSpec.swift in Sources */,
+				84A53D231B1A8E4800E8A107 /* FunctionsSpec.swift in Sources */,
+				84A53D241B1A8E4800E8A107 /* InfinitySpec.swift in Sources */,
+				84A53D251B1A8E4800E8A107 /* LazySpec.swift in Sources */,
+				84A53D261B1A8E4800E8A107 /* ListSpec.swift in Sources */,
+				84A53D271B1A8E4800E8A107 /* MaybeSpec.swift in Sources */,
+				84A53D281B1A8E4800E8A107 /* MemberSpec.swift in Sources */,
+				84A53D291B1A8E4800E8A107 /* MonoidSpec.swift in Sources */,
+				84A53D2A1B1A8E4800E8A107 /* OperatorsSpec.swift in Sources */,
+				84A53D2B1B1A8E4800E8A107 /* StringSpec.swift in Sources */,
+				84A53D2C1B1A8E4800E8A107 /* TrampolineSpec.swift in Sources */,
+				84A53D2D1B1A8E4800E8A107 /* TupleSpec.swift in Sources */,
+				84A53D2E1B1A8E4800E8A107 /* UniqueSpec.swift in Sources */,
+				84A53D2F1B1A8E4800E8A107 /* VersionSpec.swift in Sources */,
+				84A53D301B1A8E4800E8A107 /* ZipSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1147,6 +1185,7 @@
 				841408DE1B1A8BE800BA2B6C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		841408E21B1A8BE800BA2B6C /* Build configuration list for PBXNativeTarget "Basis-iOSTests" */ = {
 			isa = XCConfigurationList;
@@ -1155,6 +1194,7 @@
 				841408E01B1A8BE800BA2B6C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		84C9966B19CE89F30046906D /* Build configuration list for PBXProject "Basis" */ = {
 			isa = XCConfigurationList;
