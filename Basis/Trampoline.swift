@@ -179,11 +179,11 @@ private class FreeId<T> {
 	func run() -> T {
 		var current = self
 		while true {
-			switch current.resume().match() {
+			switch current.resume() {
 				case .Left(let ba):
-					current = ba.unBox().unBox()().t
+					current = ba.unBox()().t
 				case .Right(let bb):
-					return bb.unBox()
+					return bb
 			}
 		}
 	}
@@ -197,7 +197,7 @@ private class FreeId<T> {
 	}
 	
 	func flatMap<B>(f : T -> FreeId<B>) -> FreeId<B> {
-		return liftCodense(self, f)
+		return liftCodense(self, k: f)
 	}
 }
 
@@ -217,7 +217,7 @@ private class Pure<T> : FreeId<T> {
 	}
 	
 	private override func resume() -> Either<Box<() -> Trampoline<T>>, T> {
-		return Either.right(self.val)
+		return Either.Right(self.val)
 	}
 }
 
@@ -237,7 +237,7 @@ private class Suspend<T> : FreeId<T> {
 	}
 	
 	private override func resume() -> Either<Box<() -> Trampoline<T>>, T> {
-		return Either.left(self.suspension)
+		return Either.Left(self.suspension)
 	}
 }
 
@@ -260,7 +260,7 @@ private class Codensity<T> : FreeId<T> {
 	}
 	
 	private override func flatMap<B>(f: T -> FreeId<B>) -> FreeId<B> {
-		return liftCodense(sub, { o in later { Trampoline(self.k(o).flatMap(f)) }.t })
+		return liftCodense(sub, k: { o in later { Trampoline(self.k(o).flatMap(f)) }.t })
 	}
 		
 	private override func resume() -> Either<Box<() -> Trampoline<T>>, T> {
@@ -270,13 +270,13 @@ private class Codensity<T> : FreeId<T> {
 					{ o.normalFold({ obj in Trampoline(self.k(obj)) }, suspend: { t in t.unBox()() }) }
 				}, 
 				codense: { c in 
-					{ Trampoline(liftCodense(c.sub, { o in c.k(o).flatMap(self.k) })) }
+					{ Trampoline(liftCodense(c.sub, k: { o in c.k(o).flatMap(self.k) })) }
 				}) 
 			})(p) 
 		})({ o in 
 			return Box<() -> Trampoline<T>>({ Trampoline(self.k(o)) }) 
 		})(self.sub.resume())
 
-		return Either<Box<() -> Trampoline<T>>, T>.left(e)
+		return Either<Box<() -> Trampoline<T>>, T>.Left(e)
 	}
 }

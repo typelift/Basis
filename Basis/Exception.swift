@@ -7,7 +7,7 @@
 //  Released under the MIT license.
 //
 
-public protocol Exception : Printable {	}
+public protocol Exception : CustomStringConvertible {	}
 
 public struct SomeException : Exception {
 	public var description : String
@@ -17,18 +17,18 @@ public struct SomeException : Exception {
 	}
 }
 
-public func throw<A>(e : Exception) -> A {
+public func `throw`<A>(e : Exception) -> A {
 	fatalError(e.description)
 }
 
 public func throwIO<A>(e : Exception) -> IO<A> {
 	return do_ { () -> A in
-		return throw(e)
+		return `throw`(e)
 	}
 }
 
 public func catchException<A>(io : IO<A>)(_ handler: Exception -> IO<A>) -> IO<A> {
-	return catch(io)({ (let excn : Exception) in
+	return `catch`(io)({ (let excn : Exception) in
 		return handler(SomeException(excn.description ?? ""))
 	})
 }
@@ -43,7 +43,7 @@ public func mask<A, B>(io : (IO<A> -> IO<A>) -> IO<B>) -> IO<B> {
 public func onException<A, B>(io : IO<A>)(what : IO<B>) -> IO<A> {
 	return catchException(io)({ e in
 		return do_({
-			let b : B = !what
+			let _ : B = !what
 			return throwIO(e)
 		})
 	})
@@ -64,38 +64,38 @@ public func finally<A, B>(a : IO<A>)(then : IO<B>) -> IO<A> {
 	return mask({ (let restore : IO<A> -> IO<A>) -> IO<A> in
 		return do_ { () -> A in
 			let r = !onException(restore(a))(what: then)
-			let b = !then
+			let _ = !then
 			return r
 		}
 	})
 }
 
-public func try<A>(io : IO<A>) -> IO<Either<Exception, A>> {
-	return catch(io >>- { v in IO.pure(Either.right(v)) })({ e in IO.pure(Either.left(e)) })
+public func `try`<A>(io : IO<A>) -> IO<Either<Exception, A>> {
+	return `catch`(io >>- { v in IO.pure(Either.Right(v)) })({ e in IO.pure(Either.Left(e)) })
 }
 
-public func tryJust<A, B>(p : Exception -> Maybe<B>) -> IO<A> -> IO<Either<B, A>> {
+public func tryJust<A, B>(p : Exception -> Optional<B>) -> IO<A> -> IO<Either<B, A>> {
 	return { io in
 		do_ {
-			let r = !try(io)
-			switch r.match() {
+			let r = !`try`(io)
+			switch r {
 				case .Right(let bv):
-					return IO.pure(Either.right(bv.unBox()))
+					return IO.pure(Either.Right(bv))
 				case .Left(let be):
-					switch p(be.unBox()).match() {
-						case .Nothing:
-							return throwIO(be.unBox())
-						case .Just(let b):
-							return IO.pure(Either.left(b))
+					switch p(be) {
+						case .None:
+							return throwIO(be)
+						case .Some(let b):
+							return IO.pure(Either.Left(b))
 					}
 			}
 		}
 	}
 }
 
-private func catch<A>(io : IO<A>)(_ h : (Exception -> IO<A>)) -> IO<A> {
+private func `catch`<A>(io : IO<A>)(_ h : (Exception -> IO<A>)) -> IO<A> {
 	var val : A! 
-	BASERealWorld.catch({ val = io.unsafePerformIO() }, to: { val = !h(SomeException($0.description ?? "")) })
+	BASERealWorld.`catch`({ val = io.unsafePerformIO() }, to: { val = !h(SomeException($0.description ?? "")) })
 	return IO.pure(val!)
 }
 

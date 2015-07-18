@@ -17,11 +17,11 @@ public protocol Applicative : Pointed, Functor {
 	/// Type of Functors containing morphisms from our objects to a target.
 	typealias FAB = K1<A -> B>
 	
-	static func ap(FAB) -> Self -> FB
+	static func ap(_: FAB) -> Self -> FB
 	
 	/// Sequential Application | Applies the function "inside the Functor" to the "inside" of our 
 	/// Functor and herds up the results.
-	func <*>(FAB , Self) -> FB
+	func <*>(_: FAB , _: Self) -> FB
 	
 	/// Sequence Right | Executes the action in the functor on the left and returns the functor on
 	/// the right.
@@ -29,21 +29,21 @@ public protocol Applicative : Pointed, Functor {
 	/// Default definition: 
 	///
 	///		const(id) <%> a <*> b
-	func *>(Self, FB) -> FB
+	func *>(_: Self, _: FB) -> FB
 	
 	/// Sequence Left | Disregards the Functor on the Right.
 	///
 	/// Default definition: 
 	///
 	///		const <%> a <*> b
-	func <*(Self, FB) -> Self
+	func <*(_: Self, _: FB) -> Self
 }
 
 /// Alternatives are Applicative Monoids.
 public protocol Alternative : Applicative {
 	/// The type of the result of Alternative's mappend-esque functions.
 	typealias FLA = K1<[A]>
-	typealias FMA = K1<Maybe<A>>
+	typealias FMA = K1<Optional<A>>
 
 	/// Returns the identity element.
 	func empty() -> Self
@@ -51,28 +51,28 @@ public protocol Alternative : Applicative {
 	/// Choose | Chooses the greater of two Alternatives.
 	///
 	/// This function will attempt to choose an Alternative that is not the empty() Alternative.
-	func <|>(Self, Self) -> Self
+	func <|>(_: Self, _: Self) -> Self
 
 	/// One or more
 	///
 	/// The least solution to the equation:
 	///
 	///		curry(<|) <%> v <*> many(v)
-	func some(Self) -> FLA
+	func some(_: Self) -> FLA
 
 	/// Zero or more
 	///
 	/// The least solution to the equation:
 	///
 	///		some(v) <|> pure([])
-	func many(Self) -> FLA
+	func many(_: Self) -> FLA
 	
 	/// One or none
 	///
 	/// Default definition:
 	///
-	///		`Maybe.just <%> v <|> pure(Maybe.nothing())`
-	func optional(Self) -> FMA
+	///		`Optional.just <%> v <|> pure(Optional.None)`
+	func optional(_: Self) -> FMA
 }
 
 /// Additional functions to be implemented by those types conforming to the Applicative protocol.

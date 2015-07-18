@@ -27,7 +27,7 @@ public func ==(lhs : Version, rhs : Version) -> Bool {
 	return lhs.versionBranch == rhs.versionBranch && sort(lhs.versionTags) == sort(rhs.versionTags)
 }
 
-extension Version : Printable {
+extension Version : CustomStringConvertible {
 	public var description : String {
 		get {
 			let versions = concat(intersperse(unpack("."))(self.versionBranch.map({ (let b : Int) in unpack(b.description) })))

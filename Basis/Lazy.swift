@@ -9,7 +9,7 @@
 
 internal enum LazyState<A> {
 	case Eventually(() -> A)
-	case Now(Box<A>)
+	case Now(A)
 }
 
 /// @autoclosure as a monad.
@@ -29,14 +29,14 @@ public func force<A>(l : Lazy<A>) -> A {
 	return (modifySTRef(l.state)({ st in
 		switch st {
 			case .Eventually(let f):
-				return .Now(Box(f()))
+				return .Now(f())
 			default:
 				return st
 		}
 	}) >>- { st in
 		switch readSTRef(st).runST() {
 			case .Now(let bx):
-				return ST<(), A>.pure(bx.unBox())
+				return ST<(), A>.pure(bx)
 			default:
 				fatalError("Cannot ")
 		}
@@ -53,7 +53,7 @@ extension Lazy : Functor {
 				case .Eventually(let d):
 					return delay({ f(d()) })
 				case .Now(let bx):
-					return self.pure(f(bx.unBox()))
+					return self.pure(f(bx))
 			}
 		}
 	}
@@ -69,7 +69,7 @@ public func <%<A, B>(x : A, l : Lazy<B>) -> Lazy<A> {
 
 extension Lazy : Pointed {
 	public static func pure<A>(a: A) -> Lazy<A> {
-		return Lazy<A>(newSTRef(.Now(Box(a))).runST())
+		return Lazy<A>(newSTRef(.Now(a)).runST())
 	}
 }
 
@@ -82,7 +82,7 @@ extension Lazy : Applicative {
 				case .Eventually(let d):
 					return delay({ d()(force(st)) })
 				case .Now(let bx):
-					return Lazy<A>.fmap(bx.unBox())(st)
+					return Lazy<A>.fmap(bx)(st)
 			}
 		}
 	}

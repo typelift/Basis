@@ -59,21 +59,21 @@ public prefix func !<A>(m: IO<A>) -> A {
 
 /// Writes a character to standard output.
 public func putChar(c : Character) -> IO<Void> {
-	return IO.pure(print(c))
+	return IO.pure(print(c, appendNewline: false))
 }
 
 /// Writes a string to standard output.
 public func putStr(s : String) -> IO<Void> {
-	return IO.pure(print(s))
+	return IO.pure(print(s, appendNewline: false))
 }
 
 /// Writes a string and a newline to standard output.
 public func putStrLn(s : String) -> IO<Void> {
-	return IO.pure(println(s))
+	return IO.pure(Swift.print(s))
 }
 
 /// Writes the description of an object to standard output.
-public func print<A : Printable>(x : A) -> IO<Void> {
+public func print<A : CustomStringConvertible>(x : A) -> IO<Void> {
 	return putStrLn(x.description)
 }
 
@@ -132,13 +132,15 @@ public func <% <A, B>(x : A, io : IO<B>) -> IO<A> {
 }
 
 extension IO : Pointed {
-	public static func pure(a: A) -> IO<A> {
+	public static func pure(a : A) -> IO<A> {
 		return IO<A>({ rw in (rw, a) })
 	}
 }
 
-extension IO : Applicative { 
-	public static func ap<B>(fn: IO<A -> B>) -> IO<A> -> IO<B> {
+extension IO : Applicative {
+	typealias FAB = IO<A -> B>
+	
+	public static func ap<B>(fn : IO<A -> B>) -> IO<A> -> IO<B> {
 		return { m in return IO<B>({ rw in
 			let f = fn.unsafePerformIO()
 			let (nw, x) = m.apply(rw)
@@ -147,7 +149,7 @@ extension IO : Applicative {
 	}
 }
 
-public func <*><A, B>(fn: IO<A -> B>, m: IO<A>) -> IO<B> {
+public func <*><A, B>(fn : IO<A -> B>, m : IO<A>) -> IO<B> {
 	return IO<A>.ap(fn)(m)
 }
 

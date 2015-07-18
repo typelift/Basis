@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		82E51B481B5A2522003CA361 /* Semigroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E51B471B5A2522003CA361 /* Semigroup.swift */; };
+		82E51B491B5A2522003CA361 /* Semigroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E51B471B5A2522003CA361 /* Semigroup.swift */; };
 		84095F0B1A28EA9E00956141 /* Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84095F0A1A28EA9E00956141 /* Member.swift */; };
 		84095F0F1A28EAEC00956141 /* MemberSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84095F0E1A28EAEC00956141 /* MemberSpec.swift */; };
 		840D57821A63092600EFFF53 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840D57811A63092600EFFF53 /* Array.swift */; };
@@ -51,11 +53,9 @@
 		841409081B1A8C4100BA2B6C /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D3319D237E000AE9A7C /* Map.swift */; };
 		841409091B1A8C4100BA2B6C /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D3A19D237E000AE9A7C /* Query.swift */; };
 		8414090A1B1A8C4100BA2B6C /* Traverse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D4319D237E000AE9A7C /* Traverse.swift */; };
-		8414090B1B1A8C4100BA2B6C /* Maybe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D3419D237E000AE9A7C /* Maybe.swift */; };
 		8414090C1B1A8C4100BA2B6C /* Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84095F0A1A28EA9E00956141 /* Member.swift */; };
 		8414090D1B1A8C4100BA2B6C /* Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84522CDB19E10EE200E4423A /* Optional.swift */; };
 		8414090E1B1A8C4100BA2B6C /* Monoid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D3819D237E000AE9A7C /* Monoid.swift */; };
-		8414090F1B1A8C4100BA2B6C /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922EB019D3869B00AE9A7C /* Result.swift */; };
 		841409101B1A8C4100BA2B6C /* Copointed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D4D8F01A180959001F5E4D /* Copointed.swift */; };
 		841409111B1A8C4100BA2B6C /* Pointed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D77DF21A3BDCB6000F5683 /* Pointed.swift */; };
 		841409121B1A8C4100BA2B6C /* ST.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D3D19D237E000AE9A7C /* ST.swift */; };
@@ -124,7 +124,6 @@
 		84922D6219D237E000AE9A7C /* Lift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D3019D237E000AE9A7C /* Lift.swift */; };
 		84922D6419D237E000AE9A7C /* Lower.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D3219D237E000AE9A7C /* Lower.swift */; };
 		84922D6519D237E000AE9A7C /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D3319D237E000AE9A7C /* Map.swift */; };
-		84922D6619D237E000AE9A7C /* Maybe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D3419D237E000AE9A7C /* Maybe.swift */; };
 		84922D6719D237E000AE9A7C /* Monad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D3519D237E000AE9A7C /* Monad.swift */; };
 		84922D6819D237E000AE9A7C /* MonadFix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D3619D237E000AE9A7C /* MonadFix.swift */; };
 		84922D6919D237E000AE9A7C /* MonadZip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D3719D237E000AE9A7C /* MonadZip.swift */; };
@@ -136,7 +135,6 @@
 		84922D7519D237E000AE9A7C /* Traverse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D4319D237E000AE9A7C /* Traverse.swift */; };
 		84922D7619D237E000AE9A7C /* Tuple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D4419D237E000AE9A7C /* Tuple.swift */; };
 		84922D7719D237E000AE9A7C /* Unique.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D4519D237E000AE9A7C /* Unique.swift */; };
-		84922EB119D3869B00AE9A7C /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922EB019D3869B00AE9A7C /* Result.swift */; };
 		849AA3A21A09833A00472F08 /* Basis.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84C9967119CE89F30046906D /* Basis.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		84A53D1E1B1A8E4800E8A107 /* ArrowSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F9062D19D638BD0035D429 /* ArrowSpec.swift */; };
 		84A53D1F1B1A8E4800E8A107 /* CharSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8427737B1A5CDB6F00CF1E67 /* CharSpec.swift */; };
@@ -216,6 +214,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		82E51B471B5A2522003CA361 /* Semigroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Semigroup.swift; sourceTree = "<group>"; };
 		84095F0A1A28EA9E00956141 /* Member.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Member.swift; sourceTree = "<group>"; };
 		84095F0E1A28EAEC00956141 /* MemberSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemberSpec.swift; sourceTree = "<group>"; };
 		840D57811A63092600EFFF53 /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
@@ -272,7 +271,6 @@
 		84922D3019D237E000AE9A7C /* Lift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Lift.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		84922D3219D237E000AE9A7C /* Lower.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lower.swift; sourceTree = "<group>"; };
 		84922D3319D237E000AE9A7C /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Map.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		84922D3419D237E000AE9A7C /* Maybe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Maybe.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		84922D3519D237E000AE9A7C /* Monad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Monad.swift; sourceTree = "<group>"; };
 		84922D3619D237E000AE9A7C /* MonadFix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonadFix.swift; sourceTree = "<group>"; };
 		84922D3719D237E000AE9A7C /* MonadZip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonadZip.swift; sourceTree = "<group>"; };
@@ -284,7 +282,6 @@
 		84922D4319D237E000AE9A7C /* Traverse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Traverse.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		84922D4419D237E000AE9A7C /* Tuple.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tuple.swift; sourceTree = "<group>"; };
 		84922D4519D237E000AE9A7C /* Unique.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Unique.swift; sourceTree = "<group>"; };
-		84922EB019D3869B00AE9A7C /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		84A802DE19D3BC1200E71F93 /* MonoidSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonoidSpec.swift; sourceTree = "<group>"; };
 		84C9967119CE89F30046906D /* Basis.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Basis.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		84C9967C19CE89F40046906D /* BasisTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BasisTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -438,11 +435,10 @@
 				841FE03319DB7E7C0068636A /* Lazy.swift */,
 				841FE03C19DB7E7C0068636A /* List */,
 				84922D7F19D2388500AE9A7C /* Map */,
-				84922D3419D237E000AE9A7C /* Maybe.swift */,
 				84095F0A1A28EA9E00956141 /* Member.swift */,
 				84522CDB19E10EE200E4423A /* Optional.swift */,
+				82E51B471B5A2522003CA361 /* Semigroup.swift */,
 				84922D3819D237E000AE9A7C /* Monoid.swift */,
-				84922EB019D3869B00AE9A7C /* Result.swift */,
 				84D77DF41A3BDCBA000F5683 /* Pointed */,
 				84922D3D19D237E000AE9A7C /* ST.swift */,
 				842A315D1A9982FD00039306 /* State.swift */,
@@ -657,7 +653,9 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = BASE;
-				LastUpgradeCheck = 0610;
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Robert Widmann";
 				TargetAttributes = {
 					841408C91B1A8BE800BA2B6C = {
@@ -763,6 +761,7 @@
 				841409011B1A8C4100BA2B6C /* Folds.swift in Sources */,
 				841409021B1A8C4100BA2B6C /* Scans.swift in Sources */,
 				841409031B1A8C4100BA2B6C /* Search.swift in Sources */,
+				82E51B491B5A2522003CA361 /* Semigroup.swift in Sources */,
 				841409041B1A8C4100BA2B6C /* String.swift in Sources */,
 				841409051B1A8C4100BA2B6C /* Sublists.swift in Sources */,
 				841409061B1A8C4100BA2B6C /* Transformations.swift in Sources */,
@@ -770,11 +769,9 @@
 				841409081B1A8C4100BA2B6C /* Map.swift in Sources */,
 				841409091B1A8C4100BA2B6C /* Query.swift in Sources */,
 				8414090A1B1A8C4100BA2B6C /* Traverse.swift in Sources */,
-				8414090B1B1A8C4100BA2B6C /* Maybe.swift in Sources */,
 				8414090C1B1A8C4100BA2B6C /* Member.swift in Sources */,
 				8414090D1B1A8C4100BA2B6C /* Optional.swift in Sources */,
 				8414090E1B1A8C4100BA2B6C /* Monoid.swift in Sources */,
-				8414090F1B1A8C4100BA2B6C /* Result.swift in Sources */,
 				841409101B1A8C4100BA2B6C /* Copointed.swift in Sources */,
 				841409111B1A8C4100BA2B6C /* Pointed.swift in Sources */,
 				841409121B1A8C4100BA2B6C /* ST.swift in Sources */,
@@ -856,6 +853,7 @@
 				842773781A5CD87400CF1E67 /* Char.swift in Sources */,
 				84D4D8FA1A181649001F5E4D /* ComonadApply.swift in Sources */,
 				84922D6B19D237E000AE9A7C /* Operators.swift in Sources */,
+				82E51B481B5A2522003CA361 /* Semigroup.swift in Sources */,
 				84922D6F19D237E000AE9A7C /* ST.swift in Sources */,
 				841FE04519DB7E7C0068636A /* Zip.swift in Sources */,
 				841FE04D19DB7EEC0068636A /* Folds.swift in Sources */,
@@ -870,12 +868,10 @@
 				84922D5719D237E000AE9A7C /* Exit.swift in Sources */,
 				847E99DC1A48B1CD00B5B8CE /* Stream.swift in Sources */,
 				84522CDC19E10EE200E4423A /* Optional.swift in Sources */,
-				84922EB119D3869B00AE9A7C /* Result.swift in Sources */,
 				84922D4819D237E000AE9A7C /* Arrow.swift in Sources */,
 				84922D7019D237E000AE9A7C /* STRef.swift in Sources */,
 				84095F0B1A28EA9E00956141 /* Member.swift in Sources */,
 				84922D5B19D237E000AE9A7C /* Functor.swift in Sources */,
-				84922D6619D237E000AE9A7C /* Maybe.swift in Sources */,
 				84D77DF31A3BDCB6000F5683 /* Pointed.swift in Sources */,
 				84922D5F19D237E000AE9A7C /* IORef.swift in Sources */,
 				84922D5019D237E000AE9A7C /* Category.swift in Sources */,
@@ -946,6 +942,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "CodaFi.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Basis;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -967,6 +964,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "CodaFi.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Basis;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -992,6 +990,7 @@
 				INFOPLIST_FILE = BasisTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "CodaFi.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 			};
@@ -1010,6 +1009,7 @@
 				INFOPLIST_FILE = BasisTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "CodaFi.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -1036,6 +1036,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1110,6 +1111,7 @@
 				INFOPLIST_FILE = Basis/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "CodaFi.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
@@ -1132,6 +1134,7 @@
 				INFOPLIST_FILE = Basis/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "CodaFi.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
@@ -1155,6 +1158,7 @@
 				);
 				INFOPLIST_FILE = BasisTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "CodaFi.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -1171,6 +1175,7 @@
 				);
 				INFOPLIST_FILE = BasisTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "CodaFi.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

@@ -11,5 +11,5 @@
 /// instance of itself containing elements of that type.
 public protocol Pointed {
 	typealias A
-	static func pure(A) -> Self
+	static func pure(_: A) -> Self
 }

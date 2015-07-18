@@ -64,10 +64,10 @@ class FunctionsSpec : XCTestCase {
 		XCTAssertTrue((h(20) |>> g |>> f) == 110, "")
 	}
 	
-	func testMaybe() {
+	func testOptional() {
 		let def = -1
-		let x = maybe(def)(f: { $0 + 1 })(m : .Some(5))
-		let y = maybe(def)(f: { $0 + 1 })(m : .None)
+		let x = Optional(def)(f: { $0 + 1 })(m : .Some(5))
+		let y = Optional(def)(f: { $0 + 1 })(m : .None)
 		
 		XCTAssertTrue(x == 6, "")
 		XCTAssertTrue(y == def, "")

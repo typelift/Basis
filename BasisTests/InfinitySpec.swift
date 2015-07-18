@@ -23,7 +23,7 @@ class InfinitySpec : XCTestCase {
 	}
 	
 	func testRepeat() {
-		let arr = repeat("rada")
+		let arr = `repeat`("rada")
 		
 		XCTAssertTrue(arr[0] == "rada", "")
 		XCTAssertTrue(arr[1] == "rada", "")

@@ -75,9 +75,9 @@ public struct List<A> {
 		switch self.match() {
 			case .Nil:
 				return error("Cannot extract an element from an empty list.")
-			case let .Cons(x, xs) where n == 0:
+			case let .Cons(x, _) where n == 0:
 				return x
-			case let .Cons(x, xs):
+			case let .Cons(_, xs):
 				return xs[n - 1]
 		}
 	}
@@ -217,23 +217,23 @@ public func isInfixOf<A : Equatable>(l : List<A>) -> List<A> -> Bool {
 
 /// Takes two lists and drops items in the first from the second.  If the first list is not a prefix
 /// of the second list this function returns Nothing.
-public func stripPrefix<A : Equatable>(l : List<A>) -> List<A> -> Maybe<List<A>> {
+public func stripPrefix<A : Equatable>(l : List<A>) -> List<A> -> Optional<List<A>> {
 	return { r in
 		switch (l.match(), r.match()) {
 		case (.Nil, _):
-			return Maybe.just(r)
+			return .Some(r)
 		case (.Cons(let x, let xs), .Cons(let y, let ys)) where x == y:
 			return stripPrefix(xs)(ys)
 		default:
-			return Maybe.nothing()
+			return nil
 		}
 	}
 }
 
 /// Takes two lists and drops items in the first from the end of the second.  If the first list is
 /// not a suffix of the second list this function returns nothing.
-public func stripSuffix<A : Equatable>(l : List<A>) -> List<A> -> Maybe<List<A>> {
-	return { r in Maybe.fmap(dismember(List.reverse)) <<| stripPrefix(l.reverse())(r.reverse()) }
+public func stripSuffix<A : Equatable>(l : List<A>) -> List<A> -> Optional<List<A>> {
+	return { r in stripPrefix(l.reverse())(r.reverse()).map(dismember(List.reverse)) }
 }
 
 
@@ -297,7 +297,7 @@ public func <* <A, B>(a : List<A>, b : List<B>) -> List<A> {
 
 extension List : Alternative {
 	typealias FLA = List<[A]>
-	typealias FMA = List<Maybe<A>>
+	typealias FMA = List<Optional<A>>
 
 	public func empty() -> List<A> {
 		return List()
@@ -311,8 +311,8 @@ extension List : Alternative {
 		return some(v) <|> List<[A]>.pure([])
 	}
 	
-	public func optional(v : List<A>) -> List<Maybe<A>> {
-		return Maybe.just <%> v <|> List<Maybe<A>>.pure(Maybe.nothing())
+	public func optional(v : List<A>) -> List<Optional<A>> {
+		return Optional.Some <%> v <|> List<Optional<A>>.pure(.None)
 	}
 }
 
@@ -337,10 +337,6 @@ public func >> <A, B>(x : List<A>, y : List<B>) -> List<B> {
 }
 
 extension List : MonadPlus {
-	public static func mzero() -> List<A> {
-		return List()
-	}
-
 	public static func mplus(l : List<A>) -> List<A> -> List<A> {
 		return { l + $0 }
 	}

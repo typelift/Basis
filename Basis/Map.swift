@@ -135,7 +135,7 @@ public func delete<K : Comparable, A>(k : K) -> Map<K, A> -> Map<K, A> {
 				} else if k > kx {
 					return balance(kx)(x: x)(l: l)(r: delete(k)(m))
 				}
-				return glue(l, r)
+				return glue(l, r: r)
 		}
 	}
 }
@@ -222,10 +222,10 @@ private func single<K, A>(k1 : K)(x1 : A)(t1 : Map<K, A>)(t2 : Map<K, A>) -> Map
 		case .Empty:
 			return error("")
 		case .Destructure(_, let k2, let x2, let t1, let t3):
-			return bin(k2, x2, t1, bin(k1, x1, t3, t2))
+			return bin(k2, x: x2, l: t1, r: bin(k1, x: x1, l: t3, r: t2))
 		}
 	case .Destructure(_, let k2, let x2, let t2, let t3):
-		return bin(k2, x2, bin(k1, x1, t1, t2), t3)
+		return bin(k2, x: x2, l: bin(k1, x: x1, l: t1, r: t2), r: t3)
 	}
 }
 
@@ -240,7 +240,7 @@ private func double<K, A>(k1 : K)(x1 : A)(t1 : Map<K, A>)(t2 : Map<K, A>) -> Map
 			case .Empty:
 				return error("")
 			case .Destructure(_, let k3, let x3, let t2, let t3):
-				return bin(k3, x3, bin(k2, x2, t1, t2), bin(k1, x1, t3, t4))
+				return bin(k3, x: x3, l: bin(k2, x: x2, l: t1, r: t2), r: bin(k1, x: x1, l: t3, r: t4))
 			}
 		}
 	case .Destructure(_, let k2, let x2, let b, let t4):
@@ -248,7 +248,7 @@ private func double<K, A>(k1 : K)(x1 : A)(t1 : Map<K, A>)(t2 : Map<K, A>) -> Map
 		case .Empty:
 			return error("")
 		case .Destructure(_, let k3, let x3, let t2, let t3):
-			return bin(k3, x3, bin(k1, x1, t1, t2), bin(k2, x2, t3, t4))
+			return bin(k3, x: x3, l: bin(k1, x: x1, l: t1, r: t2), r: bin(k2, x: x2, l: t3, r: t4))
 		}
 	}
 }

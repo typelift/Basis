@@ -43,7 +43,7 @@ public func drop<A>(n : Int) -> [A] -> [A] {
 		switch match(l) {
 			case .Nil:
 				return []
-			case .Cons(let x, let xs):
+			case .Cons(_, let xs):
 				return drop(n - 1)(xs)
 		}
 	}
@@ -85,7 +85,7 @@ public func drop<A>(n : Int) -> List<A> -> List<A> {
 		switch l.match() {
 			case .Nil:
 				return List()
-			case .Cons(let x, let xs):
+			case .Cons(_, let xs):
 				return drop(n - 1)(xs)
 		}
 	}

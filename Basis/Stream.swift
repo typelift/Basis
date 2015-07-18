@@ -51,8 +51,8 @@ public func tails<T>(s : Stream<T>) -> Stream<Stream<T>> {
 }
 
 /// Repeats a value into a constant stream of that same value.
-public func repeat<T>(x : T) -> Stream<T> {
-	return Stream { (x, repeat(x)) }
+public func `repeat`<T>(x : T) -> Stream<T> {
+	return Stream { (x, `repeat`(x)) }
 }
 
 /// Returns a Stream of an infinite number of iteratations of applications of a function to a value.
@@ -208,14 +208,14 @@ public func <%> <A, B>(f : A -> B, b : Stream<A>) -> Stream<B> {
 }
 
 public func <% <A, B>(a : A, _ : Stream<B>) -> Stream<A> {
-	return repeat(a)
+	return `repeat`(a)
 }
 
 extension Stream : Applicative {
 	typealias FAB = Stream<A -> B>
 	
 	public static func pure(x : A) -> Stream<A> {
-		return repeat(x)
+		return `repeat`(x)
 	}
 
 	public static func ap<B>(f : Stream<A -> B>) -> Stream<A> -> Stream<B> {

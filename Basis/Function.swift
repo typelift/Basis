@@ -99,7 +99,7 @@ extension Function : ArrowChoice {
 }
 
 public func +++ <B, C, D, E>(f : Function<B, C>, g : Function<D, E>) -> Function<Either<B, D>, Either<C, E>> {
-	return ^Either.left • f ||| ^Either.right • g
+	return ^Either.Left • f ||| ^Either.Right • g
 }
 
 public func ||| <B, C, D>(f : Function<B, D>, g : Function<C, D>) -> Function<Either<B, C>, D> {
@@ -114,8 +114,8 @@ extension Function : ArrowApply {
 	}
 	
 	public static func leftApp<C>(f : Function<A, B>) -> Function<Either<A, C>, Either<B, C>> {
-		let l : Function<A, (Function<Void, Either<B, C>>, Void)> = ^{ (let a : A) -> (Function<Void, Either<B, C>>, Void) in (Function<Void, A>.arr({ _ in a }) >>> f >>> Function<B, Either<B, C>>.arr(Either.left), Void()) }
-		let r : Function<C, (Function<Void, Either<B, C>>, Void)> = ^{ (let c : C) -> (Function<Void, Either<B, C>>, Void) in (Function<Void, C>.arr({ _ in c }) >>> Function<C, Either<B, C>>.arr(Either.right), Void()) }
+		let l : Function<A, (Function<Void, Either<B, C>>, Void)> = ^{ (let a : A) -> (Function<Void, Either<B, C>>, Void) in (Function<Void, A>.arr({ _ in a }) >>> f >>> Function<B, Either<B, C>>.arr(Either.Left), Void()) }
+		let r : Function<C, (Function<Void, Either<B, C>>, Void)> = ^{ (let c : C) -> (Function<Void, Either<B, C>>, Void) in (Function<Void, C>.arr({ _ in c }) >>> Function<C, Either<B, C>>.arr(Either.Right), Void()) }
 
 		return (l ||| r) >>> Function<Void, Either<B, C>>.app()
 	}

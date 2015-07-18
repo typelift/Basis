@@ -66,7 +66,7 @@ public protocol Arrow : Category {
 	typealias FANOUT = K2<B, (B, D)>
 	
 	/// Lift a function to an arrow.
-	static func arr(A -> B) -> Self
+	static func arr(_: A -> B) -> Self
 	
 	/// Splits the arrow into two tuples that model a computation that applies our Arrow to an
 	/// argument on the "left side" and sends the "right side" through unchanged.
@@ -82,12 +82,12 @@ public protocol Arrow : Category {
 	
 	/// Split | Splits two computations and combines the result into one Arrow yielding a tuple of
 	/// the result of each side.
-	func ***(Self, ADE) -> SPLIT
+	func ***(_: Self, _: ADE) -> SPLIT
 	
 	/// Fanout | Given two functions with the same source but different targets, this function
 	/// splits the computation and combines the result of each Arrow into a tuple of the result of
 	/// each side.
-	func &&&(Self, ABD) -> FANOUT
+	func &&&(_: Self, _: ABD) -> FANOUT
 }
 
 /// Arrows that can produce an identity arrow.
@@ -102,7 +102,7 @@ public protocol ArrowZero : Arrow {
 /// A monoid for Arrows.
 public protocol ArrowPlus : ArrowZero {
 	/// A binary function that combines two arrows.
-	func <+>(ABC, ABC) -> ABC
+	func <+>(_: ABC, _: ABC) -> ABC
 }
 
 /// Arrows that permit "choice" or selecting which side of the input to apply themselves to.
@@ -147,17 +147,17 @@ public protocol ArrowChoice : Arrow {
 
 	/// Feed marked inputs through the argument arrow, passing the rest through unchanged to the 
 	/// output.
-	static func left(Self) -> LEFT
+	static func left(_: Self) -> LEFT
 	
 	/// The mirror image of left.
-	static func right(Self) -> RIGHT
+	static func right(_: Self) -> RIGHT
 
 	/// Splat | Split the input between both argument arrows, then retag and merge their outputs 
 	/// into Eithers.
-	func +++(Self, ADE) -> SPLAT
+	func +++(_: Self, _: ADE) -> SPLAT
 	
 	/// Fanin | Split the input between two argument arrows and merge their ouputs.
-	func |||(ABD, ACD) -> FANIN
+	func |||(_: ABD, _: ACD) -> FANIN
 }
 
 /// Arrows that allow application of arrow inputs to other inputs.  Such arrows are equivalent to 
@@ -188,5 +188,5 @@ public protocol ArrowApply : Arrow {
 public protocol ArrowLoop : Arrow {
 	typealias LOOP = K2<(A, D), (B, D)>
 	
-	static func loop(LOOP) -> Self
+	static func loop(_: LOOP) -> Self
 }

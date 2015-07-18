@@ -19,11 +19,11 @@ internal func traceID(msg : String) -> String {
 }
 
 /// Prints a printable object before returning a value.
-public func tracePrintable<A : Printable, B>(x : A)(e : B) -> B {
+public func tracePrintable<A : CustomStringConvertible, B>(x : A)(e : B) -> B {
 	return trace(x.description)(e: e)
 }
 
-internal func tracePrintableID<A : Printable>(x : A) -> A {
+internal func tracePrintableID<A : CustomStringConvertible>(x : A) -> A {
 	return trace(x.description)(e: x)
 }
 
@@ -40,9 +40,8 @@ public func traceStack<A>(msg : String)(e : A) -> A {
 
 /// Gets the current call stack symbols.
 public func currentCallStack() -> IO<[String]> {
-	return IO({ rw in
-		let syms : [String]? = NSThread.callStackSymbols() as? [String]
-		return (rw, syms ?? [])
-	})
+	return IO { rw in
+		return (rw, NSThread.callStackSymbols())
+	}
 }
 

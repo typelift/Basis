@@ -106,32 +106,32 @@ class MonoidSpec : XCTestCase {
 	}
 	
 	func testFirstLeftIdentity() {
-		XCTAssertTrue((First.mempty() <> First(Maybe.just(5))) == First(Maybe.just(5)), "")
+		XCTAssertTrue((First.mempty() <> First(Optional.Some(5))) == First(Optional.Some(5)), "")
 	}
 	
 	func testFirstRightIdentity() {
-		XCTAssertTrue((First(Maybe.just(5)) <> First.mempty()) == First(Maybe.just(5)), "")
+		XCTAssertTrue((First(Optional.Some(5)) <> First.mempty()) == First(Optional.Some(5)), "")
 	}
 	
 	func testFirstMappend() {
-		let x = First(Maybe.just(5))
-		let y = First(Maybe.just(10))
-		let z = First(Maybe.just(15))
+		let x = First(Optional.Some(5))
+		let y = First(Optional.Some(10))
+		let z = First(Optional.Some(15))
 		XCTAssertTrue(((x <> y) <> z) == (x <> (y <> z)), "")
 	}
 	
 	func testLastLeftIdentity() {
-		XCTAssertTrue((Last.mempty() <> Last(Maybe.just(5))) == Last(Maybe.just(5)), "")
+		XCTAssertTrue((Last.mempty() <> Last(Optional.Some(5))) == Last(Optional.Some(5)), "")
 	}
 	
 	func testLastRightIdentity() {
-		XCTAssertTrue((Last(Maybe.just(5)) <> Last.mempty()) == Last(Maybe.just(5)), "")
+		XCTAssertTrue((Last(Optional.Some(5)) <> Last.mempty()) == Last(Optional.Some(5)), "")
 	}
 	
 	func testLastMappend() {
-		let x = Last(Maybe.just(5))
-		let y = Last(Maybe.just(10))
-		let z = Last(Maybe.just(15))
+		let x = Last(Optional.Some(5))
+		let y = Last(Optional.Some(10))
+		let z = Last(Optional.Some(15))
 		XCTAssertTrue(((x <> y) <> z) == (x <> (y <> z)), "")
 	}
 	

@@ -7,67 +7,22 @@
 //  Released under the MIT license.
 //
 
-public enum EitherMatcher<A, B> {
-	case Left(Box<A>)
-	case Right(Box<B>)
-}
-
 /// Either represents a computation that either produces a result (left) or fails with an error
 /// (right).
-public struct Either<L, R>  {
-	let lVal : L?
-	let rVal : R?
-	
-	init(left : L) {
-		self.rVal = nil
-		self.lVal = left
-	}
-	
-	init(right : R) {
-		self.lVal = nil
-		self.rVal = right
-	}
-
-	/// Constructs an Either with a value on the left.
-	public static func left(x : L) -> Either<L, R> {
-		return Either(left: x)
-	}
-	
-	/// Constructs an Either with a value on the right.
-	public static func right(x : R) -> Either<L, R> {
-		return Either(right: x)
-	}
-	
-	/// Constructs an Either with a value on the left by unwrapping the boxed value.
-	public static func left(x : Box<L>) -> Either<L, R> {
-		return Either(left: x.unBox())
-	}
-	
-	/// Constructs an Either with a value on the right by unwrapping the boxed value.
-	public static func right(x : Box<R>) -> Either<L, R> {
-		return Either(right: x.unBox())
-	}
-	
-	/// Creates a matcher that destructures an Either.
-	public func match() -> EitherMatcher<L, R> {
-		if let l = lVal {
-			return .Left(Box(l))
-		} else if let r = rVal {
-			return .Right(Box(r))
-		}
-		return error("Cannot match an Either with neither a left or right value.")
-	}
+public enum Either<L, R>  {
+	case Left(L)
+	case Right(R)
 }
 
 /// Case analysis.  If the Either is Left, applies the left function to that value.  Else, if the 
 /// either is right, applies the right function to that value.
 public func either<A, B, C>(left : A -> C) -> (B -> C) -> Either<A, B> -> C {
 	return { right in { e in
-		switch e.match() {
+		switch e {
 			case .Left(let x):
-				return left(x.unBox())
+				return left(x)
 			case .Right(let y):
-				return right(y.unBox())
+				return right(y)
 		}
 	} }
 }
@@ -75,9 +30,9 @@ public func either<A, B, C>(left : A -> C) -> (B -> C) -> Either<A, B> -> C {
 /// Extracts all eithers that have left values in order.
 public func lefts<A, B>(l : [Either<A, B>]) -> [A] {
 	return concatMap({
-		switch $0.match() {
+		switch $0 {
 			case .Left(let a):
-				return [a.unBox()]
+				return [a]
 			default:
 				return []
 		}
@@ -87,9 +42,9 @@ public func lefts<A, B>(l : [Either<A, B>]) -> [A] {
 /// Extracts all eithers that have right values in order.
 public func rights<A, B>(l : [Either<A, B>]) -> [B] {
 	return concatMap({
-		switch $0.match() {
+		switch $0 {
 			case .Right(let b):
-				return [b.unBox()]
+				return [b]
 			default:
 				return []
 		}
@@ -98,7 +53,7 @@ public func rights<A, B>(l : [Either<A, B>]) -> [B] {
 
 /// Returns whether an either holds a right value.
 public func isRight<A, B>(e : Either<A, B>) -> Bool {
-	switch e.match() {
+	switch e {
 		case .Right(_):
 			return true
 		default:
@@ -108,7 +63,7 @@ public func isRight<A, B>(e : Either<A, B>) -> Bool {
 
 /// Returns whether an either holds a left value.
 public func isLeft<A, B>(e : Either<A, B>) -> Bool {
-	switch e.match() {
+	switch e {
 		case .Left(_):
 			return true
 		default:
@@ -116,18 +71,13 @@ public func isLeft<A, B>(e : Either<A, B>) -> Bool {
 	}
 }
 
-/// Maps an either onto a Result given a function from left to an NSError.
-public func asResult<A, B>(e : Either<A, B>) -> (A -> NSError) -> Result<B> {
-	return { f in either({ e in Result.error(f(e)) })({ v in Result.value(v) })(e) }
-}
-
 // MARK: Equatable
 
 public func == <A : Equatable, B : Equatable>(lhs: Either<A, B>, rhs: Either<A, B>) -> Bool {
-	switch (lhs.match(), rhs.match()) {
-		case let (.Right(x), .Right(y)) where x.unBox() == y.unBox():
+	switch (lhs, rhs) {
+		case let (.Right(x), .Right(y)) where x == y:
 			return true
-		case let (.Left(x), .Left(y)) where x.unBox() == y.unBox():
+		case let (.Left(x), .Left(y)) where x == y:
 			return true
 		default:
 			return false
@@ -147,11 +97,11 @@ extension Either : Functor {
 
 	public static func fmap<C>(f : R -> C) -> Either<L, R> -> Either<L, C> {
 		return { 
-			switch $0.match() {
+			switch $0 {
 				case .Left(let b):
-					return Either<L, C>.left(b)
+					return Either<L, C>.Left(b)
 				case .Right(let b):
-					return Either<L, C>.right(f(b.unBox()))
+					return Either<L, C>.Right(f(b))
 			}
 		}
 	}
@@ -168,7 +118,7 @@ public func <% <A, B, C>(x : B, either : Either<A, C>) -> Either<A, B> {
 
 extension Either : Pointed {
 	public static func pure(x : R) -> Either<L, R> {
-		return Either<L, R>.right(x)
+		return Either<L, R>.Right(x)
 	}
 }
 
@@ -177,11 +127,11 @@ extension Either : Applicative {
 	
 	public static func ap<C>(f : Either<L, R -> C>) -> Either<L, R> -> Either<L, C> {
 		return { e in 
-			switch f.match() {
+			switch f {
 				case .Left(let e):
-					return Either<L, C>.left(e)
+					return Either<L, C>.Left(e)
 				case .Right(let f):
-					return Either<L, R>.fmap(f.unBox())(e)
+					return Either<L, R>.fmap(f)(e)
 			}
 		}
 	}
@@ -220,11 +170,11 @@ extension Either : ApplicativeOps {
 
 extension Either : Monad {
 	public func bind<B>(f : A -> Either<L, B>) -> Either<L, B> {
-		switch self.match() {
+		switch self {
 			case .Left(let l):
-				return Either<L, B>.left(l)
+				return Either<L, B>.Left(l)
 			case .Right(let r):
-				return f(r.unBox())
+				return f(r)
 		}
 	}
 }
@@ -284,10 +234,10 @@ public func <-< <L, A, B, C>(g : B -> Either<L, C>, f : A -> Either<L, B>) -> A 
 extension Either : MonadFix {
 	public static func mfix(f : R -> Either<L, R>) -> Either<L, R> {
 		func fromRight(e : Either<L, R>) -> R {
-			switch e.match() {
+			switch e {
 				case .Right(let br):
-					return br.unBox()
-				case .Left(let bl):
+					return br
+				case .Left(_):
 					return error("Cannot take fixpoint of left Either")
 			}
 		}

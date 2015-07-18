@@ -71,16 +71,16 @@ class OperatorsSpec : XCTestCase {
 	}
 	
 	func testChoose() {
-		let x : Maybe<Int> = Maybe.just(10)
-		let y : Maybe<Int> = Maybe.nothing()
+		let x : Optional<Int> = Optional.Some(10)
+		let y : Optional<Int> = Optional.None
 
 		XCTAssertTrue((x <|> y) == x, "")
 	}
 
 	func testBind() {
-		let x : Maybe<Int> = Maybe.just(10)
+		let x : Optional<Int> = Optional.Some(10)
 
-		XCTAssertTrue(fromJust(x >>- { v in Maybe.just(v) }) == fromJust(x), "")
+		XCTAssertTrue(fromJust(x >>- { v in Optional.Some(v) }) == fromJust(x), "")
 	}
 
 	func testSplit() {

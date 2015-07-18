@@ -9,7 +9,7 @@
 
 /// Takes a default value, a function, and an optional.  If the optional is None, the default value
 /// is returned.  If the optional is Some, the function is applied to the value inside.
-public func maybe<A, B>(def : B)(f : A -> B)(m : Optional<A>) -> B {
+public func optional<A, B>(def : B)(f : A -> B)(m : Optional<A>) -> B {
 	switch m {
 		case .None:
 			return def

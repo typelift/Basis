@@ -52,7 +52,7 @@ public func member<K : Comparable, A>(key : K) -> Map<K, A> -> Bool {
 		switch m.match() {
 			case .Empty:
 				return false
-			case .Destructure(_, let kx,let x, let l, let r):
+			case .Destructure(_, let kx, _, let l, let r):
 				if key < kx {
 					return member(key)(l)
 				} else if key > kx {

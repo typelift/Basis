@@ -9,7 +9,7 @@
 
 extension String {
 	public func unpack() -> [Character] {
-		return Array(self)
+		return Array(self.characters)
 	}
 	
 	public func destructure() -> ArrayMatcher<Character> {
@@ -24,5 +24,5 @@ public func pack(x : [Character]) -> String {
 
 /// Unpacks a string into an array of characters.
 public func unpack(s : String) -> [Character] {
-	return Array(s)
+	return Array(s.characters)
 }

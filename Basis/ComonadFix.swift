@@ -15,7 +15,7 @@ public protocol ComonadFix : Comonad {
 	///
 	/// Default definition: 
 	///		x.extract()(F<F<A> -> A>.extend(F<A>.cofix)(x))
-	static func cofix(FFAA) -> A
+	static func cofix(_: FFAA) -> A
 }
 
 // Uncomment to crash Swiftc rdar://18619154

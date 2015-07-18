@@ -18,11 +18,11 @@ public protocol Comonad : Copointed, Functor {
 	///
 	/// Default Definition:
 	///		`extend(id)`
-	static func duplicate(Self) -> FFA
+	static func duplicate(_: Self) -> FFA
 	
 	/// Cobind | Computes a value in a context, fmaps that value, then wraps it back in a functor.
 	///
 	/// Default Definition:
 	///		`fmap(f) • duplicate`
-	static func extend(Self -> B) -> Self -> FB
+	static func extend(_: Self -> B) -> Self -> FB
 }

@@ -8,24 +8,26 @@
 //
 
 /// The Constant Functor maps every argument back to its first value.
-public struct Const<A, B> {
-	public let val : A
+public struct Const<L, R> {
+	public let val : L
 	
-	public init(_ val : A) {
+	public init(_ val : L) {
 		self.val = val
 	}
 }
 
 extension Const : Functor {
+	typealias A = L
+	typealias B = R
 	typealias FB = Const<A, B>
 	
-	public static func fmap<C>(A -> C) -> Const<A, B> -> Const<A, B> {
-		return { c in Const<A, B>(c.val) }
+	public static func fmap<B>(_ : A -> B) -> Const<L, R> -> Const<L, R> {
+		return { c in Const(c.val) }
 	}
 }
 
 public func <%> <A, B, C>(f : A -> C, c : Const<A, B>) -> Const<A, B> {
-	return Const.fmap(f)(c)
+	return Const<A, B>.fmap(f)(c)
 }
 
 public func <% <A, B>(a : A, c : Const<A, B>) -> Const<A, B> {
@@ -33,13 +35,13 @@ public func <% <A, B>(a : A, c : Const<A, B>) -> Const<A, B> {
 }
 
 extension Const : Contravariant {
-	public static func contramap(A -> B) -> Const<A, B> -> Const<A, B> {
+	public static func contramap<B>(_ : A -> B) -> Const<A, B> -> Const<A, B> {
 		return { c in Const<A, B>(c.val) }
 	}
 }
 
 public func >%< <A, B>(f : A -> B,c : Const<A, B>) -> Const<A, B> {
-	return Const.contramap(f)(c)
+	return Const<A, B>.contramap(f)(c)
 }
 
 

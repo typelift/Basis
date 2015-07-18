@@ -67,14 +67,14 @@ class ListSpec : XCTestCase {
 		let s = "Get thee to a nunnery!"
 		
 		let t = stripPrefix(unpack("Get thee to a "))(unpack(s))
-		XCTAssertTrue(Maybe.fmap(pack)(t) == Maybe<String>.just("nunnery!"), "")
+		XCTAssertTrue(Optional.fmap(pack)(t) == Optional<String>.Some("nunnery!"), "")
 	}
 	
 	func testStripSuffix() {
 		let s = "Get thee to a nunnery!"
 		
 		let t = stripSuffix(unpack(" nunnery!"))(unpack(s))
-		XCTAssertTrue(Maybe.fmap(pack)(t) == Maybe<String>.just("Get thee to a"), "")
+		XCTAssertTrue(Optional.fmap(pack)(t) == Optional<String>.Some("Get thee to a"), "")
 	}
 }
 
