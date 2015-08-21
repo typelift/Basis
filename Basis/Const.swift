@@ -34,6 +34,10 @@ public func <% <A, B>(a : A, c : Const<A, B>) -> Const<A, B> {
 	return (curry(<^>) • const)(a)(c)
 }
 
+public func %> <A, B>(c : Const<A, B>, a : A) -> Const<A, B> {
+	return flip(<%)(c, a)
+}
+
 extension Const : Contravariant {
 	public static func contramap<B>(_ : A -> B) -> Const<A, B> -> Const<A, B> {
 		return { c in Const<A, B>(c.val) }

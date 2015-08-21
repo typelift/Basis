@@ -211,6 +211,10 @@ public func <% <A, B>(a : A, _ : Stream<B>) -> Stream<A> {
 	return `repeat`(a)
 }
 
+public func %> <A, B>(c : Stream<B>, a : A) -> Stream<A> {
+	return flip(<%)(c, a)
+}
+
 extension Stream : Applicative {
 	public typealias FAB = Stream<A -> B>
 	

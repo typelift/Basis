@@ -51,4 +51,11 @@ public protocol Functor {
 	/// Default definition: 
 	///		`curry(<^>) • const`
 	func <%(_: A, _: FB) -> Self
+	
+	/// Constant Replace Backwards | Replaces all values in the target Functor with a singular 
+	/// constant value from the source Functor.
+	///
+	/// Default definition:
+	///		`flip(<%)`
+	func %>(_: FB, _: A) -> Self
 }

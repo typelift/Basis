@@ -124,6 +124,10 @@ public func <%<A, B>(x : A, l : Array<B>) -> Array<A> {
 	return l.map(const(x))
 }
 
+public func %> <A, B>(c : Array<B>, a : A) -> Array<A> {
+	return flip(<%)(c, a)
+}
+
 extension Array : Applicative {
 	public typealias FAB = Array<A -> B>
 

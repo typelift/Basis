@@ -105,7 +105,7 @@ public func foldlWithKey<K, A, B>(f: A -> K -> B -> A) -> A -> Map<K, B> -> A {
 
 /// Returns an array of all values in the map in ascending order of their keys.
 public func elems<K, A>(m : Map<K, A>) -> [A] {
-	return foldr(<|)([])(m)
+	return foldr(<<|)([])(m)
 }
 
 /// Returns an array of all keys in the map in ascending order.
@@ -113,7 +113,7 @@ public func keys<K, A>(m : Map<K, A>) -> [K] {
 	return foldrWithKey({ x in
 		return { (_) in
 			return { xs in
-				return x <| xs
+				return x <<| xs
 			}
 		}
 	})([])(m)

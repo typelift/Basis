@@ -49,6 +49,10 @@ public func <% <A, B>(a : A, b : Box<B>) -> Box<A> {
 	return (curry(<^>) • const)(a)(b)
 }
 
+public func %> <A, B>(c : Box<B>, a : A) -> Box<A> {
+	return flip(<%)(c, a)
+}
+
 extension Box : Pointed {
 	public class func pure(x : A) -> Box<A> {
 		return Box(x)

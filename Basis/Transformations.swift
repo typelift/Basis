@@ -36,7 +36,7 @@ public func intersperse<A>(sep : A) -> [A] -> [A] {
 			case .Nil:
 				return []
 			case .Cons(let x, let xs):
-				return x <| prependToAll(sep)(xs)
+				return x <<| prependToAll(sep)(xs)
 		}
 	}
 }
@@ -47,7 +47,7 @@ private func prependToAll<A>(sep : A) -> [A] -> [A] {
 			case .Nil:
 				return []
 			case .Cons(let x, let xs):
-				return sep <| x <| prependToAll(sep)(xs)
+				return sep <<| x <<| prependToAll(sep)(xs)
 		}
 	}
 }
@@ -61,7 +61,7 @@ public func intersperse<A>(sep : A) -> List<A> -> List<A> {
 			case .Nil:
 				return List()
 			case .Cons(let x, let xs):
-				return x <| prependToAll(sep)(xs)
+				return x <<| prependToAll(sep)(xs)
 		}
 	}
 }
@@ -72,7 +72,7 @@ private func prependToAll<A>(sep : A) -> List<A> -> List<A> {
 			case .Nil:
 				return List()
 			case .Cons(let x, let xs):
-				return sep <| x <| prependToAll(sep)(xs)
+				return sep <<| x <<| prependToAll(sep)(xs)
 		}
 	}
 }
@@ -99,7 +99,7 @@ public func transpose<A>(xss : [[A]]) -> [[A]] {
 				case .Nil:
 					return transpose(xss)
 				case .Cons(let x, let xs):
-					return (x <| concatMap({ [head($0)] })(xss)) <| transpose(xs <| concatMap({ [tail($0)] })(xss))
+					return (x <<| concatMap({ [head($0)] })(xss)) <<| transpose(xs <<| concatMap({ [tail($0)] })(xss))
 			}
 	}
 }
@@ -116,7 +116,7 @@ public func transpose<A>(xss : List<List<A>>) -> List<List<A>> {
 			case .Nil:
 				return transpose(xss)
 			case .Cons(let x, let xs):
-				return (x <| concatMap({ List(head($0)) })(xss)) <| transpose(xs <| concatMap({ List(tail($0)) })(xss))
+				return (x <<| concatMap({ List(head($0)) })(xss)) <<| transpose(xs <<| concatMap({ List(tail($0)) })(xss))
 		}
 	}
 }
@@ -129,7 +129,7 @@ public func partition<A>(p : A -> Bool) -> [A] -> ([A], [A]) {
 }
 
 private func select<A>(p : A -> Bool) -> A -> ([A], [A]) -> ([A], [A]) {
-	return { x in { t in p(x) ? (x <| fst(t), snd(t)) : (fst(t), x <| snd(t)) } }
+	return { x in { t in p(x) ? (x <<| fst(t), snd(t)) : (fst(t), x <<| snd(t)) } }
 }
 
 /// Partitions the elements of a list according to a predicate.
@@ -141,14 +141,14 @@ public func partition<A>(p : A -> Bool) -> List<A> -> (List<A>, List<A>) {
 }
 
 private func select<A>(p : A -> Bool) -> A -> (List<A>, List<A>) -> (List<A>, List<A>) {
-	return { x in { t in p(x) ? (x <| fst(t), snd(t)) : (fst(t), x <| snd(t)) } }
+	return { x in { t in p(x) ? (x <<| fst(t), snd(t)) : (fst(t), x <<| snd(t)) } }
 }
 
 /// Returns an array of all subsequences of an array.
 ///
 ///     subsequences([1, 2, 3]) == [[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]]
 public func subsequences<A>(xs : [A]) -> [[A]] {
-	return [] <| nonEmptySubsequences(xs)
+	return [] <<| nonEmptySubsequences(xs)
 }
 
 public func nonEmptySubsequences<A>(xs : [A]) -> [[A]] {
@@ -156,8 +156,8 @@ public func nonEmptySubsequences<A>(xs : [A]) -> [[A]] {
 		case .Nil:
 			return []
 		case .Cons(let x, let xs):
-			return [x] <| foldr({ ys, r in
-				return ys <| (x <| ys) <| r
+			return [x] <<| foldr({ ys, r in
+				return ys <<| (x <<| ys) <<| r
 			})([])(nonEmptySubsequences(xs))
 	}
 }
@@ -166,7 +166,7 @@ public func nonEmptySubsequences<A>(xs : [A]) -> [[A]] {
 ///
 ///     subsequences([1, 2, 3]) == [[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]]
 public func subsequences<A>(xs : List<A>) -> List<List<A>> {
-	return List() <| nonEmptySubsequences(xs)
+	return List() <<| nonEmptySubsequences(xs)
 }
 
 public func nonEmptySubsequences<A>(xs : List<A>) -> List<List<A>> {
@@ -174,8 +174,8 @@ public func nonEmptySubsequences<A>(xs : List<A>) -> List<List<A>> {
 		case .Nil:
 			return List()
 		case .Cons(let x, let xs):
-			return List(x) <| foldr({ ys, r in
-				return ys <| (x <| ys) <| r
+			return List(x) <<| foldr({ ys, r in
+				return ys <<| (x <<| ys) <<| r
 			})(List())(nonEmptySubsequences(xs))
 	}
 }

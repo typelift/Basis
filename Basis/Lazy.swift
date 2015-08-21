@@ -67,6 +67,10 @@ public func <%<A, B>(x : A, l : Lazy<B>) -> Lazy<A> {
 	return Lazy.fmap(const(x))(l)
 }
 
+public func %> <A, B>(c : Lazy<B>, a : A) -> Lazy<A> {
+	return flip(<%)(c, a)
+}
+
 extension Lazy : Pointed {
 	public static func pure<A>(a: A) -> Lazy<A> {
 		return Lazy<A>(newSTRef(.Now(a)).runST())

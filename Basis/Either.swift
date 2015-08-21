@@ -105,7 +105,6 @@ extension Either : Functor {
 			}
 		}
 	}
-
 }
 
 public func <^> <A, B, C>(f : B -> C, either : Either<A, B>) -> Either<A, C> {
@@ -114,6 +113,10 @@ public func <^> <A, B, C>(f : B -> C, either : Either<A, B>) -> Either<A, C> {
 
 public func <% <A, B, C>(x : B, either : Either<A, C>) -> Either<A, B> {
 	return Either.fmap(const(x))(either)
+}
+
+public func %> <A, B, C>(c : Either<A, C>, a : B) -> Either<A, B> {
+	return flip(<%)(c, a)
 }
 
 extension Either : Pointed {

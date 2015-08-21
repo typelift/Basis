@@ -45,6 +45,10 @@ public func <% <S, A, B>(x : A, l : ST<S, B>) -> ST<S, A> {
 	return ST.fmap(const(x))(l)
 }
 
+public func %> <S, A, B>(l : ST<S, B>, x : A) -> ST<S, A> {
+	return flip(<%)(l, x)
+}
+
 extension ST : Pointed {
 	public static func pure<S, A>(a: A) -> ST<S, A> {
 		return ST<S, A>(apply: { s in

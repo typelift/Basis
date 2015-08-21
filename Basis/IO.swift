@@ -24,6 +24,10 @@ public struct IO<A> {
 	public func unsafePerformIO() -> A  {
 		return self.apply(realWorld).1
 	}
+	
+	public func dubiousPerformIO() -> A {
+		return self.unsafePerformIO()
+	}
 }
 
 /// Wraps up a closure in a lazy IO action.
@@ -129,6 +133,10 @@ public func <^><A, B>(f: A -> B, io : IO<A>) -> IO<B> {
 
 public func <% <A, B>(x : A, io : IO<B>) -> IO<A> {
 	return IO.fmap(const(x))(io)
+}
+
+public func %> <A, B>(io : IO<B>, x : A) -> IO<A> {
+	return flip(<%)(io, x)
 }
 
 extension IO : Pointed {
