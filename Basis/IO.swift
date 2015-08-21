@@ -24,10 +24,6 @@ public struct IO<A> {
 	public func unsafePerformIO() -> A  {
 		return self.apply(realWorld).1
 	}
-	
-	public func dubiousPerformIO() -> A {
-		return self.unsafePerformIO()
-	}
 }
 
 /// Wraps up a closure in a lazy IO action.

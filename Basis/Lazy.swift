@@ -22,7 +22,9 @@ public struct Lazy<A> {
 }
 
 public func delay<A>(f : () -> A) -> Lazy<A> {
-	return Lazy(newSTRef(.Eventually(f)).runST())
+	let ff = LazyState<A>.Eventually(f)
+	let rr : ST<(), STRef<(), LazyState<A>>> = newSTRef(ff)
+	return Lazy<A>(rr.runST())
 }
 
 public func force<A>(l : Lazy<A>) -> A {
@@ -33,7 +35,7 @@ public func force<A>(l : Lazy<A>) -> A {
 			default:
 				return st
 		}
-	}) >>- { st in
+	}).bind { st in
 		switch readSTRef(st).runST() {
 			case .Now(let bx):
 				return ST<(), A>.pure(bx)
@@ -129,11 +131,11 @@ extension Lazy : Monad {
 	}
 }
 
-public func >>-<A, B>(x : Lazy<A>, f : A -> Lazy<B>) -> Lazy<B> {
+public func >>- <A, B>(x : Lazy<A>, f : A -> Lazy<B>) -> Lazy<B> {
 	return x.bind(f)
 }
 
-public func >><A, B>(x : Lazy<A>, y : Lazy<B>) -> Lazy<B> {
+public func >> <A, B>(x : Lazy<A>, y : Lazy<B>) -> Lazy<B> {
 	return x.bind({ (_) in
 		return y
 	})
@@ -169,14 +171,14 @@ extension Lazy : MonadOps {
 	}
 }
 
-public func -<<<A, B>(f : A -> Lazy<B>, xs : Lazy<A>) -> Lazy<B> {
+public func -<< <A, B>(f : A -> Lazy<B>, xs : Lazy<A>) -> Lazy<B> {
 	return xs.bind(f)
 }
 
-public func >>->><A, B, C>(f : A -> Lazy<B>, g : B -> Lazy<C>) -> A -> Lazy<C> {
+public func >>->> <A, B, C>(f : A -> Lazy<B>, g : B -> Lazy<C>) -> A -> Lazy<C> {
 	return { x in f(x) >>- g }
 }
 
-public func <<-<<<A, B, C>(g : B -> Lazy<C>, f : A -> Lazy<B>) -> A -> Lazy<C> {
+public func <<-<< <A, B, C>(g : B -> Lazy<C>, f : A -> Lazy<B>) -> A -> Lazy<C> {
 	return { x in f(x) >>- g }
 }

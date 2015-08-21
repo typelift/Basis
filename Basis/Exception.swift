@@ -94,9 +94,11 @@ public func tryJust<A, B>(p : Exception -> Optional<B>) -> IO<A> -> IO<Either<B,
 }
 
 private func `catch`<A>(io : IO<A>)(_ h : (Exception -> IO<A>)) -> IO<A> {
-	var val : A!
-	BASERealWorld.`catch`({ val = io.unsafePerformIO() }, to: { val = !h(SomeException($0.description ?? "")) })
+	var val : A? = nil
+	BASERealWorld.`catch`({
+		let xs = io.unsafePerformIO()
+		fatalError()
+	}, to: { val = !h(SomeException($0.description ?? "")) })
 	return IO.pure(val!)
 }
-
 
