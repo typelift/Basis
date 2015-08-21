@@ -159,7 +159,7 @@ public func groupBy<A>(cmp : A -> A -> Bool) -> [A] -> [[A]] {
 				return []
 			case .Cons(let x, let xs):
 				let (ys, zs) = span(cmp(x))(xs)
-				return (x <| ys) <| groupBy(cmp)(zs)
+				return (x <<| ys) <<| groupBy(cmp)(zs)
 		}
 	}
 }
@@ -173,7 +173,7 @@ public func groupBy<A>(cmp : (A, A) -> Bool) -> [A] -> [[A]] {
 				return []
 			case .Cons(let x, let xs):
 				let (ys, zs) = span({ cmp(x, $0) })(xs)
-				return (x <| ys) <| groupBy(cmp)(zs)
+				return (x <<| ys) <<| groupBy(cmp)(zs)
 		}
 	}
 }
@@ -187,7 +187,7 @@ public func groupBy<A>(cmp : A -> A -> Bool) -> List<A> -> List<List<A>>  {
 				return List()
 			case .Cons(let x, let xs):
 				let (ys, zs) = span(cmp(x))(xs)
-				return (x <| ys) <| groupBy(cmp)(zs)
+				return (x <<| ys) <<| groupBy(cmp)(zs)
 		}
 	}
 }
@@ -201,7 +201,7 @@ public func groupBy<A>(cmp : (A, A) -> Bool) -> List<A> -> List<List<A>> {
 				return List()
 			case .Cons(let x, let xs):
 				let (ys, zs) = span({ cmp(x, $0) })(xs)
-				return (x <| ys) <| groupBy(cmp)(zs)
+				return (x <<| ys) <<| groupBy(cmp)(zs)
 		}
 	}
 }
@@ -290,7 +290,7 @@ public func insertBy<A>(cmp: A -> A -> Bool) -> A -> [A] -> [A] {
 			case .Nil:
 				return [x]
 			case .Cons(let y, let ys):
-				return cmp(x)(y) ? x <| l : y <| insertBy(cmp)(x)(ys)
+				return cmp(x)(y) ? (x <<| l) : (y <<| insertBy(cmp)(x)(ys))
 		}
 	} }
 }
@@ -302,7 +302,7 @@ public func insertBy<A>(cmp: (A, A) -> Bool) -> A -> [A] -> [A] {
 			case .Nil:
 				return [x]
 			case .Cons(let y, let ys):
-				return cmp(x, y) ?  x <| l : y <| insertBy(cmp)(x)(ys)
+				return cmp(x, y) ? (x <<| l) : (y <<| insertBy(cmp)(x)(ys))
 		}
 	} }
 }
@@ -314,7 +314,7 @@ public func insertBy<A>(cmp: A -> A -> Bool) -> A -> List<A> -> List<A> {
 			case .Nil:
 				return List(x)
 			case .Cons(let y, let ys):
-				return cmp(x)(y) ? x <| l : y <| insertBy(cmp)(x)(ys)
+				return cmp(x)(y) ? (x <<| l) : (y <<| insertBy(cmp)(x)(ys))
 		}
 	} }
 }
@@ -326,7 +326,7 @@ public func insertBy<A>(cmp: (A, A) -> Bool) -> A -> List<A> -> List<A> {
 			case .Nil:
 				return List(x)
 			case .Cons(let y, let ys):
-				return cmp(x, y) ?  x <| l : y <| insertBy(cmp)(x)(ys)
+				return cmp(x, y) ? (x <<| l) : (y <<| insertBy(cmp)(x)(ys))
 		}
 	} }
 }

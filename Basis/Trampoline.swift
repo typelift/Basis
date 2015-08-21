@@ -51,12 +51,12 @@ extension Trampoline : Functor {
 	}
 }
 
-public func <%> <A, B>(f : A -> B, b : Trampoline<A>) -> Trampoline<B> {
+public func <^> <A, B>(f : A -> B, b : Trampoline<A>) -> Trampoline<B> {
 	return Trampoline.fmap(f)(b)
 }
 
 public func <% <A, B>(a : A, b : Trampoline<B>) -> Trampoline<A> {
-	return (curry(<%>) • const)(a)(b)
+	return (curry(<^>) • const)(a)(b)
 }
 
 extension Trampoline : Applicative {
@@ -82,11 +82,11 @@ public func <*> <A, B>(stfn: Trampoline<A -> B>, st: Trampoline<A>) -> Trampolin
 }
 
 public func *> <A, B>(a : Trampoline<A>, b : Trampoline<B>) -> Trampoline<B> {
-	return const(id) <%> a <*> b
+	return const(id) <^> a <*> b
 }
 
 public func <* <A, B>(a : Trampoline<A>, b : Trampoline<B>) -> Trampoline<A> {
-	return const <%> a <*> b
+	return const <^> a <*> b
 }
 
 extension Trampoline : ApplicativeOps {
@@ -100,11 +100,11 @@ extension Trampoline : ApplicativeOps {
 	}
 
 	public static func liftA2<B, C>(f : A -> B -> C) -> Trampoline<A> -> Trampoline<B> -> Trampoline<C> {
-		return { a in { b in f <%> a <*> b  } }
+		return { a in { b in f <^> a <*> b  } }
 	}
 
 	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> Trampoline<A> -> Trampoline<B> -> Trampoline<C> -> Trampoline<D> {
-		return { a in { b in { c in f <%> a <*> b <*> c } } }
+		return { a in { b in { c in f <^> a <*> b <*> c } } }
 	}
 }
 
@@ -158,11 +158,11 @@ public func -<< <A, B>(f : A -> Trampoline<B>, xs : Trampoline<A>) -> Trampoline
 	return xs.bind(f)
 }
 
-public func >-> <A, B, C>(f : A -> Trampoline<B>, g : B -> Trampoline<C>) -> A -> Trampoline<C> {
+public func >>->> <A, B, C>(f : A -> Trampoline<B>, g : B -> Trampoline<C>) -> A -> Trampoline<C> {
 	return { x in f(x) >>- g }
 }
 
-public func <-< <A, B, C>(g : B -> Trampoline<C>, f : A -> Trampoline<B>) -> A -> Trampoline<C> {
+public func <<-<< <A, B, C>(g : B -> Trampoline<C>, f : A -> Trampoline<B>) -> A -> Trampoline<C> {
 	return { x in f(x) >>- g }
 }
 

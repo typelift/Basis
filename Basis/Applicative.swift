@@ -28,14 +28,14 @@ public protocol Applicative : Pointed, Functor {
 	///
 	/// Default definition: 
 	///
-	///		const(id) <%> a <*> b
+	///		const(id) <^> a <*> b
 	func *>(_: Self, _: FB) -> FB
 	
 	/// Sequence Left | Disregards the Functor on the Right.
 	///
 	/// Default definition: 
 	///
-	///		const <%> a <*> b
+	///		const <^> a <*> b
 	func <*(_: Self, _: FB) -> Self
 }
 
@@ -57,7 +57,7 @@ public protocol Alternative : Applicative {
 	///
 	/// The least solution to the equation:
 	///
-	///		curry(<|) <%> v <*> many(v)
+	///		curry(<|) <^> v <*> many(v)
 	func some(_: Self) -> FLA
 
 	/// Zero or more
@@ -71,7 +71,7 @@ public protocol Alternative : Applicative {
 	///
 	/// Default definition:
 	///
-	///		`Optional.just <%> v <|> pure(Optional.None)`
+	///		`Optional.just <^> v <|> pure(Optional.None)`
 	func optional(_: Self) -> FMA
 }
 

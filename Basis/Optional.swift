@@ -101,7 +101,7 @@ public func mapOptional<A, B>(f : A -> Optional<B>)(l : [A]) -> [B] {
 				case .None:
 					return rs
 				case .Some(let r):
-					return r <| rs
+					return r <<| rs
 			}
 	}
 }

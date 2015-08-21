@@ -41,12 +41,12 @@ extension Box : Functor {
 	}
 }
 
-public func <%> <A, B>(f : A -> B, b : Box<A>) -> Box<B> {
+public func <^> <A, B>(f : A -> B, b : Box<A>) -> Box<B> {
 	return Box.fmap(f)(b)
 }
 
 public func <% <A, B>(a : A, b : Box<B>) -> Box<A> {
-	return (curry(<%>) • const)(a)(b)
+	return (curry(<^>) • const)(a)(b)
 }
 
 extension Box : Pointed {
@@ -85,9 +85,9 @@ public func >*< <A, B>(fab : Box<A -> B> , b : Box<A>) -> Box<B> {
 }
 
 public func *< <A, B>(a : Box<A>, b : Box<B>) -> Box<B> {
-	return const(id) <%> a >*< b
+	return const(id) <^> a >*< b
 }
 
 public func >* <A, B>(a : Box<A>, b : Box<B>) -> Box<A> {
-	return const <%> a >*< b
+	return const <^> a >*< b
 }

@@ -20,12 +20,12 @@ public protocol ComonadApply : Comonad {
 	/// the right.
 	///
 	/// Default definition: 
-	///		`const(id) <%> a >*< b`
+	///		`const(id) <^> a >*< b`
 	func *<(_: Self, _: FB) -> FB
 	
 	/// Sequence Left | Disregards the Functor on the Right.
 	///
 	/// Default definition: 
-	///		`const <%> a >*< b`
+	///		`const <^> a >*< b`
 	func >*(_: Self, _: FB) -> Self
 }

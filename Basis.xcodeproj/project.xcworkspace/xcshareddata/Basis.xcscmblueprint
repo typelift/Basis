@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "09972308D6EF224FD5CAD59D41AA73E5E00D7592",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "09972308D6EF224FD5CAD59D41AA73E5E00D7592" : 0,
+    "B1566CF92CFABA5E37554B7B555A1BA50691C03A" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "99CD4471-21B4-451B-9A52-291D367A9F86",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "09972308D6EF224FD5CAD59D41AA73E5E00D7592" : "Basis\/",
+    "B1566CF92CFABA5E37554B7B555A1BA50691C03A" : "Basis\/Carthage\/Checkouts\/Operadics\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Basis",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Basis.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/CodaFi\/Basis.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "09972308D6EF224FD5CAD59D41AA73E5E00D7592"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/typelift\/Operadics.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "B1566CF92CFABA5E37554B7B555A1BA50691C03A"
+    }
+  ]
+}

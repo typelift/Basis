@@ -37,7 +37,7 @@ extension ST : Functor {
 	}
 }
 
-public func <%> <S, A, B>(f: A -> B, st: ST<S, A>) -> ST<S, B> {
+public func <^> <S, A, B>(f: A -> B, st: ST<S, A>) -> ST<S, B> {
 	return ST.fmap(f)(st)
 }
 
@@ -69,11 +69,11 @@ public func <*> <S, A, B>(stfn: ST<S, A -> B>, st: ST<S, A>) -> ST<S, B> {
 }
 
 public func *> <S, A, B>(a : ST<S, A>, b : ST<S, B>) -> ST<S, B> {
-	return const(id) <%> a <*> b
+	return const(id) <^> a <*> b
 }
 
 public func <* <S, A, B>(a : ST<S, A>, b : ST<S, B>) -> ST<S, A> {
-	return const <%> a <*> b
+	return const <^> a <*> b
 }
 
 extension ST : ApplicativeOps {
@@ -87,11 +87,11 @@ extension ST : ApplicativeOps {
 	}
 
 	public static func liftA2<B, C>(f : A -> B -> C) -> ST<S, A> -> ST<S, B> -> ST<S, C> {
-		return { a in { b in f <%> a <*> b  } }
+		return { a in { b in f <^> a <*> b  } }
 	}
 
 	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> ST<S, A> -> ST<S, B> -> ST<S, C> -> ST<S, D> {
-		return { a in { b in { c in f <%> a <*> b <*> c } } }
+		return { a in { b in { c in f <^> a <*> b <*> c } } }
 	}
 }
 
@@ -145,11 +145,11 @@ public func -<< <S, A, B>(f : A -> ST<S, B>, xs : ST<S, A>) -> ST<S, B> {
 	return xs.bind(f)
 }
 
-public func >-> <S, A, B, C>(f : A -> ST<S, B>, g : B -> ST<S, C>) -> A -> ST<S, C> {
+public func >>->> <S, A, B, C>(f : A -> ST<S, B>, g : B -> ST<S, C>) -> A -> ST<S, C> {
 	return { x in f(x) >>- g }
 }
 
-public func <-< <S, A, B, C>(g : B -> ST<S, C>, f : A -> ST<S, B>) -> A -> ST<S, C> {
+public func <<-<< <S, A, B, C>(g : B -> ST<S, C>, f : A -> ST<S, B>) -> A -> ST<S, C> {
 	return { x in f(x) >>- g }
 }
 

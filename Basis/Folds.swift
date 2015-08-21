@@ -264,7 +264,7 @@ public func unfoldr<A, B>(f : B -> Optional<(A, B)>) -> B -> [A] {
 	return { b in 
 		switch f(b) {
 			case .Some(let (a, b2)):
-				return a <| unfoldr(f)(b2)
+				return a <<| unfoldr(f)(b2)
 			case .None:
 				return []
 		}
@@ -280,7 +280,7 @@ public func unfoldr<A, B>(f : B -> Optional<(A, B)>) -> B -> List<A> {
 	return { b in
 		switch f(b) {
 			case .Some(let (a, b2)):
-				return a <| unfoldr(f)(b2)
+				return a <<| unfoldr(f)(b2)
 			case .None:
 				return List()
 		}

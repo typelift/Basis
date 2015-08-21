@@ -55,7 +55,7 @@ public func substitute<R, A, B>(f : (R, A) -> B) -> (R -> A) -> R -> B {
 ///     f <<| g <<| h(x)  =  f (g (h (x)))
 ///
 /// Haskellers will know this as the ($) combinator.
-public func <<| <A, B>(f : A -> B, x : A) -> B {
+public func <| <A, B>(f : A -> B, x : A) -> B {
 	return f(x)
 }
 
@@ -71,7 +71,7 @@ public func <<| <A, B>(f : A -> B, x : A) -> B {
 ///     let result = nubBy(==)(x) |>> zip(y)
 ///                               |>> map(==)
 ///                               |>> and
-public func |>> <A, B>(x : A, f : A -> B) -> B {
+public func |> <A, B>(x : A, f : A -> B) -> B {
 	return f(x)
 }
 

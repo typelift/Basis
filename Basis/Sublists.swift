@@ -23,7 +23,7 @@ public func take<A>(n : Int) -> [A] -> [A] {
 			case .Nil:
 				return []
 			case .Cons(let x, let xs):
-				return x <| take(n - 1)(xs)
+				return x <<| take(n - 1)(xs)
 		}
 	}
 }
@@ -65,7 +65,7 @@ public func take<A>(n : Int) -> List<A> -> List<A> {
 			case .Nil:
 				return List()
 			case .Cons(let x, let xs):
-				return x <| take(n - 1)(xs)
+				return x <<| take(n - 1)(xs)
 		}
 	}
 }
@@ -113,7 +113,7 @@ public func takeWhile<A>(p : A -> Bool) -> [A] -> [A] {
 				return []
 			case .Cons(let x, let xs):
 				if p(x) {
-					return x <| takeWhile(p)(xs)
+					return x <<| takeWhile(p)(xs)
 				}
 				return []
 		}
@@ -145,7 +145,7 @@ public func takeWhile<A>(p : A -> Bool) -> List<A> -> List<A> {
 				return List()
 			case .Cons(let x, let xs):
 				if p(x) {
-					return x <| takeWhile(p)(xs)
+					return x <<| takeWhile(p)(xs)
 				}
 				return List()
 		}
@@ -178,7 +178,7 @@ public func span<A>(p : A -> Bool) -> [A] -> ([A], [A]) {
 			case .Cons(let x, let xs):
 				if p(x) {
 					let (ys, zs) = span(p)(xs)
-					return (x <| ys, zs)
+					return (x <<| ys, zs)
 				}
 				return ([], l)
 		}
@@ -201,7 +201,7 @@ public func span<A>(p : A -> Bool) -> List<A> -> (List<A>, List<A>) {
 			case .Cons(let x, let xs):
 				if p(x) {
 					let (ys, zs) = span(p)(xs)
-					return (x <| ys, zs)
+					return (x <<| ys, zs)
 				}
 				return (List(), l)
 		}
@@ -265,27 +265,27 @@ public func nub<A : Equatable>(xs : List<A>) -> List<A> {
 /// Returns all initial segments of an array.
 public func inits<A>(l : [A]) -> [[A]] {	
 	return foldr({ x, xss in
-		return [] <| map({ x <| $0 })(xss)
+		return [] <<| map({ x <<| $0 })(xss)
 	})([[]])(l)
 }
 
 /// Returns all final segments of an array.
 public func tails<A>(l : [A]) -> [[A]] {
 	return foldr({ x, y in
-		return (x <| head(y)) <| y
+		return (x <<| head(y)) <<| y
 	})([[]])(l)
 }
 
 /// Returns all initial segments of a list.
 public func inits<A>(l : List<A>) -> List<List<A>> {
 	return foldr({ x, xss in
-		return List() <| xss.map({ x <| $0 })
+		return List() <<| xss.map({ x <<| $0 })
 	})(List<List<A>>())(l)
 }
 
 /// Returns all final segments of a list.
 public func tails<A>(l : List<A>) -> List<List<A>> {
 	return foldr({ x, y in
-		return (x <| head(y)) <| y
+		return (x <<| head(y)) <<| y
 	})(List<List<A>>())(l)
 }

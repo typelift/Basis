@@ -43,12 +43,12 @@ public protocol Functor {
 	///
 	/// F on our diagram.
 	static func fmap(_: A -> B) -> Self -> FB
-	func <%>(_: A -> B, _: Self) -> FB
+	func <^>(_: A -> B, _: Self) -> FB
 
 	/// Constant Replace | Replaces all values in the target Functor with a singular constant value
 	/// from the source Functor.
 	///
 	/// Default definition: 
-	///		`curry(<%>) • const`
+	///		`curry(<^>) • const`
 	func <%(_: A, _: FB) -> Self
 }

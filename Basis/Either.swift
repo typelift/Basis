@@ -108,7 +108,7 @@ extension Either : Functor {
 
 }
 
-public func <%> <A, B, C>(f : B -> C, either : Either<A, B>) -> Either<A, C> {
+public func <^> <A, B, C>(f : B -> C, either : Either<A, B>) -> Either<A, C> {
 	return Either.fmap(f)(either)
 }
 
@@ -142,11 +142,11 @@ public func <*> <A, B, C>(f : Either<A, B -> C> , r : Either<A, B>) ->  Either<A
 }
 
 public func *> <A, B, C>(a : Either<A, B>, b : Either<A, C>) -> Either<A, C> {
-	return const(id) <%> a <*> b
+	return const(id) <^> a <*> b
 }
 
 public func <* <A, B, C>(a : Either<A, B>, b : Either<A, C>) -> Either<A, B> {
-	return const <%> a <*> b
+	return const <^> a <*> b
 }
 
 extension Either : ApplicativeOps {
@@ -160,11 +160,11 @@ extension Either : ApplicativeOps {
 	}
 
 	public static func liftA2<B, C>(f : A -> B -> C) -> Either<L, A> -> Either<L, B> -> Either<L, C> {
-		return { a in { b in f <%> a <*> b  } }
+		return { a in { b in f <^> a <*> b  } }
 	}
 
 	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> Either<L, A> -> Either<L, B> -> Either<L, C> -> Either<L, D> {
-		return { a in { b in { c in f <%> a <*> b <*> c } } }
+		return { a in { b in { c in f <^> a <*> b <*> c } } }
 	}
 }
 
@@ -223,11 +223,11 @@ public func -<< <L, A, B>(f : A -> Either<L, B>, xs : Either<L, A>) -> Either<L,
 	return xs.bind(f)
 }
 
-public func >-> <L, A, B, C>(f : A -> Either<L, B>, g : B -> Either<L, C>) -> A -> Either<L, C> {
+public func >>->> <L, A, B, C>(f : A -> Either<L, B>, g : B -> Either<L, C>) -> A -> Either<L, C> {
 	return { x in f(x) >>- g }
 }
 
-public func <-< <L, A, B, C>(g : B -> Either<L, C>, f : A -> Either<L, B>) -> A -> Either<L, C> {
+public func <<-<< <L, A, B, C>(g : B -> Either<L, C>, f : A -> Either<L, B>) -> A -> Either<L, C> {
 	return { x in f(x) >>- g }
 }
 

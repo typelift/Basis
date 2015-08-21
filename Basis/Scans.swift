@@ -16,9 +16,9 @@ public func scanl<B, A>(f : B -> A -> B) -> B -> [A] -> [B] {
 	return { q in { ls in
 		switch match(ls) {
 			case .Nil:
-				return q <| []
+				return q <<| []
 			case .Cons(let x, let xs):
-				return q <| scanl(f)(f(q)(x))(xs)
+				return q <<| scanl(f)(f(q)(x))(xs)
 		}
 	} }
 }
@@ -32,9 +32,9 @@ public func scanl<B, A>(f : (B, A) -> B) -> B -> [A] -> [B] {
 	return { q in { ls in
 		switch match(ls) {
 			case .Nil:
-				return q <| []
+				return q <<| []
 			case .Cons(let x, let xs):
-				return q <| scanl(f)(f(q, x))(xs)
+				return q <<| scanl(f)(f(q, x))(xs)
 		}
 	} }
 }
@@ -48,9 +48,9 @@ public func scanl<B, A>(f : B -> A -> B) -> B -> List<A> -> List<B> {
 	return { q in { ls in
 		switch ls.match() {
 			case .Nil:
-				return q <| List()
+				return q <<| List()
 			case .Cons(let x, let xs):
-				return q <| scanl(f)(f(q)(x))(xs)
+				return q <<| scanl(f)(f(q)(x))(xs)
 		}
 	} }
 }
@@ -64,9 +64,9 @@ public func scanl<B, A>(f : (B, A) -> B) -> B -> List<A> -> List<B> {
 	return { q in { ls in
 		switch ls.match() {
 			case .Nil:
-				return q <| List()
+				return q <<| List()
 			case .Cons(let x, let xs):
-				return q <| scanl(f)(f(q, x))(xs)
+				return q <<| scanl(f)(f(q, x))(xs)
 		}
 	} }
 }
@@ -138,7 +138,7 @@ public func scanr<B, A>(f : A -> B -> B) -> B -> [A] -> [B] {
 			case .Nil:
 				return [q]
 			case .Cons(let x, let xs):
-				return f(x)(q) <| scanr(f)(q)(xs)
+				return f(x)(q) <<| scanr(f)(q)(xs)
 		}
 	} }
 }
@@ -154,7 +154,7 @@ public func scanr<B, A>(f : (A, B) -> B) -> B -> [A] -> [B] {
 			case .Nil:
 				return [q]
 			case .Cons(let x, let xs):
-				return f(x, q) <| scanr(f)(q)(xs)
+				return f(x, q) <<| scanr(f)(q)(xs)
 		}
 	} }
 }
@@ -170,7 +170,7 @@ public func scanr<B, A>(f : A -> B -> B) -> B -> List<A> -> List<B> {
 			case .Nil:
 				return List(q)
 			case .Cons(let x, let xs):
-				return f(x)(q) <| scanr(f)(q)(xs)
+				return f(x)(q) <<| scanr(f)(q)(xs)
 		}
 	} }
 }
@@ -186,7 +186,7 @@ public func scanr<B, A>(f : (A, B) -> B) -> B -> List<A> -> List<B> {
 			case .Nil:
 				return List(q)
 			case .Cons(let x, let xs):
-				return f(x, q) <| scanr(f)(q)(xs)
+				return f(x, q) <<| scanr(f)(q)(xs)
 		}
 	} }
 }
@@ -207,7 +207,7 @@ public func scanr1<A>(f : A -> A -> A) -> [A] -> [A] {
 					case .Nil:
 						fatalError("Cannot scanr1 across an empty list.")
 					case .Cons(let q, _):
-						return f(x)(q) <| qs
+						return f(x)(q) <<| qs
 				}
 		}
 	}
@@ -229,7 +229,7 @@ public func scanr1<A>(f : (A, A) -> A) -> [A] -> [A] {
 					case .Nil:
 						fatalError("Cannot scanr1 across an empty list.")
 					case .Cons(let q, _):
-						return f(x, q) <| qs
+						return f(x, q) <<| qs
 				}
 		}
 	}
@@ -251,7 +251,7 @@ public func scanr1<A>(f : A -> A -> A) -> List<A> -> List<A> {
 					case .Nil:
 						fatalError("Cannot scanr1 across an empty list.")
 					case .Cons(let q, _):
-						return f(x)(q) <| qs
+						return f(x)(q) <<| qs
 				}
 		}
 	}
@@ -273,7 +273,7 @@ public func scanr1<A>(f : (A, A) -> A) -> List<A> -> List<A> {
 					case .Nil:
 						fatalError("Cannot scanr1 across an empty list.")
 					case .Cons(let q, _):
-						return f(x, q) <| qs
+						return f(x, q) <<| qs
 				}
 		}
 	}

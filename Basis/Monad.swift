@@ -117,8 +117,8 @@ public protocol MonadOps : Monad {
 	func -<<(_: A -> FB, _: Self) -> FB
 
 	/// Kleisli Forward | Kleisli composes two Monadic actions from the left to the right.
-	func >->(_: A -> FB,  _: B -> FC) -> A -> FC
+	func >>->>(_: A -> FB,  _: B -> FC) -> A -> FC
 
 	/// Kleisli Backward | Kleisli composes two Monadic actions from the right to the left.
-	func <-<(_: B -> FC, _: A -> FB) -> A -> FC
+	func <<-<<(_: B -> FC, _: A -> FB) -> A -> FC
 }

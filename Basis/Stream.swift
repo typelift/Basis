@@ -42,7 +42,7 @@ public func tail<T>(s : Stream<T>) -> Stream<T> {
 
 /// Returns a Stream of all initial segments of a Stream.
 public func inits<T>(s : Stream<T>) -> Stream<[T]> {
-	return Stream { ([], map({ s.step().head <| $0 })(inits(s.step().tail))) }
+	return Stream { ([], map({ s.step().head <<| $0 })(inits(s.step().tail))) }
 }
 
 /// Returns a Stream of all final segments of a Stream.
@@ -120,7 +120,7 @@ public func take<T>(n : UInt) -> Stream<T> -> [T] {
 		if n == 0 {
 			return []
 		}
-		return s.step().head <| take(n - 1)(s.step().tail)
+		return s.step().head <<| take(n - 1)(s.step().tail)
 	}
 }
 
@@ -141,7 +141,7 @@ public func splitAt<T>(n : UInt) -> Stream<T> -> ([T], Stream<T>) {
 			return ([], xs)
 		}
 		let (p, r) = splitAt(n - 1)(tail(xs))
-		return (head(xs) <| p, r)
+		return (head(xs) <<| p, r)
 	}
 }
 
@@ -149,7 +149,7 @@ public func splitAt<T>(n : UInt) -> Stream<T> -> ([T], Stream<T>) {
 public func takeWhile<T>(p : T -> Bool) -> Stream<T> -> [T] {
 	return { s in 
 		if p(s.step().head) {
-			return s.step().head <| takeWhile(p)(s.step().tail)
+			return s.step().head <<| takeWhile(p)(s.step().tail)
 		}
 		return []
 	}
@@ -203,7 +203,7 @@ extension Stream : Functor {
 	}
 }
 
-public func <%> <A, B>(f : A -> B, b : Stream<A>) -> Stream<B> {
+public func <^> <A, B>(f : A -> B, b : Stream<A>) -> Stream<B> {
 	return Stream.fmap(f)(b)
 }
 
@@ -246,11 +246,11 @@ extension Stream : ApplicativeOps {
 	}
 
 	public static func liftA2<B, C>(f : A -> B -> C) -> Stream<A> -> Stream<B> -> Stream<C> {
-		return { a in { b in f <%> a <*> b  } }
+		return { a in { b in f <^> a <*> b  } }
 	}
 
 	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> Stream<A> -> Stream<B> -> Stream<C> -> Stream<D> {
-		return { a in { b in { c in f <%> a <*> b <*> c } } }
+		return { a in { b in { c in f <^> a <*> b <*> c } } }
 	}
 }
 
@@ -306,11 +306,11 @@ public func -<< <A, B>(f : A -> Stream<B>, xs : Stream<A>) -> Stream<B> {
 	return xs.bind(f)
 }
 
-public func >-> <A, B, C>(f : A -> Stream<B>, g : B -> Stream<C>) -> A -> Stream<C> {
+public func >>->> <A, B, C>(f : A -> Stream<B>, g : B -> Stream<C>) -> A -> Stream<C> {
 	return { x in f(x) >>- g }
 }
 
-public func <-< <A, B, C>(g : B -> Stream<C>, f : A -> Stream<B>) -> A -> Stream<C> {
+public func <<-<< <A, B, C>(g : B -> Stream<C>, f : A -> Stream<B>) -> A -> Stream<C> {
 	return { x in f(x) >>- g }
 }
 

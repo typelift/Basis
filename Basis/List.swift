@@ -130,7 +130,7 @@ public struct List<A> {
 		case .Nil:
 			return rhs
 		case let .Cons(x, xs):
-			return x <| xs.append(rhs)
+			return x <<| xs.append(rhs)
 		}
 	}
 
@@ -170,18 +170,18 @@ public func tail<A>(l : List<A>) -> List<A> {
 }
 
 public func cons<T>(x : T) -> List<T> -> List<T> {
-	return { xs in x <| xs }
+	return { xs in x <<| xs }
 }
 
-public func <| <T>(head : T, tail : List<T>) -> List<T> {
+public func <<| <T>(head : T, tail : List<T>) -> List<T> {
 	return List(head, tail)
 }
 
 public func snoc<T>(xs : List<T>) -> T -> List<T> {
-	return { x in xs |> x }
+	return { x in xs |>> x }
 }
 
-public func |> <T>(xs : List<T>, x : T) -> List<T> {
+public func |>> <T>(xs : List<T>, x : T) -> List<T> {
 	return xs + List(x)
 }
 
@@ -279,7 +279,7 @@ extension List : Applicative {
 	}
 }
 
-public func <%> <A, B>(f : A -> B, ar : List<A>) -> List<B> {
+public func <^> <A, B>(f : A -> B, ar : List<A>) -> List<B> {
 	return List.fmap(f)(ar)
 }
 
@@ -288,11 +288,11 @@ public func <*> <A, B>(a : List<A -> B> , l : List<A>) -> List<B> {
 }
 
 public func *> <A, B>(a : List<A>, b : List<B>) -> List<B> {
-	return const(id) <%> a <*> b
+	return const(id) <^> a <*> b
 }
 
 public func <* <A, B>(a : List<A>, b : List<B>) -> List<A> {
-	return const <%> a <*> b
+	return const <^> a <*> b
 }
 
 extension List : Alternative {
@@ -304,7 +304,7 @@ extension List : Alternative {
 	}
 
 	public func some(v : List<A>) -> List<[A]> {
-		return curry(<|) <%> v <*> many(v)
+		return curry(<<|) <^> v <*> many(v)
 	}
 
 	public func many(v : List<A>) -> List<[A]> {
@@ -312,7 +312,7 @@ extension List : Alternative {
 	}
 	
 	public func optional(v : List<A>) -> List<Optional<A>> {
-		return Optional.Some <%> v <|> List<Optional<A>>.pure(.None)
+		return Optional.Some <^> v <|> List<Optional<A>>.pure(.None)
 	}
 }
 

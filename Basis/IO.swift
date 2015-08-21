@@ -123,7 +123,7 @@ extension IO : Functor {
 	}
 }
 
-public func <%><A, B>(f: A -> B, io : IO<A>) -> IO<B> {
+public func <^><A, B>(f: A -> B, io : IO<A>) -> IO<B> {
 	return IO.fmap(f)(io)
 }
 
@@ -154,11 +154,11 @@ public func <*><A, B>(fn : IO<A -> B>, m : IO<A>) -> IO<B> {
 }
 
 public func *> <A, B>(a : IO<A>, b : IO<B>) -> IO<B> {
-	return const(id) <%> a <*> b
+	return const(id) <^> a <*> b
 }
 
 public func <* <A, B>(a : IO<A>, b : IO<B>) -> IO<A> {
-	return const <%> a <*> b
+	return const <^> a <*> b
 }
 
 extension IO : ApplicativeOps {
@@ -172,11 +172,11 @@ extension IO : ApplicativeOps {
 	}
 
 	public static func liftA2<B, C>(f : A -> B -> C) -> IO<A> -> IO<B> -> IO<C> {
-		return { a in { b in f <%> a <*> b  } }
+		return { a in { b in f <^> a <*> b  } }
 	}
 
 	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> IO<A> -> IO<B> -> IO<C> -> IO<D> {
-		return { a in { b in { c in f <%> a <*> b <*> c } } }
+		return { a in { b in { c in f <^> a <*> b <*> c } } }
 	}
 }
 
@@ -233,11 +233,11 @@ public func -<<<A, B>(f : A -> IO<B>, xs : IO<A>) -> IO<B> {
 	return xs.bind(f)
 }
 
-public func >-><A, B, C>(f : A -> IO<B>, g : B -> IO<C>) -> A -> IO<C> {
+public func >>->><A, B, C>(f : A -> IO<B>, g : B -> IO<C>) -> A -> IO<C> {
 	return { x in f(x) >>- g }
 }
 
-public func <-<<A, B, C>(g : B -> IO<C>, f : A -> IO<B>) -> A -> IO<C> {
+public func <<-<<<A, B, C>(g : B -> IO<C>, f : A -> IO<B>) -> A -> IO<C> {
 	return { x in f(x) >>- g }
 }
 

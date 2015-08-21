@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		825FB2E21B86BAE5008348ED /* ListSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D77DF81A3CF9F4000F5683 /* ListSpec.swift */; };
 		825FB2E31B86BAE6008348ED /* ListSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D77DF81A3CF9F4000F5683 /* ListSpec.swift */; };
+		825FB2E51B86BC87008348ED /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825FB2E41B86BC87008348ED /* Operators.swift */; };
+		825FB2E61B86BC87008348ED /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825FB2E41B86BC87008348ED /* Operators.swift */; };
 		82E51B481B5A2522003CA361 /* Semigroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E51B471B5A2522003CA361 /* Semigroup.swift */; };
 		82E51B491B5A2522003CA361 /* Semigroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E51B471B5A2522003CA361 /* Semigroup.swift */; };
 		84095F0B1A28EA9E00956141 /* Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84095F0A1A28EA9E00956141 /* Member.swift */; };
@@ -214,6 +216,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		825FB2E41B86BC87008348ED /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Operators.swift; path = Carthage/Checkouts/Operadics/Operators.swift; sourceTree = SOURCE_ROOT; };
 		82E51B471B5A2522003CA361 /* Semigroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Semigroup.swift; sourceTree = "<group>"; };
 		84095F0A1A28EA9E00956141 /* Member.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Member.swift; sourceTree = "<group>"; };
 		84095F0E1A28EAEC00956141 /* MemberSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemberSpec.swift; sourceTree = "<group>"; };
@@ -477,6 +480,7 @@
 				84922D1A19D237E000AE9A7C /* Basis.h */,
 				84922D2E19D237E000AE9A7C /* Kinds.swift */,
 				84922D3919D237E000AE9A7C /* BasisOperators.swift */,
+				825FB2E41B86BC87008348ED /* Operators.swift */,
 				84922D7919D2381000AE9A7C /* Control */,
 				84922D8019D2389000AE9A7C /* Data */,
 				84922D7E19D2386F00AE9A7C /* System */,
@@ -769,6 +773,7 @@
 				841409081B1A8C4100BA2B6C /* Map.swift in Sources */,
 				841409091B1A8C4100BA2B6C /* Query.swift in Sources */,
 				8414090A1B1A8C4100BA2B6C /* Traverse.swift in Sources */,
+				825FB2E61B86BC87008348ED /* Operators.swift in Sources */,
 				8414090C1B1A8C4100BA2B6C /* Member.swift in Sources */,
 				8414090D1B1A8C4100BA2B6C /* Optional.swift in Sources */,
 				8414090E1B1A8C4100BA2B6C /* Monoid.swift in Sources */,
@@ -861,6 +866,7 @@
 				841FE04319DB7E7C0068636A /* Trace.swift in Sources */,
 				841FE04419DB7E7C0068636A /* Transformations.swift in Sources */,
 				84922D5A19D237E000AE9A7C /* Function.swift in Sources */,
+				825FB2E51B86BC87008348ED /* Operators.swift in Sources */,
 				84922D6519D237E000AE9A7C /* Map.swift in Sources */,
 				84922D7619D237E000AE9A7C /* Tuple.swift in Sources */,
 				84922D4A19D237E000AE9A7C /* BASERealWorld.m in Sources */,

@@ -59,7 +59,7 @@ extension Lazy : Functor {
 	}
 }
 
-public func <%><A, B>(f: A -> B, st: Lazy<A>) -> Lazy<B> {
+public func <^><A, B>(f: A -> B, st: Lazy<A>) -> Lazy<B> {
 	return Lazy.fmap(f)(st)
 }
 
@@ -93,11 +93,11 @@ public func <*><A, B>(stfn: Lazy<A -> B>, st: Lazy<A>) -> Lazy<B> {
 }
 
 public func *><A, B>(a : Lazy<A>, b : Lazy<B>) -> Lazy<B> {
-	return const(id) <%> a <*> b
+	return const(id) <^> a <*> b
 }
 
 public func <*<A, B>(a : Lazy<A>, b : Lazy<B>) -> Lazy<A> {
-	return const <%> a <*> b
+	return const <^> a <*> b
 }
 
 extension Lazy : ApplicativeOps {
@@ -111,11 +111,11 @@ extension Lazy : ApplicativeOps {
 	}
 
 	public static func liftA2<B, C>(f : A -> B -> C) -> Lazy<A> -> Lazy<B> -> Lazy<C> {
-		return { a in { b in f <%> a <*> b  } }
+		return { a in { b in f <^> a <*> b  } }
 	}
 
 	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> Lazy<A> -> Lazy<B> -> Lazy<C> -> Lazy<D> {
-		return { a in { b in { c in f <%> a <*> b <*> c } } }
+		return { a in { b in { c in f <^> a <*> b <*> c } } }
 	}
 }
 
@@ -169,10 +169,10 @@ public func -<<<A, B>(f : A -> Lazy<B>, xs : Lazy<A>) -> Lazy<B> {
 	return xs.bind(f)
 }
 
-public func >-><A, B, C>(f : A -> Lazy<B>, g : B -> Lazy<C>) -> A -> Lazy<C> {
+public func >>->><A, B, C>(f : A -> Lazy<B>, g : B -> Lazy<C>) -> A -> Lazy<C> {
 	return { x in f(x) >>- g }
 }
 
-public func <-<<A, B, C>(g : B -> Lazy<C>, f : A -> Lazy<B>) -> A -> Lazy<C> {
+public func <<-<<<A, B, C>(g : B -> Lazy<C>, f : A -> Lazy<B>) -> A -> Lazy<C> {
 	return { x in f(x) >>- g }
 }

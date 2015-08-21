@@ -36,10 +36,10 @@ public func tail<A>(l : [A]) -> [A] {
 }
 
 public func cons<T>(x : T) -> [T] -> [T] {
-	return { xs in x <| xs }
+	return { xs in x <<| xs }
 }
 
-public func <| <T>(lhs : T, var rhs : [T]) -> [T] {
+public func <<| <T>(lhs : T, var rhs : [T]) -> [T] {
 	rhs.insert(lhs, atIndex: 0)
 	return rhs
 }
@@ -137,7 +137,7 @@ extension Array : Applicative {
 	}
 }
 
-public func <%><A, B>(f: A -> B, ar : Array<A>) -> Array<B> {
+public func <^><A, B>(f: A -> B, ar : Array<A>) -> Array<B> {
 	return Array.fmap(f)(ar)
 }
 
@@ -146,11 +146,11 @@ public func <*><A, B>(a : Array<A -> B> , l : Array<A>) -> Array<B> {
 }
 
 public func *><A, B>(a : Array<A>, b : Array<B>) -> Array<B> {
-	return const(id) <%> a <*> b
+	return const(id) <^> a <*> b
 }
 
 public func <*<A, B>(a : Array<A>, b : Array<B>) -> Array<A> {
-	return const <%> a <*> b
+	return const <^> a <*> b
 }
 
 extension Array : Alternative {
@@ -161,7 +161,7 @@ extension Array : Alternative {
 	}
 
 	public func some(v : Array<A>) -> Array<[A]> {
-		return curry(<|) <%> v <*> many(v)
+		return curry(<<|) <^> v <*> many(v)
 	}
 
 	public func many(v : Array<A>) -> Array<[A]> {
@@ -169,7 +169,7 @@ extension Array : Alternative {
 	}
 	
 	public func optional(v : Array<A>) -> Array<Optional<A>> {
-		return Optional.Some <%> v <|> Array<Optional<A>>.pure(.None)
+		return Optional.Some <^> v <|> Array<Optional<A>>.pure(.None)
 	}
 }
 
@@ -235,7 +235,7 @@ internal func destructure<A, B>(x : [A:B]) -> DDestructure<A, B> {
 	let hd = g.next()!
 	var arr : [(A, B)] = []
 	while let v = g.next() {
-		arr = (v <| arr)
+		arr = (v <<| arr)
 	}
 	return .Destructure(hd, arr)
 }

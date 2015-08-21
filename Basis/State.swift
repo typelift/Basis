@@ -29,12 +29,12 @@ extension State : Functor {
 	}
 }
 
-public func <%> <S, A, B>(f : A -> B, s : State<S, A>) -> State<S, B> {
+public func <^> <S, A, B>(f : A -> B, s : State<S, A>) -> State<S, B> {
 	return State<S, A>.fmap(f)(s)
 }
 
 public func <% <S, A, B>(x : A, s : State<S, B>) -> State<S, A> {
-	return (curry(<%>) • const)(x)(s)
+	return (curry(<^>) • const)(x)(s)
 }
 
 extension State : Pointed {
@@ -62,11 +62,11 @@ public func <*> <S, A, B>(f : State<S, A -> B> , s : State<S, A>) -> State<S, B>
 }
 
 public func *> <S, A, B>(a : State<S, A>, b : State<S, B>) -> State<S, B> {
-	return const(id) <%> a <*> b
+	return const(id) <^> a <*> b
 }
 
 public func <* <S, A, B>(a : State<S, A>, b : State<S, B>) -> State<S, A> {
-	return const <%> a <*> b
+	return const <^> a <*> b
 }
 
 extension State : ApplicativeOps {
@@ -80,11 +80,11 @@ extension State : ApplicativeOps {
 	}
 	
 	public static func liftA2<B, C>(f : A -> B -> C) -> State<S, A> -> State<S, B> -> State<S, C> {
-		return { a in { b in f <%> a <*> b  } }
+		return { a in { b in f <^> a <*> b  } }
 	}
 	
 	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> State<S, A> -> State<S, B> -> State<S, C> -> State<S, D> {
-		return { a in { b in { c in f <%> a <*> b <*> c } } }
+		return { a in { b in { c in f <^> a <*> b <*> c } } }
 	}
 }
 
@@ -141,10 +141,10 @@ public func -<< <S, A, B>(f : A -> State<S, B>, xs : State<S, A>) -> State<S, B>
 	return xs.bind(f)
 }
 
-public func >-> <S, A, B, C>(f : A -> State<S, B>, g : B -> State<S, C>) -> A -> State<S, C> {
+public func >>->> <S, A, B, C>(f : A -> State<S, B>, g : B -> State<S, C>) -> A -> State<S, C> {
 	return { x in f(x) >>- g }
 }
 
-public func <-< <S, A, B, C>(g : B -> State<S, C>, f : A -> State<S, B>) -> A -> State<S, C> {
+public func <<-<< <S, A, B, C>(g : B -> State<S, C>, f : A -> State<S, B>) -> A -> State<S, C> {
 	return { x in f(x) >>- g }
 }
