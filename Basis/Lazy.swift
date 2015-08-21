@@ -44,8 +44,8 @@ public func force<A>(l : Lazy<A>) -> A {
 }
 
 extension Lazy : Functor {
-	typealias B = Any
-	typealias FB = Lazy<B>
+	public typealias B = Any
+	public typealias FB = Lazy<B>
 	
 	public static func fmap<B>(f: A -> B) -> Lazy<A> -> Lazy<B> {
 		return { st in
@@ -74,7 +74,7 @@ extension Lazy : Pointed {
 }
 
 extension Lazy : Applicative {
-	typealias FAB = Lazy<A -> B>
+	public typealias FAB = Lazy<A -> B>
 	
 	public static func ap<A, B>(stfn: Lazy<A -> B>) -> Lazy<A> -> Lazy<B> {
 		return { st in
@@ -101,10 +101,10 @@ public func <*<A, B>(a : Lazy<A>, b : Lazy<B>) -> Lazy<A> {
 }
 
 extension Lazy : ApplicativeOps {
-	typealias C = Any
-	typealias FC = Lazy<C>
-	typealias D = Any
-	typealias FD = Lazy<D>
+	public typealias C = Any
+	public typealias FC = Lazy<C>
+	public typealias D = Any
+	public typealias FD = Lazy<D>
 
 	public static func liftA<B>(f : A -> B) -> Lazy<A> -> Lazy<B> {
 		return { a in Lazy<A -> B>.pure(f) <*> a }
@@ -136,9 +136,9 @@ public func >><A, B>(x : Lazy<A>, y : Lazy<B>) -> Lazy<B> {
 }
 
 extension Lazy : MonadOps {
-	typealias MLA = Lazy<[A]>
-	typealias MLB = Lazy<[B]>
-	typealias MU = Lazy<()>
+	public typealias MLA = Lazy<[A]>
+	public typealias MLB = Lazy<[B]>
+	public typealias MU = Lazy<()>
 
 	public static func mapM<B>(f : A -> Lazy<B>) -> [A] -> Lazy<[B]> {
 		return { xs in Lazy<B>.sequence(map(f)(xs)) }

@@ -24,8 +24,8 @@ public struct ST<S, A> {
 }
 
 extension ST : Functor {
-	typealias B = Any
-	typealias FB = ST<S, B>
+	public typealias B = Any
+	public typealias FB = ST<S, B>
 
 	public static func fmap<B>(f: A -> B) -> ST<S, A> -> ST<S, B> {
 		return { st in
@@ -54,7 +54,7 @@ extension ST : Pointed {
 }
 
 extension ST : Applicative {
-	typealias FAB = ST<S, A -> B>
+	public typealias FAB = ST<S, A -> B>
 	
 	public static func ap<S, A, B>(stfn: ST<S, A -> B>) -> ST<S, A> -> ST<S, B> {
 		return { st in ST<S, B>(apply: { s in
@@ -77,10 +77,10 @@ public func <* <S, A, B>(a : ST<S, A>, b : ST<S, B>) -> ST<S, A> {
 }
 
 extension ST : ApplicativeOps {
-	typealias C = Any
-	typealias FC = ST<S, C>
-	typealias D = Any
-	typealias FD = ST<S, D>
+	public typealias C = Any
+	public typealias FC = ST<S, C>
+	public typealias D = Any
+	public typealias FD = ST<S, D>
 
 	public static func liftA<B>(f : A -> B) -> ST<S, A> -> ST<S, B> {
 		return { a in ST<S, A -> B>.pure(f) <*> a }
@@ -112,9 +112,9 @@ public func >> <S, A, B>(x : ST<S, A>, y : ST<S, B>) -> ST<S, B> {
 }
 
 extension ST : MonadOps {
-	typealias MLA = ST<S, [A]>
-	typealias MLB = ST<S, [B]>
-	typealias MU = ST<S, ()>
+	public typealias MLA = ST<S, [A]>
+	public typealias MLB = ST<S, [B]>
+	public typealias MU = ST<S, ()>
 	
 	public static func mapM<B>(f : A -> ST<S, B>) -> [A] -> ST<S, [B]> {
 		return { xs in ST<S, B>.sequence(map(f)(xs)) }

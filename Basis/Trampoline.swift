@@ -41,10 +41,10 @@ public func later<T>(x : () -> Trampoline<T>) -> Trampoline<T> {
 }
 
 extension Trampoline : Functor {
-	typealias A = T
-	typealias B = Swift.Any
+	public typealias A = T
+	public typealias B = Swift.Any
 	
-	typealias FB = Trampoline<B>
+	public typealias FB = Trampoline<B>
 	
 	public static func fmap<B>(f : T -> B) -> Trampoline<T> -> Trampoline<B> {
 		return { b in Trampoline<B>(b.t.flatMap({ x in Pure(x: f(x)) })) }
@@ -60,7 +60,7 @@ public func <% <A, B>(a : A, b : Trampoline<B>) -> Trampoline<A> {
 }
 
 extension Trampoline : Applicative {
-	typealias FAB = Trampoline<A -> B>
+	public typealias FAB = Trampoline<A -> B>
 	
 	public static func pure<A>(a : A) -> Trampoline<A> {
 		return Trampoline<A>(Pure(x: a))
@@ -90,10 +90,10 @@ public func <* <A, B>(a : Trampoline<A>, b : Trampoline<B>) -> Trampoline<A> {
 }
 
 extension Trampoline : ApplicativeOps {
-	typealias C = Any
-	typealias FC = Trampoline<C>
-	typealias D = Any
-	typealias FD = Trampoline<D>
+	public typealias C = Any
+	public typealias FC = Trampoline<C>
+	public typealias D = Any
+	public typealias FD = Trampoline<D>
 
 	public static func liftA<B>(f : A -> B) -> Trampoline<A> -> Trampoline<B> {
 		return { a in Trampoline<A -> B>.pure(f) <*> a }
@@ -125,9 +125,9 @@ public func >> <A, B>(x : Trampoline<A>, y : Trampoline<B>) -> Trampoline<B> {
 }
 
 extension Trampoline : MonadOps {
-	typealias MLA = Trampoline<[A]>
-	typealias MLB = Trampoline<[B]>
-	typealias MU = Trampoline<()>
+	public typealias MLA = Trampoline<[A]>
+	public typealias MLB = Trampoline<[B]>
+	public typealias MU = Trampoline<()>
 
 	public static func mapM<B>(f : A -> Trampoline<B>) -> [A] -> Trampoline<[B]> {
 		return { xs in Trampoline<B>.sequence(map(f)(xs)) }

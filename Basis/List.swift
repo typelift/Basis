@@ -253,8 +253,8 @@ public func == <A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
 /// MARK: Control.*
 
 extension List : Functor {
-	typealias B = Any
-	typealias FB = List<B>
+	public typealias B = Any
+	public typealias FB = List<B>
 
 	public static func fmap<B>(f: A -> B) -> List<A> -> List<B> {
 		return { $0.map(f) }
@@ -272,7 +272,7 @@ extension List : Pointed {
 }
 
 extension List : Applicative {
-	typealias FAB = List<A -> B>
+	public typealias FAB = List<A -> B>
 
 	public static func ap<B>(a : List<A -> B>) -> List<A> -> List<B> {
 		return { l in concat(a.map({ l.map($0) })) }
@@ -296,8 +296,8 @@ public func <* <A, B>(a : List<A>, b : List<B>) -> List<A> {
 }
 
 extension List : Alternative {
-	typealias FLA = List<[A]>
-	typealias FMA = List<Optional<A>>
+	public typealias FLA = List<[A]>
+	public typealias FMA = List<Optional<A>>
 
 	public func empty() -> List<A> {
 		return List()
@@ -343,10 +343,10 @@ extension List : MonadPlus {
 }
 
 extension List : MonadZip {
-	typealias C = Any
-	typealias FC = List<C>
+	public typealias C = Any
+	public typealias FC = List<C>
 
-	typealias FTAB = List<(A, B)>
+	public typealias FTAB = List<(A, B)>
 
 	public func mzip<B>(ma : List<A>) -> List<B> -> List<(A, B)> {
 		return zip(ma)

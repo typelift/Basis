@@ -16,8 +16,8 @@ public struct State<S, A> {
 }
 
 extension State : Functor {
-	typealias B = Swift.Any
-	typealias FB = State<S, B>
+	public typealias B = Swift.Any
+	public typealias FB = State<S, B>
 	
 	public static func fmap<B>(f : A -> B) -> State<S, A> -> State<S, B> {
 		return { state in
@@ -44,7 +44,7 @@ extension State : Pointed {
 }
 
 extension State : Applicative {
-	typealias FAB = State<S, A -> B>
+	public typealias FAB = State<S, A -> B>
 	
 	public static func ap<B>(stfn : State<S, A -> B>) -> State<S, A> -> State<S, B> {
 		return { st in
@@ -70,10 +70,10 @@ public func <* <S, A, B>(a : State<S, A>, b : State<S, B>) -> State<S, A> {
 }
 
 extension State : ApplicativeOps {
-	typealias C = Any
-	typealias FC = State<S, C>
-	typealias D = Any
-	typealias FD = State<S, D>
+	public typealias C = Any
+	public typealias FC = State<S, C>
+	public typealias D = Any
+	public typealias FD = State<S, D>
 	
 	public static func liftA<B>(f : A -> B) -> State<S, A> -> State<S, B> {
 		return { a in State<S, A -> B>.pure(f) <*> a }
@@ -108,9 +108,9 @@ public func >> <S, A, B>(x : State<S, A>, y : State<S, B>) -> State<S, B> {
 }
 
 extension State : MonadOps {
-	typealias MLA = State<S, [A]>
-	typealias MLB = State<S, [B]>
-	typealias MU = State<S, ()>
+	public typealias MLA = State<S, [A]>
+	public typealias MLB = State<S, [B]>
+	public typealias MU = State<S, ()>
 	
 	public static func mapM<B>(f : A -> State<S, B>) -> [A] -> State<S, [B]> {
 		return { xs in State<S, B>.sequence(map(f)(xs)) }

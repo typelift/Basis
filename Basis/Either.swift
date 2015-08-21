@@ -91,9 +91,9 @@ public func != <A : Equatable, B : Equatable>(lhs: Either<A, B>, rhs: Either<A, 
 // MARK: Functor
 
 extension Either : Functor {
-	typealias A = R
-	typealias B = Any
-	typealias FB = Either<L, B>
+	public typealias A = R
+	public typealias B = Any
+	public typealias FB = Either<L, B>
 
 	public static func fmap<C>(f : R -> C) -> Either<L, R> -> Either<L, C> {
 		return { 
@@ -123,7 +123,7 @@ extension Either : Pointed {
 }
 
 extension Either : Applicative {
-	typealias FAB = Either<L, R -> C>
+	public typealias FAB = Either<L, R -> C>
 	
 	public static func ap<C>(f : Either<L, R -> C>) -> Either<L, R> -> Either<L, C> {
 		return { e in 
@@ -150,10 +150,10 @@ public func <* <A, B, C>(a : Either<A, B>, b : Either<A, C>) -> Either<A, B> {
 }
 
 extension Either : ApplicativeOps {
-	typealias C = Any
-	typealias FC = Either<L, C>
-	typealias D = Any
-	typealias FD = Either<L, D>
+	public typealias C = Any
+	public typealias FC = Either<L, C>
+	public typealias D = Any
+	public typealias FD = Either<L, D>
 
 	public static func liftA<B>(f : A -> B) -> Either<L, A> -> Either<L, B> {
 		return { a in Either<L, A -> B>.pure(f) <*> a }
@@ -190,9 +190,9 @@ public func >> <A, B, C>(x : Either<A, B>, y : Either<A, C>) -> Either<A, C> {
 }
 
 extension Either : MonadOps {
-	typealias MLA = Either<L, [A]>
-	typealias MLB = Either<L, [B]>
-	typealias MU = Either<L, ()>
+	public typealias MLA = Either<L, [A]>
+	public typealias MLB = Either<L, [B]>
+	public typealias MU = Either<L, ()>
 
 	public static func mapM<B>(f : A -> Either<L, B>) -> [A] -> Either<L, [B]> {
 		return { xs in Either<L, B>.sequence(map(f)(xs)) }

@@ -20,7 +20,7 @@ public protocol ComonadFix : Comonad {
 
 // Uncomment to crash Swiftc rdar://18619154
 //extension Box : ComonadFix {
-//	typealias FFAA = Box<Box<A> -> A>
+//	public typealias FFAA = Box<Box<A> -> A>
 //
 //	public class func cofix(x : Box<Box<A> -> A>) -> A {
 //		return x.extract()(Box<Box<A> -> A>.extend(Box<A>.cofix)(x))

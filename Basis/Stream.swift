@@ -193,10 +193,10 @@ public func unzip<A, B>(sp : Stream<(A, B)>) -> (Stream<A>, Stream<B>) {
 }
 
 extension Stream : Functor {
-	typealias A = T
-	typealias B = Swift.Any
+	public typealias A = T
+	public typealias B = Swift.Any
 	
-	typealias FB = Stream<B>
+	public typealias FB = Stream<B>
 	
 	public static func fmap<B>(f : A -> B) -> Stream<A> -> Stream<B> {
 		return map(f)
@@ -212,7 +212,7 @@ public func <% <A, B>(a : A, _ : Stream<B>) -> Stream<A> {
 }
 
 extension Stream : Applicative {
-	typealias FAB = Stream<A -> B>
+	public typealias FAB = Stream<A -> B>
 	
 	public static func pure(x : A) -> Stream<A> {
 		return `repeat`(x)
@@ -236,10 +236,10 @@ public func <* <A, B>(a : Stream<A>, b : Stream<B>) -> Stream<A> {
 }
 
 extension Stream : ApplicativeOps {
-	typealias C = Any
-	typealias FC = Stream<C>
-	typealias D = Any
-	typealias FD = Stream<D>
+	public typealias C = Any
+	public typealias FC = Stream<C>
+	public typealias D = Any
+	public typealias FD = Stream<D>
 
 	public static func liftA<B>(f : A -> B) -> Stream<A> -> Stream<B> {
 		return { a in Stream<A -> B>.pure(f) <*> a }
@@ -273,9 +273,9 @@ public func >> <A, B>(_ : Stream<A>, bs : Stream<B>) -> Stream<B> {
 }
 
 extension Stream : MonadOps {
-	typealias MLA = Stream<[A]>
-	typealias MLB = Stream<[B]>
-	typealias MU = Stream<()>
+	public typealias MLA = Stream<[A]>
+	public typealias MLB = Stream<[B]>
+	public typealias MU = Stream<()>
 
 	public static func mapM<B>(f : A -> Stream<B>) -> [A] -> Stream<[B]> {
 		return { xs in Stream<B>.sequence(map(f)(xs)) }
@@ -321,7 +321,7 @@ extension Stream : Copointed {
 }
 
 extension Stream : Comonad {
-	typealias FFA = Stream<Stream<A>>
+	public typealias FFA = Stream<Stream<A>>
 	
 	public static func duplicate(b : Stream<A>) -> Stream<Stream<A>> {
 		return tails(b)

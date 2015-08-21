@@ -32,9 +32,9 @@ public func !=<T : Equatable>(lhs: Box<T>, rhs: Box<T>) -> Bool {
 /// MARK: Functor
 
 extension Box : Functor {
-	typealias B = Swift.Any
+	public typealias B = Swift.Any
 	
-	typealias FB = Box<B>
+	public typealias FB = Box<B>
 	
 	public class func fmap<B>(f : A -> B) -> Box<A> -> Box<B> {
 		return { b in Box<B>(f(b.unBox())) }
@@ -62,7 +62,7 @@ extension Box : Copointed {
 }
 
 extension Box : Comonad {
-	typealias FFA = Box<Box<A>>
+	public typealias FFA = Box<Box<A>>
 	
 	public class func duplicate(b : Box<A>) -> Box<Box<A>> {
 		return Box<Box<A>>(b)
@@ -77,7 +77,7 @@ extension Box : Comonad {
 }
 
 extension Box : ComonadApply {
-	typealias FAB = Box<A -> B>
+	public typealias FAB = Box<A -> B>
 }
 
 public func >*< <A, B>(fab : Box<A -> B> , b : Box<A>) -> Box<B> {

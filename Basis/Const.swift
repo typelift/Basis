@@ -17,9 +17,9 @@ public struct Const<L, R> {
 }
 
 extension Const : Functor {
-	typealias A = L
-	typealias B = R
-	typealias FB = Const<A, B>
+	public typealias A = L
+	public typealias B = R
+	public typealias FB = Const<A, B>
 	
 	public static func fmap<B>(_ : A -> B) -> Const<L, R> -> Const<L, R> {
 		return { c in Const(c.val) }

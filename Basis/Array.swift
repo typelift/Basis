@@ -111,9 +111,9 @@ public func stripSuffix<A : Equatable>(l : [A]) -> [A] -> Optional<[A]> {
 }
 
 extension Array : Functor {
-	typealias A = Element
-	typealias B = Any
-	typealias FB = Array<B>
+	public typealias A = Element
+	public typealias B = Any
+	public typealias FB = Array<B>
 
 	public static func fmap<B>(f : A -> B) -> Array<A> -> Array<B> {
 		return { $0.map(f) }
@@ -125,7 +125,7 @@ public func <%<A, B>(x : A, l : Array<B>) -> Array<A> {
 }
 
 extension Array : Applicative {
-	typealias FAB = Array<A -> B>
+	public typealias FAB = Array<A -> B>
 
 	public static func ap<B>(fxs : Array<A -> B>) -> Array<A> -> Array<B> {
 		return { fxs <*> $0 }
@@ -154,7 +154,7 @@ public func <*<A, B>(a : Array<A>, b : Array<B>) -> Array<A> {
 }
 
 extension Array : Alternative {
-	typealias FLA = Array<[A]>
+	public typealias FLA = Array<[A]>
 
 	public func empty() -> Array<A> {
 		return []
@@ -200,10 +200,10 @@ extension Array : MonadPlus {
 }
 
 extension Array : MonadZip {
-	typealias C = Any
-	typealias FC = Array<C>
+	public typealias C = Any
+	public typealias FC = Array<C>
 
-	typealias FTAB = Array<(A, B)>
+	public typealias FTAB = Array<(A, B)>
 
 	public func mzip<B>(ma : Array<A>) -> Array<B> -> Array<(A, B)> {
 		return zip(ma)

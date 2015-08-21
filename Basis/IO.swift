@@ -110,8 +110,8 @@ public func interact(f : String -> String) -> IO<Void> {
 }
 
 extension IO : Functor {
-	typealias B = Any
-	typealias FB = IO<B>
+	public typealias B = Any
+	public typealias FB = IO<B>
 
 	public static func fmap<B>(f: A -> B) -> IO<A> -> IO<B> {
 		return { io in
@@ -138,7 +138,7 @@ extension IO : Pointed {
 }
 
 extension IO : Applicative {
-	typealias FAB = IO<A -> B>
+	public typealias FAB = IO<A -> B>
 	
 	public static func ap<B>(fn : IO<A -> B>) -> IO<A> -> IO<B> {
 		return { m in return IO<B>({ rw in
@@ -162,10 +162,10 @@ public func <* <A, B>(a : IO<A>, b : IO<B>) -> IO<A> {
 }
 
 extension IO : ApplicativeOps {
-	typealias C = Any
-	typealias FC = IO<C>
-	typealias D = Any
-	typealias FD = IO<D>
+	public typealias C = Any
+	public typealias FC = IO<C>
+	public typealias D = Any
+	public typealias FD = IO<D>
 
 	public static func liftA<B>(f : A -> B) -> IO<A> -> IO<B> {
 		return { a in IO<A -> B>.pure(f) <*> a }
@@ -200,9 +200,9 @@ public func >><A, B>(x: IO<A>, y: IO<B>) -> IO<B> {
 }
 
 extension IO : MonadOps {
-	typealias MLA = IO<[A]>
-	typealias MLB = IO<[B]>
-	typealias MU = IO<()>
+	public typealias MLA = IO<[A]>
+	public typealias MLB = IO<[B]>
+	public typealias MU = IO<()>
 
 	public static func mapM<B>(f : A -> IO<B>) -> [A] -> IO<[B]> {
 		return { xs in IO<B>.sequence(map(f)(xs)) }
