@@ -13,9 +13,9 @@ import class Foundation.NSFileHandle
 // The IO Monad is a means of representing a computation which, when performed, interacts with
 // the outside world (i.e. performs effects) to arrive at some result of type A.
 public struct IO<A> {
-	internal let apply: World<RealWorld> -> (World<RealWorld>, A)
+	internal let apply : World<RealWorld> -> (World<RealWorld>, A)
 
-	init(_ apply: World<RealWorld> -> (World<RealWorld>, A)) {
+	init(_ apply : World<RealWorld> -> (World<RealWorld>, A)) {
 		self.apply = apply
 	}
 
@@ -59,12 +59,12 @@ public prefix func !<A>(m: IO<A>) -> A {
 
 /// Writes a character to standard output.
 public func putChar(c : Character) -> IO<Void> {
-	return IO.pure(print(c, appendNewline: false))
+	return IO.pure(print(c, terminator: ""))
 }
 
 /// Writes a string to standard output.
 public func putStr(s : String) -> IO<Void> {
-	return IO.pure(print(s, appendNewline: false))
+	return IO.pure(print(s, terminator: ""))
 }
 
 /// Writes a string and a newline to standard output.
@@ -123,7 +123,7 @@ extension IO : Functor {
 	}
 }
 
-public func <^><A, B>(f: A -> B, io : IO<A>) -> IO<B> {
+public func <^><A, B>(f : A -> B, io : IO<A>) -> IO<B> {
 	return IO.fmap(f)(io)
 }
 
@@ -185,7 +185,7 @@ extension IO : ApplicativeOps {
 }
 
 extension IO : Monad {
-	public func bind<B>(f: A -> IO<B>) -> IO<B> {
+	public func bind<B>(f : A -> IO<B>) -> IO<B> {
 		return IO<B>({ rw in
 			let (nw, a) = self.apply(rw)
 			return f(a).apply(nw)
@@ -193,11 +193,11 @@ extension IO : Monad {
 	}
 }
 
-public func >>-<A, B>(x: IO<A>, f: A -> IO<B>) -> IO<B> {
+public func >>-<A, B>(x : IO<A>, f : A -> IO<B>) -> IO<B> {
 	return x.bind(f)
 }
 
-public func >><A, B>(x: IO<A>, y: IO<B>) -> IO<B> {
+public func >><A, B>(x : IO<A>, y : IO<B>) -> IO<B> {
 	return x.bind({ (_) in
 		return y
 	})
