@@ -63,49 +63,10 @@ infix operator >% {
 
 /// MARK: Control.Applicative
 
-/// Sequence Right | Disregards the Functor on the Left.
-///
-/// Default definition: 
-///		`const(id) <^> a <*> b`
-infix operator *> {
-	precedence 140
-	associativity left
-}
-
-/// Sequence Left | Disregards the Functor on the Right.
-///
-/// Default definition: 
-///		`const <^> a <*> b`
-infix operator <* {
-	precedence 140
-	associativity left
-}
-
 /// Choose | Makes Applicative a monoid.
 infix operator <|> {
 	precedence 130
 	associativity left
-}
-
-/// MARK: Control.Monad
-
-/// Bind | Composes two monadic actions by passing the value inside the monad on the right to the
-/// funciton on the left.
-infix operator -<< {
-	precedence 110
-	associativity right
-}
-
-/// Left-to-Right Kleisli |
-infix operator >>->> {
-	precedence 110
-	associativity right
-}
-
-/// Right-to-Left Kleisli |
-infix operator <<-<< {
-	precedence 110
-	associativity right
 }
 
 /// MARK: System.IO
