@@ -10,15 +10,15 @@
 // The strict state-transformer monad.  ST<S, A> represents a computation returning a value of type 
 // A using some internal context of type S.
 public struct ST<S, A> {	
-	private let apply:(s: World<RealWorld>) -> (World<RealWorld>, A)
+	private let apply : World<RealWorld> -> (World<RealWorld>, A)
 	
-	init(apply:(s: World<RealWorld>) -> (World<RealWorld>, A)) {
+	init(apply : World<RealWorld> -> (World<RealWorld>, A)) {
 		self.apply = apply
 	}
 	
 	// Returns the value after completing all transformations.
 	public func runST() -> A {
-		let (_, x) = self.apply(s: realWorld)
+		let (_, x) = self.apply(realWorld)
 		return x
 	}
 }
@@ -30,7 +30,7 @@ extension ST : Functor {
 	public static func fmap<B>(f: A -> B) -> ST<S, A> -> ST<S, B> {
 		return { st in
 			return ST<S, B>(apply: { s in
-				let (nw, x) = st.apply(s: s)
+				let (nw, x) = st.apply(s)
 				return (nw, f(x))
 			})
 		}
@@ -62,7 +62,7 @@ extension ST : Applicative {
 	
 	public static func ap<S, A, B>(stfn: ST<S, A -> B>) -> ST<S, A> -> ST<S, B> {
 		return { st in ST<S, B>(apply: { s in
-			let (nw, f) = stfn.apply(s: s)
+			let (nw, f) = stfn.apply(s)
 			return (nw, f(st.runST()))
 		}) }
 	}

@@ -70,13 +70,10 @@
 		841409171B1A8C4100BA2B6C /* Unique.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D4519D237E000AE9A7C /* Unique.swift */; };
 		841409181B1A8C4100BA2B6C /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8434F96C19E8BA0A008D9909 /* Version.swift */; };
 		841409191B1A8C4100BA2B6C /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D2319D237E000AE9A7C /* Error.swift */; };
-		8414091A1B1A8C4100BA2B6C /* Exception.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D2419D237E000AE9A7C /* Exception.swift */; };
 		8414091B1B1A8C4100BA2B6C /* Exit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D2519D237E000AE9A7C /* Exit.swift */; };
 		8414091C1B1A8C4100BA2B6C /* IO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D2C19D237E000AE9A7C /* IO.swift */; };
 		8414091D1B1A8C4100BA2B6C /* Trace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841FE03919DB7E7C0068636A /* Trace.swift */; };
-		8414091F1B1A8C4100BA2B6C /* BASERealWorld.m in Sources */ = {isa = PBXBuildFile; fileRef = 84922D1819D237E000AE9A7C /* BASERealWorld.m */; };
 		841409341B1A8C5D00BA2B6C /* Basis.h in Headers */ = {isa = PBXBuildFile; fileRef = 84922D1A19D237E000AE9A7C /* Basis.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		841409351B1A8C6700BA2B6C /* BASERealWorld.h in Headers */ = {isa = PBXBuildFile; fileRef = 84922D1719D237E000AE9A7C /* BASERealWorld.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		841409371B1A8C8400BA2B6C /* Basis.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 841408CA1B1A8BE800BA2B6C /* Basis.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8418FC4C19CFA9BA0010923E /* UniqueSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8418FC4B19CFA9BA0010923E /* UniqueSpec.swift */; };
 		8418FC4F19CFAED80010923E /* MaybeSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8418FC4E19CFAED80010923E /* MaybeSpec.swift */; };
@@ -107,8 +104,6 @@
 		84896B451A475841006F3EA9 /* TrampolineSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84896B441A475841006F3EA9 /* TrampolineSpec.swift */; };
 		84922D4719D237E000AE9A7C /* Applicative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D1519D237E000AE9A7C /* Applicative.swift */; };
 		84922D4819D237E000AE9A7C /* Arrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D1619D237E000AE9A7C /* Arrow.swift */; };
-		84922D4919D237E000AE9A7C /* BASERealWorld.h in Headers */ = {isa = PBXBuildFile; fileRef = 84922D1719D237E000AE9A7C /* BASERealWorld.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		84922D4A19D237E000AE9A7C /* BASERealWorld.m in Sources */ = {isa = PBXBuildFile; fileRef = 84922D1819D237E000AE9A7C /* BASERealWorld.m */; };
 		84922D4C19D237E000AE9A7C /* Basis.h in Headers */ = {isa = PBXBuildFile; fileRef = 84922D1A19D237E000AE9A7C /* Basis.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84922D4D19D237E000AE9A7C /* Bottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D1B19D237E000AE9A7C /* Bottom.swift */; };
 		84922D4E19D237E000AE9A7C /* Bounded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D1C19D237E000AE9A7C /* Bounded.swift */; };
@@ -118,7 +113,6 @@
 		84922D5219D237E000AE9A7C /* Combinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D2019D237E000AE9A7C /* Combinator.swift */; };
 		84922D5419D237E000AE9A7C /* Either.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D2219D237E000AE9A7C /* Either.swift */; };
 		84922D5519D237E000AE9A7C /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D2319D237E000AE9A7C /* Error.swift */; };
-		84922D5619D237E000AE9A7C /* Exception.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D2419D237E000AE9A7C /* Exception.swift */; };
 		84922D5719D237E000AE9A7C /* Exit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D2519D237E000AE9A7C /* Exit.swift */; };
 		84922D5A19D237E000AE9A7C /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D2819D237E000AE9A7C /* Function.swift */; };
 		84922D5B19D237E000AE9A7C /* Functor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84922D2919D237E000AE9A7C /* Functor.swift */; };
@@ -252,8 +246,6 @@
 		84896B441A475841006F3EA9 /* TrampolineSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrampolineSpec.swift; sourceTree = "<group>"; };
 		84922D1519D237E000AE9A7C /* Applicative.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Applicative.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		84922D1619D237E000AE9A7C /* Arrow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Arrow.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		84922D1719D237E000AE9A7C /* BASERealWorld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BASERealWorld.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		84922D1819D237E000AE9A7C /* BASERealWorld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BASERealWorld.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		84922D1A19D237E000AE9A7C /* Basis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Basis.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		84922D1B19D237E000AE9A7C /* Bottom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Bottom.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		84922D1C19D237E000AE9A7C /* Bounded.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Bounded.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -263,7 +255,6 @@
 		84922D2019D237E000AE9A7C /* Combinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Combinator.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		84922D2219D237E000AE9A7C /* Either.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Either.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		84922D2319D237E000AE9A7C /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Error.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		84922D2419D237E000AE9A7C /* Exception.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Exception.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		84922D2519D237E000AE9A7C /* Exit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Exit.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		84922D2819D237E000AE9A7C /* Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Function.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		84922D2919D237E000AE9A7C /* Functor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Functor.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -392,8 +383,6 @@
 		84922D7C19D2383700AE9A7C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				84922D1719D237E000AE9A7C /* BASERealWorld.h */,
-				84922D1819D237E000AE9A7C /* BASERealWorld.m */,
 				84922D2B19D237E000AE9A7C /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -403,7 +392,6 @@
 			isa = PBXGroup;
 			children = (
 				84922D2319D237E000AE9A7C /* Error.swift */,
-				84922D2419D237E000AE9A7C /* Exception.swift */,
 				84922D2519D237E000AE9A7C /* Exit.swift */,
 				84922D2C19D237E000AE9A7C /* IO.swift */,
 				841FE03919DB7E7C0068636A /* Trace.swift */,
@@ -560,7 +548,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				841409341B1A8C5D00BA2B6C /* Basis.h in Headers */,
-				841409351B1A8C6700BA2B6C /* BASERealWorld.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -569,7 +556,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				84922D4C19D237E000AE9A7C /* Basis.h in Headers */,
-				84922D4919D237E000AE9A7C /* BASERealWorld.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -787,11 +773,9 @@
 				841409171B1A8C4100BA2B6C /* Unique.swift in Sources */,
 				841409181B1A8C4100BA2B6C /* Version.swift in Sources */,
 				841409191B1A8C4100BA2B6C /* Error.swift in Sources */,
-				8414091A1B1A8C4100BA2B6C /* Exception.swift in Sources */,
 				8414091B1B1A8C4100BA2B6C /* Exit.swift in Sources */,
 				8414091C1B1A8C4100BA2B6C /* IO.swift in Sources */,
 				8414091D1B1A8C4100BA2B6C /* Trace.swift in Sources */,
-				8414091F1B1A8C4100BA2B6C /* BASERealWorld.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -849,7 +833,6 @@
 				84922D5219D237E000AE9A7C /* Combinator.swift in Sources */,
 				840D57821A63092600EFFF53 /* Array.swift in Sources */,
 				84922D4F19D237E000AE9A7C /* Box.swift in Sources */,
-				84922D5619D237E000AE9A7C /* Exception.swift in Sources */,
 				84922D6A19D237E000AE9A7C /* Monoid.swift in Sources */,
 				84922D5419D237E000AE9A7C /* Either.swift in Sources */,
 				84922D6219D237E000AE9A7C /* Lift.swift in Sources */,
@@ -869,7 +852,6 @@
 				825FB2E51B86BC87008348ED /* Operators.swift in Sources */,
 				84922D6519D237E000AE9A7C /* Map.swift in Sources */,
 				84922D7619D237E000AE9A7C /* Tuple.swift in Sources */,
-				84922D4A19D237E000AE9A7C /* BASERealWorld.m in Sources */,
 				84922D6019D237E000AE9A7C /* Kinds.swift in Sources */,
 				84922D5719D237E000AE9A7C /* Exit.swift in Sources */,
 				847E99DC1A48B1CD00B5B8CE /* Stream.swift in Sources */,

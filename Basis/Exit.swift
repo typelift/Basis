@@ -31,3 +31,5 @@ public func exitFailure<A>() -> IO<A> {
 public func exitSuccess<A>() -> IO<A> {
 	return exitWith(.ExitSuccess)
 }
+
+import func Darwin.exit
