@@ -7,9 +7,6 @@
 //  Released under the MIT license.
 //
 
-import func Darwin.getline
-import class Foundation.NSFileHandle
-
 // The IO Monad is a means of representing a computation which, when performed, interacts with
 // the outside world (i.e. performs effects) to arrive at some result of type A.
 public struct IO<A> {
@@ -254,9 +251,9 @@ extension IO : MonadFix {
 /// Herein lies the real world.  It is incredibly magic and sacred and not to be touched.  Those who
 /// do rarely come out alive...
 internal struct World<A> {}
-internal struct RealWorld {}
-
+internal protocol RealWorld {}
 internal let realWorld = World<RealWorld>()
+
 
 import func Darwin.C.stdio.getchar
 import func Darwin.C.stdio.getline
