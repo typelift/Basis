@@ -37,7 +37,7 @@ public func now<T>(x : T) -> Trampoline<T> {
 ///
 /// Adds a branch to the computation tree of a Trampoline.
 public func later<T>(x : () -> Trampoline<T>) -> Trampoline<T> {
-	return Trampoline(Suspend(s: Box(x)))
+	return Trampoline(Suspend(s: Identity(x)))
 }
 
 extension Trampoline : Functor {
@@ -176,7 +176,7 @@ public func <<-<< <A, B, C>(g : B -> Trampoline<C>, f : A -> Trampoline<B>) -> A
 /// Codense implementation with catamorphisms inspired by FunctionalJava
 /// https://github.com/functionaljava/functionaljava
 private class FreeId<T> {
-	func resume() -> Either<Box<() -> Trampoline<T>>, T> {
+	func resume() -> Either<Identity<() -> Trampoline<T>>, T> {
 		return undefined()
 	}
 	
@@ -185,7 +185,7 @@ private class FreeId<T> {
 		while true {
 			switch current.resume() {
 				case .Left(let ba):
-					current = ba.unBox()().t
+					current = ba.runIdentity()().t
 				case .Right(let bb):
 					return bb
 			}
@@ -196,7 +196,7 @@ private class FreeId<T> {
 		return undefined()
 	}
 	
-	func normalFold<R>(pure : T -> R, suspend: Box<() -> Trampoline<T>> -> R) -> R {
+	func normalFold<R>(pure : T -> R, suspend: Identity<() -> Trampoline<T>> -> R) -> R {
 		return undefined()
 	}
 	
@@ -216,19 +216,19 @@ private class Pure<T> : FreeId<T> {
 		return norm(self)
 	}
 	
-	private override func normalFold<R>(pure : T -> R, suspend : Box<() -> Trampoline<T>> -> R) -> R {
+	private override func normalFold<R>(pure : T -> R, suspend : Identity<() -> Trampoline<T>> -> R) -> R {
 		return pure(self.val)
 	}
 	
-	private override func resume() -> Either<Box<() -> Trampoline<T>>, T> {
+	private override func resume() -> Either<Identity<() -> Trampoline<T>>, T> {
 		return Either.Right(self.val)
 	}
 }
 
 private class Suspend<T> : FreeId<T> {
-	let suspension : Box<() -> Trampoline<T>>
+	let suspension : Identity<() -> Trampoline<T>>
 	
-	init(s : Box<() -> Trampoline<T>>) {
+	init(s : Identity<() -> Trampoline<T>>) {
 		self.suspension = s
 	}
 	
@@ -236,11 +236,11 @@ private class Suspend<T> : FreeId<T> {
 		return norm(self)
 	}
 	
-	private override func normalFold<R>(pure : T -> R, suspend : Box<() -> Trampoline<T>> -> R) -> R {
+	private override func normalFold<R>(pure : T -> R, suspend : Identity<() -> Trampoline<T>> -> R) -> R {
 		return suspend(self.suspension)
 	}
 	
-	private override func resume() -> Either<Box<() -> Trampoline<T>>, T> {
+	private override func resume() -> Either<Identity<() -> Trampoline<T>>, T> {
 		return Either.Left(self.suspension)
 	}
 }
@@ -267,20 +267,20 @@ private class Codensity<T> : FreeId<T> {
 		return liftCodense(sub, k: { o in later { Trampoline(self.k(o).flatMap(f)) }.t })
 	}
 		
-	private override func resume() -> Either<Box<() -> Trampoline<T>>, T> {
-		let e : Box<() -> Trampoline<T>> = either({ p in 
-			return Box.fmap({ ot in 
+	private override func resume() -> Either<Identity<() -> Trampoline<T>>, T> {
+		let e : Identity<() -> Trampoline<T>> = either({ p in 
+			return Identity.fmap({ ot in
 				ot().t.fold({ o in
-					{ o.normalFold({ obj in Trampoline(self.k(obj)) }, suspend: { t in t.unBox()() }) }
+					{ o.normalFold({ obj in Trampoline(self.k(obj)) }, suspend: { t in t.runIdentity()() }) }
 				}, 
 				codense: { c in 
 					{ Trampoline(liftCodense(c.sub, k: { o in c.k(o).flatMap(self.k) })) }
 				}) 
 			})(p) 
 		})({ o in 
-			return Box<() -> Trampoline<T>>({ Trampoline(self.k(o)) }) 
+			return Identity<() -> Trampoline<T>>({ Trampoline(self.k(o)) }) 
 		})(self.sub.resume())
 
-		return Either<Box<() -> Trampoline<T>>, T>.Left(e)
+		return Either<Identity<() -> Trampoline<T>>, T>.Left(e)
 	}
 }

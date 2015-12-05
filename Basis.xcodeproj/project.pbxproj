@@ -718,6 +718,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				841409141B1A8C4100BA2B6C /* STRef.swift in Sources */,
 				841408E31B1A8C4100BA2B6C /* Kinds.swift in Sources */,
 				841408E41B1A8C4100BA2B6C /* BasisOperators.swift in Sources */,
 				841408E51B1A8C4100BA2B6C /* Applicative.swift in Sources */,
@@ -767,7 +768,6 @@
 				841409111B1A8C4100BA2B6C /* Pointed.swift in Sources */,
 				841409121B1A8C4100BA2B6C /* ST.swift in Sources */,
 				841409131B1A8C4100BA2B6C /* State.swift in Sources */,
-				841409141B1A8C4100BA2B6C /* STRef.swift in Sources */,
 				841409151B1A8C4100BA2B6C /* Stream.swift in Sources */,
 				841409161B1A8C4100BA2B6C /* Tuple.swift in Sources */,
 				841409171B1A8C4100BA2B6C /* Unique.swift in Sources */,
@@ -809,6 +809,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84922D7019D237E000AE9A7C /* STRef.swift in Sources */,
 				84D4D8F61A18095F001F5E4D /* Comonad.swift in Sources */,
 				84D4D8E01A16E373001F5E4D /* Contravariant.swift in Sources */,
 				84922D5119D237E000AE9A7C /* Coerce.swift in Sources */,
@@ -857,7 +858,6 @@
 				847E99DC1A48B1CD00B5B8CE /* Stream.swift in Sources */,
 				84522CDC19E10EE200E4423A /* Optional.swift in Sources */,
 				84922D4819D237E000AE9A7C /* Arrow.swift in Sources */,
-				84922D7019D237E000AE9A7C /* STRef.swift in Sources */,
 				84095F0B1A28EA9E00956141 /* Member.swift in Sources */,
 				84922D5B19D237E000AE9A7C /* Functor.swift in Sources */,
 				84D77DF31A3BDCB6000F5683 /* Pointed.swift in Sources */,

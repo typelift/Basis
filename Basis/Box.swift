@@ -11,87 +11,87 @@
 ///
 /// A box is also equivalent to the identity functor, which is also the most trivial instance of
 /// Comonad.
-public final class Box<A> : K1<A> {
-	public let unBox : () -> A
+public struct Identity<A> {
+	public let runIdentity : () -> A
 	
 	public init(_ x : A) {
-		unBox = { x }
+		runIdentity = { x }
 	}
 }
 
 /// MARK: Equatable
 
-public func ==<T : Equatable>(lhs: Box<T>, rhs: Box<T>) -> Bool {
-	return lhs.unBox() == rhs.unBox()
+public func ==<T : Equatable>(lhs: Identity<T>, rhs: Identity<T>) -> Bool {
+	return lhs.runIdentity() == rhs.runIdentity()
 }
 
-public func !=<T : Equatable>(lhs: Box<T>, rhs: Box<T>) -> Bool {
+public func !=<T : Equatable>(lhs: Identity<T>, rhs: Identity<T>) -> Bool {
 	return !(lhs == rhs)
 }
 
 /// MARK: Functor
 
-extension Box : Functor {
+extension Identity : Functor {
 	public typealias B = Swift.Any
 	
-	public typealias FB = Box<B>
+	public typealias FB = Identity<B>
 	
-	public class func fmap<B>(f : A -> B) -> Box<A> -> Box<B> {
-		return { b in Box<B>(f(b.unBox())) }
+	public static func fmap<B>(f : A -> B) -> Identity<A> -> Identity<B> {
+		return { b in Identity<B>(f(b.runIdentity())) }
 	}
 }
 
-public func <^> <A, B>(f : A -> B, b : Box<A>) -> Box<B> {
-	return Box.fmap(f)(b)
+public func <^> <A, B>(f : A -> B, b : Identity<A>) -> Identity<B> {
+	return Identity.fmap(f)(b)
 }
 
-public func <% <A, B>(a : A, b : Box<B>) -> Box<A> {
+public func <% <A, B>(a : A, b : Identity<B>) -> Identity<A> {
 	return (curry(<^>) • const)(a)(b)
 }
 
-public func %> <A, B>(c : Box<B>, a : A) -> Box<A> {
+public func %> <A, B>(c : Identity<B>, a : A) -> Identity<A> {
 	return flip(<%)(c, a)
 }
 
-extension Box : Pointed {
-	public class func pure(x : A) -> Box<A> {
-		return Box(x)
+extension Identity : Pointed {
+	public static func pure(x : A) -> Identity<A> {
+		return Identity(x)
 	}
 }
 
-extension Box : Copointed {
+extension Identity : Copointed {
 	public func extract() -> A {
-		return self.unBox()
+		return self.runIdentity()
 	}
 }
 
-extension Box : Comonad {
-	public typealias FFA = Box<Box<A>>
+extension Identity : Comonad {
+	public typealias FFA = Identity<Identity<A>>
 	
-	public class func duplicate(b : Box<A>) -> Box<Box<A>> {
-		return Box<Box<A>>(b)
+	public static func duplicate(b : Identity<A>) -> Identity<Identity<A>> {
+		return Identity<Identity<A>>(b)
 	}
 	
 	
-	public class func extend<B>(f : Box<A> -> B) -> Box<A> -> Box<B> {
+	public static func extend<B>(f : Identity<A> -> B) -> Identity<A> -> Identity<B> {
 		return { b in 
-			return Box<Box<A>>.fmap(f)(Box<A>.duplicate(b))
+			return Identity<Identity<A>>.fmap(f)(Identity<A>.duplicate(b))
 		}
 	}
 }
 
-extension Box : ComonadApply {
-	public typealias FAB = Box<A -> B>
+extension Identity : ComonadApply {
+	public typealias FAB = Identity<A -> B>
 }
 
-public func >*< <A, B>(fab : Box<A -> B> , b : Box<A>) -> Box<B> {
-	return Box(fab.unBox()(b.unBox()))
+public func >*< <A, B>(fab : Identity<A -> B> , b : Identity<A>) -> Identity<B> {
+	return Identity(fab.runIdentity()(b.runIdentity()))
 }
 
-public func *< <A, B>(a : Box<A>, b : Box<B>) -> Box<B> {
+public func *< <A, B>(a : Identity<A>, b : Identity<B>) -> Identity<B> {
 	return const(id) <^> a >*< b
 }
 
-public func >* <A, B>(a : Box<A>, b : Box<B>) -> Box<A> {
+public func >* <A, B>(a : Identity<A>, b : Identity<B>) -> Identity<A> {
 	return const <^> a >*< b
 }
