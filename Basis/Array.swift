@@ -39,9 +39,8 @@ public func cons<T>(x : T) -> [T] -> [T] {
 	return { xs in x <<| xs }
 }
 
-public func <<| <T>(lhs : T, var rhs : [T]) -> [T] {
-	rhs.insert(lhs, atIndex: 0)
-	return rhs
+public func <<| <T>(lhs : T, rhs : [T]) -> [T] {
+	return [lhs] + rhs
 }
 
 /// Returns a list with n values of x in it.
