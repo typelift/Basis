@@ -114,8 +114,8 @@ extension Function : ArrowApply {
 	}
 	
 	public static func leftApp<C>(f : Function<A, B>) -> Function<Either<A, C>, Either<B, C>> {
-		let l : Function<A, (Function<Void, Either<B, C>>, Void)> = ^{ (let a : A) -> (Function<Void, Either<B, C>>, Void) in (Function<Void, A>.arr({ _ in a }) >>> f >>> Function<B, Either<B, C>>.arr(Either.Left), Void()) }
-		let r : Function<C, (Function<Void, Either<B, C>>, Void)> = ^{ (let c : C) -> (Function<Void, Either<B, C>>, Void) in (Function<Void, C>.arr({ _ in c }) >>> Function<C, Either<B, C>>.arr(Either.Right), Void()) }
+		let l : Function<A, (Function<Void, Either<B, C>>, Void)> = ^{ (a : A) -> (Function<Void, Either<B, C>>, Void) in (Function<Void, A>.arr({ _ in a }) >>> f >>> Function<B, Either<B, C>>.arr(Either.Left), Void()) }
+		let r : Function<C, (Function<Void, Either<B, C>>, Void)> = ^{ (c : C) -> (Function<Void, Either<B, C>>, Void) in (Function<Void, C>.arr({ _ in c }) >>> Function<C, Either<B, C>>.arr(Either.Right), Void()) }
 
 		return (l ||| r) >>> Function<Void, Either<B, C>>.app()
 	}

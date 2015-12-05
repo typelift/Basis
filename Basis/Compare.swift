@@ -338,7 +338,7 @@ public func maximumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 			case .Nil:
 				fatalError("Cannot find the maximum element of an empty list.")
 			case .Cons(_, _):
-				return foldl1({ (let t) -> A in
+				return foldl1({ t in
 					return cmp(fst(t))(snd(t)) ? fst(t) : snd(t)
 				})(l)
 		}
@@ -352,7 +352,7 @@ public func maximumBy<A>(cmp : (A, A) -> Bool) -> [A] -> A {
 			case .Nil:
 				fatalError("Cannot find the maximum element of an empty list.")
 			case .Cons(_, _):
-				return foldl1({ (let t) -> A in
+				return foldl1({ t in
 					return cmp(fst(t), snd(t)) ? fst(t) : snd(t)
 				})(l)
 		}
@@ -366,7 +366,7 @@ public func maximumBy<A>(cmp : A -> A -> Bool) -> List<A> -> A {
 			case .Nil:
 				fatalError("Cannot find the maximum element of an empty list.")
 			case .Cons(_, _):
-				return foldl1({ (let t) -> A in
+				return foldl1({ t in
 					return cmp(fst(t))(snd(t)) ? fst(t) : snd(t)
 				})(l)
 		}
@@ -380,7 +380,7 @@ public func maximumBy<A>(cmp : (A, A) -> Bool) -> List<A> -> A {
 			case .Nil:
 				fatalError("Cannot find the maximum element of an empty list.")
 			case .Cons(_, _):
-				return foldl1({ (let t) -> A in
+				return foldl1({ t in
 					return cmp(fst(t), snd(t)) ? fst(t) : snd(t)
 				})(l)
 		}
@@ -394,7 +394,7 @@ public func minimumBy<A>(cmp : A -> A -> Bool) -> [A] -> A {
 			case .Nil:
 				fatalError("Cannot find the minimum element of an empty list.")
 			case .Cons(_, _):
-				return foldl1({ (let t) -> A in
+				return foldl1({ t in
 					return cmp(fst(t))(snd(t)) ? snd(t) :  fst(t)
 				})(l)
 		}
@@ -408,7 +408,7 @@ public func minimumBy<A>(cmp : (A, A) -> Bool) -> [A] -> A {
 			case .Nil:
 				fatalError("Cannot find the minimum element of an empty list.")
 			case .Cons(_, _):
-				return foldl1({ (let t) -> A in
+				return foldl1({ t in
 					return cmp(fst(t), snd(t)) ? snd(t) : fst(t)
 				})(l)
 		}
@@ -422,7 +422,7 @@ public func minimumBy<A>(cmp : A -> A -> Bool) -> List<A> -> A {
 			case .Nil:
 				fatalError("Cannot find the minimum element of an empty list.")
 			case .Cons(_, _):
-				return foldl1({ (let t) -> A in
+				return foldl1({ t in
 					return cmp(fst(t))(snd(t)) ? snd(t) :  fst(t)
 				})(l)
 		}
@@ -436,7 +436,7 @@ public func minimumBy<A>(cmp : (A, A) -> Bool) -> List<A> -> A {
 			case .Nil:
 				fatalError("Cannot find the minimum element of an empty list.")
 			case .Cons(_, _):
-				return foldl1({ (let t) -> A in
+				return foldl1({ t in
 					return cmp(fst(t), snd(t)) ? snd(t) : fst(t)
 				})(l)
 		}

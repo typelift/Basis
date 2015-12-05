@@ -18,7 +18,8 @@ public final class IORef<A> : K1<A> {
 
 /// Creates and returns a new IORef
 public func newIORef<A>(v: A) -> IO<IORef<A>> {
-	return stRefToIO(STRef<RealWorld, A>(v)) >>- { l in IO<IORef<A>>.pure(IORef(l)) }
+  fatalError()
+//	return stRefToIO(STRef<RealWorld, A>(v)) >>- { l in IO<IORef<A>>.pure(IORef(l)) }
 }
 
 /// Reads a value from an IORef.
@@ -41,16 +42,16 @@ public func modifyIORef<A>(ref : IORef<A>)(_ vfn : (A -> A)) -> IO<Void> {
 // MARK: Equatable
 
 // Simple reference equality when we've got two objects.
-public func == <T : AnyObject>(lhs: IORef<T>, rhs: IORef<T>) -> Bool {
+public func == <T : AnyObject>(lhs : IORef<T>, rhs : IORef<T>) -> Bool {
 	return lhs.value == rhs.value
 }
 
-public func != <T : AnyObject>(lhs: IORef<T>, rhs: IORef<T>) -> Bool {
+public func != <T : AnyObject>(lhs : IORef<T>, rhs : IORef<T>) -> Bool {
 	return !(lhs == rhs)
 }
 
 
 /// Not for human eyes
-private func stRefToIO<A>(m: STRef<RealWorld, A>) -> IO<STRef<RealWorld, A>> {
+private func stRefToIO<A>(m : STRef<RealWorld, A>) -> IO<STRef<RealWorld, A>> {
 	return IO<STRef<RealWorld, A>>.pure(m)
 }
