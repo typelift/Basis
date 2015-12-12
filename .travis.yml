@@ -4,3 +4,11 @@ osx_image: beta-xcode6.3
 script:
 - xctool -project Basis.xcodeproj -scheme Basis -sdk macosx ONLY_ACTIVE_ARCH=NO clean build test
 - xctool -project Basis.xcodeproj -scheme Basis-iOS -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO clean build test
+
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/1d781e1bcbabade5de35
+    on_success: always
+    on_failure: always
+    on_start: always
