@@ -76,9 +76,9 @@ public func insert<K : Comparable, A>(key : K) -> A -> Map<K, A> -> Map<K, A> {
 				return singleton(key)(val)
 			case .Destructure(let sz, let ky, let y, let l, let r):
 				if key < ky {
-					return balance(ky)(x: y)(l: insert(key)(val)(l))(r: r)
+					return balance(ky, x: y, l: insert(key)(val)(l), r: r)
 				} else if key > ky {
-					return balance(ky)(x: y)(l: l)(r: insert(key)(val)(r))
+					return balance(ky, x: y, l: l, r: insert(key)(val)(r))
 				}
 				return Map(sz, key, val, l, r)
 		}
@@ -112,9 +112,9 @@ public func insertWithKey<K : Comparable, A>(f : K -> A -> A -> A) -> K -> A -> 
 				return singleton(key)(val)
 			case .Destructure(let sy, let ky, let y, let l, let r):
 				if key < ky {
-					return balance(ky)(x: y)(l: insertWithKey(f)(key)(val)(l))(r: r)
+					return balance(ky, x: y, l: insertWithKey(f)(key)(val)(l), r: r)
 				} else if key > ky {
-					return balance(ky)(x: y)(l: l)(r: insertWithKey(f)(key)(val)(r))
+					return balance(ky, x: y, l: l, r: insertWithKey(f)(key)(val)(r))
 				}
 				return Map(sy, key, (f(key)(val)(y)), l, r)
 		}
@@ -131,9 +131,9 @@ public func delete<K : Comparable, A>(k : K) -> Map<K, A> -> Map<K, A> {
 				return empty()
 			case .Destructure(_, let kx, let x, let l, let r):
 				if k < kx {
-					return balance(kx)(x: x)(l: delete(k)(m))(r: r)
+					return balance(kx, x: x, l: delete(k)(m), r: r)
 				} else if k > kx {
-					return balance(kx)(x: x)(l: l)(r: delete(k)(m))
+					return balance(kx, x: x, l: l, r: delete(k)(m))
 				}
 				return glue(l, r: r)
 		}
@@ -153,7 +153,7 @@ public func deleteFindMin<K, A>(m : Map<K, A>) -> ((K, A), Map<K, A>) {
 					return ((k, x), r)
 				case .Destructure(_, _, _, _, _):
 					let (km, l1) = deleteFindMin(l)
-					return (km, balance(k)(x: x)(l: l1)(r: r))
+					return (km, balance(k, x: x, l: l1, r: r))
 			}
 	}
 }
@@ -171,7 +171,7 @@ public func deleteFindMax<K, A>(m : Map<K, A>) -> ((K, A), Map<K, A>) {
 					return ((k, x), r)
 				case .Destructure(_, _, _, _, _):
 					let (km, r1) = deleteFindMin(l)
-					return (km, balance(k)(x: x)(l: l)(r: r1))
+					return (km, balance(k, x: x, l: l, r: r1))
 			}
 	}
 }
@@ -180,42 +180,42 @@ public func deleteFindMax<K, A>(m : Map<K, A>) -> ((K, A), Map<K, A>) {
 /// http://www.haskell.org/ghc/docs/7.8.3/html/libraries/containers-0.5.5.1/src/Data-Map-Base.html#balance
 /// which is, in turn, based on the paper
 /// http://groups.csail.mit.edu/mac/users/adams/BB/
-private func balance<K, A>(k : K)(x : A)(l : Map<K, A>)(r : Map<K, A>) -> Map<K, A> {
+private func balance<K, A>(k : K, x : A, l : Map<K, A>, r : Map<K, A>) -> Map<K, A> {
 	if l.size + r.size <= 1 {
 		return Map(l.size + r.size + 1, k, x, l, r)
 	} else if r.size > l.size * 3 {
-		return rotateL(k)(x: x)(l: l)(r: r)
+		return rotateL(k, x: x, l: l, r: r)
 	} else if l.size > r.size * 3 {
-		return rotateR(k)(x: x)(l: l)(r: r)
+		return rotateR(k, x: x, l: l, r: r)
 	}
 	return Map(l.size + r.size, k, x, l, r)
 }
 
-private func rotateL<K, A>(k : K)(x : A)(l : Map<K, A>)(r : Map<K, A>) -> Map<K, A> {
+private func rotateL<K, A>(k : K, x : A, l : Map<K, A>, r : Map<K, A>) -> Map<K, A> {
 	switch r.match() {
 	case .Empty:
 		return error("")
 	case .Destructure(_, _, _, let ly, let ry):
 		if ly.size < 2 * ry.size {
-			return single(k)(x1: x)(t1: l)(t2: r)
+			return single(k, x1: x, t1: l, t2: r)
 		}
-		return double(k)(x1: x)(t1: l)(t2: r)
+		return double(k, x1: x, t1: l, t2: r)
 	}
 }
 
-private func rotateR<K, A>(k : K)(x : A)(l : Map<K, A>)(r : Map<K, A>) -> Map<K, A> {
+private func rotateR<K, A>(k : K, x : A, l : Map<K, A>, r : Map<K, A>) -> Map<K, A> {
 	switch l.match() {
 	case .Empty:
 		return error("")
 	case .Destructure(_, _, _, let ly, let ry):
 		if ly.size < 2 * ry.size {
-			return single(k)(x1: x)(t1: l)(t2: r)
+			return single(k, x1: x, t1: l, t2: r)
 		}
-		return double(k)(x1: x)(t1: l)(t2: r)
+		return double(k, x1: x, t1: l, t2: r)
 	}
 }
 
-private func single<K, A>(k1 : K)(x1 : A)(t1 : Map<K, A>)(t2 : Map<K, A>) -> Map<K, A> {
+private func single<K, A>(k1 : K, x1 : A, t1 : Map<K, A>, t2 : Map<K, A>) -> Map<K, A> {
 	switch t2.match() {
 	case .Empty:
 		switch t1.match() {
@@ -229,7 +229,7 @@ private func single<K, A>(k1 : K)(x1 : A)(t1 : Map<K, A>)(t2 : Map<K, A>) -> Map
 	}
 }
 
-private func double<K, A>(k1 : K)(x1 : A)(t1 : Map<K, A>)(t2 : Map<K, A>) -> Map<K, A> {
+private func double<K, A>(k1 : K, x1 : A, t1 : Map<K, A>, t2 : Map<K, A>) -> Map<K, A> {
 	switch t2.match() {
 	case .Empty:
 		switch t1.match() {
@@ -263,10 +263,10 @@ private func glue<K, A>(l : Map<K, A>, r : Map<K, A>) -> Map<K, A> {
 
 	if l.size > r.size {
 		let ((km, m), l1) = deleteFindMax(l)
-		return balance(km)(x: m)(l: l1)(r: r)
+		return balance(km, x: m, l: l1, r: r)
 	}
 	let ((km, m), r1) = deleteFindMin(r)
-	return balance(km)(x: m)(l: l)(r: r1)
+	return balance(km, x: m, l: l, r: r1)
 }
 
 private func bin<K, A>(k : K, x : A, l : Map<K, A>, r : Map<K, A>) -> Map<K, A> {

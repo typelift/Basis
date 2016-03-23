@@ -26,12 +26,12 @@
 /// A Functor with the arrows turned around.
 public protocol Contravariant {
 	/// Type of Source Objects
-	typealias A
+	associatedtype A
 	/// Type of Target Objects
-	typealias B
+	associatedtype B
 	
 	/// Type of a target Functor
-	typealias FB = K1<B>
+	associatedtype FB = K1<B>
 	
 	/// Contravariant map "inside" a Functor.
 	///

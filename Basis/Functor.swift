@@ -32,12 +32,12 @@
 /// often described as "Things that can be mapped over".
 public protocol Functor {
 	/// Type of Source Objects
-	typealias A
+	associatedtype A
 	/// Type of Target Objects
-	typealias B
+	associatedtype B
 	
 	/// Type of a target Functor
-	typealias FB = K1<B>
+	associatedtype FB = K1<B>
 	
 	/// Map "inside" a Functor.
 	///

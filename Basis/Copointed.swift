@@ -8,6 +8,6 @@
 //
 
 public protocol Copointed {	
-	typealias A
+	associatedtype A
 	func extract() -> A
 }

@@ -15,7 +15,7 @@
 /// unwrap or map over their contents.
 public protocol Applicative : Pointed, Functor {
 	/// Type of Functors containing morphisms from our objects to a target.
-	typealias FAB = K1<A -> B>
+	associatedtype FAB = K1<A -> B>
 	
 	static func ap(_: FAB) -> Self -> FB
 	
@@ -42,8 +42,8 @@ public protocol Applicative : Pointed, Functor {
 /// Alternatives are Applicative Monoids.
 public protocol Alternative : Applicative {
 	/// The type of the result of Alternative's mappend-esque functions.
-	typealias FLA = K1<[A]>
-	typealias FMA = K1<Optional<A>>
+	associatedtype FLA = K1<[A]>
+	associatedtype FMA = K1<Optional<A>>
 
 	/// Returns the identity element.
 	func empty() -> Self
@@ -77,10 +77,10 @@ public protocol Alternative : Applicative {
 
 /// Additional functions to be implemented by those types conforming to the Applicative protocol.
 public protocol ApplicativeOps : Applicative {
-	typealias C
-	typealias FC = K1<C>
-	typealias D
-	typealias FD = K1<D>
+	associatedtype C
+	associatedtype FC = K1<C>
+	associatedtype D
+	associatedtype FD = K1<D>
 
 	/// Lift a function to a Functorial action.
 	static func liftA(f : A -> B) -> Self -> FB

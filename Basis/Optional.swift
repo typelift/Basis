@@ -9,13 +9,15 @@
 
 /// Takes a default value, a function, and an optional.  If the optional is None, the default value
 /// is returned.  If the optional is Some, the function is applied to the value inside.
-public func optional<A, B>(def : B)(f : A -> B)(m : Optional<A>) -> B {
-	switch m {
-		case .None:
-			return def
-		case .Some(let x):
-			return f(x)
-	}
+public func optional<A, B>(def : B) -> (A -> B) -> Optional<A> -> B {
+    return { f in { m in
+        switch m {
+        case .None:
+            return def
+        case .Some(let x):
+            return f(x)
+        }
+    } }
 }
 
 /// Returns whether a given optional contains a value.
@@ -54,13 +56,15 @@ public func fromSome<A>(m : Optional<A>) -> A {
 /// If the optional contains a value, that value is returned.
 ///
 /// This function is a safer form of !-unwrapping for optionals.
-public func fromOptional<A>(def : A)(m : Optional<A>) -> A {
-	switch m {
-		case .None:
-			return def
-		case .Some(let x):
-			return x
-	}
+public func fromOptional<A>(def : A) -> Optional<A> -> A {
+    return { m in
+        switch m {
+        case .None:
+            return def
+        case .Some(let x):
+            return x
+        }   
+    }
 }
 
 /// Given an optional, returns an empty list if it is None, or a singleton list containing the
@@ -91,18 +95,20 @@ public func catOptionals<A>(l : [Optional<A>]) -> [A] {
 
 /// Maps a function over a list.  If the result of the function is None, the value is not included
 /// in the resulting list.
-public func mapOptional<A, B>(f : A -> Optional<B>)(l : [A]) -> [B] {
-	switch match(l) {
-		case .Nil:
-			return []
-		case .Cons(let x, let xs):
-			let rs = mapOptional(f)(l: xs)
-			switch f(x) {
-				case .None:
-					return rs
-				case .Some(let r):
-					return r <<| rs
-			}
-	}
+public func mapOptional<A, B>(f : A -> Optional<B>) -> [A] -> [B] {
+    return { l in
+        switch match(l) {
+        case .Nil:
+            return []
+        case .Cons(let x, let xs):
+            let rs = mapOptional(f)(xs)
+            switch f(x) {
+            case .None:
+                return rs
+            case .Some(let r):
+                return r <<| rs
+            }
+        }   
+    }
 }
 

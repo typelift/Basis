@@ -16,18 +16,18 @@
 /// from A -> B with Categories from B -> C and get Categories from A -> C.
 public protocol Category {
 	/// Source
-	typealias A
+	associatedtype A
 	/// Target
-	typealias B
+	associatedtype B
 	/// Other Target; Usually Any
-	typealias C
+	associatedtype C
 
 	/// The identity category
-	typealias CAA = K2<A, A>
+	associatedtype CAA = K2<A, A>
 	/// A Category we can compose with.
-	typealias CBC = K2<B, C>
+	associatedtype CBC = K2<B, C>
 	/// The composition of this Category with the Category above.
-	typealias CAC = K2<A, C>
+	associatedtype CAC = K2<A, C>
 
 	/// The identity morphism.
 	static func id() -> CAA

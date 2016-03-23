@@ -10,6 +10,6 @@
 /// A pointed type is any type that can take an element of its underlying type and create an
 /// instance of itself containing elements of that type.
 public protocol Pointed {
-	typealias A
+	associatedtype A
 	static func pure(_: A) -> Self
 }

@@ -8,34 +8,38 @@
 //
 
 /// Prints a message before returning a value.
-public func trace<A>(msg : String)(e : A) -> A {
-	return do_({ () -> IO<A> in
-		return putStrLn(msg) >> IO.pure(e)
-	}).unsafePerformIO()
+public func trace<A>(msg : String) -> A -> A {
+    return { e in 
+        return do_({ () -> IO<A> in
+            return putStrLn(msg) >> IO.pure(e)
+        }).unsafePerformIO()
+    }
 }
 
 internal func traceID(msg : String) -> String {
-	return trace(msg)(e: msg)
+	return trace(msg)(msg)
 }
 
 /// Prints a printable object before returning a value.
-public func tracePrintable<A : CustomStringConvertible, B>(x : A)(e : B) -> B {
-	return trace(x.description)(e: e)
+public func tracePrintable<A : CustomStringConvertible, B>(x : A) -> B -> B {
+	return trace(x.description)
 }
 
 internal func tracePrintableID<A : CustomStringConvertible>(x : A) -> A {
-	return trace(x.description)(e: x)
+	return trace(x.description)(x)
 }
 
 /// Prints out a stack trace before returning a value.
-public func traceStack<A>(msg : String)(e : A) -> A {
-	return do_ { () -> IO<A> in
-		let stack : [String] = !currentCallStack()
-		if stack.count != 0 {
-			return putStrLn(msg + foldr(+)("")(stack)) >> IO.pure(e)
-		}
-		return putStrLn(msg) >> IO.pure(e)
-	}.unsafePerformIO()
+public func traceStack<A>(msg : String) -> A -> A {
+    return { e in 
+        return do_ { () -> IO<A> in
+            let stack : [String] = !currentCallStack()
+            if stack.count != 0 {
+                return putStrLn(msg + foldr(+)("")(stack)) >> IO.pure(e)
+            }
+            return putStrLn(msg) >> IO.pure(e)
+        }.unsafePerformIO()
+    }
 }
 
 /// Gets the current call stack symbols.

@@ -12,7 +12,7 @@
 ///
 /// "A comonoid in the monoidal category of endofunctors"
 public protocol Comonad : Copointed, Functor {
-	typealias FFA = K1<Self>
+	associatedtype FFA = K1<Self>
 
 	/// Cojoin | Takes a value in a context and wraps it in another context.
 	///

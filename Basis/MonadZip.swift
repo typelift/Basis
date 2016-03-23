@@ -10,12 +10,12 @@
 /// Monads that allow zipping.
 public protocol MonadZip : Monad {
 	/// An arbitrary domain.  Usually Any
-	typealias C
+	associatedtype C
 	/// A monad with an arbitrary domain.
-	typealias FC = K1<C>
+	associatedtype FC = K1<C>
 
 	/// A Monad containing a zipped tuple.
-	typealias FTAB = K1<(A, B)>
+	associatedtype FTAB = K1<(A, B)>
 	
 	/// Zip for monads.
 	func mzip(_: Self) -> FB -> FTAB

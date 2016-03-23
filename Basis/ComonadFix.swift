@@ -9,7 +9,7 @@
 
 /// Comonads that admit left-tightening recursion.
 public protocol ComonadFix : Comonad {
-	typealias FFAA = K1<K1<A> -> A>
+	associatedtype FFAA = K1<K1<A> -> A>
 	
 	/// Calculates the fixed point of a comonadic context.
 	///

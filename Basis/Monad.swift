@@ -58,12 +58,12 @@ public protocol MonadPlus : Monad {
 
 /// Additional functions to be implemented by those types conforming to the Monad protocol.
 public protocol MonadOps : Monad {
-	typealias C
-	typealias FC = K1<C>
+	associatedtype C
+	associatedtype FC = K1<C>
 
-	typealias MLA = K1<[A]>
-	typealias MLB = K1<[B]>
-	typealias MU = K1<()>
+	associatedtype MLA = K1<[A]>
+	associatedtype MLB = K1<[B]>
+	associatedtype MU = K1<()>
 
 	/// Maps a function taking values to Monadic actions, then evaluates each action in the 
 	/// resulting list from left to right.  The results of each evaluated action are collected in
