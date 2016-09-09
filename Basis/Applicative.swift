@@ -21,7 +21,7 @@ public protocol Applicative : Pointed, Functor {
 	
 	/// Sequential Application | Applies the function "inside the Functor" to the "inside" of our 
 	/// Functor and herds up the results.
-	func <*>(_: FAB , _: Self) -> FB
+	static func <*>(_: FAB , _: Self) -> FB
 	
 	/// Sequence Right | Executes the action in the functor on the left and returns the functor on
 	/// the right.
@@ -29,14 +29,14 @@ public protocol Applicative : Pointed, Functor {
 	/// Default definition: 
 	///
 	///		const(id) <^> a <*> b
-	func *>(_: Self, _: FB) -> FB
+	static func *>(_: Self, _: FB) -> FB
 	
 	/// Sequence Left | Disregards the Functor on the Right.
 	///
 	/// Default definition: 
 	///
 	///		const <^> a <*> b
-	func <*(_: Self, _: FB) -> Self
+	static func <*(_: Self, _: FB) -> Self
 }
 
 /// Alternatives are Applicative Monoids.
@@ -51,7 +51,7 @@ public protocol Alternative : Applicative {
 	/// Choose | Chooses the greater of two Alternatives.
 	///
 	/// This function will attempt to choose an Alternative that is not the empty() Alternative.
-	func <|>(_: Self, _: Self) -> Self
+	static func <|>(_: Self, _: Self) -> Self
 
 	/// One or more
 	///
@@ -83,11 +83,11 @@ public protocol ApplicativeOps : Applicative {
 	associatedtype FD = K1<D>
 
 	/// Lift a function to a Functorial action.
-	static func liftA(_ f : (A) -> B) -> (Self) -> FB
+	static func liftA(_ f : @escaping (A) -> B) -> (Self) -> FB
 
 	/// Lift a binary function to a Functorial action.
-	static func liftA2(_ f : (A) -> (B) -> C) -> (Self) -> (FB) -> FC
+	static func liftA2(_ f : @escaping (A) -> (B) -> C) -> (Self) -> (FB) -> FC
 
 	/// Lift a ternary function to a Functorial action.
-	static func liftA3(_ f : (A) -> (B) -> (C) -> D) -> (Self) -> (FB) -> (FC) -> FD
+	static func liftA3(_ f : @escaping (A) -> (B) -> (C) -> D) -> (Self) -> (FB) -> (FC) -> FD
 }

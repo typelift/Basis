@@ -9,7 +9,7 @@
 
 public enum MapD<K, A> {
 	case empty
-	case destructure(UInt, K, A, Map<K, A>?, Map<K, A>?)
+	case destructure(UInt, K, A, Map<K, A>, Map<K, A>)
 }
 
 /// An immutable map between keys and values.
@@ -32,7 +32,7 @@ public final class Map<K, A> : K2<K, A> {
 		if self.size == 0 || k == nil || a == nil {
 			return .empty
 		}
-		return .destructure(size, k, a, l, r)
+		return .destructure(size, k, a, l!, r!)
 	}
 }
 
@@ -76,9 +76,9 @@ public func insert<K : Comparable, A>(_ key : K) -> (A) -> (Map<K, A>) -> Map<K,
 				return singleton(key)(val)
 			case .destructure(let sz, let ky, let y, let l, let r):
 				if key < ky {
-					return balance(ky, x: y, l: insert(key)(val)(l!), r: r!)
+					return balance(ky, x: y, l: insert(key)(val)(l), r: r)
 				} else if key > ky {
-					return balance(ky, x: y, l: l!, r: insert(key)(val)(r!))
+					return balance(ky, x: y, l: l, r: insert(key)(val)(r))
 				}
 				return Map(sz, key, val, l, r)
 		}
@@ -112,9 +112,9 @@ public func insertWithKey<K : Comparable, A>(_ f : @escaping (K) -> (A) -> (A) -
 				return singleton(key)(val)
 			case .destructure(let sy, let ky, let y, let l, let r):
 				if key < ky {
-					return balance(ky, x: y, l: insertWithKey(f)(key)(val)(l!), r: r!)
+					return balance(ky, x: y, l: insertWithKey(f)(key)(val)(l), r: r)
 				} else if key > ky {
-					return balance(ky, x: y, l: l!, r: insertWithKey(f)(key)(val)(r!))
+					return balance(ky, x: y, l: l, r: insertWithKey(f)(key)(val)(r))
 				}
 				return Map(sy, key, (f(key)(val)(y)), l, r)
 		}
@@ -131,11 +131,11 @@ public func delete<K : Comparable, A>(_ k : K) -> (Map<K, A>) -> Map<K, A> {
 				return empty()
 			case .destructure(_, let kx, let x, let l, let r):
 				if k < kx {
-					return balance(kx, x: x, l: delete(k)(m), r: r!)
+					return balance(kx, x: x, l: delete(k)(m), r: r)
 				} else if k > kx {
-					return balance(kx, x: x, l: l!, r: delete(k)(m))
+					return balance(kx, x: x, l: l, r: delete(k)(m))
 				}
-				return glue(l!, r: r!)
+				return glue(l, r: r)
 		}
 	}
 }
@@ -148,12 +148,12 @@ public func deleteFindMin<K, A>(_ m : Map<K, A>) -> ((K, A), Map<K, A>) {
 		case .empty:
 			return error("Cannot delete the minimal element of an empty map.")
 		case .destructure(_, let k, let x, let l, let r):
-			switch l?.match() {
+			switch l.match() {
 				case .empty:
-					return ((k, x), r!)
+					return ((k, x), r)
 				case .destructure(_, _, _, _, _):
-					let (km, l1) = deleteFindMin(l!)
-					return (km, balance(k, x: x, l: l1, r: r!))
+					let (km, l1) = deleteFindMin(l)
+					return (km, balance(k, x: x, l: l1, r: r))
 			}
 	}
 }
@@ -166,12 +166,12 @@ public func deleteFindMax<K, A>(_ m : Map<K, A>) -> ((K, A), Map<K, A>) {
 		case .empty:
 			return error("Cannot delete the maximal element of an empty map.")
 		case .destructure(_, let k, let x, let l, let r):
-			switch l?.match() {
+			switch l.match() {
 				case .empty:
-					return ((k, x), r!)
+					return ((k, x), r)
 				case .destructure(_, _, _, _, _):
-					let (km, r1) = deleteFindMin(l!)
-					return (km, balance(k, x: x, l: l!, r: r1))
+					let (km, r1) = deleteFindMin(l)
+					return (km, balance(k, x: x, l: l, r: r1))
 			}
 	}
 }
@@ -196,7 +196,7 @@ private func rotateL<K, A>(_ k : K, x : A, l : Map<K, A>, r : Map<K, A>) -> Map<
 	case .empty:
 		return error("")
 	case .destructure(_, _, _, let ly, let ry):
-		if (ly?.size)! < 2 * (ry?.size)! {
+		if (ly.size) < 2 * (ry.size) {
 			return single(k, x1: x, t1: l, t2: r)
 		}
 		return double(k, x1: x, t1: l, t2: r)
@@ -208,7 +208,7 @@ private func rotateR<K, A>(_ k : K, x : A, l : Map<K, A>, r : Map<K, A>) -> Map<
 	case .empty:
 		return error("")
 	case .destructure(_, _, _, let ly, let ry):
-		if (ly?.size)! < 2 * (ry?.size)! {
+		if (ly.size) < 2 * (ry.size) {
 			return single(k, x1: x, t1: l, t2: r)
 		}
 		return double(k, x1: x, t1: l, t2: r)
@@ -222,10 +222,10 @@ private func single<K, A>(_ k1 : K, x1 : A, t1 : Map<K, A>, t2 : Map<K, A>) -> M
 		case .empty:
 			return error("")
 		case .destructure(_, let k2, let x2, let t1, let t3):
-			return bin(k2, x: x2, l: t1!, r: bin(k1, x: x1, l: t3!, r: t2))
+			return bin(k2, x: x2, l: t1, r: bin(k1, x: x1, l: t3, r: t2))
 		}
 	case .destructure(_, let k2, let x2, let t2, let t3):
-		return bin(k2, x: x2, l: bin(k1, x: x1, l: t1, r: t2!), r: t3!)
+		return bin(k2, x: x2, l: bin(k1, x: x1, l: t1, r: t2), r: t3)
 	}
 }
 
@@ -236,19 +236,19 @@ private func double<K, A>(_ k1 : K, x1 : A, t1 : Map<K, A>, t2 : Map<K, A>) -> M
 		case .empty:
 			return error("")
 		case .destructure(_, let k2, let x2, let b, let t4):
-			switch b?.match() {
+			switch b.match() {
 			case .empty:
 				return error("")
 			case .destructure(_, let k3, let x3, let t2, let t3):
-				return bin(k3, x: x3, l: bin(k2, x: x2, l: t1, r: t2!), r: bin(k1, x: x1, l: t3!, r: t4!))
+				return bin(k3, x: x3, l: bin(k2, x: x2, l: t1, r: t2), r: bin(k1, x: x1, l: t3, r: t4))
 			}
 		}
 	case .destructure(_, let k2, let x2, let b, let t4):
-		switch b?.match() {
+		switch b.match() {
 		case .empty:
 			return error("")
 		case .destructure(_, let k3, let x3, let t2, let t3):
-			return bin(k3, x: x3, l: bin(k1, x: x1, l: t1, r: t2!), r: bin(k2, x: x2, l: t3!, r: t4!))
+			return bin(k3, x: x3, l: bin(k1, x: x1, l: t1, r: t2), r: bin(k2, x: x2, l: t3, r: t4))
 		}
 	}
 }

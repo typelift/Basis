@@ -47,15 +47,15 @@ public struct All : Semigroup {
 }
 
 /// The monoid of booleans under disjunction
-public struct Any : Semigroup {
-	public let getAny : Bool
+public struct Exists : Semigroup {
+	public let getExists : Bool
 	
 	public init(_ val : Bool) {
-		self.getAny = val
+		self.getExists = val
 	}
 	
-	public func op(_ other : Any) -> Any {
-		return Any(self.getAny || other.getAny)
+	public func op(_ other : Exists) -> Exists {
+		return Exists(self.getExists || other.getExists)
 	}
 }
 

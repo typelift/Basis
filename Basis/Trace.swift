@@ -7,6 +7,8 @@
 //  Released under the MIT license.
 //
 
+import class Foundation.Thread
+
 /// Prints a message before returning a value.
 public func trace<A>(_ msg : String) -> (A) -> A {
     return { e in 

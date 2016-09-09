@@ -37,12 +37,12 @@ public protocol Contravariant {
 	///
 	/// F on our diagram.
 	static func contramap(_: (A) -> B) -> (FB) -> Self
-	func >%<(_: (A) -> B, _: FB) -> Self
-	
+//	static func >%<(_: (A) -> B, _: FB) -> Self
+
 	/// Contravariant Constant Replace | Replaces all values in the target Functor with a singular 
 	/// constant value from the source Functor.
 	///
 	/// Default definition: 
 	///		`curry(>%<) • const`
-	func >%(_: B, _: FB) -> Self
+//	static func >%(_: B, _: FB) -> Self
 }

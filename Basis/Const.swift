@@ -21,12 +21,12 @@ extension Const : Functor {
 	public typealias B = R
 	public typealias FB = Const<A, B>
 	
-	public static func fmap<B>(_ : (A) -> B) -> (Const<L, R>) -> Const<L, R> {
+	public static func fmap<B>(_ : @escaping (A) -> B) -> (Const<L, R>) -> Const<L, R> {
 		return { c in Const(c.val) }
 	}
 }
 
-public func <^> <A, B, C>(f : (A) -> C, c : Const<A, B>) -> Const<A, B> {
+public func <^> <A, B, C>(f : @escaping (A) -> C, c : Const<A, B>) -> Const<A, B> {
 	return Const<A, B>.fmap(f)(c)
 }
 

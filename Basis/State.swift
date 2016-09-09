@@ -16,7 +16,7 @@ public struct State<S, A> {
 }
 
 extension State : Functor {
-	public typealias B = Swift.Any
+	public typealias B = Any
 	public typealias FB = State<S, B>
 	
 	public static func fmap<B>(_ f : @escaping (A) -> B) -> (State<S, A>) -> State<S, B> {
@@ -124,11 +124,11 @@ extension State : MonadOps {
 		return { xs in State<S, B>.sequence_(map(f)(xs)) }
 	}
 	
-	public static func forM<B>(_ xs : [A]) -> ((A) -> State<S, B>) -> State<S, [B]> {
+	public static func forM<B>(_ xs : [A]) -> (@escaping (A) -> State<S, B>) -> State<S, [B]> {
 		return flip(State.mapM)(xs)
 	}
 	
-	public static func forM_<B>(_ xs : [A]) -> ((A) -> State<S, B>) -> State<S, ()> {
+	public static func forM_<B>(_ xs : [A]) -> (@escaping (A) -> State<S, B>) -> State<S, ()> {
 		return flip(State.mapM_)(xs)
 	}
 	

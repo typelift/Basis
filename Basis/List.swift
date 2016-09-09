@@ -325,12 +325,12 @@ public func <|> <A>(l : List<A>, r : List<A>) -> List<A> {
 }
 
 extension List : Monad {
-	public func bind<B>(_ f : (A) -> List<B>) -> List<B> {
+	public func bind<B>(_ f : @escaping (A) -> List<B>) -> List<B> {
 		return concatMap(f)(self)
 	}
 }
 
-public func >>- <A, B>(l : List<A>, f : (A) -> List<B>) -> List<B> {
+public func >>- <A, B>(l : List<A>, f : @escaping (A) -> List<B>) -> List<B> {
 	return l.bind(f)
 }
 
@@ -356,7 +356,7 @@ extension List : MonadZip {
 		return zip(ma)
 	}
 
-	public func mzipWith<B, C>(_ f : (A) -> (B) -> C) -> (List<A>) -> (List<B>) -> List<C> {
+	public func mzipWith<B, C>(_ f : @escaping (A) -> (B) -> C) -> (List<A>) -> (List<B>) -> List<C> {
 		return zipWith(f)
 	}
 

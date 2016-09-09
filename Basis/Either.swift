@@ -16,7 +16,7 @@ public enum Either<L, R>  {
 
 /// Case analysis.  If the Either is Left, applies the left function to that value.  Else, if the 
 /// either is right, applies the right function to that value.
-public func either<A, B, C>(_ left : @escaping (A) -> C) -> ((B) -> C) -> (Either<A, B>) -> C {
+public func either<A, B, C>(_ left : @escaping (A) -> C) -> (@escaping (B) -> C) -> (Either<A, B>) -> C {
 	return { right in { e in
 		switch e {
 			case .left(let x):
@@ -172,7 +172,7 @@ extension Either : ApplicativeOps {
 }
 
 extension Either : Monad {
-	public func bind<B>(_ f : (A) -> Either<L, B>) -> Either<L, B> {
+	public func bind<B>(_ f : @escaping (A) -> Either<L, B>) -> Either<L, B> {
 		switch self {
 			case .left(let l):
 				return Either<L, B>.left(l)
@@ -182,7 +182,7 @@ extension Either : Monad {
 	}
 }
 
-public func >>- <L, A, B>(xs : Either<L, A>, f : (A) -> Either<L, B>) -> Either<L, B> {
+public func >>- <L, A, B>(xs : Either<L, A>, f : @escaping (A) -> Either<L, B>) -> Either<L, B> {
 	return xs.bind(f)
 }
 
@@ -205,11 +205,11 @@ extension Either : MonadOps {
 		return { xs in Either<L, B>.sequence_(map(f)(xs)) }
 	}
 
-	public static func forM<B>(_ xs : [A]) -> ((A) -> Either<L, B>) -> Either<L, [B]> {
+	public static func forM<B>(_ xs : [A]) -> (@escaping (A) -> Either<L, B>) -> Either<L, [B]> {
 		return flip(Either.mapM)(xs)
 	}
 
-	public static func forM_<B>(_ xs : [A]) -> ((A) -> Either<L, B>) -> Either<L, ()> {
+	public static func forM_<B>(_ xs : [A]) -> (@escaping (A) -> Either<L, B>) -> Either<L, ()> {
 		return flip(Either.mapM_)(xs)
 	}
 
@@ -222,7 +222,7 @@ extension Either : MonadOps {
 	}
 }
 
-public func -<< <L, A, B>(f : (A) -> Either<L, B>, xs : Either<L, A>) -> Either<L, B> {
+public func -<< <L, A, B>(f : @escaping (A) -> Either<L, B>, xs : Either<L, A>) -> Either<L, B> {
 	return xs.bind(f)
 }
 

@@ -47,7 +47,7 @@ private func prependToAll<A>(_ sep : A) -> ([A]) -> [A] {
 			case .nil:
 				return []
 			case .cons(let x, let xs):
-				return sep <<| x <<| prependToAll(sep)(xs)
+				return sep <<| (x <<| prependToAll(sep)(xs))
 		}
 	}
 }
@@ -72,7 +72,7 @@ private func prependToAll<A>(_ sep : A) -> (List<A>) -> List<A> {
 			case .nil:
 				return List()
 			case .cons(let x, let xs):
-				return sep <<| x <<| prependToAll(sep)(xs)
+				return sep <<| (x <<| prependToAll(sep)(xs))
 		}
 	}
 }
@@ -157,8 +157,8 @@ public func nonEmptySubsequences<A>(_ xs : [A]) -> [[A]] {
 			return []
 		case .cons(let x, let xs):
 			return [x] <<| foldr({ ys, r in
-				return ys <<| (x <<| ys) <<| r
-			})([])(nonEmptySubsequences(xs))
+				return ys <<| ((x <<| ys) <<| r)
+		})([])(nonEmptySubsequences(xs))
 	}
 }
 
@@ -175,7 +175,7 @@ public func nonEmptySubsequences<A>(_ xs : List<A>) -> List<List<A>> {
 			return List()
 		case .cons(let x, let xs):
 			return List(x) <<| foldr({ ys, r in
-				return ys <<| (x <<| ys) <<| r
+				return ys <<| ((x <<| ys) <<| r)
 			})(List())(nonEmptySubsequences(xs))
 	}
 }

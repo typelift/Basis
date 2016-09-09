@@ -21,7 +21,7 @@ public protocol MonadZip : Monad {
 	func mzip(_: Self) -> (FB) -> FTAB
 	
 	/// ZipWith for monads.
-	func mzipWith(_: (A) -> (B) -> C) -> (Self) -> (FB) -> FC
+	func mzipWith(_: @escaping (A) -> (B) -> C) -> (Self) -> (FB) -> FC
 	
 	/// Unzip for monads.
 	func munzip(_: FTAB) -> (Self, FB)

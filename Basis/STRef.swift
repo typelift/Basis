@@ -41,7 +41,7 @@ public func writeSTRef<S, A>(_ ref : STRef<S, A>) -> (A) -> ST<S, STRef<S, A>> {
 }
 
 // Modifies the reference and returns the updated result.
-public func modifySTRef<S, A>(_ ref : STRef<S, A>) -> ((A) -> A) -> ST<S, STRef<S, A>> {
+public func modifySTRef<S, A>(_ ref : STRef<S, A>) -> (@escaping (A) -> A) -> ST<S, STRef<S, A>> {
     return { f in 
         return ST(apply: { s in
             ref.value = f(ref.value)

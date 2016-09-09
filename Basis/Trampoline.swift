@@ -36,13 +36,13 @@ public func now<T>(_ x : T) -> Trampoline<T> {
 /// Suspends a sub-computation that yields another Trampoline for evaluation later.
 ///
 /// Adds a branch to the computation tree of a Trampoline.
-public func later<T>(_ x : () -> Trampoline<T>) -> Trampoline<T> {
+public func later<T>(_ x : @escaping () -> Trampoline<T>) -> Trampoline<T> {
 	return Trampoline(Suspend(s: Identity(x)))
 }
 
 extension Trampoline : Functor {
 	public typealias A = T
-	public typealias B = Swift.Any
+	public typealias B = Any
 	
 	public typealias FB = Trampoline<B>
 	
@@ -113,12 +113,12 @@ extension Trampoline : ApplicativeOps {
 }
 
 extension Trampoline : Monad {
-	public func bind<B>(_ f: (A) -> Trampoline<B>) -> Trampoline<B> {
+	public func bind<B>(_ f: @escaping (A) -> Trampoline<B>) -> Trampoline<B> {
 		return Trampoline<B>(self.t.flatMap({ x in f(x).t }))
 	}
 }
 
-public func >>- <A, B>(x : Trampoline<A>, f : (A) -> Trampoline<B>) -> Trampoline<B> {
+public func >>- <A, B>(x : Trampoline<A>, f : @escaping (A) -> Trampoline<B>) -> Trampoline<B> {
 	return x.bind(f)
 }
 
@@ -141,11 +141,11 @@ extension Trampoline : MonadOps {
 		return { xs in Trampoline<B>.sequence_(map(f)(xs)) }
 	}
 
-	public static func forM<B>(_ xs : [A]) -> ((A) -> Trampoline<B>) -> Trampoline<[B]> {
+	public static func forM<B>(_ xs : [A]) -> (@escaping (A) -> Trampoline<B>) -> Trampoline<[B]> {
 		return flip(Trampoline.mapM)(xs)
 	}
 
-	public static func forM_<B>(_ xs : [A]) -> ((A) -> Trampoline<B>) -> Trampoline<()> {
+	public static func forM_<B>(_ xs : [A]) -> (@escaping (A) -> Trampoline<B>) -> Trampoline<()> {
 		return flip(Trampoline.mapM_)(xs)
 	}
 
@@ -158,7 +158,7 @@ extension Trampoline : MonadOps {
 	}
 }
 
-public func -<< <A, B>(f : (A) -> Trampoline<B>, xs : Trampoline<A>) -> Trampoline<B> {
+public func -<< <A, B>(f : @escaping (A) -> Trampoline<B>, xs : Trampoline<A>) -> Trampoline<B> {
 	return xs.bind(f)
 }
 
@@ -200,7 +200,7 @@ private class FreeId<T> {
 		return undefined()
 	}
 	
-	func flatMap<B>(_ f : (T) -> FreeId<B>) -> FreeId<B> {
+	func flatMap<B>(_ f : @escaping (T) -> FreeId<B>) -> FreeId<B> {
 		return liftCodense(self, k: f)
 	}
 }
@@ -263,7 +263,7 @@ private class Codensity<T> : FreeId<T> {
 		self.k = k
 	}
 	
-	fileprivate override func flatMap<B>(_ f: (T) -> FreeId<B>) -> FreeId<B> {
+	fileprivate override func flatMap<B>(_ f: @escaping (T) -> FreeId<B>) -> FreeId<B> {
 		return liftCodense(sub, k: { o in later { Trampoline(self.k(o).flatMap(f)) }.t })
 	}
 		

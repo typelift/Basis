@@ -120,7 +120,7 @@ public func take<T>(_ n : UInt) -> (Stream<T>) -> [T] {
 		if n == 0 {
 			return []
 		}
-		return s.step().head <<| take(n - 1)(s.step().tail)
+		return s.step().head <<| take(n - UInt(1))(s.step().tail)
 	}
 }
 
@@ -194,7 +194,7 @@ public func unzip<A, B>(_ sp : Stream<(A, B)>) -> (Stream<A>, Stream<B>) {
 
 extension Stream : Functor {
 	public typealias A = T
-	public typealias B = Swift.Any
+	public typealias B = Any
 	
 	public typealias FB = Stream<B>
 	
@@ -289,11 +289,11 @@ extension Stream : MonadOps {
 		return { xs in Stream<B>.sequence_(map(f)(xs)) }
 	}
 
-	public static func forM<B>(_ xs : [A]) -> ((A) -> Stream<B>) -> Stream<[B]> {
+	public static func forM<B>(_ xs : [A]) -> (@escaping (A) -> Stream<B>) -> Stream<[B]> {
 		return flip(Stream.mapM)(xs)
 	}
 
-	public static func forM_<B>(_ xs : [A]) -> ((A) -> Stream<B>) -> Stream<()> {
+	public static func forM_<B>(_ xs : [A]) -> (@escaping (A) -> Stream<B>) -> Stream<()> {
 		return flip(Stream.mapM_)(xs)
 	}
 

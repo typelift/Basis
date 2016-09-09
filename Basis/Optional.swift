@@ -9,7 +9,7 @@
 
 /// Takes a default value, a function, and an optional.  If the optional is None, the default value
 /// is returned.  If the optional is Some, the function is applied to the value inside.
-public func optional<A, B>(_ def : B) -> ((A) -> B) -> (Optional<A>) -> B {
+public func optional<A, B>(_ def : B) -> (@escaping (A) -> B) -> (Optional<A>) -> B {
     return { f in { m in
         switch m {
         case .none:

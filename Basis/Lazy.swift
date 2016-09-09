@@ -126,12 +126,12 @@ extension Lazy : ApplicativeOps {
 }
 
 extension Lazy : Monad {
-	public func bind<B>(_ f: (A) -> Lazy<B>) -> Lazy<B> {
+	public func bind<B>(_ f: @escaping (A) -> Lazy<B>) -> Lazy<B> {
 		return f(force(self))
 	}
 }
 
-public func >>- <A, B>(x : Lazy<A>, f : (A) -> Lazy<B>) -> Lazy<B> {
+public func >>- <A, B>(x : Lazy<A>, f : @escaping (A) -> Lazy<B>) -> Lazy<B> {
 	return x.bind(f)
 }
 
@@ -154,11 +154,11 @@ extension Lazy : MonadOps {
 		return { xs in Lazy<B>.sequence_(map(f)(xs)) }
 	}
 
-	public static func forM<B>(_ xs : [A]) -> ((A) -> Lazy<B>) -> Lazy<[B]> {
+	public static func forM<B>(_ xs : [A]) -> (@escaping (A) -> Lazy<B>) -> Lazy<[B]> {
 		return flip(Lazy.mapM)(xs)
 	}
 
-	public static func forM_<B>(_ xs : [A]) -> ((A) -> Lazy<B>) -> Lazy<()> {
+	public static func forM_<B>(_ xs : [A]) -> (@escaping (A) -> Lazy<B>) -> Lazy<()> {
 		return flip(Lazy.mapM_)(xs)
 	}
 
@@ -171,7 +171,7 @@ extension Lazy : MonadOps {
 	}
 }
 
-public func -<< <A, B>(f : (A) -> Lazy<B>, xs : Lazy<A>) -> Lazy<B> {
+public func -<< <A, B>(f : @escaping (A) -> Lazy<B>, xs : Lazy<A>) -> Lazy<B> {
 	return xs.bind(f)
 }
 

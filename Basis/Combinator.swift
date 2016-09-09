@@ -36,13 +36,13 @@ public func const<A, B>(_ x : A) -> (B) -> A {
 
 /// Applies the second function to a value, then applies the first function to a value and the
 /// result of the previous function application.
-public func substitute<R, A, B>(_ f : @escaping (R) -> (A) -> B) -> ((R) -> A) -> (R) -> B {
+public func substitute<R, A, B>(_ f : @escaping (R) -> (A) -> B) -> (@escaping (R) -> A) -> (R) -> B {
 	return { g in { x in f(x)(g(x)) } }
 }
 
 /// Applies the second function to a value, then applies the first function to a value and the
 /// result of the previous function application.
-public func substitute<R, A, B>(_ f : @escaping (R, A) -> B) -> ((R) -> A) -> (R) -> B {
+public func substitute<R, A, B>(_ f : @escaping (R, A) -> B) -> (@escaping (R) -> A) -> (R) -> B {
 	return { g in { x in f(x, g(x)) } }
 }
 
@@ -127,7 +127,7 @@ public func fix<A>(_ f : @escaping (((A) -> A) -> (A) -> A)) -> (A) -> A {
 /// 
 ///     let arr : [(Int, String)] = [(2, "Second"), (1, "First"), (5, "Fifth"), (3, "Third"), (4, "Fourth")]
 ///     let sortedByFirstIndex = sortBy((<) |*| fst)(arr)
-public func |*| <A, B, C>(o : (B) -> (B) -> C, f : (A) -> B) -> (A) -> (A) -> C {
+public func |*| <A, B, C>(o : @escaping (B) -> (B) -> C, f : @escaping (A) -> B) -> (A) -> (A) -> C {
 	return on(o)(f)
 }
 
@@ -140,7 +140,7 @@ public func |*| <A, B, C>(o : (B) -> (B) -> C, f : (A) -> B) -> (A) -> (A) -> C 
 /// 
 ///     let arr : [(Int, String)] = [(2, "Second"), (1, "First"), (5, "Fifth"), (3, "Third"), (4, "Fourth")]
 ///     let sortedByFirstIndex = sortBy((<) |*| fst)(arr)
-public func |*| <A, B, C>(o : (B, B) -> C, f : (A) -> B) -> (A) -> (A) -> C {
+public func |*| <A, B, C>(o : @escaping (B, B) -> C, f : @escaping (A) -> B) -> (A) -> (A) -> C {
 	return on(o)(f)
 }
 
@@ -148,7 +148,7 @@ public func |*| <A, B, C>(o : (B, B) -> C, f : (A) -> B) -> (A) -> (A) -> C {
 /// left to the result of both prior applications.
 ///
 ///    (+) `|*|` f = { x, y in f(x) + f(y) }
-public func on<A, B, C>(_ o : @escaping (B) -> (B) -> C) -> ((A) -> B) -> (A) -> (A) -> C {
+public func on<A, B, C>(_ o : @escaping (B) -> (B) -> C) -> (@escaping (A) -> B) -> (A) -> (A) -> C {
 	return { f in { x in { y in o(f(x))(f(y)) } } }
 }
 
@@ -156,7 +156,7 @@ public func on<A, B, C>(_ o : @escaping (B) -> (B) -> C) -> ((A) -> B) -> (A) ->
 /// left to the result of both prior applications.
 ///
 ///    (+) `|*|` f = { x, y in -> f(x) + f(y) }
-public func on<A, B, C>(_ o : @escaping (B, B) -> C) -> ((A) -> B) -> (A) -> (A) -> C {
+public func on<A, B, C>(_ o : @escaping (B, B) -> C) -> (@escaping (A) -> B) -> (A) -> (A) -> C {
 	return { f in { x in { y in o(f(x), f(y)) } } }
 }
 
@@ -185,6 +185,6 @@ public func >-< <A>(x : A, y : A) -> A {
 }
 
 /// Applies a function to an argument until a given predicate returns true.
-public func until<A>(_ p : @escaping (A) -> Bool) -> ((A) -> A) -> (A) -> A {
+public func until<A>(_ p : @escaping (A) -> Bool) -> (@escaping (A) -> A) -> (A) -> A {
 	return { f in { x in p(x) ? x : until(p)(f)(f(x)) } }
 }

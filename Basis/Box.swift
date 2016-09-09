@@ -32,7 +32,7 @@ public func !=<T : Equatable>(lhs: Identity<T>, rhs: Identity<T>) -> Bool {
 /// MARK: Functor
 
 extension Identity : Functor {
-	public typealias B = Swift.Any
+	public typealias B = Any
 	
 	public typealias FB = Identity<B>
 	

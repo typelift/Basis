@@ -100,12 +100,12 @@ extension ST : ApplicativeOps {
 }
 
 extension ST : Monad {
-	public func bind<B>(_ f: (A) -> ST<S, B>) -> ST<S, B> {
+	public func bind<B>(_ f : @escaping (A) -> ST<S, B>) -> ST<S, B> {
 		return f(runST())
 	}
 }
 
-public func >>- <S, A, B>(x : ST<S, A>, f : (A) -> ST<S, B>) -> ST<S, B> {
+public func >>- <S, A, B>(x : ST<S, A>, f : @escaping (A) -> ST<S, B>) -> ST<S, B> {
 	return x.bind(f)
 }
 
@@ -128,11 +128,11 @@ extension ST : MonadOps {
 		return { xs in ST<S, B>.sequence_(map(f)(xs)) }
 	}
 	
-	public static func forM<B>(_ xs : [A]) -> ((A) -> ST<S, B>) -> ST<S, [B]> {
+	public static func forM<B>(_ xs : [A]) -> (@escaping (A) -> ST<S, B>) -> ST<S, [B]> {
 		return flip(ST.mapM)(xs)
 	}
 	
-	public static func forM_<B>(_ xs : [A]) -> ((A) -> ST<S, B>) -> ST<S, ()> {
+	public static func forM_<B>(_ xs : [A]) -> (@escaping (A) -> ST<S, B>) -> ST<S, ()> {
 		return flip(ST.mapM_)(xs)
 	}
 	
@@ -145,7 +145,7 @@ extension ST : MonadOps {
 	}
 }
 
-public func -<< <S, A, B>(f : (A) -> ST<S, B>, xs : ST<S, A>) -> ST<S, B> {
+public func -<< <S, A, B>(f : @escaping (A) -> ST<S, B>, xs : ST<S, A>) -> ST<S, B> {
 	return xs.bind(f)
 }
 

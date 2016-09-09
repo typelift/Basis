@@ -24,5 +24,5 @@ public protocol Comonad : Copointed, Functor {
 	///
 	/// Default Definition:
 	///		`fmap(f) • duplicate`
-	static func extend(_: (Self) -> B) -> (Self) -> FB
+	static func extend(_: @escaping (Self) -> B) -> (Self) -> FB
 }

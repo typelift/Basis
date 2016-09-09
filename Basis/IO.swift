@@ -93,7 +93,7 @@ public func getLine() -> IO<String> {
 
 /// Gets the entire contents of standard input.
 public func getContents() -> IO<String> {
-	let s = NSString(data: FileHandle.withStandardInput.availableData, encoding: String.Encoding.utf8) as! String
+	let s = String(data: FileHandle.standardInput.availableData, encoding: .utf8)
 	return IO.pure(s ?? "")
 }
 
@@ -213,11 +213,11 @@ extension IO : MonadOps {
 		return { xs in IO<B>.sequence_(map(f)(xs)) }
 	}
 
-	public static func forM<B>(_ xs : [A]) -> ((A) -> IO<B>) -> IO<[B]> {
+	public static func forM<B>(_ xs : [A]) -> (@escaping (A) -> IO<B>) -> IO<[B]> {
 		return flip(IO.mapM)(xs)
 	}
 
-	public static func forM_<B>(_ xs : [A]) -> ((A) -> IO<B>) -> IO<()> {
+	public static func forM_<B>(_ xs : [A]) -> (@escaping (A) -> IO<B>) -> IO<()> {
 		return flip(IO.mapM_)(xs)
 	}
 

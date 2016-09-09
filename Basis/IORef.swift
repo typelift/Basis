@@ -37,7 +37,7 @@ public func writeIORef<A>(_ ref : IORef<A>) -> (A) -> IO<Void> {
 }
 
 /// Applies a function to the contents of the IORef
-public func modifyIORef<A>(_ ref : IORef<A>) -> ((A) -> A) -> IO<Void> {
+public func modifyIORef<A>(_ ref : IORef<A>) -> (@escaping (A) -> A) -> IO<Void> {
     return { vfn in stToIO(modifySTRef(ref.value)(vfn)) >> IO.pure(()) }
 }
 

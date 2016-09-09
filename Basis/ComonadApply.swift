@@ -14,18 +14,18 @@ public protocol ComonadApply : Comonad {
 	/// Type of Functors containing morphisms from our objects to a target.
 	associatedtype FAB = K1<(A) -> B>
 	
-	func >*<(_: FAB , _: Self) -> FB
+	static func >*<(_: FAB , _: Self) -> FB
 	
 	/// Sequence Right | Executes the action in the functor on the left and returns the functor on
 	/// the right.
 	///
 	/// Default definition: 
 	///		`const(id) <^> a >*< b`
-	func *<(_: Self, _: FB) -> FB
+	static func *<(_: Self, _: FB) -> FB
 	
 	/// Sequence Left | Disregards the Functor on the Right.
 	///
 	/// Default definition: 
 	///		`const <^> a >*< b`
-	func >*(_: Self, _: FB) -> Self
+	static func >*(_: Self, _: FB) -> Self
 }

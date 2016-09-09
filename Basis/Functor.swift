@@ -42,20 +42,20 @@ public protocol Functor {
 	/// Map "inside" a Functor.
 	///
 	/// F on our diagram.
-	static func fmap(_: (A) -> B) -> (Self) -> FB
-	func <^>(_: (A) -> B, _: Self) -> FB
+	static func fmap(_: @escaping (A) -> B) -> (Self) -> FB
+	static func <^>(_: @escaping (A) -> B, _: Self) -> FB
 
 	/// Constant Replace | Replaces all values in the target Functor with a singular constant value
 	/// from the source Functor.
 	///
 	/// Default definition: 
 	///		`curry(<^>) • const`
-	func <%(_: A, _: FB) -> Self
-	
+//	static func <%(_: A, _: FB) -> Self
+
 	/// Constant Replace Backwards | Replaces all values in the target Functor with a singular 
 	/// constant value from the source Functor.
 	///
 	/// Default definition:
 	///		`flip(<%)`
-	func %>(_: FB, _: A) -> Self
+//	static func %>(_: FB, _: A) -> Self
 }

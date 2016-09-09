@@ -181,12 +181,12 @@ public func <|><A>(l : Array<A>, r : Array<A>) -> Array<A> {
 }
 
 extension Array : Monad {
-	public func bind<B>(_ f : (Element) -> Array<B>) -> Array<B> {
+	public func bind<B>(_ f : @escaping (Element) -> Array<B>) -> Array<B> {
 		return self.flatMap(f)
 	}
 }
 
-public func >>- <A, B>(xs : Array<A>, f : (A) -> Array<B>) -> Array<B> {
+public func >>- <A, B>(xs : Array<A>, f : @escaping (A) -> Array<B>) -> Array<B> {
 	return xs.flatMap(f)
 }
 
@@ -212,7 +212,7 @@ extension Array : MonadZip {
 		return zip(ma)
 	}
 
-	public func mzipWith<B, C>(_ f : (A) -> (B) -> C) -> (Array<A>) -> (Array<B>) -> Array<C> {
+	public func mzipWith<B, C>(_ f : @escaping (A) -> (B) -> C) -> (Array<A>) -> (Array<B>) -> Array<C> {
 		return zipWith(f)
 	}
 

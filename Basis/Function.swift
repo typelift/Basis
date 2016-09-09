@@ -48,7 +48,7 @@ public func >>> <A, B, C>(c1 : Function<A, B>, c2 : Function<B, C>) -> Function<
 
 extension Function : Arrow {
 	public typealias D = T
-	public typealias E = Swift.Any
+	public typealias E = Any
 	
 	public typealias FIRST = Function<(A, D), (B, D)>
 	public typealias SECOND = Function<(D, A), (D, B)>
@@ -99,7 +99,7 @@ extension Function : ArrowChoice {
 }
 
 public func +++ <B, C, D, E>(f : Function<B, C>, g : Function<D, E>) -> Function<Either<B, D>, Either<C, E>> {
-	return ^Either.left • f ||| ^Either.right • g
+	return (^Either.left • f) ||| (^Either.right • g)
 }
 
 public func ||| <B, C, D>(f : Function<B, D>, g : Function<C, D>) -> Function<Either<B, C>, D> {

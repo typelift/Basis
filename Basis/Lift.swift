@@ -7,7 +7,7 @@
 //  Released under the MIT license.
 //
 
-public prefix func ^ <A, B>(f : (A) -> B) -> Function<A, B> {
+public prefix func ^ <A, B>(f : @escaping (A) -> B) -> Function<A, B> {
 	return Function.arr(f)
 }
 

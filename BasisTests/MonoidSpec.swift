@@ -58,20 +58,20 @@ class MonoidSpec : XCTestCase {
 		XCTAssertTrue(((x <> y) <> z) == (x <> (y <> z)), "")
 	}
 	
-	func testAnyLeftIdentity() {
-		XCTAssertTrue((Any.mempty() <> Any(true)) == Any(true), "")
-		XCTAssertTrue((Any.mempty() <> Any(false)) == Any(false), "")
+	func testExistsLeftIdentity() {
+		XCTAssertTrue((Exists.mempty() <> Exists(true)) == Exists(true), "")
+		XCTAssertTrue((Exists.mempty() <> Exists(false)) == Exists(false), "")
 	}
 	
-	func testAnyRightIdentity() {
-		XCTAssertTrue((Any(false) <> Any.mempty()) == Any(false), "")
-		XCTAssertTrue((Any(true) <> Any.mempty()) == Any(true), "")
+	func testExistsRightIdentity() {
+		XCTAssertTrue((Exists(false) <> Exists.mempty()) == Exists(false), "")
+		XCTAssertTrue((Exists(true) <> Exists.mempty()) == Exists(true), "")
 	}
 	
-	func testAnyMappend() {
-		let x = Any(true)
-		let y = Any(false)
-		let z = Any(true)
+	func testExistsMappend() {
+		let x = Exists(true)
+		let y = Exists(false)
+		let z = Exists(true)
 		XCTAssertTrue(((x <> y) <> z) == (x <> (y <> z)), "")
 	}
 	
