@@ -45,12 +45,12 @@ public func <^> <A, B>(f : @escaping (A) -> B, b : Identity<A>) -> Identity<B> {
 	return Identity.fmap(f)(b)
 }
 
-public func <% <A, B>(a : A, b : Identity<B>) -> Identity<A> {
+public func <^ <A, B>(a : A, b : Identity<B>) -> Identity<A> {
 	return (curry(<^>) • const)(a)(b)
 }
 
-public func %> <A, B>(c : Identity<B>, a : A) -> Identity<A> {
-	return flip(<%)(c, a)
+public func ^> <A, B>(c : Identity<B>, a : A) -> Identity<A> {
+	return flip(<^)(c, a)
 }
 
 extension Identity : Pointed {
@@ -89,9 +89,9 @@ public func >*< <A, B>(fab : Identity<(A) -> B> , b : Identity<A>) -> Identity<B
 }
 
 public func *< <A, B>(a : Identity<A>, b : Identity<B>) -> Identity<B> {
-	return const(id) <^> a >*< b
+	return (const(id) <^> a) >*< b
 }
 
 public func >* <A, B>(a : Identity<A>, b : Identity<B>) -> Identity<A> {
-	return const <^> a >*< b
+	return (const <^> a) >*< b
 }

@@ -338,8 +338,8 @@ public func maximumBy<A>(_ cmp : @escaping (A) -> (A) -> Bool) -> ([A]) -> A {
 			case .nil:
 				fatalError("Cannot find the maximum element of an empty list.")
 			case .cons(_, _):
-				return foldl1({ t in
-					return cmp(fst(t))(snd(t)) ? fst(t) : snd(t)
+				return foldl1({ t1, t2 in
+          return cmp(t1)(t2) ? t1 : t2
 				})(l)
 		}
 	}
@@ -352,8 +352,8 @@ public func maximumBy<A>(_ cmp : @escaping (A, A) -> Bool) -> ([A]) -> A {
 			case .nil:
 				fatalError("Cannot find the maximum element of an empty list.")
 			case .cons(_, _):
-				return foldl1({ t in
-					return cmp(fst(t), snd(t)) ? fst(t) : snd(t)
+				return foldl1({ t1, t2 in
+					return cmp(t1, t2) ? t1 : t2
 				})(l)
 		}
 	}
@@ -366,8 +366,8 @@ public func maximumBy<A>(_ cmp : @escaping (A) -> (A) -> Bool) -> (List<A>) -> A
 			case .nil:
 				fatalError("Cannot find the maximum element of an empty list.")
 			case .cons(_, _):
-				return foldl1({ t in
-					return cmp(fst(t))(snd(t)) ? fst(t) : snd(t)
+				return foldl1({ t1, t2 in
+					return cmp(t1)(t2) ? t1 : t2
 				})(l)
 		}
 	}
@@ -380,8 +380,8 @@ public func maximumBy<A>(_ cmp : @escaping (A, A) -> Bool) -> (List<A>) -> A {
 			case .nil:
 				fatalError("Cannot find the maximum element of an empty list.")
 			case .cons(_, _):
-				return foldl1({ t in
-					return cmp(fst(t), snd(t)) ? fst(t) : snd(t)
+				return foldl1({ t1, t2 in
+					return cmp(t1, t2) ? t1 : t2
 				})(l)
 		}
 	}
@@ -394,8 +394,8 @@ public func minimumBy<A>(_ cmp : @escaping (A) -> (A) -> Bool) -> ([A]) -> A {
 			case .nil:
 				fatalError("Cannot find the minimum element of an empty list.")
 			case .cons(_, _):
-				return foldl1({ t in
-					return cmp(fst(t))(snd(t)) ? snd(t) :  fst(t)
+				return foldl1({ t1, t2 in
+					return cmp(t1)(t2) ? t2 : t1
 				})(l)
 		}
 	}
@@ -408,8 +408,8 @@ public func minimumBy<A>(_ cmp : @escaping (A, A) -> Bool) -> ([A]) -> A {
 			case .nil:
 				fatalError("Cannot find the minimum element of an empty list.")
 			case .cons(_, _):
-				return foldl1({ t in
-					return cmp(fst(t), snd(t)) ? snd(t) : fst(t)
+				return foldl1({ t1, t2 in
+          return cmp(t1, t2) ? t2 : t1
 				})(l)
 		}
 	}
@@ -422,8 +422,8 @@ public func minimumBy<A>(_ cmp : @escaping (A) -> (A) -> Bool) -> (List<A>) -> A
 			case .nil:
 				fatalError("Cannot find the minimum element of an empty list.")
 			case .cons(_, _):
-				return foldl1({ t in
-					return cmp(fst(t))(snd(t)) ? snd(t) :  fst(t)
+				return foldl1({ t1, t2 in
+					return cmp(t1)(t2) ? t2 : t1
 				})(l)
 		}
 	}
@@ -436,8 +436,8 @@ public func minimumBy<A>(_ cmp : @escaping (A, A) -> Bool) -> (List<A>) -> A {
 			case .nil:
 				fatalError("Cannot find the minimum element of an empty list.")
 			case .cons(_, _):
-				return foldl1({ t in
-					return cmp(fst(t), snd(t)) ? snd(t) : fst(t)
+				return foldl1({ t1, t2 in
+					return cmp(t1, t2) ? t2 : t1
 				})(l)
 		}
 	}

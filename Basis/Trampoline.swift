@@ -55,12 +55,12 @@ public func <^> <A, B>(f : @escaping (A) -> B, b : Trampoline<A>) -> Trampoline<
 	return Trampoline.fmap(f)(b)
 }
 
-public func <% <A, B>(a : A, b : Trampoline<B>) -> Trampoline<A> {
+public func <^ <A, B>(a : A, b : Trampoline<B>) -> Trampoline<A> {
 	return (curry(<^>) • const)(a)(b)
 }
 
-public func %> <A, B>(c : Trampoline<B>, a : A) -> Trampoline<A> {
-	return flip(<%)(c, a)
+public func ^> <A, B>(c : Trampoline<B>, a : A) -> Trampoline<A> {
+	return flip(<^)(c, a)
 }
 
 extension Trampoline : Applicative {

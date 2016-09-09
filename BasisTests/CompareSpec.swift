@@ -15,8 +15,10 @@ class CompareSpec : XCTestCase {
 		let x = [1, 1, 2, 3, 3, 4, 4, 4, 5, 6, 6]
 		let y = [[1, 1], [2], [3, 3], [4, 4, 4], [5], [6, 6]]
 
-		XCTAssertTrue(and(zip(groupBy(==)(x).map({ $0.count }))(y.map({ $0.count })).map(==)), "")
-		XCTAssertTrue(and(zip(groupBy(==)(x).map(head))(y.map(head)).map(==)), "")
+		let g = groupBy(==)(x).map({ xs in xs.count })
+		XCTAssertTrue(and(zip(g)(y.map({ xs in xs.count })).map(==)), "")
+		let ls = y.map(head)
+		XCTAssertTrue(and(zip(groupBy(==)(x).map(head))(ls).map(==)), "")
 		XCTAssertTrue(and(groupBy(==)(x).map({ l in all({ head(l) == $0 })(l) })), "")
 	}
 

@@ -64,7 +64,7 @@ extension Endo : Monoid {
 }
 
 /// The `Monoid` of numeric types under addition.
-public struct Sum<N : IntegerArithmetic & ExpressibleByIntegerLiteral> : Monoid {
+public struct Sum<N : BinaryInteger & ExpressibleByIntegerLiteral> : Monoid {
 	public let value : () -> N
 	
 	public init( _ x : @autoclosure @escaping () -> N) {
@@ -81,7 +81,7 @@ public struct Sum<N : IntegerArithmetic & ExpressibleByIntegerLiteral> : Monoid 
 }
 
 /// The `Monoid` of numeric types under multiplication.
-public struct Product<N : IntegerArithmetic & ExpressibleByIntegerLiteral> : Monoid {
+public struct Product<N : BinaryInteger & ExpressibleByIntegerLiteral> : Monoid {
 	public let value : () -> N
 	
 	public init( _ x : @autoclosure @escaping () -> N) {
@@ -214,11 +214,11 @@ public struct Dither<A : Monoid, B : Monoid> : Monoid {
 
 /// MARK: Equatable
 
-public func ==<A : Equatable & Monoid>(lhs : Dual<A>, rhs : Dual<A>) -> Bool {
+public func ==<A : Equatable>(lhs : Dual<A>, rhs : Dual<A>) -> Bool {
 	return lhs.getDual == rhs.getDual
 }
 
-public func !=<A : Equatable & Monoid>(lhs: Dual<A>, rhs: Dual<A>) -> Bool {
+public func !=<A : Equatable>(lhs: Dual<A>, rhs: Dual<A>) -> Bool {
 	return !(lhs == rhs)
 }
 
@@ -238,51 +238,51 @@ public func !=(lhs: Exists, rhs: Exists) -> Bool {
 	return !(lhs == rhs)
 }
 
-public func ==<A : Equatable>(lhs : First<A>, rhs : First<A>) -> Bool {
+public func ==<A>(lhs : First<A>, rhs : First<A>) -> Bool {
 	return lhs.getFirst() == rhs.getFirst()
 }
 
-public func !=<A : Equatable>(lhs: First<A>, rhs: First<A>) -> Bool {
+public func !=<A>(lhs: First<A>, rhs: First<A>) -> Bool {
 	return !(lhs == rhs)
 }
 
-public func ==<A : Equatable>(lhs : Last<A>, rhs : Last<A>) -> Bool {
+public func ==<A>(lhs : Last<A>, rhs : Last<A>) -> Bool {
 	return lhs.getLast() == rhs.getLast()
 }
 
-public func !=<A : Equatable>(lhs: Last<A>, rhs: Last<A>) -> Bool {
+public func !=<A>(lhs: Last<A>, rhs: Last<A>) -> Bool {
 	return !(lhs == rhs)
 }
 
-public func ==<A : Comparable & Bounded & Equatable>(lhs : Max<A>, rhs : Max<A>) -> Bool {
+public func ==<A>(lhs : Max<A>, rhs : Max<A>) -> Bool {
 	return lhs.getMax() == rhs.getMax()
 }
 
-public func !=<A : Comparable & Bounded & Equatable>(lhs: Max<A>, rhs: Max<A>) -> Bool {
+public func !=<A>(lhs: Max<A>, rhs: Max<A>) -> Bool {
 	return !(lhs == rhs)
 }
 
-public func ==<A : Comparable & Bounded & Equatable>(lhs : Min<A>, rhs : Min<A>) -> Bool {
+public func ==<A>(lhs : Min<A>, rhs : Min<A>) -> Bool {
 	return lhs.getMin() == rhs.getMin()
 }
 
-public func !=<A : Comparable & Bounded & Equatable>(lhs: Min<A>, rhs: Min<A>) -> Bool {
+public func !=<A>(lhs: Min<A>, rhs: Min<A>) -> Bool {
 	return !(lhs == rhs)
 }
 
-public func ==<T : IntegerArithmetic & ExpressibleByIntegerLiteral & Equatable>(lhs: Sum<T>, rhs: Sum<T>) -> Bool {
+public func ==<T>(lhs: Sum<T>, rhs: Sum<T>) -> Bool {
 	return lhs.value() == rhs.value()
 }
 
-public func !=<T : IntegerArithmetic & ExpressibleByIntegerLiteral & Equatable>(lhs: Sum<T>, rhs: Sum<T>) -> Bool {
+public func !=<T>(lhs: Sum<T>, rhs: Sum<T>) -> Bool {
 	return !(lhs == rhs)
 }
 
-public func ==<T : IntegerArithmetic & ExpressibleByIntegerLiteral & Equatable>(lhs: Product<T>, rhs: Product<T>) -> Bool {
+public func ==<T>(lhs: Product<T>, rhs: Product<T>) -> Bool {
 	return lhs.value() == rhs.value()
 }
 
-public func !=<T : IntegerArithmetic & ExpressibleByIntegerLiteral & Equatable>(lhs: Product<T>, rhs: Product<T>) -> Bool {
+public func !=<T>(lhs: Product<T>, rhs: Product<T>) -> Bool {
 	return !(lhs == rhs)
 }
 

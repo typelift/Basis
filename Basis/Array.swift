@@ -119,12 +119,12 @@ extension Array : Functor {
 	}
 }
 
-public func <%<A, B>(x : A, l : Array<B>) -> Array<A> {
+public func <^<A, B>(x : A, l : Array<B>) -> Array<A> {
 	return l.map(const(x))
 }
 
-public func %> <A, B>(c : Array<B>, a : A) -> Array<A> {
-	return flip(<%)(c, a)
+public func ^> <A, B>(c : Array<B>, a : A) -> Array<A> {
+	return flip(<^)(c, a)
 }
 
 extension Array : Applicative {
@@ -231,14 +231,15 @@ internal func destructure<A, B>(_ x : [A:B]) -> DDestructure<A, B> {
 	if x.count == 0 {
 		return .empty
 	} else if x.count == 1 {
-		var g = x.makeIterator()
-		return .destructure(g.next()!, [])
+		let (l, r) = x.first!
+		return .destructure((l, r), [])
 	}
 	var g = x.makeIterator()
-	let hd = g.next()!
+	let (l, r) = x.first!
 	var arr : [(A, B)] = []
 	while let v = g.next() {
-		arr = (v <<| arr)
+		arr = (v
+			<<| arr)
 	}
-	return .destructure(hd, arr)
+	return .destructure((l, r), arr)
 }

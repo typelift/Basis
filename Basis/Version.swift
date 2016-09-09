@@ -30,9 +30,9 @@ public func ==(lhs : Version, rhs : Version) -> Bool {
 extension Version : CustomStringConvertible {
 	public var description : String {
 		get {
-			let versions = concat(intersperse(unpack("."))(self.versionBranch.map({ (b : Int) in unpack(b.description) })))
-			let tags = concatMap({ (xs : [Character]) in unpack("-") + xs })(self.versionTags.map(unpack))
-			return pack(versions + tags)
+      let versions : [Character] = concat(intersperse(["."])(self.versionBranch.compactMap({ (b : Int) in b.description.map{$0} })))
+      let tags = concatMap({ (xs : [Character]) -> [Character] in ["-"] + xs })(self.versionTags.map{$0.map{$0}})
+			return String(versions + tags)
 		}
 	}
 }

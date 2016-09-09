@@ -114,7 +114,7 @@ public func • <A, B, C>(f : @escaping (B) -> C, g : @escaping (A) -> B) -> (A)
 /// has been eta-expanded (i.e. it now takes itself as a parameter) to allow evaluation in constant 
 /// stack space.  Without this kind of protection, fix would compute ⊥ by smashing the stack and 
 /// crashing.
-public func fix<A>(_ f : @escaping (((A) -> A) -> (A) -> A)) -> (A) -> A {
+public func fix<A>(_ f : @escaping ((@escaping (A) -> A) -> (A) -> A)) -> (A) -> A {
 	return { x in f(fix(f))(x) }
 }
 
@@ -167,7 +167,7 @@ public func flip<A, B, C>(_ f : @escaping (A) -> (B) -> C) -> (B) -> (A) -> C {
 
 /// Returns an uncurried function with the position of the arguments in the tuple switched.
 public func flip<A, B, C>(_ f : @escaping (A, B) -> C) -> (B, A) -> C {
-	return { t in f(snd(t), fst(t)) }
+	return { t1,t2  in f(t2, t1) }
 }
 
 /// A type-restricted version of const.  In cases of typing ambiguity, using this function forces

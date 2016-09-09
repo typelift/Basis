@@ -9,15 +9,15 @@
 
 // The strict state-transformer monad.  ST<S, A> represents a computation returning a value of type 
 // A using some internal context of type S.
-public struct ST<S, A> {	
-	fileprivate let apply : (World<RealWorld>) -> (World<RealWorld>, A)
+public struct ST<S, ATV> {	
+	fileprivate let apply : (World<RealWorld>) -> (World<RealWorld>, ATV)
 	
-	init(apply : @escaping (World<RealWorld>) -> (World<RealWorld>, A)) {
+	init(apply : @escaping (World<RealWorld>) -> (World<RealWorld>, ATV)) {
 		self.apply = apply
 	}
 	
 	// Returns the value after completing all transformations.
-	public func runST() -> A {
+	public func runST() -> ATV {
 		let (_, x) = self.apply(realWorld)
 		return x
 	}
@@ -41,15 +41,17 @@ public func <^> <S, A, B>(f: @escaping (A) -> B, st: ST<S, A>) -> ST<S, B> {
 	return ST.fmap(f)(st)
 }
 
-public func <% <S, A, B>(x : A, l : ST<S, B>) -> ST<S, A> {
+public func <^ <S, A, B>(x : A, l : ST<S, B>) -> ST<S, A> {
 	return ST.fmap(const(x))(l)
 }
 
-public func %> <S, A, B>(l : ST<S, B>, x : A) -> ST<S, A> {
-	return flip(<%)(l, x)
+public func ^> <S, A, B>(l : ST<S, B>, x : A) -> ST<S, A> {
+	return flip(<^)(l, x)
 }
 
 extension ST : Pointed {
+  public typealias A = ATV
+  
 	public static func pure<S, A>(_ a: A) -> ST<S, A> {
 		return ST<S, A>(apply: { s in
 			return (s, a)

@@ -26,7 +26,7 @@ class OperatorsSpec : XCTestCase {
 		let h = { $0 + 20 }
 		let x = 5
 
-		XCTAssertTrue((f <<| g <<| h(x)) == f(g(h(x))) , "")
+		XCTAssertTrue((f <| g <| h(x)) == f(g(h(x))) , "")
 	}
 
 	func testPipeForwards() {
@@ -35,7 +35,7 @@ class OperatorsSpec : XCTestCase {
 		let h = { $0 + 20 }
 		let x = 5
 
-		XCTAssertTrue((h(x) |>> g |>> f) == f(g(h(x))) , "")
+		XCTAssertTrue((h(x) |> g |> f) == f(g(h(x))) , "")
 	}
 
 	func testPairFormation() {
@@ -69,26 +69,13 @@ class OperatorsSpec : XCTestCase {
 
 		XCTAssertTrue((h >>> g >>> f).apply(x) == f.apply(g.apply(h.apply(x))), "")
 	}
-	
-	func testChoose() {
-		let x : Optional<Int> = Optional.some(10)
-		let y : Optional<Int> = Optional.none
-
-		XCTAssertTrue((x <|> y) == x, "")
-	}
-
-	func testBind() {
-		let x : Optional<Int> = Optional.some(10)
-
-		XCTAssertTrue(fromJust(x >>- { v in Optional.Some(v) }) == fromJust(x), "")
-	}
 
 	func testSplit() {
 		let f = ^{ $0 + 5 }
 		let g = ^{ $0 + " Zone!" }
 
-		XCTAssertTrue(fst((f *** g).apply(5, "Danger")) == 10, "")
-		XCTAssertTrue(snd((f *** g).apply(5, "Danger")) == "Danger Zone!", "")
+		XCTAssertTrue(fst((f *** g).apply((5, "Danger"))) == 10, "")
+		XCTAssertTrue(snd((f *** g).apply((5, "Danger"))) == "Danger Zone!", "")
 	}
 
 	func testFanout() {

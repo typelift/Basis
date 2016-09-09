@@ -13,61 +13,29 @@
 infix operator ∏
 
 /// Cons | Constructs a list by appending a given element to the front of a list.
-infix operator <<| {
-	precedence 0
-	associativity right
-}
+infix operator <<| : RightAssociativeCombinatorPrecedence
 
 /// Snoc | Constructs a list by appending a given element to the end of a list.
-infix operator |>> {
-	precedence 0
-	associativity left
-}
+infix operator |>> : LeftAssociativeCombinatorPrecedence
 
 /// As Type Of | A type-restricted version of const.  In cases of typing ambiguity, using this 
 /// function forces its first argument to resolve to the type of the second argument.  
 ///
 /// Composed because it is the face one makes when having to tell the typechecker how to do its job.
-infix operator >-< {
-	precedence 100
-	associativity left
-}
-
-/// MARK: Data.Functor
-
-/// Replace | Maps all the values "inside" one functor to a user-specified constant.
-infix operator <% {
-	precedence 140
-	associativity left
-}
-
-/// Replace Backwards | Maps all the values "inside" one functor to a user-specified constant.
-infix operator %> {
-	precedence 140
-	associativity left
-}
+infix operator >-< : FunctorPrecedence
 
 /// MARK: Data.Functor.Contravariant
 
 /// Contramap | Maps all values "inside" one functor contravariantly.
-infix operator >%< {
-	precedence 140
-	associativity left
-}
+infix operator >%< : FunctorSequencePrecedence
 
 /// Replace | Maps all points to a specified constant contravariantly.
-infix operator >% {
-	precedence 140
-	associativity left
-}
+infix operator >% : FunctorSequencePrecedence
 
 /// MARK: Control.Applicative
 
 /// Choose | Makes Applicative a monoid.
-infix operator <|> {
-	precedence 130
-	associativity left
-}
+infix operator <|> : FunctorPrecedence
 
 /// MARK: System.IO
 
@@ -77,22 +45,13 @@ prefix operator !
 /// MARK: Control.Comonad.Apply
 
 /// Ap | Promotes function application.
-infix operator >*< {
-	precedence 140
-	associativity left
-}
+infix operator >*< : FunctorSequencePrecedence
 
 /// Sequence Right | Disregards the Functor on the Left.
-infix operator *< {
-	precedence 140
-	associativity left
-}
+infix operator *< : FunctorSequencePrecedence
 
 /// Sequence Left | Disregards the Functor on the Right.
-infix operator >* {
-	precedence 140
-	associativity left
-}
+infix operator >* : FunctorSequencePrecedence
 
 /// Lift | Lifts a function to an Arrow.
 prefix operator ^

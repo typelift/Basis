@@ -147,21 +147,21 @@ extension Int64 : Bounded {
 
 extension Float : Bounded {
 	public static var minBound : Float {
-		return FLT_MIN
+		return Float.leastNormalMagnitude
 	}
 	
 	public static var maxBound : Float {
-		return FLT_MAX
+		return Float.greatestFiniteMagnitude
 	}
 }
 
 extension Double : Bounded {
 	public static var minBound : Double {
-		return DBL_MIN
+		return Double.leastNormalMagnitude
 	}
 	
 	public static var maxBound : Double {
-		return DBL_MAX
+		return Double.greatestFiniteMagnitude
 	}
 }
 

@@ -124,12 +124,12 @@ public func <^><A, B>(f : @escaping (A) -> B, io : IO<A>) -> IO<B> {
 	return IO.fmap(f)(io)
 }
 
-public func <% <A, B>(x : A, io : IO<B>) -> IO<A> {
+public func <^ <A, B>(x : A, io : IO<B>) -> IO<A> {
 	return IO.fmap(const(x))(io)
 }
 
-public func %> <A, B>(io : IO<B>, x : A) -> IO<A> {
-	return flip(<%)(io, x)
+public func ^> <A, B>(io : IO<B>, x : A) -> IO<A> {
+	return flip(<^)(io, x)
 }
 
 extension IO : Pointed {

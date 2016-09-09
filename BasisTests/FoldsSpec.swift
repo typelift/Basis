@@ -49,7 +49,7 @@ class FoldsSpec : XCTestCase {
 		let x = [0, 1, 2, 3, 4, 5]
 		
 		XCTAssertTrue(unfoldr(const(Optional<(Int, Int)>.none))(0) == [], "")
-		XCTAssertTrue(unfoldr({ if $0 > 5 { return .none }; return .some($0, $0 + 1) })(0) == x, "")
+		XCTAssertTrue(unfoldr({ if $0 > 5 { return .none }; return .some(($0, $0 + 1)) })(0) == x, "")
 	}
 }
 

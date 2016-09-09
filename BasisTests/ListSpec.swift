@@ -62,19 +62,5 @@ class ListSpec : XCTestCase {
 		XCTAssertTrue(isInfixOf([4, 5, 6])(x), "")
 		XCTAssertFalse(isInfixOf([4, 6])(x), "")
 	}
-	
-	func testStripPrefix() {
-		let s = "Get thee to a nunnery!"
-		
-		let t = stripPrefix(unpack("Get thee to a "))(unpack(s))
-		XCTAssertTrue(Optional.fmap(pack)(t) == Optional<String>.Some("nunnery!"), "")
-	}
-	
-	func testStripSuffix() {
-		let s = "Get thee to a nunnery!"
-		
-		let t = stripSuffix(unpack(" nunnery!"))(unpack(s))
-		XCTAssertTrue(Optional.fmap(pack)(t) == Optional<String>.Some("Get thee to a"), "")
-	}
 }
 

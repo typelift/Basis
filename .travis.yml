@@ -1,16 +1,25 @@
-language: objective-c
-osx_image: xcode8
-
-before_install:
-    - gem install xcpretty-travis-formatter --no-rdoc --no-ri --no-document --quiet
-
-install:
-    - git submodule update -i --recursive
-
-script:
-- xctool -project Basis.xcodeproj -scheme Basis -sdk macosx ONLY_ACTIVE_ARCH=NO clean build test
-- xctool -project Basis.xcodeproj -scheme Basis-iOS -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO clean build test
-
+env:
+  global:
+    - LC_CTYPE=en_US.UTF-8
+matrix:
+  include:
+    - os: osx
+      language: objective-c
+      osx_image: xcode9.3
+      before_install:
+        - git submodule update --init --recursive
+      script:
+        - carthage build --no-skip-current
+    - os: osx
+      language: objective-c
+      osx_image: xcode9.3
+      before_install:
+        - git submodule update --init --recursive
+      script:
+        - set -o pipefail
+        - xcodebuild test -scheme Basis | xcpretty -c
+        - xcodebuild build-for-testing -scheme Basis-iOS -destination "platform=iOS Simulator,name=iPad Pro (12.9-inch) (2nd generation)" | xcpretty -c
+        - xcodebuild test -scheme Basis-iOS -destination "platform=iOS Simulator,name=iPad Pro (12.9-inch) (2nd generation)" | xcpretty -c
 notifications:
   webhooks:
     urls:

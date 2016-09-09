@@ -259,7 +259,7 @@ public func foldr1<A>(_ f: @escaping (A, A) -> A) -> (List<A>) -> A {
 ///
 /// unfoldr is the dual to foldr.  Where foldr reduces an array given a function and an initial 
 /// value, unfoldr uses the initial value and the function to iteratively build an array.  If array
-/// building should continue the function should return .Some(x, y), else it should return .None.
+/// building should continue the function should return .some(x, y), else it should return .None.
 public func unfoldr<A, B>(_ f : @escaping (B) -> Optional<(A, B)>) -> (B) -> [A] {
 	return { b in 
 		switch f(b) {
@@ -275,7 +275,7 @@ public func unfoldr<A, B>(_ f : @escaping (B) -> Optional<(A, B)>) -> (B) -> [A]
 ///
 /// unfoldr is the dual to foldr.  Where foldr reduces a list given a function and an initial value,
 /// unfoldr uses the initial value and the function to iteratively build a list.  If list building
-/// should continue the function should return .Some(x, y), else it should return .None.
+/// should continue the function should return .some(x, y), else it should return .None.
 public func unfoldr<A, B>(_ f : @escaping (B) -> Optional<(A, B)>) -> (B) -> List<A> {
 	return { b in
 		switch f(b) {
@@ -380,21 +380,21 @@ public func minimum<A : Comparable>(_ l : List<A>) -> A {
 }
 
 /// Returns the sum of an array of numbers.
-public func sum<N : Integer>(_ l : [N]) -> N {
+public func sum<N : BinaryInteger>(_ l : [N]) -> N {
 	return foldl({ $0 + $1 })(0)(l)
 }
 
 /// Returns the product of an array of numbers.
-public func product<N : Integer>(_ l : [N]) -> N {
+public func product<N : BinaryInteger>(_ l : [N]) -> N {
 	return foldl({ $0 * $1 })(1)(l)
 }
 
 /// Returns the sum of a list of numbers.
-public func sum<N : Integer>(_ l : List<N>) -> N {
+public func sum<N : BinaryInteger>(_ l : List<N>) -> N {
 	return foldl({ $0 + $1 })(0)(l)
 }
 
 /// Returns the product of a list of numbers.
-public func product<N : Integer>(_ l : List<N>) -> N {
+public func product<N : BinaryInteger>(_ l : List<N>) -> N {
 	return foldl({ $0 * $1 })(1)(l)
 }

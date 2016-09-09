@@ -19,7 +19,7 @@ public final class STRef<S, A> : K2<S, A> {
 
 // Creates a new STRef
 public func newSTRef<S, A>(_ x : A) -> ST<S, STRef<S, A>> {
-	return ST(apply: { s in
+	return ST<S, STRef<S, A>>(apply: { s in
 		let ref = STRef<S, A>(x)
 		return (s, ref)
 	})

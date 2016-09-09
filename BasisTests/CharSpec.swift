@@ -11,11 +11,11 @@ import XCTest
 
 class CharSpec : XCTestCase {
 	func testIsControl() {
-		let x = iterate({ UnicodeScalar($0.value + 1) })(UnicodeScalar(0))
+		let x = iterate({ UnicodeScalar($0.value + 1)! })(UnicodeScalar(0)!)
 		/// |U+0000—U+001F| == 32
 		XCTAssertTrue(takeWhile({ $0.isControl() })(x).count == 32)
 
-		let y = iterate({ x in Character(UnicodeScalar(x.unicodeValue() + 1)) })(Character("\0"))
+		let y = iterate({ x in Character(UnicodeScalar(x.unicodeValue() + 1)!) })("\0" as Character)
 		/// |U+0000—U+001F| == 32
 		XCTAssertTrue(takeWhile({ $0.isControl() })(y).count == 32)
 	}
@@ -51,8 +51,8 @@ class CharSpec : XCTestCase {
 	}
 
 	func testToUpper() {
-		let low = "abcdefghijklmnopqrstuvwxyz".unpack().map({ UnicodeScalar($0.unicodeValue()) })
-		let upp = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".unpack().map({ UnicodeScalar($0.unicodeValue()) })
+		let low = "abcdefghijklmnopqrstuvwxyz".map({ UnicodeScalar($0.unicodeValue())! })
+		let upp = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".map({ UnicodeScalar($0.unicodeValue())! })
 
 		XCTAssertTrue(low.map({ $0.toUpper() }) == upp)
 		XCTAssertTrue(upp.map({ $0.toLower() }) == low)

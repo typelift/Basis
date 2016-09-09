@@ -111,12 +111,12 @@ public func <^> <A, B, C>(f : @escaping (B) -> C, either : Either<A, B>) -> Eith
 	return Either.fmap(f)(either)
 }
 
-public func <% <A, B, C>(x : B, either : Either<A, C>) -> Either<A, B> {
+public func <^ <A, B, C>(x : B, either : Either<A, C>) -> Either<A, B> {
 	return Either.fmap(const(x))(either)
 }
 
-public func %> <A, B, C>(c : Either<A, C>, a : B) -> Either<A, B> {
-	return flip(<%)(c, a)
+public func ^> <A, B, C>(c : Either<A, C>, a : B) -> Either<A, B> {
+	return flip(<^)(c, a)
 }
 
 extension Either : Pointed {

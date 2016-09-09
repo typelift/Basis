@@ -1,2 +1,2 @@
-github "typelift/SwiftCheck" "swift-develop"
-github "typelift/Operadics" "swift-develop"
+github "typelift/SwiftCheck"
+github "typelift/Operadics"

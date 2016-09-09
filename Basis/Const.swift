@@ -30,12 +30,12 @@ public func <^> <A, B, C>(f : @escaping (A) -> C, c : Const<A, B>) -> Const<A, B
 	return Const<A, B>.fmap(f)(c)
 }
 
-public func <% <A, B>(a : A, c : Const<A, B>) -> Const<A, B> {
+public func <^ <A, B>(a : A, c : Const<A, B>) -> Const<A, B> {
 	return (curry(<^>) • const)(a)(c)
 }
 
-public func %> <A, B>(c : Const<A, B>, a : A) -> Const<A, B> {
-	return flip(<%)(c, a)
+public func ^> <A, B>(c : Const<A, B>, a : A) -> Const<A, B> {
+	return flip(<^)(c, a)
 }
 
 extension Const : Contravariant {

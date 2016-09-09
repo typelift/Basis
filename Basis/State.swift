@@ -33,12 +33,12 @@ public func <^> <S, A, B>(f : @escaping (A) -> B, s : State<S, A>) -> State<S, B
 	return State<S, A>.fmap(f)(s)
 }
 
-public func <% <S, A, B>(x : A, s : State<S, B>) -> State<S, A> {
+public func <^ <S, A, B>(x : A, s : State<S, B>) -> State<S, A> {
 	return (curry(<^>) • const)(x)(s)
 }
 
-public func %> <S, A, B>(s : State<S, B>, x : A) -> State<S, A> {
-	return flip(<%)(s, x)
+public func ^> <S, A, B>(s : State<S, B>, x : A) -> State<S, A> {
+	return flip(<^)(s, x)
 }
 
 extension State : Pointed {

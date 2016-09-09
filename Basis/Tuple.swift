@@ -34,8 +34,8 @@ public func curry<A, B, C>(_ f : @escaping (A, B) -> C) ->  (A) -> (B) -> C {
 /// An uncurried function may take tuples as opposed to a curried function which must take a single
 /// value and return a single value or function.
 public func uncurry<A, B, C>(_ f : @escaping (A) -> (B) -> C) -> (A, B) -> C {
-	return { t in
-		return f(fst(t))(snd(t))
+	return { t1, t2  in
+		return f(t1)(t2)
 	}
 }
 

@@ -65,12 +65,12 @@ public func <^><A, B>(f: @escaping (A) -> B, st: Lazy<A>) -> Lazy<B> {
 	return Lazy.fmap(f)(st)
 }
 
-public func <%<A, B>(x : A, l : Lazy<B>) -> Lazy<A> {
+public func <^<A, B>(x : A, l : Lazy<B>) -> Lazy<A> {
 	return Lazy.fmap(const(x))(l)
 }
 
-public func %> <A, B>(c : Lazy<B>, a : A) -> Lazy<A> {
-	return flip(<%)(c, a)
+public func ^> <A, B>(c : Lazy<B>, a : A) -> Lazy<A> {
+	return flip(<^)(c, a)
 }
 
 extension Lazy : Pointed {

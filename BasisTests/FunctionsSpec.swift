@@ -45,7 +45,7 @@ class FunctionsSpec : XCTestCase {
 			return x + 100
 		}
 		
-		XCTAssertTrue((f <<| g <<| h(20)) == 110, "")
+		XCTAssertTrue((f <| g <| h(20)) == 110, "")
 	}
 	
 	func testForwardAp() {
@@ -61,21 +61,19 @@ class FunctionsSpec : XCTestCase {
 			return x + 100
 		}
 		
-		XCTAssertTrue((h(20) |>> g |>> f) == 110, "")
+		XCTAssertTrue((h(20) |> g |> f) == 110, "")
 	}
 	
 	func testOptional() {
 		let def = -1
-		let x = Optional(def)(f: { $0 + 1 })(m : .Some(5))
-		let y = Optional(def)(f: { $0 + 1 })(m : .None)
+		let x = optional(def)({ $0 + 1 })(.some(5))
+		let y = optional(def)({ $0 + 1 })(.none)
 		
 		XCTAssertTrue(x == 6, "")
 		XCTAssertTrue(y == def, "")
 	}
 	
 	func testFlip() {
-		let arr = [0, 1, 2, 3, 4, 5]
-		
 		XCTAssertTrue(flip(const)(10)(20) == 20, "")
 	}
 	
@@ -96,7 +94,7 @@ class FunctionsSpec : XCTestCase {
 	}
 	
 	func testFixpoint() {
-		let f : ((Int) -> Int) -> (Int) -> Int = { fact in
+		let f : (@escaping (Int) -> Int) -> (Int) -> Int = { fact in
 			return { x in
 				if x == 0 {
 					return 1

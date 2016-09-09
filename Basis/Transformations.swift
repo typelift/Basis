@@ -125,11 +125,11 @@ public func transpose<A>(_ xss : List<List<A>>) -> List<List<A>> {
 ///
 /// partition({ $0 < 3 })([1, 2, 3, 4, 5]) == ([1, 2],[3, 4, 5])
 public func partition<A>(_ p : @escaping (A) -> Bool) -> ([A]) -> ([A], [A]) {
-	return { l in foldr(select(p))(([], []))(l) }
+	return { l in foldr(thunk(select(p)))(([], []))(l) }
 }
 
 private func select<A>(_ p : @escaping (A) -> Bool) -> (A) -> ([A], [A]) -> ([A], [A]) {
-	return { x in { t in p(x) ? (x <<| fst(t), snd(t)) : (fst(t), x <<| snd(t)) } }
+	return { x in { t1, t2 in p(x) ? (x <<| t1, t2) : (t1, x <<| t2) } }
 }
 
 /// Partitions the elements of a list according to a predicate.
@@ -137,11 +137,15 @@ private func select<A>(_ p : @escaping (A) -> Bool) -> (A) -> ([A], [A]) -> ([A]
 /// partition({ $0 < 3 })([1, 2, 3, 4, 5]) == ([1, 2],[3, 4, 5])
 public func partition<A>(_ p : @escaping (A) -> Bool) -> (List<A>) -> (List<A>, List<A>) {
 	let e = (List<A>(), List<A>())
-	return { l in foldr(select(p))(e)(l) }
+	return { l in foldr(thunk(select(p)))(e)(l) }
+}
+
+private func thunk<A, B, C, D>(_ f : @escaping (A) -> (B, C) -> D) -> (A) -> ((B, C)) -> D {
+  return { h in { g in f(h)(g.0, g.1) } }
 }
 
 private func select<A>(_ p : @escaping (A) -> Bool) -> (A) -> (List<A>, List<A>) -> (List<A>, List<A>) {
-	return { x in { t in p(x) ? (x <<| fst(t), snd(t)) : (fst(t), x <<| snd(t)) } }
+	return { x in { t1, t2 in p(x) ? (x <<| t1, t2) : (t1, x <<| t2) } }
 }
 
 /// Returns an array of all subsequences of an array.

@@ -28,7 +28,7 @@ public func notElem<A : Equatable>(_ e : A) -> (List<A>) -> Bool {
 }
 
 /// Looks up a key in a dictionary.
-public func lookup<A : Equatable, B>(_ e : A) -> ([A:B]) -> Optional<B> {
+public func lookup<A, B>(_ e : A) -> ([A:B]) -> Optional<B> {
 	return { d in
 		switch destructure(d) {
 			case .empty:

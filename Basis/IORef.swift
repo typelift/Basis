@@ -18,8 +18,7 @@ public final class IORef<A> : K1<A> {
 
 /// Creates and returns a new IORef
 public func newIORef<A>(_ v: A) -> IO<IORef<A>> {
-  fatalError()
-//	return stRefToIO(STRef<RealWorld, A>(v)) >>- { l in IO<IORef<A>>.pure(IORef(l)) }
+	return stRefToIO(STRef<RealWorld, A>(v)) >>- { l in IO<IORef<A>>.pure(IORef(l)) }
 }
 
 /// Reads a value from an IORef.

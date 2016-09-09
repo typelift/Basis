@@ -261,12 +261,12 @@ extension List : Functor {
 	}
 }
 
-public func <% <A, B>(x : A, l : List<B>) -> List<A> {
+public func <^ <A, B>(x : A, l : List<B>) -> List<A> {
 	return List.fmap(const(x))(l)
 }
 
-public func %> <A, B>(c : List<B>, a : A) -> List<A> {
-	return flip(<%)(c, a)
+public func ^> <A, B>(c : List<B>, a : A) -> List<A> {
+	return flip(<^)(c, a)
 }
 
 extension List : Pointed {
