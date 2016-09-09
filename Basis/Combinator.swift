@@ -23,12 +23,12 @@
 ///
 ///     let flat  = [[1, 2, 3], [4, 5]].concat(id) // [1, 2, 3, 4, 5]
 ///     // let error = [1, 2, 3, 4, 5].concat(id) // Does not typecheck
-public func id<A>(x : A) -> A {
+public func id<A>(_ x : A) -> A {
 	return x
 }
 
 /// The constant combinator ignores its second argument and always returns its first argument.
-public func const<A, B>(x : A) -> B -> A {
+public func const<A, B>(_ x : A) -> (B) -> A {
 	return { (_) in
 		return x
 	}
@@ -36,13 +36,13 @@ public func const<A, B>(x : A) -> B -> A {
 
 /// Applies the second function to a value, then applies the first function to a value and the
 /// result of the previous function application.
-public func substitute<R, A, B>(f : R -> A -> B) -> (R -> A) -> R -> B {
+public func substitute<R, A, B>(_ f : @escaping (R) -> (A) -> B) -> ((R) -> A) -> (R) -> B {
 	return { g in { x in f(x)(g(x)) } }
 }
 
 /// Applies the second function to a value, then applies the first function to a value and the
 /// result of the previous function application.
-public func substitute<R, A, B>(f : (R, A) -> B) -> (R -> A) -> R -> B {
+public func substitute<R, A, B>(_ f : @escaping (R, A) -> B) -> ((R) -> A) -> (R) -> B {
 	return { g in { x in f(x, g(x)) } }
 }
 
@@ -55,7 +55,7 @@ public func substitute<R, A, B>(f : (R, A) -> B) -> (R -> A) -> R -> B {
 ///     f <<| g <<| h(x)  =  f (g (h (x)))
 ///
 /// Haskellers will know this as the ($) combinator.
-public func <| <A, B>(f : A -> B, x : A) -> B {
+public func <| <A, B>(f : (A) -> B, x : A) -> B {
 	return f(x)
 }
 
@@ -71,7 +71,7 @@ public func <| <A, B>(f : A -> B, x : A) -> B {
 ///     let result = nubBy(==)(x) |>> zip(y)
 ///                               |>> map(==)
 ///                               |>> and
-public func |> <A, B>(x : A, f : A -> B) -> B {
+public func |> <A, B>(x : A, f : (A) -> B) -> B {
 	return f(x)
 }
 
@@ -84,7 +84,7 @@ public func |> <A, B>(x : A, f : A -> B) -> B {
 /// see why it makes sense as-is.  As in:
 ///
 ///     h • g • f = 'h' after 'g' after 'f' 
-public func • <A, B, C>(f : B -> C, g : A -> B) -> A -> C {
+public func • <A, B, C>(f : @escaping (B) -> C, g : @escaping (A) -> B) -> (A) -> C {
 	return { f(g($0)) }
 }
 
@@ -114,7 +114,7 @@ public func • <A, B, C>(f : B -> C, g : A -> B) -> A -> C {
 /// has been eta-expanded (i.e. it now takes itself as a parameter) to allow evaluation in constant 
 /// stack space.  Without this kind of protection, fix would compute ⊥ by smashing the stack and 
 /// crashing.
-public func fix<A>(f : ((A -> A) -> A -> A)) -> A -> A {
+public func fix<A>(_ f : @escaping (((A) -> A) -> (A) -> A)) -> (A) -> A {
 	return { x in f(fix(f))(x) }
 }
 
@@ -127,7 +127,7 @@ public func fix<A>(f : ((A -> A) -> A -> A)) -> A -> A {
 /// 
 ///     let arr : [(Int, String)] = [(2, "Second"), (1, "First"), (5, "Fifth"), (3, "Third"), (4, "Fourth")]
 ///     let sortedByFirstIndex = sortBy((<) |*| fst)(arr)
-public func |*| <A, B, C>(o : B -> B -> C, f : A -> B) -> A -> A -> C {
+public func |*| <A, B, C>(o : (B) -> (B) -> C, f : (A) -> B) -> (A) -> (A) -> C {
 	return on(o)(f)
 }
 
@@ -140,7 +140,7 @@ public func |*| <A, B, C>(o : B -> B -> C, f : A -> B) -> A -> A -> C {
 /// 
 ///     let arr : [(Int, String)] = [(2, "Second"), (1, "First"), (5, "Fifth"), (3, "Third"), (4, "Fourth")]
 ///     let sortedByFirstIndex = sortBy((<) |*| fst)(arr)
-public func |*| <A, B, C>(o : (B, B) -> C, f : A -> B) -> A -> A -> C {
+public func |*| <A, B, C>(o : (B, B) -> C, f : (A) -> B) -> (A) -> (A) -> C {
 	return on(o)(f)
 }
 
@@ -148,7 +148,7 @@ public func |*| <A, B, C>(o : (B, B) -> C, f : A -> B) -> A -> A -> C {
 /// left to the result of both prior applications.
 ///
 ///    (+) `|*|` f = { x, y in f(x) + f(y) }
-public func on<A, B, C>(o : B -> B -> C) -> (A -> B) -> A -> A -> C {
+public func on<A, B, C>(_ o : @escaping (B) -> (B) -> C) -> ((A) -> B) -> (A) -> (A) -> C {
 	return { f in { x in { y in o(f(x))(f(y)) } } }
 }
 
@@ -156,23 +156,23 @@ public func on<A, B, C>(o : B -> B -> C) -> (A -> B) -> A -> A -> C {
 /// left to the result of both prior applications.
 ///
 ///    (+) `|*|` f = { x, y in -> f(x) + f(y) }
-public func on<A, B, C>(o : (B, B) -> C) -> (A -> B) -> A -> A -> C {
+public func on<A, B, C>(_ o : @escaping (B, B) -> C) -> ((A) -> B) -> (A) -> (A) -> C {
 	return { f in { x in { y in o(f(x), f(y)) } } }
 }
 
 /// Returns a function with the position of the arguments switched.
-public func flip<A, B, C>(f : A -> B -> C) -> B -> A -> C {
+public func flip<A, B, C>(_ f : @escaping (A) -> (B) -> C) -> (B) -> (A) -> C {
 	return { b in { a in f(a)(b) } }
 }
 
 /// Returns an uncurried function with the position of the arguments in the tuple switched.
-public func flip<A, B, C>(f : (A, B) -> C) -> (B, A) -> C {
+public func flip<A, B, C>(_ f : @escaping (A, B) -> C) -> (B, A) -> C {
 	return { t in f(snd(t), fst(t)) }
 }
 
 /// A type-restricted version of const.  In cases of typing ambiguity, using this function forces
 /// its first argument to resolve to the type of the second argument.
-public func asTypeOf<A>(x : A) -> A -> A {
+public func asTypeOf<A>(_ x : A) -> (A) -> A {
 	return const(x)
 }
 
@@ -185,6 +185,6 @@ public func >-< <A>(x : A, y : A) -> A {
 }
 
 /// Applies a function to an argument until a given predicate returns true.
-public func until<A>(p : A -> Bool) -> (A -> A) -> A -> A {
+public func until<A>(_ p : @escaping (A) -> Bool) -> ((A) -> A) -> (A) -> A {
 	return { f in { x in p(x) ? x : until(p)(f)(f(x)) } }
 }

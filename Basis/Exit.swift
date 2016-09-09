@@ -8,28 +8,28 @@
 //
 
 public enum ExitCode {
-	case ExitSuccess
-	case ExitFailure(Int32)
+	case exitSuccess
+	case exitFailure(Int32)
 }
 
 /// Exits with a given error code.
-public func exitWith<A>(code : ExitCode) -> IO<A> {
+public func exitWith<A>(_ code : ExitCode) -> IO<A> {
 	switch code {
-		case .ExitSuccess:
+		case .exitSuccess:
 			exit(0)
-		case .ExitFailure(let n):
+		case .exitFailure(let n):
 			exit(n)
 	}
 }
 
 /// Exits with failure code 1.
 public func exitFailure<A>() -> IO<A> {
-	return exitWith(.ExitFailure(1))
+	return exitWith(.exitFailure(1))
 }
 
 /// Exits with error code 0 (success).
 public func exitSuccess<A>() -> IO<A> {
-	return exitWith(.ExitSuccess)
+	return exitWith(.exitSuccess)
 }
 
 import func Darwin.exit

@@ -42,8 +42,8 @@ public protocol Monad : Applicative {
 	///
 	/// Bind is famous because it allows one to build arbitrary pipes of computations with no effort
 	/// at all.  You may have seen it notated >>-
-	func bind(f : A -> FB) -> FB
-	func >>- (_: Self, _: A -> FB) -> FB
+	func bind(_ f : (A) -> FB) -> FB
+	func >>- (_: Self, _: (A) -> FB) -> FB
 
 	/// Sequence | Sequentially composes two monadic actions along the way discarding any value
 	/// produced by the first action.
@@ -53,7 +53,7 @@ public protocol Monad : Applicative {
 /// A monoid for monads.
 public protocol MonadPlus : Monad {
 	static var mzero : Self { get }
-	static func mplus(_: Self) -> Self -> Self
+	static func mplus(_: Self) -> (Self) -> Self
 }
 
 /// Additional functions to be implemented by those types conforming to the Monad protocol.
@@ -72,7 +72,7 @@ public protocol MonadOps : Monad {
 	/// Default Definition:
 	///
 	///     sequence(map(f)(xs))
-	static func mapM(_: A -> FB) -> [A] -> MLB
+	static func mapM(_: (A) -> FB) -> ([A]) -> MLB
 
 	/// Maps a function taking values to Monadic actions, then evaluates each action in the
 	/// resulting list from left to right.  The results of each evaluated action are discarded.
@@ -80,21 +80,21 @@ public protocol MonadOps : Monad {
 	/// Default Definition:
 	///
 	///     sequence_(map(f)(xs))
-	static func mapM_(_: A -> FB) -> [A] -> MU
+	static func mapM_(_: (A) -> FB) -> ([A]) -> MU
 
 	/// mapM with its arguments flipped.
 	///
 	/// Default Definition:
 	///
 	///     flip(mapM)(xs)
-	static func forM(_: [A]) -> (A -> FB) -> MLB
+	static func forM(_: [A]) -> ((A) -> FB) -> MLB
 
 	/// mapM_ with its arguments flipped.
 	///
 	/// Default Definition:
 	///
 	///     flip(mapM_)(xs)
-	static func forM_(_: [A]) -> (A -> FB) -> MU
+	static func forM_(_: [A]) -> ((A) -> FB) -> MU
 
 	/// Evaluates each Monadic action in sequence from left to right and collects the results in
 	/// another Monadic action.
@@ -114,11 +114,11 @@ public protocol MonadOps : Monad {
 
 
 	/// Bind | Like bind but with its arguments flipped.
-	func -<<(_: A -> FB, _: Self) -> FB
+	func -<<(_: (A) -> FB, _: Self) -> FB
 
 	/// Kleisli Forward | Kleisli composes two Monadic actions from the left to the right.
-	func >>->>(_: A -> FB,  _: B -> FC) -> A -> FC
+	func >>->>(_: (A) -> FB,  _: (B) -> FC) -> (A) -> FC
 
 	/// Kleisli Backward | Kleisli composes two Monadic actions from the right to the left.
-	func <<-<<(_: B -> FC, _: A -> FB) -> A -> FC
+	func <<-<<(_: (B) -> FC, _: (A) -> FB) -> (A) -> FC
 }

@@ -8,12 +8,12 @@
 //
 
 /// Extract the first component of a pair.
-public func fst<A, B>(t : (A, B)) -> A {
+public func fst<A, B>(_ t : (A, B)) -> A {
 	return t.0
 }
 
 /// Extract the second component of a pair
-public func snd<A, B>(t : (A, B)) -> B {
+public func snd<A, B>(_ t : (A, B)) -> B {
 	return t.1
 }
 
@@ -21,7 +21,7 @@ public func snd<A, B>(t : (A, B)) -> B {
 ///
 /// A curried function is a function that always returns another function or a value when applied
 /// as opposed to an uncurried function which may take tuples.
-public func curry<A, B, C>(f : (A, B) -> C) ->  A -> B -> C {
+public func curry<A, B, C>(_ f : @escaping (A, B) -> C) ->  (A) -> (B) -> C {
 	return { a in
 		return { b in
 			return f(a, b)
@@ -33,14 +33,14 @@ public func curry<A, B, C>(f : (A, B) -> C) ->  A -> B -> C {
 ///
 /// An uncurried function may take tuples as opposed to a curried function which must take a single
 /// value and return a single value or function.
-public func uncurry<A, B, C>(f : A -> B -> C) -> (A, B) -> C {
+public func uncurry<A, B, C>(_ f : @escaping (A) -> (B) -> C) -> (A, B) -> C {
 	return { t in
 		return f(fst(t))(snd(t))
 	}
 }
 
 /// Swap the components of a pair.
-public func swap<A, B>(t : (A, B)) -> (B, A) {
+public func swap<A, B>(_ t : (A, B)) -> (B, A) {
 	return snd(t) ∏ fst(t)
 }
 

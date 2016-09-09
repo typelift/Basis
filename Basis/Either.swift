@@ -10,28 +10,28 @@
 /// Either represents a computation that either produces a result (left) or fails with an error
 /// (right).
 public enum Either<L, R>  {
-	case Left(L)
-	case Right(R)
+	case left(L)
+	case right(R)
 }
 
 /// Case analysis.  If the Either is Left, applies the left function to that value.  Else, if the 
 /// either is right, applies the right function to that value.
-public func either<A, B, C>(left : A -> C) -> (B -> C) -> Either<A, B> -> C {
+public func either<A, B, C>(_ left : @escaping (A) -> C) -> ((B) -> C) -> (Either<A, B>) -> C {
 	return { right in { e in
 		switch e {
-			case .Left(let x):
+			case .left(let x):
 				return left(x)
-			case .Right(let y):
+			case .right(let y):
 				return right(y)
 		}
 	} }
 }
 
 /// Extracts all eithers that have left values in order.
-public func lefts<A, B>(l : [Either<A, B>]) -> [A] {
+public func lefts<A, B>(_ l : [Either<A, B>]) -> [A] {
 	return concatMap({
 		switch $0 {
-			case .Left(let a):
+			case .left(let a):
 				return [a]
 			default:
 				return []
@@ -40,10 +40,10 @@ public func lefts<A, B>(l : [Either<A, B>]) -> [A] {
 }
 
 /// Extracts all eithers that have right values in order.
-public func rights<A, B>(l : [Either<A, B>]) -> [B] {
+public func rights<A, B>(_ l : [Either<A, B>]) -> [B] {
 	return concatMap({
 		switch $0 {
-			case .Right(let b):
+			case .right(let b):
 				return [b]
 			default:
 				return []
@@ -52,9 +52,9 @@ public func rights<A, B>(l : [Either<A, B>]) -> [B] {
 }
 
 /// Returns whether an either holds a right value.
-public func isRight<A, B>(e : Either<A, B>) -> Bool {
+public func isRight<A, B>(_ e : Either<A, B>) -> Bool {
 	switch e {
-		case .Right(_):
+		case .right(_):
 			return true
 		default:
 			return false
@@ -62,9 +62,9 @@ public func isRight<A, B>(e : Either<A, B>) -> Bool {
 }
 
 /// Returns whether an either holds a left value.
-public func isLeft<A, B>(e : Either<A, B>) -> Bool {
+public func isLeft<A, B>(_ e : Either<A, B>) -> Bool {
 	switch e {
-		case .Left(_):
+		case .left(_):
 			return true
 		default:
 			return false
@@ -75,9 +75,9 @@ public func isLeft<A, B>(e : Either<A, B>) -> Bool {
 
 public func == <A : Equatable, B : Equatable>(lhs: Either<A, B>, rhs: Either<A, B>) -> Bool {
 	switch (lhs, rhs) {
-		case let (.Right(x), .Right(y)) where x == y:
+		case let (.right(x), .right(y)) where x == y:
 			return true
-		case let (.Left(x), .Left(y)) where x == y:
+		case let (.left(x), .left(y)) where x == y:
 			return true
 		default:
 			return false
@@ -95,19 +95,19 @@ extension Either : Functor {
 	public typealias B = Any
 	public typealias FB = Either<L, B>
 
-	public static func fmap<C>(f : R -> C) -> Either<L, R> -> Either<L, C> {
+	public static func fmap<C>(_ f : @escaping (R) -> C) -> (Either<L, R>) -> Either<L, C> {
 		return { 
 			switch $0 {
-				case .Left(let b):
-					return Either<L, C>.Left(b)
-				case .Right(let b):
-					return Either<L, C>.Right(f(b))
+				case .left(let b):
+					return Either<L, C>.left(b)
+				case .right(let b):
+					return Either<L, C>.right(f(b))
 			}
 		}
 	}
 }
 
-public func <^> <A, B, C>(f : B -> C, either : Either<A, B>) -> Either<A, C> {
+public func <^> <A, B, C>(f : @escaping (B) -> C, either : Either<A, B>) -> Either<A, C> {
 	return Either.fmap(f)(either)
 }
 
@@ -120,27 +120,27 @@ public func %> <A, B, C>(c : Either<A, C>, a : B) -> Either<A, B> {
 }
 
 extension Either : Pointed {
-	public static func pure(x : R) -> Either<L, R> {
-		return Either<L, R>.Right(x)
+	public static func pure(_ x : R) -> Either<L, R> {
+		return Either<L, R>.right(x)
 	}
 }
 
 extension Either : Applicative {
-	public typealias FAB = Either<L, R -> C>
+	public typealias FAB = Either<L, (R) -> C>
 	
-	public static func ap<C>(f : Either<L, R -> C>) -> Either<L, R> -> Either<L, C> {
+	public static func ap<C>(_ f : Either<L, (R) -> C>) -> (Either<L, R>) -> Either<L, C> {
 		return { e in 
 			switch f {
-				case .Left(let e):
-					return Either<L, C>.Left(e)
-				case .Right(let f):
+				case .left(let e):
+					return Either<L, C>.left(e)
+				case .right(let f):
 					return Either<L, R>.fmap(f)(e)
 			}
 		}
 	}
 }
 
-public func <*> <A, B, C>(f : Either<A, B -> C> , r : Either<A, B>) ->  Either<A, C> {
+public func <*> <A, B, C>(f : Either<A, (B) -> C> , r : Either<A, B>) ->  Either<A, C> {
 	return Either<A, B>.ap(f)(r)
 }
 
@@ -158,31 +158,31 @@ extension Either : ApplicativeOps {
 	public typealias D = Any
 	public typealias FD = Either<L, D>
 
-	public static func liftA<B>(f : A -> B) -> Either<L, A> -> Either<L, B> {
-		return { a in Either<L, A -> B>.pure(f) <*> a }
+	public static func liftA<B>(_ f : @escaping (A) -> B) -> (Either<L, A>) -> Either<L, B> {
+		return { a in Either<L, (A) -> B>.pure(f) <*> a }
 	}
 
-	public static func liftA2<B, C>(f : A -> B -> C) -> Either<L, A> -> Either<L, B> -> Either<L, C> {
+	public static func liftA2<B, C>(_ f : @escaping (A) -> (B) -> C) -> (Either<L, A>) -> (Either<L, B>) -> Either<L, C> {
 		return { a in { b in f <^> a <*> b  } }
 	}
 
-	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> Either<L, A> -> Either<L, B> -> Either<L, C> -> Either<L, D> {
+	public static func liftA3<B, C, D>(_ f : @escaping (A) -> (B) -> (C) -> D) -> (Either<L, A>) -> (Either<L, B>) -> (Either<L, C>) -> Either<L, D> {
 		return { a in { b in { c in f <^> a <*> b <*> c } } }
 	}
 }
 
 extension Either : Monad {
-	public func bind<B>(f : A -> Either<L, B>) -> Either<L, B> {
+	public func bind<B>(_ f : (A) -> Either<L, B>) -> Either<L, B> {
 		switch self {
-			case .Left(let l):
-				return Either<L, B>.Left(l)
-			case .Right(let r):
+			case .left(let l):
+				return Either<L, B>.left(l)
+			case .right(let r):
 				return f(r)
 		}
 	}
 }
 
-public func >>- <L, A, B>(xs : Either<L, A>, f : A -> Either<L, B>) -> Either<L, B> {
+public func >>- <L, A, B>(xs : Either<L, A>, f : (A) -> Either<L, B>) -> Either<L, B> {
 	return xs.bind(f)
 }
 
@@ -197,50 +197,50 @@ extension Either : MonadOps {
 	public typealias MLB = Either<L, [B]>
 	public typealias MU = Either<L, ()>
 
-	public static func mapM<B>(f : A -> Either<L, B>) -> [A] -> Either<L, [B]> {
+	public static func mapM<B>(_ f : @escaping (A) -> Either<L, B>) -> ([A]) -> Either<L, [B]> {
 		return { xs in Either<L, B>.sequence(map(f)(xs)) }
 	}
 
-	public static func mapM_<B>(f : A -> Either<L, B>) -> [A] -> Either<L, ()> {
+	public static func mapM_<B>(_ f : @escaping (A) -> Either<L, B>) -> ([A]) -> Either<L, ()> {
 		return { xs in Either<L, B>.sequence_(map(f)(xs)) }
 	}
 
-	public static func forM<B>(xs : [A]) -> (A -> Either<L, B>) -> Either<L, [B]> {
+	public static func forM<B>(_ xs : [A]) -> ((A) -> Either<L, B>) -> Either<L, [B]> {
 		return flip(Either.mapM)(xs)
 	}
 
-	public static func forM_<B>(xs : [A]) -> (A -> Either<L, B>) -> Either<L, ()> {
+	public static func forM_<B>(_ xs : [A]) -> ((A) -> Either<L, B>) -> Either<L, ()> {
 		return flip(Either.mapM_)(xs)
 	}
 
-	public static func sequence(ls : [Either<L, A>]) -> Either<L, [A]> {
+	public static func sequence(_ ls : [Either<L, A>]) -> Either<L, [A]> {
 		return foldr({ m, m2 in m >>- { x in m2 >>- { xs in Either<L, [A]>.pure(cons(x)(xs)) } } })(Either<L, [A]>.pure([]))(ls)
 	}
 
-	public static func sequence_(ls : [Either<L, A>]) -> Either<L, ()> {
+	public static func sequence_(_ ls : [Either<L, A>]) -> Either<L, ()> {
 		return foldr(>>)(Either<L, ()>.pure(()))(ls)
 	}
 }
 
-public func -<< <L, A, B>(f : A -> Either<L, B>, xs : Either<L, A>) -> Either<L, B> {
+public func -<< <L, A, B>(f : (A) -> Either<L, B>, xs : Either<L, A>) -> Either<L, B> {
 	return xs.bind(f)
 }
 
-public func >>->> <L, A, B, C>(f : A -> Either<L, B>, g : B -> Either<L, C>) -> A -> Either<L, C> {
+public func >>->> <L, A, B, C>(f : @escaping (A) -> Either<L, B>, g : @escaping (B) -> Either<L, C>) -> (A) -> Either<L, C> {
 	return { x in f(x) >>- g }
 }
 
-public func <<-<< <L, A, B, C>(g : B -> Either<L, C>, f : A -> Either<L, B>) -> A -> Either<L, C> {
+public func <<-<< <L, A, B, C>(g : @escaping (B) -> Either<L, C>, f : @escaping (A) -> Either<L, B>) -> (A) -> Either<L, C> {
 	return { x in f(x) >>- g }
 }
 
 extension Either : MonadFix {
-	public static func mfix(f : R -> Either<L, R>) -> Either<L, R> {
-		func fromRight(e : Either<L, R>) -> R {
+	public static func mfix(_ f : (R) -> Either<L, R>) -> Either<L, R> {
+		func fromRight(_ e : Either<L, R>) -> R {
 			switch e {
-				case .Right(let br):
+				case .right(let br):
 					return br
-				case .Left(_):
+				case .left(_):
 					return error("Cannot take fixpoint of left Either")
 			}
 		}

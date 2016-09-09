@@ -18,11 +18,11 @@ extension String {
 }
 
 /// Packs an array of characters into a String.
-public func pack(x : [Character]) -> String {
+public func pack(_ x : [Character]) -> String {
 	return String(x)
 }
 
 /// Unpacks a string into an array of characters.
-public func unpack(s : String) -> [Character] {
+public func unpack(_ s : String) -> [Character] {
 	return Array(s.characters)
 }

@@ -27,7 +27,7 @@ public protocol Monoid : Semigroup {
 	static var mzero : Self { get }
 }
 
-public func mconcat<S : Monoid>(t : [S]) -> S {
+public func mconcat<S : Monoid>(_ t : [S]) -> S {
 	return sconcat(S.mzero, t: t)
 }
 
@@ -64,35 +64,35 @@ extension Endo : Monoid {
 }
 
 /// The `Monoid` of numeric types under addition.
-public struct Sum<N : protocol<IntegerArithmeticType, IntegerLiteralConvertible>> : Monoid {
+public struct Sum<N : IntegerArithmeticType & IntegerLiteralConvertible : Monoid {
 	public let value : () -> N
 	
-	public init(@autoclosure(escaping) _ x : () -> N) {
+	public init( _ x : @autoclosure @escaping () -> N) {
 		value = x
 	}
 	
-	public static var mzero : Sum<N> {
+	public static var mzero : Sum {
 		return Sum(0)
 	}
 	
-	public func op(other : Sum<N>) -> Sum<N> {
+	public func op(_ other : Sum) -> Sum {
 		return Sum(self.value() + other.value())
 	}
 }
 
 /// The `Monoid` of numeric types under multiplication.
-public struct Product<N : protocol<IntegerArithmeticType, IntegerLiteralConvertible>> : Monoid {
+public struct Product<N : IntegerArithmeticType & IntegerLiteralConvertible : Monoid {
 	public let value : () -> N
 	
-	public init(@autoclosure(escaping) _ x : () -> N) {
+	public init( _ x : @autoclosure @escaping () -> N) {
 		value = x
 	}
 	
-	public static var mzero : Product<N> {
+	public static var mzero : Product {
 		return Product(1)
 	}
 	
-	public func op(other : Product<N>) -> Product<N> {
+	public func op(_ other : Product) -> Product {
 		return Product(self.value() * other.value())
 	}
 }
@@ -101,7 +101,7 @@ public struct Product<N : protocol<IntegerArithmeticType, IntegerLiteralConverti
 public struct AdjoinNil<A : Semigroup> : Monoid {
 	public let value : () -> Optional<A>
 	
-	public init(@autoclosure(escaping) _ x : () -> Optional<A>) {
+	public init( _ x : @autoclosure @escaping () -> Optional<A>) {
 		value = x
 	}
 	
@@ -109,10 +109,10 @@ public struct AdjoinNil<A : Semigroup> : Monoid {
 		return AdjoinNil(nil)
 	}
 	
-	public func op(other : AdjoinNil<A>) -> AdjoinNil<A> {
+	public func op(_ other : AdjoinNil<A>) -> AdjoinNil<A> {
 		if let x = self.value() {
 			if let y = other.value() {
-				return AdjoinNil(.Some(x.op(y)))
+				return AdjoinNil(.some(x.op(y)))
 			} else {
 				return self
 			}
@@ -126,15 +126,15 @@ public struct AdjoinNil<A : Semigroup> : Monoid {
 public struct First<A : Comparable> : Monoid {
 	public let getFirst : () -> Optional<A>
 	
-	public init(@autoclosure(escaping) _ x : () -> Optional<A>) {
+	public init( _ x : @autoclosure @escaping () -> Optional<A>) {
 		getFirst = x
 	}
 	
 	public static var mzero : First<A> {
-		return First(.None)
+		return First(.none)
 	}
 	
-	public func op(other : First<A>) -> First<A> {
+	public func op(_ other : First<A>) -> First<A> {
 		if self.getFirst() != nil {
 			return self
 		} else {
@@ -147,15 +147,15 @@ public struct First<A : Comparable> : Monoid {
 public struct Last<A : Comparable> : Monoid {
 	public let getLast : () -> Optional<A>
 	
-	public init(@autoclosure(escaping) _ x : () -> Optional<A>) {
+	public init( _ x : @autoclosure @escaping () -> Optional<A>) {
 		getLast = x
 	}
 	
 	public static var mzero : Last<A> {
-		return Last(.None)
+		return Last(.none)
 	}
 	
-	public func op(other : Last<A>) -> Last<A> {
+	public func op(_ other : Last<A>) -> Last<A> {
 		if other.getLast() != nil {
 			return other
 		} else {
@@ -176,8 +176,8 @@ public struct Dither<A : Monoid, B : Monoid> : Monoid {
 		for v in vs {
 			if let z = vals.last {
 				switch (z, v) {
-				case let (.Left(x), .Left(y)): vals[vals.endIndex - 1] = Either.Left(x.op(y))
-				case let (.Right(x), .Right(y)): vals[vals.endIndex - 1] = Either.Right(x.op(y))
+				case let (.left(x), .left(y)): vals[vals.endIndex - 1] = Either.left(x.op(y))
+				case let (.right(x), .right(y)): vals[vals.endIndex - 1] = Either.right(x.op(y))
 				default: vals.append(v)
 				}
 			} else {
@@ -187,15 +187,15 @@ public struct Dither<A : Monoid, B : Monoid> : Monoid {
 		self.values = vals
 	}
 	
-	public static func left(x: A) -> Dither<A, B> {
-		return Dither([Either.Left(x)])
+	public static func left(_ x: A) -> Dither<A, B> {
+		return Dither([Either.left(x)])
 	}
 	
-	public static func right(y: B) -> Dither<A, B> {
-		return Dither([Either.Right(y)])
+	public static func right(_ y: B) -> Dither<A, B> {
+		return Dither([Either.right(y)])
 	}
 	
-	public func fold<C : Monoid>(onLeft f : A -> C, onRight g : B -> C) -> C {
+	public func fold<C : Monoid>(onLeft f : @escaping (A) -> C, onRight g : @escaping (B) -> C) -> C {
 		return values.reduce(C.mzero) { acc, v in either(f)(g)(v).op(acc) }
 	}
 	
@@ -203,7 +203,7 @@ public struct Dither<A : Monoid, B : Monoid> : Monoid {
 		return Dither([])
 	}
 	
-	public func op(other : Dither<A, B>) -> Dither<A, B> {
+	public func op(_ other : Dither<A, B>) -> Dither<A, B> {
 		return Dither(values + other.values)
 	}
 	
@@ -214,11 +214,11 @@ public struct Dither<A : Monoid, B : Monoid> : Monoid {
 
 /// MARK: Equatable
 
-public func ==<A : protocol<Equatable, Monoid>>(lhs : Dual<A>, rhs : Dual<A>) -> Bool {
+public func ==<A : Equatable & Monoid(lhs : Dual<A>, rhs : Dual<A>) -> Bool {
 	return lhs.getDual == rhs.getDual
 }
 
-public func !=<A : protocol<Equatable, Monoid>>(lhs: Dual<A>, rhs: Dual<A>) -> Bool {
+public func !=<A : Equatable & Monoid(lhs: Dual<A>, rhs: Dual<A>) -> Bool {
 	return !(lhs == rhs)
 }
 
@@ -231,7 +231,7 @@ public func !=(lhs: All, rhs: All) -> Bool {
 }
 
 public func ==(lhs : Any, rhs : Any) -> Bool {
-	return lhs.getAny == rhs.getAny
+	return (lhs as AnyObject).getAny == rhs.getAny
 }
 
 public func !=(lhs: Any, rhs: Any) -> Bool {
@@ -254,35 +254,35 @@ public func !=<A : Equatable>(lhs: Last<A>, rhs: Last<A>) -> Bool {
 	return !(lhs == rhs)
 }
 
-public func ==<A : protocol<Comparable, Bounded, Equatable>>(lhs : Max<A>, rhs : Max<A>) -> Bool {
+public func ==<A : Comparable & Bounded & Equatable(lhs : Max<A>, rhs : Max<A>) -> Bool {
 	return lhs.getMax() == rhs.getMax()
 }
 
-public func !=<A : protocol<Comparable, Bounded, Equatable>>(lhs: Max<A>, rhs: Max<A>) -> Bool {
+public func !=<A : Comparable & Bounded & Equatable(lhs: Max<A>, rhs: Max<A>) -> Bool {
 	return !(lhs == rhs)
 }
 
-public func ==<A : protocol<Comparable, Bounded, Equatable>>(lhs : Min<A>, rhs : Min<A>) -> Bool {
+public func ==<A : Comparable & Bounded & Equatable(lhs : Min<A>, rhs : Min<A>) -> Bool {
 	return lhs.getMin() == rhs.getMin()
 }
 
-public func !=<A : protocol<Comparable, Bounded, Equatable>>(lhs: Min<A>, rhs: Min<A>) -> Bool {
+public func !=<A : Comparable & Bounded & Equatable(lhs: Min<A>, rhs: Min<A>) -> Bool {
 	return !(lhs == rhs)
 }
 
-public func ==<T : protocol<IntegerArithmeticType, IntegerLiteralConvertible, Equatable>>(lhs: Sum<T>, rhs: Sum<T>) -> Bool {
+public func ==<T : IntegerArithmetic & ExpressibleByIntegerLiteral & Equatable(lhs: Sum<T>, rhs: Sum<T>) -> Bool {
 	return lhs.value() == rhs.value()
 }
 
-public func !=<T : protocol<IntegerArithmeticType, IntegerLiteralConvertible, Equatable>>(lhs: Sum<T>, rhs: Sum<T>) -> Bool {
+public func !=<T : IntegerArithmetic & ExpressibleByIntegerLiteral & Equatable(lhs: Sum<T>, rhs: Sum<T>) -> Bool {
 	return !(lhs == rhs)
 }
 
-public func ==<T : protocol<IntegerArithmeticType, IntegerLiteralConvertible, Equatable>>(lhs: Product<T>, rhs: Product<T>) -> Bool {
+public func ==<T : IntegerArithmetic & ExpressibleByIntegerLiteral & Equatable(lhs: Product<T>, rhs: Product<T>) -> Bool {
 	return lhs.value() == rhs.value()
 }
 
-public func !=<T : protocol<IntegerArithmeticType, IntegerLiteralConvertible, Equatable>>(lhs: Product<T>, rhs: Product<T>) -> Bool {
+public func !=<T : IntegerArithmetic & ExpressibleByIntegerLiteral & Equatable(lhs: Product<T>, rhs: Product<T>) -> Bool {
 	return !(lhs == rhs)
 }
 

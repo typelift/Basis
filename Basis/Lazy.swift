@@ -8,8 +8,8 @@
 //
 
 internal enum LazyState<A> {
-	case Eventually(() -> A)
-	case Now(A)
+	case eventually(() -> A)
+	case now(A)
 }
 
 /// @autoclosure as a monad.
@@ -21,23 +21,23 @@ public struct Lazy<A> {
 	}
 }
 
-public func delay<A>(f : () -> A) -> Lazy<A> {
-	let ff = LazyState<A>.Eventually(f)
+public func delay<A>(_ f : @escaping () -> A) -> Lazy<A> {
+	let ff = LazyState<A>.eventually(f)
 	let rr : ST<(), STRef<(), LazyState<A>>> = newSTRef(ff)
 	return Lazy<A>(rr.runST())
 }
 
-public func force<A>(l : Lazy<A>) -> A {
+public func force<A>(_ l : Lazy<A>) -> A {
 	return (modifySTRef(l.state)({ st in
 		switch st {
-			case .Eventually(let f):
-				return .Now(f())
+			case .eventually(let f):
+				return .now(f())
 			default:
 				return st
 		}
 	}).bind { st in
 		switch readSTRef(st).runST() {
-			case .Now(let bx):
+			case .now(let bx):
 				return ST<(), A>.pure(bx)
 			default:
 				fatalError("Cannot ")
@@ -49,19 +49,19 @@ extension Lazy : Functor {
 	public typealias B = Any
 	public typealias FB = Lazy<B>
 	
-	public static func fmap<B>(f: A -> B) -> Lazy<A> -> Lazy<B> {
+	public static func fmap<B>(_ f: @escaping (A) -> B) -> (Lazy<A>) -> Lazy<B> {
 		return { st in
 			switch readSTRef(st.state).runST() {
-				case .Eventually(let d):
+				case .eventually(let d):
 					return delay({ f(d()) })
-				case .Now(let bx):
+				case .now(let bx):
 					return self.pure(f(bx))
 			}
 		}
 	}
 }
 
-public func <^><A, B>(f: A -> B, st: Lazy<A>) -> Lazy<B> {
+public func <^><A, B>(f: @escaping (A) -> B, st: Lazy<A>) -> Lazy<B> {
 	return Lazy.fmap(f)(st)
 }
 
@@ -74,27 +74,27 @@ public func %> <A, B>(c : Lazy<B>, a : A) -> Lazy<A> {
 }
 
 extension Lazy : Pointed {
-	public static func pure<A>(a: A) -> Lazy<A> {
-		return Lazy<A>(newSTRef(.Now(a)).runST())
+	public static func pure<A>(_ a: A) -> Lazy<A> {
+		return Lazy<A>(newSTRef(.now(a)).runST())
 	}
 }
 
 extension Lazy : Applicative {
-	public typealias FAB = Lazy<A -> B>
+	public typealias FAB = Lazy<(A) -> B>
 	
-	public static func ap<A, B>(stfn: Lazy<A -> B>) -> Lazy<A> -> Lazy<B> {
+	public static func ap<A, B>(_ stfn: Lazy<(A) -> B>) -> (Lazy<A>) -> Lazy<B> {
 		return { st in
 			switch readSTRef(stfn.state).runST() {
-				case .Eventually(let d):
+				case .eventually(let d):
 					return delay({ d()(force(st)) })
-				case .Now(let bx):
+				case .now(let bx):
 					return Lazy<A>.fmap(bx)(st)
 			}
 		}
 	}
 }
 
-public func <*><A, B>(stfn: Lazy<A -> B>, st: Lazy<A>) -> Lazy<B> {
+public func <*><A, B>(stfn: Lazy<(A) -> B>, st: Lazy<A>) -> Lazy<B> {
 	return Lazy<A>.ap(stfn)(st)
 }
 
@@ -112,26 +112,26 @@ extension Lazy : ApplicativeOps {
 	public typealias D = Any
 	public typealias FD = Lazy<D>
 
-	public static func liftA<B>(f : A -> B) -> Lazy<A> -> Lazy<B> {
-		return { a in Lazy<A -> B>.pure(f) <*> a }
+	public static func liftA<B>(_ f : @escaping (A) -> B) -> (Lazy<A>) -> Lazy<B> {
+		return { a in Lazy<(A) -> B>.pure(f) <*> a }
 	}
 
-	public static func liftA2<B, C>(f : A -> B -> C) -> Lazy<A> -> Lazy<B> -> Lazy<C> {
+	public static func liftA2<B, C>(_ f : @escaping (A) -> (B) -> C) -> (Lazy<A>) -> (Lazy<B>) -> Lazy<C> {
 		return { a in { b in f <^> a <*> b  } }
 	}
 
-	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> Lazy<A> -> Lazy<B> -> Lazy<C> -> Lazy<D> {
+	public static func liftA3<B, C, D>(_ f : @escaping (A) -> (B) -> (C) -> D) -> (Lazy<A>) -> (Lazy<B>) -> (Lazy<C>) -> Lazy<D> {
 		return { a in { b in { c in f <^> a <*> b <*> c } } }
 	}
 }
 
 extension Lazy : Monad {
-	public func bind<B>(f: A -> Lazy<B>) -> Lazy<B> {
+	public func bind<B>(_ f: (A) -> Lazy<B>) -> Lazy<B> {
 		return f(force(self))
 	}
 }
 
-public func >>- <A, B>(x : Lazy<A>, f : A -> Lazy<B>) -> Lazy<B> {
+public func >>- <A, B>(x : Lazy<A>, f : (A) -> Lazy<B>) -> Lazy<B> {
 	return x.bind(f)
 }
 
@@ -146,39 +146,39 @@ extension Lazy : MonadOps {
 	public typealias MLB = Lazy<[B]>
 	public typealias MU = Lazy<()>
 
-	public static func mapM<B>(f : A -> Lazy<B>) -> [A] -> Lazy<[B]> {
+	public static func mapM<B>(_ f : @escaping (A) -> Lazy<B>) -> ([A]) -> Lazy<[B]> {
 		return { xs in Lazy<B>.sequence(map(f)(xs)) }
 	}
 
-	public static func mapM_<B>(f : A -> Lazy<B>) -> [A] -> Lazy<()> {
+	public static func mapM_<B>(_ f : @escaping (A) -> Lazy<B>) -> ([A]) -> Lazy<()> {
 		return { xs in Lazy<B>.sequence_(map(f)(xs)) }
 	}
 
-	public static func forM<B>(xs : [A]) -> (A -> Lazy<B>) -> Lazy<[B]> {
+	public static func forM<B>(_ xs : [A]) -> ((A) -> Lazy<B>) -> Lazy<[B]> {
 		return flip(Lazy.mapM)(xs)
 	}
 
-	public static func forM_<B>(xs : [A]) -> (A -> Lazy<B>) -> Lazy<()> {
+	public static func forM_<B>(_ xs : [A]) -> ((A) -> Lazy<B>) -> Lazy<()> {
 		return flip(Lazy.mapM_)(xs)
 	}
 
-	public static func sequence(ls : [Lazy<A>]) -> Lazy<[A]> {
+	public static func sequence(_ ls : [Lazy<A>]) -> Lazy<[A]> {
 		return foldr({ m, m2 in m >>- { x in m2 >>- { xs in Lazy<[A]>.pure(cons(x)(xs)) } } })(Lazy<[A]>.pure([]))(ls)
 	}
 
-	public static func sequence_(ls : [Lazy<A>]) -> Lazy<()> {
+	public static func sequence_(_ ls : [Lazy<A>]) -> Lazy<()> {
 		return foldr(>>)(Lazy<()>.pure(()))(ls)
 	}
 }
 
-public func -<< <A, B>(f : A -> Lazy<B>, xs : Lazy<A>) -> Lazy<B> {
+public func -<< <A, B>(f : (A) -> Lazy<B>, xs : Lazy<A>) -> Lazy<B> {
 	return xs.bind(f)
 }
 
-public func >>->> <A, B, C>(f : A -> Lazy<B>, g : B -> Lazy<C>) -> A -> Lazy<C> {
+public func >>->> <A, B, C>(f : @escaping (A) -> Lazy<B>, g : @escaping (B) -> Lazy<C>) -> (A) -> Lazy<C> {
 	return { x in f(x) >>- g }
 }
 
-public func <<-<< <A, B, C>(g : B -> Lazy<C>, f : A -> Lazy<B>) -> A -> Lazy<C> {
+public func <<-<< <A, B, C>(g : @escaping (B) -> Lazy<C>, f : @escaping (A) -> Lazy<B>) -> (A) -> Lazy<C> {
 	return { x in f(x) >>- g }
 }

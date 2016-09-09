@@ -21,12 +21,12 @@ extension Const : Functor {
 	public typealias B = R
 	public typealias FB = Const<A, B>
 	
-	public static func fmap<B>(_ : A -> B) -> Const<L, R> -> Const<L, R> {
+	public static func fmap<B>(_ : (A) -> B) -> (Const<L, R>) -> Const<L, R> {
 		return { c in Const(c.val) }
 	}
 }
 
-public func <^> <A, B, C>(f : A -> C, c : Const<A, B>) -> Const<A, B> {
+public func <^> <A, B, C>(f : (A) -> C, c : Const<A, B>) -> Const<A, B> {
 	return Const<A, B>.fmap(f)(c)
 }
 
@@ -39,12 +39,12 @@ public func %> <A, B>(c : Const<A, B>, a : A) -> Const<A, B> {
 }
 
 extension Const : Contravariant {
-	public static func contramap<B>(_ : A -> B) -> Const<A, B> -> Const<A, B> {
+	public static func contramap<B>(_ : (A) -> B) -> (Const<A, B>) -> Const<A, B> {
 		return { c in Const<A, B>(c.val) }
 	}
 }
 
-public func >%< <A, B>(f : A -> B,c : Const<A, B>) -> Const<A, B> {
+public func >%< <A, B>(f : (A) -> B,c : Const<A, B>) -> Const<A, B> {
 	return Const<A, B>.contramap(f)(c)
 }
 

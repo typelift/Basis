@@ -96,7 +96,7 @@ class FunctionsSpec : XCTestCase {
 	}
 	
 	func testFixpoint() {
-		let f : (Int -> Int) -> Int -> Int = { fact in
+		let f : ((Int) -> Int) -> (Int) -> Int = { fact in
 			return { x in
 				if x == 0 {
 					return 1

@@ -8,21 +8,21 @@
 //
 
 /// Returns whether a map is empty in constant time.
-public func null<K, A>(m : Map<K, A>) -> Bool {
+public func null<K, A>(_ m : Map<K, A>) -> Bool {
 	switch m.match() {
-		case .Empty:
+		case .empty:
 			return true
-		case .Destructure(_, _, _, _, _):
+		case .destructure(_, _, _, _, _):
 			return false
 	}
 }
 
 /// Returns the size of a map in constant time.
-public func size<K, A>(m : Map<K, A>) -> UInt {
+public func size<K, A>(_ m : Map<K, A>) -> UInt {
 	switch m.match() {
-		case .Empty:
+		case .empty:
 			return 0
-		case .Destructure(let sz, _, _, _, _):
+		case .destructure(let sz, _, _, _, _):
 			return sz
 	}
 }
@@ -30,29 +30,29 @@ public func size<K, A>(m : Map<K, A>) -> UInt {
 /// Looks up the value associated with a key in the map.
 ///
 /// If the key does not exist, this function returns None.  Else is returns that value in a Some.
-public func lookup<K : Comparable, A>(key : K) -> Map<K, A> -> Optional<A> {
+public func lookup<K : Comparable, A>(_ key : K) -> (Map<K, A>) -> Optional<A> {
 	return { m in
 		switch m.match() {
-			case .Empty:
-				return .None
-			case .Destructure(_, let kx,let x, let l, let r):
+			case .empty:
+				return .none
+			case .destructure(_, let kx,let x, let l, let r):
 				if key < kx {
 					return lookup(key)(l)
 				} else if key > kx {
 					return lookup(key)(r)
 				}
-				return .Some(x)
+				return .some(x)
 		}
 	}
 }
 
 /// Returns whether a given key is a member of the map.
-public func member<K : Comparable, A>(key : K) -> Map<K, A> -> Bool {
+public func member<K : Comparable, A>(_ key : K) -> (Map<K, A>) -> Bool {
 	return { m in
 		switch m.match() {
-			case .Empty:
+			case .empty:
 				return false
-			case .Destructure(_, let kx, _, let l, let r):
+			case .destructure(_, let kx, _, let l, let r):
 				if key < kx {
 					return member(key)(l)
 				} else if key > kx {
@@ -64,19 +64,19 @@ public func member<K : Comparable, A>(key : K) -> Map<K, A> -> Bool {
 }
 
 /// Returns whether a given key is not a member of the map.
-public func notMember<K : Comparable, A>(key : K) -> Map<K, A> -> Bool {
+public func notMember<K : Comparable, A>(_ key : K) -> (Map<K, A>) -> Bool {
 	return { m in !member(key)(m) }
 }
 
 /// Finds the value associated with a key in the map.
 ///
 /// If this given key is not a member of the map, this function throws an exception.
-public func find<K : Comparable, A>(key : K) -> Map<K, A> -> A {
+public func find<K : Comparable, A>(_ key : K) -> (Map<K, A>) -> A {
 	return { m in
 		switch m.match() {
-			case .Empty:
+			case .empty:
 				return error("Key is not a member of this map.")
-			case .Destructure(_, let kx,let x, let l, let r):
+			case .destructure(_, let kx,let x, let l, let r):
 				if key < kx {
 					return find(key)(l)
 				} else if key > kx {
@@ -89,12 +89,12 @@ public func find<K : Comparable, A>(key : K) -> Map<K, A> -> A {
 
 /// Finds the value associated with a key in the map, returning a default value if no such key is a
 /// member of the map.
-public func findWithDefault<K : Comparable, A>(def: A) -> K -> Map<K, A> -> A {
+public func findWithDefault<K : Comparable, A>(_ def: A) -> (K) -> (Map<K, A>) -> A {
 	return { key in { m in
 		switch m.match() {
-			case .Empty:
+			case .empty:
 				return def
-			case .Destructure(_, let kx,let x, let l, let r):
+			case .destructure(_, let kx,let x, let l, let r):
 				if key < kx {
 					return findWithDefault(def)(key)(l)
 				} else if key > kx {

@@ -16,16 +16,16 @@ class OptionalSpec : XCTestCase {
 		let def = 10
 		let f = { $0 + 10 }
 
-		let m1 = Optional.Some(10)
-		let m2 : Int? = Optional.None
+		let m1 = Optional.some(10)
+		let m2 : Int? = Optional.none
 
 		XCTAssertTrue(Optional(def)(f: f)(m: m1) == 20, "")
 		XCTAssertTrue(Optional(def)(f: f)(m: m2) == 10, "")
 	}
 
 	func testGestalt() {
-		let m1 = Optional.Some(10)
-		let m2 : Int? = Optional.None
+		let m1 = Optional.some(10)
+		let m2 : Int? = Optional.none
 
 		XCTAssertTrue(isSome(m1), "")
 		XCTAssertTrue(isNone(m2), "")
@@ -33,8 +33,8 @@ class OptionalSpec : XCTestCase {
 
 	func testFrom() {
 		let def = 10
-		let m1 = Optional.Some(100)
-		let m2 : Int? = Optional.None
+		let m1 = Optional.some(100)
+		let m2 : Int? = Optional.none
 
 		XCTAssertTrue(fromSome(m1) == 100, "")
 
@@ -43,8 +43,8 @@ class OptionalSpec : XCTestCase {
 	}
 
 	func testOptionalToList() {
-		let m1 = Optional.Some(100)
-		let m2 : Int? = Optional.None
+		let m1 = Optional.some(100)
+		let m2 : Int? = Optional.none
 
 		XCTAssertTrue(optionalToList(m1) == [100], "")
 		XCTAssertTrue(optionalToList(m2) == [], "")
@@ -55,11 +55,11 @@ class OptionalSpec : XCTestCase {
 		let l2 = [100]
 
 		XCTAssertTrue(listToOptional(l1) == nil, "")
-		XCTAssertTrue(listToOptional(l2) == Optional.Some(100), "")
+		XCTAssertTrue(listToOptional(l2) == Optional.some(100), "")
 	}
 
 	func testCatOptionals() {
-		let x = Optional.Some(5)
+		let x = Optional.some(5)
 		let l = [ x, nil, x, nil, x, nil, x ]
 
 		XCTAssertTrue(foldr1(+)(catOptionals(l)) == 20, "")
@@ -71,28 +71,28 @@ class OptionalSpec : XCTestCase {
 		XCTAssertTrue(foldr1(+)(mapOptional(listToOptional)(l: l)) == 15, "")
 	}
 	
-	func liftA<A, B>(f : A -> B) -> Optional<A> -> Optional<B> {
+	func liftA<A, B>(_ f : @escaping (A) -> B) -> (Optional<A>) -> Optional<B> {
 		return { a in Optional.pure(f) <*> a }
 	}
 	
-	func liftA2<A, B, C>(f : A -> B -> C) -> Optional<A> -> Optional<B> -> Optional<C> {
+	func liftA2<A, B, C>(_ f : @escaping (A) -> (B) -> C) -> (Optional<A>) -> (Optional<B>) -> Optional<C> {
 		return { a in { b in Optional.pure(f) <*> a <*> b } }
 	}
 	
-	func liftA3<A, B, C, D>(f : A -> B -> C -> D) -> Optional<A> -> Optional<B> -> Optional<C> -> Optional<D> {
+	func liftA3<A, B, C, D>(_ f : @escaping (A) -> (B) -> (C) -> D) -> (Optional<A>) -> (Optional<B>) -> (Optional<C>) -> Optional<D> {
 		return { a in { b in { c in Optional.pure(f) <*> a <*> b <*> c } } }
 	}
 	
 	func testApplicative() {
-		let a = Optional.Some(6)
-		let b = Optional<Int>.None
-		let c = Optional.Some(5)
+		let a = Optional.some(6)
+		let b = Optional<Int>.none
+		let c = Optional.some(5)
 
 		let r = liftA2(curry(+))(a)(b)
-		XCTAssertTrue(r == Optional<Int>.None)
+		XCTAssertTrue(r == Optional<Int>.none)
 		
 		let rr = liftA2(curry(+))(a)(c)
-		XCTAssertTrue(rr == Optional.Some(11))
+		XCTAssertTrue(rr == Optional.some(11))
 		
 		let t = liftA3(pack3)(a)(b)(c)
 		XCTAssertTrue(t == Optional<(Int, Int, Int)>.None)

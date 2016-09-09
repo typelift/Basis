@@ -12,7 +12,7 @@ import Foundation
 /// Comonads along with the structure of Applicative Functors.
 public protocol ComonadApply : Comonad {
 	/// Type of Functors containing morphisms from our objects to a target.
-	associatedtype FAB = K1<A -> B>
+	associatedtype FAB = K1<(A) -> B>
 	
 	func >*<(_: FAB , _: Self) -> FB
 	

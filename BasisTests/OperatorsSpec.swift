@@ -71,14 +71,14 @@ class OperatorsSpec : XCTestCase {
 	}
 	
 	func testChoose() {
-		let x : Optional<Int> = Optional.Some(10)
-		let y : Optional<Int> = Optional.None
+		let x : Optional<Int> = Optional.some(10)
+		let y : Optional<Int> = Optional.none
 
 		XCTAssertTrue((x <|> y) == x, "")
 	}
 
 	func testBind() {
-		let x : Optional<Int> = Optional.Some(10)
+		let x : Optional<Int> = Optional.some(10)
 
 		XCTAssertTrue(fromJust(x >>- { v in Optional.Some(v) }) == fromJust(x), "")
 	}

@@ -11,11 +11,11 @@ import Basis
 import XCTest
 
 class ArrowSpec : XCTestCase {
-	func function1(x : Int) -> Int {
+	func function1(_ x : Int) -> Int {
 		return x + 1
 	}
 	
-	func function2(x : Int, y : Int) -> Int {
+	func function2(_ x : Int, y : Int) -> Int {
 		return x + y
 	}
 	

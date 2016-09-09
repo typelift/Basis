@@ -80,12 +80,12 @@ extension Character {
 
 	/// Converts the receiver to its corresponding uppercase letter, if any.
 	public func toUpper() -> Character {
-		return Character(UnicodeScalar(self.unicodeValue()).toUpper())
+		return Character(UnicodeScalar(self.unicodeValue())!.toUpper())
 	}
 
 	/// Converts the receiver to its corresponding lowercase letter, if any.
 	public func toLower() -> Character {
-		return Character(UnicodeScalar(self.unicodeValue()).toLower())
+		return Character(UnicodeScalar(self.unicodeValue())!.toLower())
 	}
 }
 
@@ -152,11 +152,11 @@ extension UnicodeScalar {
 
 	/// Converts the receiver to its corresponding uppercase letter, if any.
 	public func toUpper() -> UnicodeScalar {
-		return UnicodeScalar(UInt32(towupper(Int32(self.value))))
+		return UnicodeScalar(UInt32(towupper(Int32(self.value))))!
 	}
 
 	/// Converts the receiver to its corresponding lowercase letter, if any.
 	public func toLower() -> UnicodeScalar {
-		return UnicodeScalar(UInt32(towlower(Int32(self.value))))
+		return UnicodeScalar(UInt32(towlower(Int32(self.value))))!
 	}
 }

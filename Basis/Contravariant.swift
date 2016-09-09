@@ -36,8 +36,8 @@ public protocol Contravariant {
 	/// Contravariant map "inside" a Functor.
 	///
 	/// F on our diagram.
-	static func contramap(_: A -> B) -> FB -> Self
-	func >%<(_: A -> B, _: FB) -> Self
+	static func contramap(_: (A) -> B) -> (FB) -> Self
+	func >%<(_: (A) -> B, _: FB) -> Self
 	
 	/// Contravariant Constant Replace | Replaces all values in the target Functor with a singular 
 	/// constant value from the source Functor.

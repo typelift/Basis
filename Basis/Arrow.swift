@@ -66,7 +66,7 @@ public protocol Arrow : Category {
 	associatedtype FANOUT = K2<B, (B, D)>
 	
 	/// Lift a function to an arrow.
-	static func arr(_: A -> B) -> Self
+	static func arr(_: (A) -> B) -> Self
 	
 	/// Splits the arrow into two tuples that model a computation that applies our Arrow to an
 	/// argument on the "left side" and sends the "right side" through unchanged.

@@ -13,18 +13,18 @@
 ///     dismember(Array.reverse)([1, 2, 3, 4]) == [1, 2, 3, 4].reverse()
 ///
 /// See ~https://github.com/airspeedswift/SwooshKit for the original.
-public func dismember<A, B>(member: A -> () -> B) -> A -> B {
+public func dismember<A, B>(_ member: @escaping (A) -> () -> B) -> (A) -> B {
 	return { o in member(o)() }
 }
 
-public func dismember<A, T, B>(member: A -> T -> B) -> A -> T -> B {
+public func dismember<A, T, B>(_ member: @escaping (A) -> (T) -> B) -> (A) -> (T) -> B {
 	return { o in { t in member(o)(t) } }
 }
 
-public func dismember<A, T, U, B>(member: A -> (T, U) -> B) -> A -> T -> U -> B {
+public func dismember<A, T, U, B>(_ member: @escaping (A) -> (T, U) -> B) -> (A) -> (T) -> (U) -> B {
 	return { o in { t in { u in member(o)(t, u)} } }
 }
 
-public func dismember<A, T, U, V, B>(member: A -> (T, U, V) -> B) -> A -> T -> U -> V -> B {
+public func dismember<A, T, U, V, B>(_ member: @escaping (A) -> (T, U, V) -> B) -> (A) -> (T) -> (U) -> (V) -> B {
 	return { o in { t in { u in { v in member(o)(t, u, v) } } } }
 }

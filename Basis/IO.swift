@@ -10,9 +10,9 @@
 // The IO Monad is a means of representing a computation which, when performed, interacts with
 // the outside world (i.e. performs effects) to arrive at some result of type A.
 public struct IO<A> {
-	internal let apply : World<RealWorld> -> (World<RealWorld>, A)
+	internal let apply : (World<RealWorld>) -> (World<RealWorld>, A)
 
-	init(_ apply : World<RealWorld> -> (World<RealWorld>, A)) {
+	init(_ apply : @escaping (World<RealWorld>) -> (World<RealWorld>, A)) {
 		self.apply = apply
 	}
 
@@ -37,7 +37,7 @@ public struct IO<A> {
 /// It is important to note that IO actions returned are lazy.  This means the provided block will
 /// not be executed until the values inside are requested, either with an extract (`<-`) or a call
 /// to `unsafePerformIO()`
-public func do_<A>(fn: () -> IO<A>) -> IO<A> {
+public func do_<A>(_ fn: @escaping () -> IO<A>) -> IO<A> {
 	return IO<A>({ rw in (rw, !fn()) })
 }
 
@@ -45,7 +45,7 @@ public func do_<A>(fn: () -> IO<A>) -> IO<A> {
 ///
 /// This variant of do-blocks allows one to write more natural looking code.  The return keyword
 /// becomes monadic return.
-public func do_<A>(fn: () -> A) -> IO<A> {
+public func do_<A>(_ fn: @escaping () -> A) -> IO<A> {
 	return IO<A>({ rw in (rw, fn()) })
 }
 
@@ -55,51 +55,51 @@ public prefix func !<A>(m: IO<A>) -> A {
 }
 
 /// Writes a character to standard output.
-public func putChar(c : Character) -> IO<Void> {
+public func putChar(_ c : Character) -> IO<Void> {
 	return IO.pure(print(c, terminator: ""))
 }
 
 /// Writes a string to standard output.
-public func putStr(s : String) -> IO<Void> {
+public func putStr(_ s : String) -> IO<Void> {
 	return IO.pure(print(s, terminator: ""))
 }
 
 /// Writes a string and a newline to standard output.
-public func putStrLn(s : String) -> IO<Void> {
+public func putStrLn(_ s : String) -> IO<Void> {
 	return IO.pure(Swift.print(s))
 }
 
 /// Writes the description of an object to standard output.
-public func print<A : CustomStringConvertible>(x : A) -> IO<Void> {
+public func print<A : CustomStringConvertible>(_ x : A) -> IO<Void> {
 	return putStrLn(x.description)
 }
 
 /// Gets a single character from standard input.
 public func getChar() -> IO<Character> {
-	return IO.pure(Character(UnicodeScalar(UInt32(getchar()))))
+	return IO.pure(Character(UnicodeScalar(UInt32(getchar()))!))
 }
 
 /// Gets a line of text from standard input.
 public func getLine() -> IO<String> {
 	return do_ { () -> String in
-		var str : UnsafeMutablePointer<Int8> = nil
+		var str : UnsafeMutablePointer<Int8>? = nil
 		var numBytes : Int = 0;
 		if getline(&str, &numBytes, stdin) == -1 {
 			return ""
 		}
-		return String.fromCString(str)!
+		return String(cString: str!)
 	}
 }
 
 /// Gets the entire contents of standard input.
 public func getContents() -> IO<String> {
-	let s = NSString(data: NSFileHandle.fileHandleWithStandardInput().availableData, encoding: NSUTF8StringEncoding) as! String
+	let s = NSString(data: FileHandle.withStandardInput.availableData, encoding: String.Encoding.utf8) as! String
 	return IO.pure(s ?? "")
 }
 
 /// Takes a function that is given the contents of standard input.  The result of that function is
 /// then output to standard out.
-public func interact(f : String -> String) -> IO<Void> {
+public func interact(_ f : @escaping (String) -> String) -> IO<Void> {
 	return do_ {
 		let s : String = !getContents()
 		return putStr(f(s))
@@ -110,7 +110,7 @@ extension IO : Functor {
 	public typealias B = Any
 	public typealias FB = IO<B>
 
-	public static func fmap<B>(f: A -> B) -> IO<A> -> IO<B> {
+	public static func fmap<B>(_ f: @escaping (A) -> B) -> (IO<A>) -> IO<B> {
 		return { io in
 			return IO<B>({ rw in
 				let (nw, a) = io.apply(rw)
@@ -120,7 +120,7 @@ extension IO : Functor {
 	}
 }
 
-public func <^><A, B>(f : A -> B, io : IO<A>) -> IO<B> {
+public func <^><A, B>(f : @escaping (A) -> B, io : IO<A>) -> IO<B> {
 	return IO.fmap(f)(io)
 }
 
@@ -133,15 +133,15 @@ public func %> <A, B>(io : IO<B>, x : A) -> IO<A> {
 }
 
 extension IO : Pointed {
-	public static func pure(a : A) -> IO<A> {
+	public static func pure(_ a : A) -> IO<A> {
 		return IO<A>({ rw in (rw, a) })
 	}
 }
 
 extension IO : Applicative {
-	public typealias FAB = IO<A -> B>
+	public typealias FAB = IO<(A) -> B>
 	
-	public static func ap<B>(fn : IO<A -> B>) -> IO<A> -> IO<B> {
+	public static func ap<B>(_ fn : IO<(A) -> B>) -> (IO<A>) -> IO<B> {
 		return { m in return IO<B>({ rw in
 			let f = fn.unsafePerformIO()
 			let (nw, x) = m.apply(rw)
@@ -150,7 +150,7 @@ extension IO : Applicative {
 	}
 }
 
-public func <*><A, B>(fn : IO<A -> B>, m : IO<A>) -> IO<B> {
+public func <*><A, B>(fn : IO<(A) -> B>, m : IO<A>) -> IO<B> {
 	return IO<A>.ap(fn)(m)
 }
 
@@ -168,21 +168,21 @@ extension IO : ApplicativeOps {
 	public typealias D = Any
 	public typealias FD = IO<D>
 
-	public static func liftA<B>(f : A -> B) -> IO<A> -> IO<B> {
-		return { a in IO<A -> B>.pure(f) <*> a }
+	public static func liftA<B>(_ f : @escaping (A) -> B) -> (IO<A>) -> IO<B> {
+		return { a in IO<(A) -> B>.pure(f) <*> a }
 	}
 
-	public static func liftA2<B, C>(f : A -> B -> C) -> IO<A> -> IO<B> -> IO<C> {
+	public static func liftA2<B, C>(_ f : @escaping (A) -> (B) -> C) -> (IO<A>) -> (IO<B>) -> IO<C> {
 		return { a in { b in f <^> a <*> b  } }
 	}
 
-	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> IO<A> -> IO<B> -> IO<C> -> IO<D> {
+	public static func liftA3<B, C, D>(_ f : @escaping (A) -> (B) -> (C) -> D) -> (IO<A>) -> (IO<B>) -> (IO<C>) -> IO<D> {
 		return { a in { b in { c in f <^> a <*> b <*> c } } }
 	}
 }
 
 extension IO : Monad {
-	public func bind<B>(f : A -> IO<B>) -> IO<B> {
+	public func bind<B>(_ f : @escaping (A) -> IO<B>) -> IO<B> {
 		return IO<B>({ rw in
 			let (nw, a) = self.apply(rw)
 			return f(a).apply(nw)
@@ -190,7 +190,7 @@ extension IO : Monad {
 	}
 }
 
-public func >>-<A, B>(x : IO<A>, f : A -> IO<B>) -> IO<B> {
+public func >>-<A, B>(x : IO<A>, f : @escaping (A) -> IO<B>) -> IO<B> {
 	return x.bind(f)
 }
 
@@ -205,45 +205,45 @@ extension IO : MonadOps {
 	public typealias MLB = IO<[B]>
 	public typealias MU = IO<()>
 
-	public static func mapM<B>(f : A -> IO<B>) -> [A] -> IO<[B]> {
+	public static func mapM<B>(_ f : @escaping (A) -> IO<B>) -> ([A]) -> IO<[B]> {
 		return { xs in IO<B>.sequence(map(f)(xs)) }
 	}
 
-	public static func mapM_<B>(f : A -> IO<B>) -> [A] -> IO<()> {
+	public static func mapM_<B>(_ f : @escaping (A) -> IO<B>) -> ([A]) -> IO<()> {
 		return { xs in IO<B>.sequence_(map(f)(xs)) }
 	}
 
-	public static func forM<B>(xs : [A]) -> (A -> IO<B>) -> IO<[B]> {
+	public static func forM<B>(_ xs : [A]) -> ((A) -> IO<B>) -> IO<[B]> {
 		return flip(IO.mapM)(xs)
 	}
 
-	public static func forM_<B>(xs : [A]) -> (A -> IO<B>) -> IO<()> {
+	public static func forM_<B>(_ xs : [A]) -> ((A) -> IO<B>) -> IO<()> {
 		return flip(IO.mapM_)(xs)
 	}
 
-	public static func sequence(ls : [IO<A>]) -> IO<[A]> {
+	public static func sequence(_ ls : [IO<A>]) -> IO<[A]> {
 		return foldr({ m, m2 in m >>- { x in m2 >>- { xs in IO<[A]>.pure(cons(x)(xs)) } } })(IO<[A]>.pure([]))(ls)
 	}
 
-	public static func sequence_(ls : [IO<A>]) -> IO<()> {
+	public static func sequence_(_ ls : [IO<A>]) -> IO<()> {
 		return foldr(>>)(IO<()>.pure(()))(ls)
 	}
 }
 
-public func -<<<A, B>(f : A -> IO<B>, xs : IO<A>) -> IO<B> {
+public func -<<<A, B>(f : @escaping (A) -> IO<B>, xs : IO<A>) -> IO<B> {
 	return xs.bind(f)
 }
 
-public func >>->><A, B, C>(f : A -> IO<B>, g : B -> IO<C>) -> A -> IO<C> {
+public func >>->><A, B, C>(f : @escaping (A) -> IO<B>, g : @escaping (B) -> IO<C>) -> (A) -> IO<C> {
 	return { x in f(x) >>- g }
 }
 
-public func <<-<<<A, B, C>(g : B -> IO<C>, f : A -> IO<B>) -> A -> IO<C> {
+public func <<-<<<A, B, C>(g : @escaping (B) -> IO<C>, f : @escaping (A) -> IO<B>) -> (A) -> IO<C> {
 	return { x in f(x) >>- g }
 }
 
 extension IO : MonadFix {
-	public static func mfix(f : A -> IO<A>) -> IO<A> {
+	public static func mfix(_ f : (A) -> IO<A>) -> IO<A> {
 		return f(IO.mfix(f).unsafePerformIO())
 	}
 }

@@ -10,7 +10,7 @@
 /// MARK: Data.Combinator
 
 /// Pair Formation | Forms a pair from two arguments.  (⌥ + ⇧ + P)
-infix operator ∏ {}
+infix operator ∏
 
 /// Cons | Constructs a list by appending a given element to the front of a list.
 infix operator <<| {
@@ -72,7 +72,7 @@ infix operator <|> {
 /// MARK: System.IO
 
 /// Extract | Extracts a value from a monadic computation.
-prefix operator ! {}
+prefix operator !
 
 /// MARK: Control.Comonad.Apply
 
@@ -95,7 +95,7 @@ infix operator >* {
 }
 
 /// Lift | Lifts a function to an Arrow.
-prefix operator ^ {}
+prefix operator ^
 
 /// Lower | Lowers an arrow to a function.
-postfix operator ^ {}
+postfix operator ^

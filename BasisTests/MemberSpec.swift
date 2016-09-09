@@ -14,8 +14,8 @@ class MemberSpec : XCTestCase {
 	func testDismember() {
 		let t = [1, 2, 3, 4]
 		
-		XCTAssert(dismember(Array.reverse)(t) == Array(t.reverse()), "")
+		XCTAssert(dismember(Array.reversed)(t) == Array(t.reversed()), "")
 		XCTAssert(dismember(Array.filter)(t)({ x in x == 3 }) == t.filter({x in x == 3}), "")
-		XCTAssert(dismember(Array.reduce)(t)(0)(+) == t.reduce(0, combine: +), "")
+		XCTAssert(dismember(Array.reduce(_:_:))(t)(0)(+) == t.reduce(0, combine: +), "")
 	}
 }

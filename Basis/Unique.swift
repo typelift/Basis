@@ -9,10 +9,10 @@
 
 /// Abstract Unique objects.  Objects of type Unique may be compared for equality and ordering and 
 /// hashed.
-public class Unique : K0, Equatable, Hashable, Comparable {
-	private let val : Int
+open class Unique : K0, Equatable, Hashable, Comparable {
+	fileprivate let val : Int
 	
-	public var hashValue: Int { 
+	open var hashValue: Int { 
 		get {
 			return self.val
 		}

@@ -9,7 +9,7 @@
 
 // Strict mutable references.
 public final class STRef<S, A> : K2<S, A> {
-	private var value: A
+	fileprivate var value: A
 	
 	init(_ val: A) {
 		self.value = val
@@ -18,7 +18,7 @@ public final class STRef<S, A> : K2<S, A> {
 
 
 // Creates a new STRef
-public func newSTRef<S, A>(x : A) -> ST<S, STRef<S, A>> {
+public func newSTRef<S, A>(_ x : A) -> ST<S, STRef<S, A>> {
 	return ST(apply: { s in
 		let ref = STRef<S, A>(x)
 		return (s, ref)
@@ -26,12 +26,12 @@ public func newSTRef<S, A>(x : A) -> ST<S, STRef<S, A>> {
 }
 
 // Reads the value of the reference and bundles it in an ST
-public func readSTRef<S, A>(ref : STRef<S, A>) -> ST<S, A> {
+public func readSTRef<S, A>(_ ref : STRef<S, A>) -> ST<S, A> {
 	return .pure(ref.value)
 }
 
 // Writes a new value into the reference.
-public func writeSTRef<S, A>(ref : STRef<S, A>) -> A -> ST<S, STRef<S, A>> {
+public func writeSTRef<S, A>(_ ref : STRef<S, A>) -> (A) -> ST<S, STRef<S, A>> {
     return { a in 
         return ST(apply: { s in
             ref.value = a
@@ -41,7 +41,7 @@ public func writeSTRef<S, A>(ref : STRef<S, A>) -> A -> ST<S, STRef<S, A>> {
 }
 
 // Modifies the reference and returns the updated result.
-public func modifySTRef<S, A>(ref : STRef<S, A>) -> (A -> A) -> ST<S, STRef<S, A>> {
+public func modifySTRef<S, A>(_ ref : STRef<S, A>) -> ((A) -> A) -> ST<S, STRef<S, A>> {
     return { f in 
         return ST(apply: { s in
             ref.value = f(ref.value)

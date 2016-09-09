@@ -8,9 +8,9 @@
 
 /// The lazy state monad represents a computation that threads an updatable piece of state through each step.
 public struct State<S, A> {
-	public let runState : S -> (A, S)
+	public let runState : (S) -> (A, S)
 	
-	public init(_ runState : S -> (A, S)) {
+	public init(_ runState : @escaping (S) -> (A, S)) {
 		self.runState = runState
 	}
 }
@@ -19,7 +19,7 @@ extension State : Functor {
 	public typealias B = Swift.Any
 	public typealias FB = State<S, B>
 	
-	public static func fmap<B>(f : A -> B) -> State<S, A> -> State<S, B> {
+	public static func fmap<B>(_ f : @escaping (A) -> B) -> (State<S, A>) -> State<S, B> {
 		return { state in
 			return State<S, B>({ s in
 				let (val, st2) = state.runState(s)
@@ -29,7 +29,7 @@ extension State : Functor {
 	}
 }
 
-public func <^> <S, A, B>(f : A -> B, s : State<S, A>) -> State<S, B> {
+public func <^> <S, A, B>(f : @escaping (A) -> B, s : State<S, A>) -> State<S, B> {
 	return State<S, A>.fmap(f)(s)
 }
 
@@ -42,15 +42,15 @@ public func %> <S, A, B>(s : State<S, B>, x : A) -> State<S, A> {
 }
 
 extension State : Pointed {
-	public static func pure(x : A) -> State<S, A> {
+	public static func pure(_ x : A) -> State<S, A> {
 		return State({ s in (x, s) })
 	}
 }
 
 extension State : Applicative {
-	public typealias FAB = State<S, A -> B>
+	public typealias FAB = State<S, (A) -> B>
 	
-	public static func ap<B>(stfn : State<S, A -> B>) -> State<S, A> -> State<S, B> {
+	public static func ap<B>(_ stfn : State<S, (A) -> B>) -> (State<S, A>) -> State<S, B> {
 		return { st in
 			return stfn >>- { f in
 				return st >>- { a in
@@ -61,7 +61,7 @@ extension State : Applicative {
 	}
 }
 
-public func <*> <S, A, B>(f : State<S, A -> B> , s : State<S, A>) -> State<S, B> {
+public func <*> <S, A, B>(f : State<S, (A) -> B> , s : State<S, A>) -> State<S, B> {
 	return State<S, A>.ap(f)(s)
 }
 
@@ -79,21 +79,21 @@ extension State : ApplicativeOps {
 	public typealias D = Any
 	public typealias FD = State<S, D>
 	
-	public static func liftA<B>(f : A -> B) -> State<S, A> -> State<S, B> {
-		return { a in State<S, A -> B>.pure(f) <*> a }
+	public static func liftA<B>(_ f : @escaping (A) -> B) -> (State<S, A>) -> State<S, B> {
+		return { a in State<S, (A) -> B>.pure(f) <*> a }
 	}
 	
-	public static func liftA2<B, C>(f : A -> B -> C) -> State<S, A> -> State<S, B> -> State<S, C> {
+	public static func liftA2<B, C>(_ f : @escaping (A) -> (B) -> C) -> (State<S, A>) -> (State<S, B>) -> State<S, C> {
 		return { a in { b in f <^> a <*> b  } }
 	}
 	
-	public static func liftA3<B, C, D>(f : A -> B -> C -> D) -> State<S, A> -> State<S, B> -> State<S, C> -> State<S, D> {
+	public static func liftA3<B, C, D>(_ f : @escaping (A) -> (B) -> (C) -> D) -> (State<S, A>) -> (State<S, B>) -> (State<S, C>) -> State<S, D> {
 		return { a in { b in { c in f <^> a <*> b <*> c } } }
 	}
 }
 
 extension State : Monad {
-	public func bind<B>(f : A -> State<S, B>) -> State<S, B> {
+	public func bind<B>(_ f : @escaping (A) -> State<S, B>) -> State<S, B> {
 		return State<S, B>({ s in
 			let (a, s2) = self.runState(s)
 			return f(a).runState(s2)
@@ -101,7 +101,7 @@ extension State : Monad {
 	}
 }
 
-public func >>- <S, A, B>(xs : State<S, A>, f : A -> State<S, B>) -> State<S, B> {
+public func >>- <S, A, B>(xs : State<S, A>, f : @escaping (A) -> State<S, B>) -> State<S, B> {
 	return xs.bind(f)
 }
 
@@ -116,39 +116,39 @@ extension State : MonadOps {
 	public typealias MLB = State<S, [B]>
 	public typealias MU = State<S, ()>
 	
-	public static func mapM<B>(f : A -> State<S, B>) -> [A] -> State<S, [B]> {
+	public static func mapM<B>(_ f : @escaping (A) -> State<S, B>) -> ([A]) -> State<S, [B]> {
 		return { xs in State<S, B>.sequence(map(f)(xs)) }
 	}
 	
-	public static func mapM_<B>(f : A -> State<S, B>) -> [A] -> State<S, ()> {
+	public static func mapM_<B>(_ f : @escaping (A) -> State<S, B>) -> ([A]) -> State<S, ()> {
 		return { xs in State<S, B>.sequence_(map(f)(xs)) }
 	}
 	
-	public static func forM<B>(xs : [A]) -> (A -> State<S, B>) -> State<S, [B]> {
+	public static func forM<B>(_ xs : [A]) -> ((A) -> State<S, B>) -> State<S, [B]> {
 		return flip(State.mapM)(xs)
 	}
 	
-	public static func forM_<B>(xs : [A]) -> (A -> State<S, B>) -> State<S, ()> {
+	public static func forM_<B>(_ xs : [A]) -> ((A) -> State<S, B>) -> State<S, ()> {
 		return flip(State.mapM_)(xs)
 	}
 	
-	public static func sequence(ls : [State<S, A>]) -> State<S, [A]> {
+	public static func sequence(_ ls : [State<S, A>]) -> State<S, [A]> {
 		return foldr({ m, m2 in m >>- { x in m2 >>- { xs in State<S, [A]>.pure(cons(x)(xs)) } } })(State<S, [A]>.pure([]))(ls)
 	}
 	
-	public static func sequence_(ls : [State<S, A>]) -> State<S, ()> {
+	public static func sequence_(_ ls : [State<S, A>]) -> State<S, ()> {
 		return foldr(>>)(State<S, ()>.pure(()))(ls)
 	}
 }
 
-public func -<< <S, A, B>(f : A -> State<S, B>, xs : State<S, A>) -> State<S, B> {
+public func -<< <S, A, B>(f : @escaping (A) -> State<S, B>, xs : State<S, A>) -> State<S, B> {
 	return xs.bind(f)
 }
 
-public func >>->> <S, A, B, C>(f : A -> State<S, B>, g : B -> State<S, C>) -> A -> State<S, C> {
+public func >>->> <S, A, B, C>(f : @escaping (A) -> State<S, B>, g : @escaping (B) -> State<S, C>) -> (A) -> State<S, C> {
 	return { x in f(x) >>- g }
 }
 
-public func <<-<< <S, A, B, C>(g : B -> State<S, C>, f : A -> State<S, B>) -> A -> State<S, C> {
+public func <<-<< <S, A, B, C>(g : @escaping (B) -> State<S, C>, f : @escaping (A) -> State<S, B>) -> (A) -> State<S, C> {
 	return { x in f(x) >>- g }
 }

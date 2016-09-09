@@ -8,34 +8,34 @@
 //
 
 /// Returns whether an element is a member of an array.
-public func elem<A : Equatable>(e : A) -> [A] -> Bool {
+public func elem<A : Equatable>(_ e : A) -> ([A]) -> Bool {
 	return { l in any({ $0 == e })(l) }
 }
 
 /// Returns whether an element is not a member of an array.
-public func notElem<A : Equatable>(e : A) -> [A] -> Bool {
+public func notElem<A : Equatable>(_ e : A) -> ([A]) -> Bool {
 	return { l in all({ $0 != e })(l) }
 }
 
 /// Returns whether an element is a member of a list.
-public func elem<A : Equatable>(e : A) -> List<A> -> Bool {
+public func elem<A : Equatable>(_ e : A) -> (List<A>) -> Bool {
 	return { l in any({ $0 == e })(l) }
 }
 
 /// Returns whether an element is not a member of a list.
-public func notElem<A : Equatable>(e : A) -> List<A> -> Bool {
+public func notElem<A : Equatable>(_ e : A) -> (List<A>) -> Bool {
 	return { l in all({ $0 != e })(l) }
 }
 
 /// Looks up a key in a dictionary.
-public func lookup<A : Equatable, B>(e : A) -> [A:B] -> Optional<B> {
+public func lookup<A : Equatable, B>(_ e : A) -> ([A:B]) -> Optional<B> {
 	return { d in
 		switch destructure(d) {
-			case .Empty:
-				return .None
-			case .Destructure(let (x, y), let xys):
+			case .empty:
+				return .none
+			case .destructure(let (x, y), let xys):
 				if e == x {
-					return .Some(y)
+					return .some(y)
 				}
 				return lookup(e)(xys)
 		}
@@ -43,14 +43,14 @@ public func lookup<A : Equatable, B>(e : A) -> [A:B] -> Optional<B> {
 }
 
 /// Looks up a key in an array of key-value pairs.
-public func lookup<A : Equatable, B>(e : A) -> [(A, B)] -> Optional<B> {
+public func lookup<A : Equatable, B>(_ e : A) -> ([(A, B)]) -> Optional<B> {
 	return { d in
 		switch match(d) {
-			case .Nil:
-				return .None
-			case .Cons(let (x, y), let xys):
+			case .nil:
+				return .none
+			case .cons(let (x, y), let xys):
 				if e == x {
-					return .Some(y)
+					return .some(y)
 				}
 				return lookup(e)(xys)
 		}
@@ -58,14 +58,14 @@ public func lookup<A : Equatable, B>(e : A) -> [(A, B)] -> Optional<B> {
 }
 
 /// Looks up a key in a list of key-value pairs.
-public func lookup<A : Equatable, B>(e : A) -> List<(A, B)> -> Optional<B> {
+public func lookup<A : Equatable, B>(_ e : A) -> (List<(A, B)>) -> Optional<B> {
 	return { d in
 		switch d.match() {
-			case .Nil:
-				return .None
-			case .Cons(let (x, y), let xys):
+			case .nil:
+				return .none
+			case .cons(let (x, y), let xys):
 				if e == x {
-					return .Some(y)
+					return .some(y)
 				}
 				return lookup(e)(xys)
 		}

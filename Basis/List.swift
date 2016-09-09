@@ -10,9 +10,9 @@
 /// An enum representing the possible values a list can match against.
 public enum ListMatcher<A> {
 	/// The empty list.
-	case Nil
+	case `nil`
 	/// A cons cell.
-	case Cons(A, List<A>)
+	case cons(A, List<A>)
 }
 
 /// A lazy ordered sequence of homogenous values.
@@ -36,7 +36,7 @@ public struct List<A> {
 	let next : () -> (head : A, tail : List<A>)
 
 	/// Constructs a potentially infinite list.
-	init(_ next : () -> (head : A, tail : List<A>), isEmpty : Bool = false) {
+	init(_ next : @escaping () -> (head : A, tail : List<A>), isEmpty : Bool = false) {
 		self.count = isEmpty ? 0 : -1
 		self.next = next
 	}
@@ -53,7 +53,7 @@ public struct List<A> {
 		if tail.count == -1 {
 			self.count = -1
 		} else {
-			self.count = tail.count.successor()
+			self.count = (tail.count + 1)
 		}
 		self.next = { (head, tail) }
 	}
@@ -62,10 +62,10 @@ public struct List<A> {
 	/// the result is Cons(head, tail).
 	public func match() -> ListMatcher<A> {
 		if self.count == 0 {
-			return .Nil
+			return .nil
 		}
 		let (hd, tl) = self.next()
-		return .Cons(hd, tl)
+		return .cons(hd, tl)
 	}
 
 	/// Indexes into an array.
@@ -73,11 +73,11 @@ public struct List<A> {
 	/// Indexing into the empty list will throw an exception.
 	public subscript(n : UInt) -> A {
 		switch self.match() {
-			case .Nil:
+			case .nil:
 				return error("Cannot extract an element from an empty list.")
-			case let .Cons(x, _) where n == 0:
+			case let .cons(x, _) where n == 0:
 				return x
-			case let .Cons(_, xs):
+			case let .cons(_, xs):
 				return xs[n - 1]
 		}
 	}
@@ -113,11 +113,11 @@ public struct List<A> {
 	}
 
 	/// Yields a new list by applying a function to each element of the receiver.
-	public func map<B>(f : A -> B) -> List<B> {
+	public func map<B>(_ f : (A) -> B) -> List<B> {
 		switch self.match() {
-			case .Nil:
+			case .nil:
 				return List<B>()
-			case let .Cons(hd, tl):
+			case let .cons(hd, tl):
 				return List<B>(f(hd), tl.map(f))
 		}
 	}
@@ -125,21 +125,21 @@ public struct List<A> {
 	/// Appends two lists together.
 	///
 	/// If the receiver is infinite, the result of this function will be the receiver itself.
-	public func append(rhs : List<A>) -> List<A> {
+	public func append(_ rhs : List<A>) -> List<A> {
 		switch self.match() {
-		case .Nil:
+		case .nil:
 			return rhs
-		case let .Cons(x, xs):
+		case let .cons(x, xs):
 			return x <<| xs.append(rhs)
 		}
 	}
 
 	/// Returns a list of elements satisfying a predicate.
-	public func filter(p : A -> Bool) -> List<A> {
+	public func filter(_ p : (A) -> Bool) -> List<A> {
 		switch self.match() {
-			case .Nil:
+			case .nil:
 				return List()
-			case let .Cons(x, xs):
+			case let .cons(x, xs):
 				return p(x) ? List(x, xs.filter(p)) : xs.filter(p)
 		}
 	}
@@ -148,11 +148,11 @@ public struct List<A> {
 /// Returns the first element of a non-empty list.
 ///
 /// If the provided list is empty, this function throws an exception.
-public func head<A>(l : List<A>) -> A {
+public func head<A>(_ l : List<A>) -> A {
 	switch l.match() {
-		case .Nil:
+		case .nil:
 			fatalError("Cannot take the head of an empty list.")
-		case .Cons(let x, _):
+		case .cons(let x, _):
 			return x
 	}
 }
@@ -160,16 +160,16 @@ public func head<A>(l : List<A>) -> A {
 /// Returns an array of all elements but the first in a non-empty list.
 ///
 /// If the provided list if empty, this function throws an exception.
-public func tail<A>(l : List<A>) -> List<A> {
+public func tail<A>(_ l : List<A>) -> List<A> {
 	switch l.match() {
-		case .Nil:
+		case .nil:
 			fatalError("Cannot take the tail of an empty list.")
-		case .Cons(_, let xs):
+		case .cons(_, let xs):
 			return xs
 	}
 }
 
-public func cons<T>(x : T) -> List<T> -> List<T> {
+public func cons<T>(_ x : T) -> (List<T>) -> List<T> {
 	return { xs in x <<| xs }
 }
 
@@ -177,7 +177,7 @@ public func <<| <T>(head : T, tail : List<T>) -> List<T> {
 	return List(head, tail)
 }
 
-public func snoc<T>(xs : List<T>) -> T -> List<T> {
+public func snoc<T>(_ xs : List<T>) -> (T) -> List<T> {
 	return { x in xs |>> x }
 }
 
@@ -191,12 +191,12 @@ public func + <A>(lhs : List<A>, rhs : List<A>) -> List<A> {
 }
 
 /// Takes two lists and returns true if the first list is a prefix of the second list.
-public func isPrefixOf<A : Equatable>(l : List<A>) -> List<A> -> Bool {
+public func isPrefixOf<A : Equatable>(_ l : List<A>) -> (List<A>) -> Bool {
 	return { r in
 		switch (l.match(), r.match()) {
-			case (.Cons(let x, let xs), .Cons(let y, let ys)) where (x == y):
+			case (.cons(let x, let xs), .cons(let y, let ys)) where (x == y):
 				return isPrefixOf(xs)(ys)
-			case (.Nil, _):
+			case (.nil, _):
 				return true
 			default:
 				return false
@@ -205,24 +205,24 @@ public func isPrefixOf<A : Equatable>(l : List<A>) -> List<A> -> Bool {
 }
 
 /// Takes two lists and returns true if the first list is a suffix of the second list.
-public func isSuffixOf<A : Equatable>(l : List<A>) -> List<A> -> Bool {
+public func isSuffixOf<A : Equatable>(_ l : List<A>) -> (List<A>) -> Bool {
 	return { r in isPrefixOf(l.reverse())(r.reverse()) }
 }
 
 /// Takes two lists and returns true if the first list is contained entirely anywhere in the second
 /// list.
-public func isInfixOf<A : Equatable>(l : List<A>) -> List<A> -> Bool {
+public func isInfixOf<A : Equatable>(_ l : List<A>) -> (List<A>) -> Bool {
 	return { r in any(isPrefixOf(l))(tails(r)) }
 }
 
 /// Takes two lists and drops items in the first from the second.  If the first list is not a prefix
 /// of the second list this function returns Nothing.
-public func stripPrefix<A : Equatable>(l : List<A>) -> List<A> -> Optional<List<A>> {
+public func stripPrefix<A : Equatable>(_ l : List<A>) -> (List<A>) -> Optional<List<A>> {
 	return { r in
 		switch (l.match(), r.match()) {
-		case (.Nil, _):
-			return .Some(r)
-		case (.Cons(let x, let xs), .Cons(let y, let ys)) where x == y:
+		case (.nil, _):
+			return .some(r)
+		case (.cons(let x, let xs), .cons(let y, let ys)) where x == y:
 			return stripPrefix(xs)(ys)
 		default:
 			return nil
@@ -232,7 +232,7 @@ public func stripPrefix<A : Equatable>(l : List<A>) -> List<A> -> Optional<List<
 
 /// Takes two lists and drops items in the first from the end of the second.  If the first list is
 /// not a suffix of the second list this function returns nothing.
-public func stripSuffix<A : Equatable>(l : List<A>) -> List<A> -> Optional<List<A>> {
+public func stripSuffix<A : Equatable>(_ l : List<A>) -> (List<A>) -> Optional<List<A>> {
 	return { r in stripPrefix(l.reverse())(r.reverse()).map(dismember(List.reverse)) }
 }
 
@@ -241,9 +241,9 @@ public func stripSuffix<A : Equatable>(l : List<A>) -> List<A> -> Optional<List<
 
 public func == <A : Equatable>(lhs : List<A>, rhs : List<A>) -> Bool {
 	switch (lhs.match(), rhs.match()) {
-		case (.Nil, .Nil):
+		case (.nil, .nil):
 			return true
-		case let (.Cons(lHead, lTail), .Cons(rHead, rTail)):
+		case let (.cons(lHead, lTail), .cons(rHead, rTail)):
 			return lHead == rHead && lTail == rTail
 		default:
 			return false
@@ -256,7 +256,7 @@ extension List : Functor {
 	public typealias B = Any
 	public typealias FB = List<B>
 
-	public static func fmap<B>(f: A -> B) -> List<A> -> List<B> {
+	public static func fmap<B>(_ f: @escaping (A) -> B) -> (List<A>) -> List<B> {
 		return { $0.map(f) }
 	}
 }
@@ -270,24 +270,24 @@ public func %> <A, B>(c : List<B>, a : A) -> List<A> {
 }
 
 extension List : Pointed {
-	public static func pure(x : A) -> List<A> {
+	public static func pure(_ x : A) -> List<A> {
 		return List(x)
 	}
 }
 
 extension List : Applicative {
-	public typealias FAB = List<A -> B>
+	public typealias FAB = List<(A) -> B>
 
-	public static func ap<B>(a : List<A -> B>) -> List<A> -> List<B> {
+	public static func ap<B>(_ a : List<(A) -> B>) -> (List<A>) -> List<B> {
 		return { l in concat(a.map({ l.map($0) })) }
 	}
 }
 
-public func <^> <A, B>(f : A -> B, ar : List<A>) -> List<B> {
+public func <^> <A, B>(f : @escaping (A) -> B, ar : List<A>) -> List<B> {
 	return List.fmap(f)(ar)
 }
 
-public func <*> <A, B>(a : List<A -> B> , l : List<A>) -> List<B> {
+public func <*> <A, B>(a : List<(A) -> B> , l : List<A>) -> List<B> {
 	return List.ap(a)(l)
 }
 
@@ -307,16 +307,16 @@ extension List : Alternative {
 		return List()
 	}
 
-	public func some(v : List<A>) -> List<[A]> {
+	public func some(_ v : List<A>) -> List<[A]> {
 		return curry(<<|) <^> v <*> many(v)
 	}
 
-	public func many(v : List<A>) -> List<[A]> {
+	public func many(_ v : List<A>) -> List<[A]> {
 		return some(v) <|> List<[A]>.pure([])
 	}
 	
-	public func optional(v : List<A>) -> List<Optional<A>> {
-		return Optional.Some <^> v <|> List<Optional<A>>.pure(.None)
+	public func optional(_ v : List<A>) -> List<Optional<A>> {
+		return Optional.some <^> v <|> List<Optional<A>>.pure(.none)
 	}
 }
 
@@ -325,12 +325,12 @@ public func <|> <A>(l : List<A>, r : List<A>) -> List<A> {
 }
 
 extension List : Monad {
-	public func bind<B>(f : A -> List<B>) -> List<B> {
+	public func bind<B>(_ f : (A) -> List<B>) -> List<B> {
 		return concatMap(f)(self)
 	}
 }
 
-public func >>- <A, B>(l : List<A>, f : A -> List<B>) -> List<B> {
+public func >>- <A, B>(l : List<A>, f : (A) -> List<B>) -> List<B> {
 	return l.bind(f)
 }
 
@@ -341,7 +341,7 @@ public func >> <A, B>(x : List<A>, y : List<B>) -> List<B> {
 }
 
 extension List : MonadPlus {
-	public static func mplus(l : List<A>) -> List<A> -> List<A> {
+	public static func mplus(_ l : List<A>) -> (List<A>) -> List<A> {
 		return { l + $0 }
 	}
 }
@@ -352,15 +352,15 @@ extension List : MonadZip {
 
 	public typealias FTAB = List<(A, B)>
 
-	public func mzip<B>(ma : List<A>) -> List<B> -> List<(A, B)> {
+	public func mzip<B>(_ ma : List<A>) -> (List<B>) -> List<(A, B)> {
 		return zip(ma)
 	}
 
-	public func mzipWith<B, C>(f : A -> B -> C) -> List<A> -> List<B> -> List<C> {
+	public func mzipWith<B, C>(_ f : (A) -> (B) -> C) -> (List<A>) -> (List<B>) -> List<C> {
 		return zipWith(f)
 	}
 
-	public func munzip<B>(ftab : List<(A, B)>) -> (List<A>, List<B>) {
+	public func munzip<B>(_ ftab : List<(A, B)>) -> (List<A>, List<B>) {
 		return unzip(ftab)
 	}
 }

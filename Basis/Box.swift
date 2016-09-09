@@ -36,12 +36,12 @@ extension Identity : Functor {
 	
 	public typealias FB = Identity<B>
 	
-	public static func fmap<B>(f : A -> B) -> Identity<A> -> Identity<B> {
+	public static func fmap<B>(_ f : @escaping (A) -> B) -> (Identity<A>) -> Identity<B> {
 		return { b in Identity<B>(f(b.runIdentity())) }
 	}
 }
 
-public func <^> <A, B>(f : A -> B, b : Identity<A>) -> Identity<B> {
+public func <^> <A, B>(f : @escaping (A) -> B, b : Identity<A>) -> Identity<B> {
 	return Identity.fmap(f)(b)
 }
 
@@ -54,7 +54,7 @@ public func %> <A, B>(c : Identity<B>, a : A) -> Identity<A> {
 }
 
 extension Identity : Pointed {
-	public static func pure(x : A) -> Identity<A> {
+	public static func pure(_ x : A) -> Identity<A> {
 		return Identity(x)
 	}
 }
@@ -68,12 +68,12 @@ extension Identity : Copointed {
 extension Identity : Comonad {
 	public typealias FFA = Identity<Identity<A>>
 	
-	public static func duplicate(b : Identity<A>) -> Identity<Identity<A>> {
+	public static func duplicate(_ b : Identity<A>) -> Identity<Identity<A>> {
 		return Identity<Identity<A>>(b)
 	}
 	
 	
-	public static func extend<B>(f : Identity<A> -> B) -> Identity<A> -> Identity<B> {
+	public static func extend<B>(_ f : @escaping (Identity<A>) -> B) -> (Identity<A>) -> Identity<B> {
 		return { b in 
 			return Identity<Identity<A>>.fmap(f)(Identity<A>.duplicate(b))
 		}
@@ -81,10 +81,10 @@ extension Identity : Comonad {
 }
 
 extension Identity : ComonadApply {
-	public typealias FAB = Identity<A -> B>
+	public typealias FAB = Identity<(A) -> B>
 }
 
-public func >*< <A, B>(fab : Identity<A -> B> , b : Identity<A>) -> Identity<B> {
+public func >*< <A, B>(fab : Identity<(A) -> B> , b : Identity<A>) -> Identity<B> {
 	return Identity(fab.runIdentity()(b.runIdentity()))
 }
 

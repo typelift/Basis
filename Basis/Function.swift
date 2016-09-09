@@ -13,13 +13,13 @@ public struct Function<T, U> {
 	public typealias B = U
 	public typealias C = Any
 
-	let ap : T -> U
+	let ap : (T) -> U
 
-	public init(_ apply : T -> U) {
+	public init(_ apply : @escaping (T) -> U) {
 		self.ap = apply
 	}
 	
-	public func apply(x : T) -> U {
+	public func apply(_ x : T) -> U {
 		return self.ap(x)
 	}
 }
@@ -59,7 +59,7 @@ extension Function : Arrow {
 	public typealias ABD = Function<A, D>
 	public typealias FANOUT = Function<A, (B, D)>
 	
-	public static func arr(f : T -> U) -> Function<A, B> {
+	public static func arr(_ f : @escaping (T) -> U) -> Function<A, B> {
 		return Function<A, B>(f)
 	}
 	
@@ -89,17 +89,17 @@ extension Function : ArrowChoice {
 	public typealias ACD = Function<B, D>
 	public typealias FANIN = Function<Either<A, B>, D>
 	
-	public static func left(f : Function<A, B>) -> Function<Either<A, D>, Either<B, D>> {
+	public static func left(_ f : Function<A, B>) -> Function<Either<A, D>, Either<B, D>> {
 		return f +++ Function.id()
 	}
 	
-	public static func right(f : Function<A, B>) -> Function<Either<D, A>, Either<D, B>> {
+	public static func right(_ f : Function<A, B>) -> Function<Either<D, A>, Either<D, B>> {
 		return Function.id() +++ f
 	}
 }
 
 public func +++ <B, C, D, E>(f : Function<B, C>, g : Function<D, E>) -> Function<Either<B, D>, Either<C, E>> {
-	return ^Either.Left • f ||| ^Either.Right • g
+	return ^Either.left • f ||| ^Either.right • g
 }
 
 public func ||| <B, C, D>(f : Function<B, D>, g : Function<C, D>) -> Function<Either<B, C>, D> {
@@ -113,9 +113,9 @@ extension Function : ArrowApply {
 		return Function<(Function<T, U>, A), B>({ (f, x) in f.apply(x) })
 	}
 	
-	public static func leftApp<C>(f : Function<A, B>) -> Function<Either<A, C>, Either<B, C>> {
-		let l : Function<A, (Function<Void, Either<B, C>>, Void)> = ^{ (a : A) -> (Function<Void, Either<B, C>>, Void) in (Function<Void, A>.arr({ _ in a }) >>> f >>> Function<B, Either<B, C>>.arr(Either.Left), Void()) }
-		let r : Function<C, (Function<Void, Either<B, C>>, Void)> = ^{ (c : C) -> (Function<Void, Either<B, C>>, Void) in (Function<Void, C>.arr({ _ in c }) >>> Function<C, Either<B, C>>.arr(Either.Right), Void()) }
+	public static func leftApp<C>(_ f : Function<A, B>) -> Function<Either<A, C>, Either<B, C>> {
+		let l : Function<A, (Function<Void, Either<B, C>>, Void)> = ^{ (a : A) -> (Function<Void, Either<B, C>>, Void) in (Function<Void, A>.arr({ _ in a }) >>> f >>> Function<B, Either<B, C>>.arr(Either.left), Void()) }
+		let r : Function<C, (Function<Void, Either<B, C>>, Void)> = ^{ (c : C) -> (Function<Void, Either<B, C>>, Void) in (Function<Void, C>.arr({ _ in c }) >>> Function<C, Either<B, C>>.arr(Either.right), Void()) }
 
 		return (l ||| r) >>> Function<Void, Either<B, C>>.app()
 	}
@@ -124,7 +124,7 @@ extension Function : ArrowApply {
 extension Function : ArrowLoop {
 	public typealias LOOP = Function<(A, D), (B, D)>
 	
-	public static func loop<B, C>(f : Function<(B, D), (C, D)>) -> Function<B, C> {
+	public static func loop<B, C>(_ f : Function<(B, D), (C, D)>) -> Function<B, C> {
 		return ^({ k in Function.loop(f).apply(k) })
 	}
 }

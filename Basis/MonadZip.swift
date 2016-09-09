@@ -18,10 +18,10 @@ public protocol MonadZip : Monad {
 	associatedtype FTAB = K1<(A, B)>
 	
 	/// Zip for monads.
-	func mzip(_: Self) -> FB -> FTAB
+	func mzip(_: Self) -> (FB) -> FTAB
 	
 	/// ZipWith for monads.
-	func mzipWith(_: A -> B -> C) -> Self -> FB -> FC
+	func mzipWith(_: (A) -> (B) -> C) -> (Self) -> (FB) -> FC
 	
 	/// Unzip for monads.
 	func munzip(_: FTAB) -> (Self, FB)
